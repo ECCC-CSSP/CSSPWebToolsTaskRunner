@@ -1,0 +1,126 @@
+OtherServerLabSheetID|||||[4]
+ConfigFileName|||||[C:\CSSPLabSheets\config_Subsector_Routine_A1_2015_Moncton.txt]
+Year|||||[2015]
+Month|||||[11]
+Day|||||[12]
+SubsectorTVItemID|||||[560]
+ConfigType|||||[1]
+SampleType|||||[1]
+LabSheetType|||||[1]
+LabSheetStatus|||||[1]
+FileName|||||[C:\CSSPLabSheets\config_Subsector_Routine_A1_2015_Moncton\2016\NB-01-020-002_2016_05_02_A1_C.txt]
+FileLastModifiedDate_Local|||||[2016,5,2,9,36,6,]
+FileContent|||||[Version                                 	1
+Subsector                               	NB-01-020-002 (Charlo)	560
+Date                                    	2015	11	12
+Tides                                   	HR / HR
+Sample Crew Initials                    	SDV
+Incubation Start Time                   	12:23
+Incubation End Time                     	12:34
+Incubation Time Calculated              	24:11
+Water Bath Number                       	G
+TC Field #1                             	23
+TC Lab #1                               	7
+TC Has 2 Coolers                        	true
+TC Field #2                             	23
+TC Lab #2                               	8
+TC First                                	14.0
+TC Average                              	12.7
+Control Lot                             	Something alsdfjlisjf
+Positive 35                             	+
+Non Target 35                           	+
+Negative 35                             	-
+Positive 44.5                           	+
+Non Target 44.5                         	-
+Negative 44.5                           	-
+Blank 35                                	-
+Lot 35                                  	98
+Lot 44.5                                	87
+Duplicate R Log Value                   	0.10474
+Duplicate Acceptable Or Unacceptable    	Acceptable
+Duplicate Precision Criteria            	0.6872
+Duplicate Data Entry Initials           	JH
+Date Duplicate Data Entry               	2015	11	13
+Weather                                 	This is the weather comment
+Run Comment                             	This is the run comment
+Sample Bottle Lot Number                	98, 87
+Salinities Read By                      	JH
+Date Salinities Read                    	2015	11	12
+Results Read By                         	JH
+Date Results Read                       	2015	11	13
+Results Recorded By                     	JH
+Date Results Recorded                   	2015	11	13
+Site   	Time  	Tube10 	Tube1_0	Tube0_1	Sal  	Temp 	Proc. By	Sample Type	MPN       	ID      	Comment     	
+0023   	12:13 	5      	4      	3      	23.0 	12.0 	FG      	Normal  	280       	7156    	First comment	
+0024   	      	       	       	       	     	     	        	Normal  	0         	7158    	            	
+0028   	01:23 	5      	5      	5      	24.0 	14.0 	FG      	Normal  	1700      	8929    	Third comment	
+0023   	12:13 	5      	4      	2      	23.0 	12.0 	FG      	Duplicate	220       	7156    	No comment  	
+________________________________
+Log
+12/11/2015 3:04:35 PM	AA	Sample Crew Initials	SD
+12/11/2015 3:04:36 PM	AA	Incubation Start Time	12:23
+12/11/2015 3:04:38 PM	AA	Incubation End Time	12:34
+12/11/2015 3:04:41 PM	AA	Water Bath	G
+12/11/2015 3:04:44 PM	AA	TC Field #1	23
+12/11/2015 3:04:45 PM	AA	TC Field #2	23
+12/11/2015 3:04:47 PM	AA	TC Lab #1	76
+12/11/2015 3:04:50 PM	AA	TC Lab #1	7
+12/11/2015 3:04:52 PM	AA	TC Lab #2	8
+12/11/2015 3:04:59 PM	AA	Control Lot	Something alsdfjlisjf
+12/11/2015 3:05:00 PM	AA	Positive 35	+
+12/11/2015 3:05:00 PM	AA	Non Target 35	+
+12/11/2015 3:05:01 PM	AA	Negative 35	-
+12/11/2015 3:05:02 PM	AA	Positive 44.5	+
+12/11/2015 3:05:02 PM	AA	Non Target 44.5	-
+12/11/2015 3:05:02 PM	AA	Negative 44.5	-
+12/11/2015 3:05:03 PM	AA	Control Blank 35	-
+12/11/2015 3:05:09 PM	AA	Lot 35	98
+12/11/2015 3:05:11 PM	AA	Lot 44.5	87
+12/11/2015 3:05:15 PM	AA	Sample Bottle Lot Number	98, 87
+12/11/2015 3:05:17 PM	AA	Salinities Read By	JH
+12/11/2015 3:05:19 PM	AA	Results Read By	JH
+12/11/2015 3:05:20 PM	AA	Results Recorded By	JH
+12/11/2015 3:05:34 PM	AA	Weather	This is the weather comment
+12/11/2015 3:05:41 PM	AA	Run Comment	This is the run comment
+12/11/2015 3:05:47 PM	AA	CSSP Grid	 0023 -  [Tube 10] 5
+12/11/2015 3:05:47 PM	AA	CSSP Grid	 0023 -  [Tube 1] 4
+12/11/2015 3:05:49 PM	AA	CSSP Grid	 0023 -  [Tube 0.1] 3
+12/11/2015 3:05:50 PM	AA	CSSP Grid	 0023 -  [Salinity] 23
+12/11/2015 3:05:52 PM	AA	CSSP Grid	 0023 -  [Temperature] 12
+12/11/2015 3:05:55 PM	AA	CSSP Grid	 0023 -  [Processed By] FG
+12/11/2015 3:05:58 PM	AA	CSSP Grid	 0023 -  [Comment] First
+12/11/2015 3:06:06 PM	AA	CSSP Grid	 0023 -  [Comment] First comment
+12/11/2015 3:06:12 PM	AA	CSSP Grid	 0024 -  [Comment] Second comment
+12/11/2015 3:06:22 PM	AA	CSSP Grid	 0028 -  [Comment] Third comment
+12/11/2015 3:06:25 PM	AA	CSSP Grid	 0023 Dupliate -  [Comment] No comment
+12/11/2015 3:06:35 PM	AA	CSSP Grid	 0024 -  [Tube 10] 0
+12/11/2015 3:06:35 PM	AA	CSSP Grid	 0024 -  [Tube 1] 0
+12/11/2015 3:06:35 PM	AA	CSSP Grid	 0024 -  [Tube 0.1] 0
+12/11/2015 3:06:37 PM	AA	CSSP Grid	 0024 -  [Salinity] 23
+12/11/2015 3:06:39 PM	AA	CSSP Grid	 0024 -  [Temperature] 13
+12/11/2015 3:06:40 PM	AA	CSSP Grid	 0024 -  [Processed By] FG
+12/11/2015 3:06:42 PM	AA	CSSP Grid	 0028 -  [Processed By] FG
+12/11/2015 3:06:50 PM	AA	CSSP Grid	 0028 -  [Tube 10] 5
+12/11/2015 3:06:50 PM	AA	CSSP Grid	 0028 -  [Tube 1] 5
+12/11/2015 3:06:52 PM	AA	CSSP Grid	 0028 -  [Tube 0.1] 5
+12/11/2015 3:06:55 PM	AA	CSSP Grid	 0028 -  [Salinity] 24
+12/11/2015 3:07:13 PM	AA	CSSP Grid	 0028 -  [Temperature] 14
+12/11/2015 3:07:18 PM	AA	CSSP Grid	 0023 Dupliate -  [Tube 10] 5
+12/11/2015 3:07:18 PM	AA	CSSP Grid	 0023 Dupliate -  [Tube 1] 4
+12/11/2015 3:07:22 PM	AA	CSSP Grid	 0023 Dupliate -  [Tube 0.1] 2
+12/11/2015 3:07:57 PM	AA	Tides	HR / HR
+12/11/2015 3:12:34 PM	AA	CSSP Grid	 0028 -  [Processed By] 13:23
+12/11/2015 3:13:45 PM	AA	CSSP Grid	 0028 -  [Processed By] 13:23
+12/11/2015 3:14:20 PM	AA	CSSP Grid	 0024 -  [Processed By] 12:11
+12/11/2015 3:14:46 PM	AA	Tides	HR / HR
+12/11/2015 3:15:10 PM	AA	CSSP Grid	 0024 -  [Comment]
+12/11/2015 3:16:26 PM	AA	Tides	HR / HR
+12/11/2015 3:19:42 PM	AA	Tides	HR / HR
+13/11/2015 9:17:29 AM	AA	Tides	HR / HR
+13/11/2015 9:30:50 AM	AA	Two Coolers	True
+13/11/2015 9:31:20 AM	AA	Sample Crew Initials	SDV
+13/11/2015 9:33:14 AM	AA	Two Coolers	True
+13/11/2015 9:33:19 AM	AA	Sample Crew Initials	SD
+13/11/2015 9:36:04 AM	AA	Sample Crew Initials	SDV
+
+]

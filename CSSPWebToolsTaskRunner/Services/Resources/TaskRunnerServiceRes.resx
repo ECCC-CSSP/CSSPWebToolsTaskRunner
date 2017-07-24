@@ -1,0 +1,1068 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbnormalRunCompletion" xml:space="preserve">
+    <value>Abnormal run completion</value>
+  </data>
+  <data name="AllNodesAreSmallerThanContourValue" xml:space="preserve">
+    <value>All elements nodes are smaller than ContourValue</value>
+  </data>
+  <data name="Amplitude" xml:space="preserve">
+    <value>Amplitude</value>
+  </data>
+  <data name="AtLowerCase" xml:space="preserve">
+    <value>at</value>
+  </data>
+  <data name="AverageDecayFactor" xml:space="preserve">
+    <value>Average Decay Factor</value>
+  </data>
+  <data name="BadInputConstituant_" xml:space="preserve">
+    <value>Bad input constituent [{0}].</value>
+  </data>
+  <data name="BedResistanceType" xml:space="preserve">
+    <value>Bed Resistance Type</value>
+  </data>
+  <data name="MikeBoundaryConditionCode" xml:space="preserve">
+    <value>Mike Boundary Condition Code</value>
+  </data>
+  <data name="MikeBoundaryConditionFormat" xml:space="preserve">
+    <value>Mike Boundary Condition Format</value>
+  </data>
+  <data name="MikeBoundaryConditionLength" xml:space="preserve">
+    <value>Mike Boundary Condition Length</value>
+  </data>
+  <data name="MikeBoundaryConditionName" xml:space="preserve">
+    <value>Mike Boundary Condition Name</value>
+  </data>
+  <data name="MikeBoundaryConditionLevelOrVelocity" xml:space="preserve">
+    <value>Mike Boundary Condition Type</value>
+  </data>
+  <data name="MikeBoundaryElementNodes" xml:space="preserve">
+    <value>MikeBoundary Element Nodes</value>
+  </data>
+  <data name="Celcius" xml:space="preserve">
+    <value>Celcius</value>
+  </data>
+  <data name="CompletedSuccessfullyWithBackgroundWorkingIndex_" xml:space="preserve">
+    <value>Completed Successfully with BackgroundWorking index [{0}].</value>
+  </data>
+  <data name="CompressKMLDidNotWorkWith7zError_" xml:space="preserve">
+    <value>7z to compress KML file did not work. Error: [{0}].</value>
+  </data>
+  <data name="ContourValue" xml:space="preserve">
+    <value>Contour Value</value>
+  </data>
+  <data name="Coordinates" xml:space="preserve">
+    <value>Coordinates</value>
+  </data>
+  <data name="CouldNotCreateFile_Error_" xml:space="preserve">
+    <value>Could not create file [{0}]. Error [{1}].</value>
+  </data>
+  <data name="CouldNotCreate_" xml:space="preserve">
+    <value>Could not create [{0}].</value>
+  </data>
+  <data name="CouldNotCreate_Error_" xml:space="preserve">
+    <value>Could not create [{0}]. Error [{1}].</value>
+  </data>
+  <data name="CouldNotCreate_For_With_Equal_" xml:space="preserve">
+    <value>Could not create [{0}] for [{1}] with [{2}] equal [{3}].</value>
+  </data>
+  <data name="CouldNotFindFile_" xml:space="preserve">
+    <value>Could not find file [{0}].</value>
+  </data>
+  <data name="CouldNotFind_" xml:space="preserve">
+    <value>Could not find [{0}].</value>
+  </data>
+  <data name="CouldNotFind_With_Equal_" xml:space="preserve">
+    <value>Could not find [{0}] with [{1}] equal [{2}].</value>
+  </data>
+  <data name="CouldNotFind_With_StartingWith_" xml:space="preserve">
+    <value>Could not find [{0}] with [{1}] starting with [{2}].</value>
+  </data>
+  <data name="CouldNotFind__" xml:space="preserve">
+    <value>Could not find [{0}]: [{1}].</value>
+  </data>
+  <data name="CouldNotGatherFilesToUpload" xml:space="preserve">
+    <value>Could not gather files to upload.</value>
+  </data>
+  <data name="CouldNotGatherResultFilesToUpload" xml:space="preserve">
+    <value>Could not gather result files to upload.</value>
+  </data>
+  <data name="CouldNotOpenFile_" xml:space="preserve">
+    <value>Could not open file [{0}].</value>
+  </data>
+  <data name="CouldNotOpenFile_Error_" xml:space="preserve">
+    <value>Could not open file [{0}]. Error: [{1}].</value>
+  </data>
+  <data name="CouldNotParse_Properly" xml:space="preserve">
+    <value>Could not parse [{0}] properly.</value>
+  </data>
+  <data name="CouldNotReadFile_" xml:space="preserve">
+    <value>Could not read file [{0}].</value>
+  </data>
+  <data name="CouldNotReadFile_Error_" xml:space="preserve">
+    <value>Could not read file [{0}]. Error: [{1}].</value>
+  </data>
+  <data name="CouldNotRun_Error_" xml:space="preserve">
+    <value>Could not run [{0}]. Error: [{1}].</value>
+  </data>
+  <data name="CouldNotUpdate_Error_" xml:space="preserve">
+    <value>Could not update [{0}]. Error: [{1}].</value>
+  </data>
+  <data name="CouldNotUpload_" xml:space="preserve">
+    <value>Could not upload [{0}].</value>
+  </data>
+  <data name="CouldNotWriteFile_" xml:space="preserve">
+    <value>Could not write file [{0}].</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="CreatingAllInputFiles" xml:space="preserve">
+    <value>Creating all input files</value>
+  </data>
+  <data name="CreatingWebTideBoundaryConditionFiles" xml:space="preserve">
+    <value>Creating WebTide boundary conditions files.</value>
+  </data>
+  <data name="CurrentsAnim" xml:space="preserve">
+    <value>Currents Animation</value>
+  </data>
+  <data name="DayLowerCase" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="DecayIsConstant" xml:space="preserve">
+    <value>Decay is constant</value>
+  </data>
+  <data name="DecayIsVariable" xml:space="preserve">
+    <value>Decay is variable</value>
+  </data>
+  <data name="DegreeLowerCase" xml:space="preserve">
+    <value>degree</value>
+  </data>
+  <data name="DensityType" xml:space="preserve">
+    <value>Density Type</value>
+  </data>
+  <data name="DensityTypeNotDefine" xml:space="preserve">
+    <value>Density Type not define</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="Directory" xml:space="preserve">
+    <value>Directory</value>
+  </data>
+  <data name="Effluent" xml:space="preserve">
+    <value>Effluent</value>
+  </data>
+  <data name="ElementTypeIsOtherThan_Its_" xml:space="preserve">
+    <value>Element type is other than [{0}]. It's [{1}].</value>
+  </data>
+  <data name="ElementType_IsNotSupported" xml:space="preserve">
+    <value>Element type [{0}] is not supported.</value>
+  </data>
+  <data name="ErrorInIndex___" xml:space="preserve">
+    <value>Error in index {0} {1} {2}.</value>
+  </data>
+  <data name="FCMPNPer100ML" xml:space="preserve">
+    <value>FC </value>
+  </data>
+  <data name="FCMPNPer100MLEnd" xml:space="preserve">
+    <value>FC  at the end</value>
+  </data>
+  <data name="FCMPNPer100MLStart" xml:space="preserve">
+    <value>FC at the beginning</value>
+  </data>
+  <data name="FCMPNPollutionContour" xml:space="preserve">
+    <value>FC MPN Pollution Contour</value>
+  </data>
+  <data name="FileContainsOneParamButItsNotOfTypeWLOrWDItIs_" xml:space="preserve">
+    <value>The file contains one parameter but its not of type [eumItem.eumIWaterLevel] or [eumItem.eumIWaterDepth]. It is [{0}].</value>
+  </data>
+  <data name="FileContainsTwoParamsButItsNotOfTypeUVAndVVItIs_And_" xml:space="preserve">
+    <value>The file contains 2 parameters but they are not of type [eumItem.eumIuVelocity and eumItem.eumIvVelocity]. It is [{0}] and [{1}].</value>
+  </data>
+  <data name="FileFullName" xml:space="preserve">
+    <value>le nom du fichier au complet</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>le nom du fichier</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>file type</value>
+  </data>
+  <data name="Flow" xml:space="preserve">
+    <value>Flow</value>
+  </data>
+  <data name="FlowEnd" xml:space="preserve">
+    <value>Flow at the end</value>
+  </data>
+  <data name="FlowStart" xml:space="preserve">
+    <value>Flow  at the beginning</value>
+  </data>
+  <data name="IncludedLowerCase" xml:space="preserve">
+    <value>included</value>
+  </data>
+  <data name="IsContinuous" xml:space="preserve">
+    <value>Is continuous</value>
+  </data>
+  <data name="IsNotContinuous" xml:space="preserve">
+    <value>Is not continuous</value>
+  </data>
+  <data name="JulianDayThereIsNoYear0" xml:space="preserve">
+    <value>Julian day. There is no year 0.</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="LatitudeInfo" xml:space="preserve">
+    <value>Latitude value must be between -90 and 90.</value>
+  </data>
+  <data name="Layer" xml:space="preserve">
+    <value>Layer</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="LongitudeInfo" xml:space="preserve">
+    <value>Longitude value must  be between -180 and 180.</value>
+  </data>
+  <data name="MaximumNumberOfSigmaLayers_" xml:space="preserve">
+    <value>Maximum number of sigma layer [{0}].</value>
+  </data>
+  <data name="Mesh" xml:space="preserve">
+    <value>Mesh</value>
+  </data>
+  <data name="MIKEBoundaryCondition" xml:space="preserve">
+    <value>MIKE Boundary Condition</value>
+  </data>
+  <data name="MinutesLowerCase" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="ModelInput" xml:space="preserve">
+    <value>Model Input</value>
+  </data>
+  <data name="ModelParameters" xml:space="preserve">
+    <value>Model Parameters</value>
+  </data>
+  <data name="NormalRunCompletion" xml:space="preserve">
+    <value>Normal run completion</value>
+  </data>
+  <data name="NorthClockwiseLowerCase" xml:space="preserve">
+    <value>north clockwise</value>
+  </data>
+  <data name="NotDetermined" xml:space="preserve">
+    <value>Not Determined</value>
+  </data>
+  <data name="NotImplementedYet" xml:space="preserve">
+    <value>Not implemented yet.</value>
+  </data>
+  <data name="NotIncludedLowerCase" xml:space="preserve">
+    <value>not included</value>
+  </data>
+  <data name="NotUsedLowerCase" xml:space="preserve">
+    <value>not used</value>
+  </data>
+  <data name="NoWind" xml:space="preserve">
+    <value>No Wind</value>
+  </data>
+  <data name="NumberOfWebTideNodes" xml:space="preserve">
+    <value>Number of WebTide nodes</value>
+  </data>
+  <data name="OnlyAllowedConstantDecayRate" xml:space="preserve">
+    <value>You are only allowed to upload .m21fm or .m3fm file with constant decay rate.</value>
+  </data>
+  <data name="OnlyAllowedConstantPollutionFlow" xml:space="preserve">
+    <value>You are only allowed to upload .m21fm or .m3fm file with constant pollution flow.</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>parameter</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>parameters</value>
+  </data>
+  <data name="PleaseEnterAValid_" xml:space="preserve">
+    <value>Please enter a valid [{0}].</value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasFor_" xml:space="preserve">
+    <value>Please enter valid numbers separated by commas for Z Layers.</value>
+  </data>
+  <data name="PollutionContour" xml:space="preserve">
+    <value>Pollution Contour</value>
+  </data>
+  <data name="PollutionLimits" xml:space="preserve">
+    <value>Pollution Limits</value>
+  </data>
+  <data name="PollutionVideo" xml:space="preserve">
+    <value>Pollution Video</value>
+  </data>
+  <data name="Problem" xml:space="preserve">
+    <value>Problem</value>
+  </data>
+  <data name="ProblemWhenParsing_" xml:space="preserve">
+    <value>Problem when parsing [{0}].</value>
+  </data>
+  <data name="PSU" xml:space="preserve">
+    <value>PSU</value>
+  </data>
+  <data name="ReadingFile_" xml:space="preserve">
+    <value>Reading file [{0}].</value>
+  </data>
+  <data name="ReadingFile_Completed" xml:space="preserve">
+    <value>Reading file [{0}] is completed.</value>
+  </data>
+  <data name="ResultFrequency" xml:space="preserve">
+    <value>Result Frequency</value>
+  </data>
+  <data name="RunCancelledByUser" xml:space="preserve">
+    <value>Run cancelled by user</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Runnning</value>
+  </data>
+  <data name="Salinity" xml:space="preserve">
+    <value>Salinity</value>
+  </data>
+  <data name="SalinityEnd" xml:space="preserve">
+    <value>Salinity at the end</value>
+  </data>
+  <data name="SalinityReference" xml:space="preserve">
+    <value>Salinity Reference</value>
+  </data>
+  <data name="SalinityStart" xml:space="preserve">
+    <value>Salinity  at the beginning</value>
+  </data>
+  <data name="ScenarioEndTime" xml:space="preserve">
+    <value>Scenario time at the end</value>
+  </data>
+  <data name="ScenarioStartTime" xml:space="preserve">
+    <value>Scenario time  at the beginning</value>
+  </data>
+  <data name="SigmaLayers" xml:space="preserve">
+    <value>Sigma Layers</value>
+  </data>
+  <data name="SourceIncluded" xml:space="preserve">
+    <value>Source Included</value>
+  </data>
+  <data name="SourceNotIncluded" xml:space="preserve">
+    <value>Source Not Included</value>
+  </data>
+  <data name="Spill" xml:space="preserve">
+    <value>Spill</value>
+  </data>
+  <data name="SpillEndTime" xml:space="preserve">
+    <value>Spill Time at the end</value>
+  </data>
+  <data name="SpillStartTime" xml:space="preserve">
+    <value>Spill time  at the beginning</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="StartDateChronologicallyEarlierThanEndDate" xml:space="preserve">
+    <value>The start date must be chronologically earlier than the end date.</value>
+  </data>
+  <data name="StartDateInfo" xml:space="preserve">
+    <value>Start Date year must be later than 1900. </value>
+  </data>
+  <data name="Steps" xml:space="preserve">
+    <value>Steps</value>
+  </data>
+  <data name="StepsInfo" xml:space="preserve">
+    <value>Steps value must be equal or greater than 1.</value>
+  </data>
+  <data name="StudyArea" xml:space="preserve">
+    <value>Study Area</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="TemperatureReference" xml:space="preserve">
+    <value>Temperature Reference</value>
+  </data>
+  <data name="TemperatureStart" xml:space="preserve">
+    <value>Temperature  at the beginning</value>
+  </data>
+  <data name="TemperatureEnd" xml:space="preserve">
+    <value>Temperature at the end</value>
+  </data>
+  <data name="TopOfLayer" xml:space="preserve">
+    <value>Top of Layer</value>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>Total distance</value>
+  </data>
+  <data name="UnknownErrorPleaseCheckLogFile" xml:space="preserve">
+    <value>Unknown error. Please check log file.</value>
+  </data>
+  <data name="UsedLowerCase" xml:space="preserve">
+    <value>used</value>
+  </data>
+  <data name="WaitingToRun" xml:space="preserve">
+    <value>Waiting to run</value>
+  </data>
+  <data name="WebTideDataSet" xml:space="preserve">
+    <value>WebTide DataSet</value>
+  </data>
+  <data name="Wind" xml:space="preserve">
+    <value>Wind</value>
+  </data>
+  <data name="WindDirection" xml:space="preserve">
+    <value>Wind Direction</value>
+  </data>
+  <data name="WritingFile_Completed" xml:space="preserve">
+    <value>Writing file [{0}] is completed.</value>
+  </data>
+  <data name="ZLayers" xml:space="preserve">
+    <value>Z Layers</value>
+  </data>
+  <data name="_CountShouldBeBigger0In_" xml:space="preserve">
+    <value>{0} devrait être &gt; 0 dans {1}</value>
+  </data>
+  <data name="_IsRequired" xml:space="preserve">
+    <value>[{0}] is required</value>
+  </data>
+  <data name="_NotEqualTo_" xml:space="preserve">
+    <value>[{0}] not equal to [{1}].</value>
+  </data>
+  <data name="_NotImplemented" xml:space="preserve">
+    <value>[{0}] not implemented</value>
+  </data>
+  <data name="_NotImplementedYet" xml:space="preserve">
+    <value>[{0}] not implemented yet.</value>
+  </data>
+  <data name="_ShouldNotBe0" xml:space="preserve">
+    <value>{0} should not be 0.</value>
+  </data>
+  <data name="_ShouldNotBeNull" xml:space="preserve">
+    <value>[{0}] should not be null</value>
+  </data>
+  <data name="_ShouldNotBeNullOrEmpty" xml:space="preserve">
+    <value>{0} should not be null or empty.</value>
+  </data>
+  <data name="ContourPolygonListCountShouldBeOne" xml:space="preserve">
+    <value>ContourPolygonList Count should be 1.</value>
+  </data>
+  <data name="_____Test" xml:space="preserve">
+    <value>A {0} B {1} C {2} D {3} E {4}</value>
+  </data>
+  <data name="CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskCommand_" xml:space="preserve">
+    <value>Could not find available BackgroundWorker to run AppTaskID [{0}] and AppTaskCommand [{1}]</value>
+  </data>
+  <data name="StartingWithBackgroundWorkingIndex_" xml:space="preserve">
+    <value>Starting with background working index [{0}]</value>
+  </data>
+  <data name="BackgroundWorkerObject_ShouldBe_" xml:space="preserve">
+    <value>BackgroundWorker Object {0} ShouldBe {1}</value>
+  </data>
+  <data name="MapInfo" xml:space="preserve">
+    <value>MapInfo</value>
+  </data>
+  <data name="TVItem" xml:space="preserve">
+    <value>TVItem</value>
+  </data>
+  <data name="TVItemID" xml:space="preserve">
+    <value>TVItemID</value>
+  </data>
+  <data name="TVText" xml:space="preserve">
+    <value>TVText</value>
+  </data>
+  <data name="_ShouldBeFalse" xml:space="preserve">
+    <value>[{0}] should be false</value>
+  </data>
+  <data name="_ShouldBeTrue" xml:space="preserve">
+    <value>[{0}] should be true</value>
+  </data>
+  <data name="RootFileAutoGenerate" xml:space="preserve">
+    <value>Root file auto generate</value>
+  </data>
+  <data name="TitleNone" xml:space="preserve">
+    <value>TitleNone</value>
+  </data>
+  <data name="TitleArea_" xml:space="preserve">
+    <value>Area {0}</value>
+  </data>
+  <data name="TitleProvince_" xml:space="preserve">
+    <value>Province {0}</value>
+  </data>
+  <data name="TitleInfrastructure_" xml:space="preserve">
+    <value>Infrastructure {0}</value>
+  </data>
+  <data name="TitleMunicipality_" xml:space="preserve">
+    <value>Municipality {0}</value>
+  </data>
+  <data name="TitleMWQMSite_" xml:space="preserve">
+    <value>MWQM Site {0}</value>
+  </data>
+  <data name="TitlePolSourceSite_" xml:space="preserve">
+    <value>Pollution Source Site {0}</value>
+  </data>
+  <data name="TitleSector_" xml:space="preserve">
+    <value>Sector {0}</value>
+  </data>
+  <data name="TitleSubsector_" xml:space="preserve">
+    <value>Subsector {0}</value>
+  </data>
+  <data name="Province" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="SharedStringAndNumberCannotBeUseAtOnce" xml:space="preserve">
+    <value>SharedStringAndNumberCannotBeUseAtOnce</value>
+  </data>
+  <data name="OneOfSharedStringAndNumberIsRequired" xml:space="preserve">
+    <value>OneOfSharedStringAndNumberIsRequired</value>
+  </data>
+  <data name="NumberTextIsRequired" xml:space="preserve">
+    <value>NumberText is required</value>
+  </data>
+  <data name="SharedStringIsRequired" xml:space="preserve">
+    <value>SharedString is required</value>
+  </data>
+  <data name="ProvinceFileAutoGenerate" xml:space="preserve">
+    <value>Province file auto generate</value>
+  </data>
+  <data name="AreaFileAutoGenerate" xml:space="preserve">
+    <value>Area file auto generate</value>
+  </data>
+  <data name="MunicipalityFileAutoGenerate" xml:space="preserve">
+    <value>Municipality file auto generate</value>
+  </data>
+  <data name="SectorFileAutoGenerate" xml:space="preserve">
+    <value>Sector file auto generate</value>
+  </data>
+  <data name="SubsectorFileAutoGenerate" xml:space="preserve">
+    <value>Subsector file auto generate</value>
+  </data>
+  <data name="CountryFileAutoGenerate" xml:space="preserve">
+    <value>Country file auto generate</value>
+  </data>
+  <data name="MWQMSamplingPlanAutoGenerate" xml:space="preserve">
+    <value>MWQM sampling plan auto generate</value>
+  </data>
+  <data name="SamplingPlanID" xml:space="preserve">
+    <value>SamplingPlanID</value>
+  </data>
+  <data name="SamplingPlanFileAutoGenerate" xml:space="preserve">
+    <value>MWQM plan file auto generate</value>
+  </data>
+  <data name="CouldNotAdd_Error_" xml:space="preserve">
+    <value>CouldNotAdd {0}. Error [{1}]</value>
+  </data>
+  <data name="CurrentURLNotTheSameInDocumentCompletedEvent" xml:space="preserve">
+    <value>Current URL Not The Same In Document Completed Event</value>
+  </data>
+  <data name="HasHourlyOrHasDailyOrHasMonthlyHasToBeTrue" xml:space="preserve">
+    <value>HasHourly Or HasDaily Or HasMonthly Has To Be True</value>
+  </data>
+  <data name="Province_NotFound" xml:space="preserve">
+    <value>Province [{0}] not found</value>
+  </data>
+  <data name="TVTypeShouldBe_" xml:space="preserve">
+    <value>TVType Should Be {0}</value>
+  </data>
+  <data name="_Required" xml:space="preserve">
+    <value>{0} required</value>
+  </data>
+  <data name="_WasNotFound" xml:space="preserve">
+    <value>{0} Was Not Found</value>
+  </data>
+  <data name="CouldNotFind_AtLine_" xml:space="preserve">
+    <value>Could Not Find {0} At Line {1}</value>
+  </data>
+  <data name="CountOfValuesInLine_ShouldBe_" xml:space="preserve">
+    <value>Count Of Values In Line {0} Should Be {1}</value>
+  </data>
+  <data name="Province_NotEqualTo_AtLine_" xml:space="preserve">
+    <value>Province [{0}] Not Equal To [{1}] At Line {2}</value>
+  </data>
+  <data name="YearNotCorrect_AtLine_" xml:space="preserve">
+    <value>Year Not Correct {0} At Line {1}</value>
+  </data>
+  <data name="ParameterCount_NotEqual_" xml:space="preserve">
+    <value>Parameter Count {0} Not Equal {1}</value>
+  </data>
+  <data name="CouldNotCopyFile_To_Error_" xml:space="preserve">
+    <value>Could Not Copy File {0} To {1} Error {2}</value>
+  </data>
+  <data name="CouldNotDeleteFile_Error_" xml:space="preserve">
+    <value>Could Not Delete File {0}. Error: {1}</value>
+  </data>
+  <data name="FileContains2ParamButItsNotOfUVAndVVItIs_And_" xml:space="preserve">
+    <value>The file contains 2 parameters but they are not of type [eumItem.eumIuVelocity and eumItem.eumIvVelocity]. It is [{0}] and [{1}].</value>
+  </data>
+  <data name="FileContainsOneParamButItsNotOfTypeWLOrWDItIs_1" xml:space="preserve">
+    <value>The file contains one parameter but its not of type [eumItem.eumIWaterLevel] or [eumItem.eumIWaterDepth]. It is [{0}].</value>
+  </data>
+  <data name="NumberOfWebTideNodesIsZero" xml:space="preserve">
+    <value>Number Of Web Tide Nodes Is Zero</value>
+  </data>
+  <data name="CouldNotFindABoundaryConditionWithFileNameInM21_3FM" xml:space="preserve">
+    <value>Could Not Find A Boundary Condition With File Name In .m21fm or .m3fm file</value>
+  </data>
+  <data name="ConvertingFileToPDF" xml:space="preserve">
+    <value>Converting File To PDF</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="FileGenerator" xml:space="preserve">
+    <value>FileGenerator</value>
+  </data>
+  <data name="FileGeneratorType" xml:space="preserve">
+    <value>FileGeneratorType</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="BCMeshTVItemID" xml:space="preserve">
+    <value>BCMeshTVItemID</value>
+  </data>
+  <data name="BoundaryConditionCode" xml:space="preserve">
+    <value>BoundaryConditionCode</value>
+  </data>
+  <data name="ClimateDataValue" xml:space="preserve">
+    <value>ClimateDataValue</value>
+  </data>
+  <data name="ClimateSite" xml:space="preserve">
+    <value>ClimateSite</value>
+  </data>
+  <data name="ClimateSiteTVItemID" xml:space="preserve">
+    <value>ClimateSiteTVItemID</value>
+  </data>
+  <data name="CouldNotCreateMapInfoObjectForDrawType_TVType_TVItemID_" xml:space="preserve">
+    <value>Could Not Create Map Info Object For DrawType {0} TVType {1} and TVItemID {2}</value>
+  </data>
+  <data name="CouldNotFindTVItemRoot" xml:space="preserve">
+    <value>Could Not Find TVItem Root</value>
+  </data>
+  <data name="ECDBID" xml:space="preserve">
+    <value>ECDBID</value>
+  </data>
+  <data name="EndDay" xml:space="preserve">
+    <value>EndDay</value>
+  </data>
+  <data name="EndMonth" xml:space="preserve">
+    <value>EndMonth</value>
+  </data>
+  <data name="EndYear" xml:space="preserve">
+    <value>EndYear</value>
+  </data>
+  <data name="LatOrLngIsNull" xml:space="preserve">
+    <value>Lat Or Lng Is Null</value>
+  </data>
+  <data name="MapInfoPoint" xml:space="preserve">
+    <value>MapInfoPoint</value>
+  </data>
+  <data name="mapInfoPointListSubsector" xml:space="preserve">
+    <value>mapInfoPointListSubsector</value>
+  </data>
+  <data name="MapInfoPointModelList" xml:space="preserve">
+    <value>MapInfoPointModelList</value>
+  </data>
+  <data name="MapInfoPolyPoint" xml:space="preserve">
+    <value>MapInfoPolyPoint</value>
+  </data>
+  <data name="MikeScenario" xml:space="preserve">
+    <value>MikeScenario</value>
+  </data>
+  <data name="MIKEScenarioDocumentation" xml:space="preserve">
+    <value>MIKEScenarioDocumentation</value>
+  </data>
+  <data name="MikeScenarioTVItemID" xml:space="preserve">
+    <value>MikeScenarioTVItemID</value>
+  </data>
+  <data name="MikeSource" xml:space="preserve">
+    <value>MikeSource</value>
+  </data>
+  <data name="MikeSources" xml:space="preserve">
+    <value>MikeSources</value>
+  </data>
+  <data name="SamplingPlan" xml:space="preserve">
+    <value>SamplingPlan</value>
+  </data>
+  <data name="ParameterType" xml:space="preserve">
+    <value>ParameterType</value>
+  </data>
+  <data name="Prov" xml:space="preserve">
+    <value>Prov</value>
+  </data>
+  <data name="ServerFileName" xml:space="preserve">
+    <value>ServerFileName</value>
+  </data>
+  <data name="SourceNumberString" xml:space="preserve">
+    <value>SourceNumberString</value>
+  </data>
+  <data name="StartDay" xml:space="preserve">
+    <value>StartDay</value>
+  </data>
+  <data name="StartMonth" xml:space="preserve">
+    <value>StartMonth</value>
+  </data>
+  <data name="StartYear" xml:space="preserve">
+    <value>StartYear</value>
+  </data>
+  <data name="StationID" xml:space="preserve">
+    <value>StationID</value>
+  </data>
+  <data name="StationName" xml:space="preserve">
+    <value>StationName</value>
+  </data>
+  <data name="SubsectorTVItemID" xml:space="preserve">
+    <value>SubsectorTVItemID</value>
+  </data>
+  <data name="TVFile" xml:space="preserve">
+    <value>TVFile</value>
+  </data>
+  <data name="TVFileID" xml:space="preserve">
+    <value>TVFileID</value>
+  </data>
+  <data name="TVFileTVItemID" xml:space="preserve">
+    <value>TVFileTVItemID</value>
+  </data>
+  <data name="UploadClientPath" xml:space="preserve">
+    <value>UploadClientPath</value>
+  </data>
+  <data name="UseOfSite" xml:space="preserve">
+    <value>UseOfSite</value>
+  </data>
+  <data name="WTNodeNumb" xml:space="preserve">
+    <value>WTNodeNumb</value>
+  </data>
+  <data name="TVItemLanguage" xml:space="preserve">
+    <value>TVItemLanguage</value>
+  </data>
+  <data name="ElementLayerContainingNode" xml:space="preserve">
+    <value>ElementLayerContainingNode</value>
+  </data>
+  <data name="CouldNotDelete_With_Equal_Error_" xml:space="preserve">
+    <value>Could Not Delete {0} With {1} Equal {2} Error {3}</value>
+  </data>
+  <data name="TVFileDecayNew" xml:space="preserve">
+    <value>TVFileDecayNew</value>
+  </data>
+  <data name="ClientFullPath" xml:space="preserve">
+    <value>ClientFullPath</value>
+  </data>
+  <data name="CouldNotReadInputFileError_" xml:space="preserve">
+    <value>Could Not Read Input File. Error {0}</value>
+  </data>
+  <data name="CouldNotReadResultFileError_" xml:space="preserve">
+    <value>Could Not Read Result File. Error {0}</value>
+  </data>
+  <data name="mapInfoPointModelBC" xml:space="preserve">
+    <value>mapInfoPointModelBC</value>
+  </data>
+  <data name="MikeSourceID" xml:space="preserve">
+    <value>MikeSourceID</value>
+  </data>
+  <data name="MikeSourceStartEnd" xml:space="preserve">
+    <value>MikeSourceStartEnd</value>
+  </data>
+  <data name="ServerFilePath" xml:space="preserve">
+    <value>ServerFilePath</value>
+  </data>
+  <data name="ServerFullPath" xml:space="preserve">
+    <value>ServerFullPath</value>
+  </data>
+  <data name="TVFileM21_3FM" xml:space="preserve">
+    <value>TVFileM21_3FM</value>
+  </data>
+  <data name="MapInfoID" xml:space="preserve">
+    <value>MapInfoID</value>
+  </data>
+  <data name="ElementNotFoundWithElem_" xml:space="preserve">
+    <value>Element Not Found With Elem {0}</value>
+  </data>
+  <data name="MWQMSubsector" xml:space="preserve">
+    <value>MWQMSubsector</value>
+  </data>
+  <data name="GenerateOrCommandNeedsToBeTrue" xml:space="preserve">
+    <value>Generate Or Command Needs To Be True</value>
+  </data>
+  <data name="MikeScenarioBoundaryConditionFileAutoGenerate" xml:space="preserve">
+    <value>Mike Scenario Boundary Condition File Auto Generate</value>
+  </data>
+  <data name="MikeScenarioConcentrationAnimation" xml:space="preserve">
+    <value>Mike Scenario Concentration Animation</value>
+  </data>
+  <data name="MikeScenarioConcentrationLimits" xml:space="preserve">
+    <value>Mike Scenario Concentration Limits</value>
+  </data>
+  <data name="MikeScenarioCurrentAnimation" xml:space="preserve">
+    <value>Mike Scenario Current Animation</value>
+  </data>
+  <data name="MikeScenarioCurrentMaximum" xml:space="preserve">
+    <value>Mike Scenario Current Maximum</value>
+  </data>
+  <data name="MikeScenarioMesh" xml:space="preserve">
+    <value>Mike Scenario Mesh</value>
+  </data>
+  <data name="MikeScenarioStudyArea" xml:space="preserve">
+    <value>Mike Scenario Study Area</value>
+  </data>
+  <data name="mikeSourceModelList" xml:space="preserve">
+    <value>mikeSourceModelList</value>
+  </data>
+  <data name="NeedToImplement" xml:space="preserve">
+    <value>Need to implement</value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasForDepth" xml:space="preserve">
+    <value>Please enter valid numbers separated by commas for Depth</value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasForSigmaLayers" xml:space="preserve">
+    <value>Please enter valid numbers separated by commas for Sigma Layers</value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasForZLayers" xml:space="preserve">
+    <value>Please enter valid numbers separated by commas for Z Layers</value>
+  </data>
+  <data name="FCFormAutoGenerate" xml:space="preserve">
+    <value>FC Form auto generate</value>
+  </data>
+  <data name="LabSheet" xml:space="preserve">
+    <value>LabSheet</value>
+  </data>
+  <data name="LabSheetID" xml:space="preserve">
+    <value>LabSheetID</value>
+  </data>
+  <data name="Subsector" xml:space="preserve">
+    <value>Subsector</value>
+  </data>
+  <data name="LabSheetDetail" xml:space="preserve">
+    <value>LabSheetDetail</value>
+  </data>
+  <data name="CouldNotFindPart_CurrentPartIs_In_AtLine_" xml:space="preserve">
+    <value>Could not find part {0}. Current part is {1} in {2} at line {3}</value>
+  </data>
+  <data name="CouldNotWriteFile_Error_" xml:space="preserve">
+    <value>Could not write file {0}. Error {1}</value>
+  </data>
+  <data name="LineNotStartingWith_CurrentLineIs_In_AtLine_" xml:space="preserve">
+    <value>Line not starting with {0}. Current line is {1} in {2} at line {3}</value>
+  </data>
+  <data name="MissingTheSwitch_In_AtLine_" xml:space="preserve">
+    <value>Missing the switch {0} in {1} at line {2}</value>
+  </data>
+  <data name="CouldNotCreateFile_" xml:space="preserve">
+    <value>Could not create file [{0}]</value>
+  </data>
+  <data name="CouldNotParseLabSheetWithLabSheetID_" xml:space="preserve">
+    <value>Could not parse lab sheet with LabSheetID = {0}</value>
+  </data>
+  <data name="LabSheetTubeMPNDetail" xml:space="preserve">
+    <value>LabSheetTubeMPNDetail</value>
+  </data>
+  <data name="Parameter_NotFound" xml:space="preserve">
+    <value>Parameter [{0}] not found</value>
+  </data>
+  <data name="CouldNotCreateDocumentFromTemplateError_" xml:space="preserve">
+    <value>Could not create document from template. Error [{0}].</value>
+  </data>
+  <data name="FileNameForDocTemplateID_IsEmpty" xml:space="preserve">
+    <value>FileName for DocTemplateID [{0}] is empty</value>
+  </data>
+  <data name="FileAlreadyExist_" xml:space="preserve">
+    <value>File already exist [{0}]</value>
+  </data>
+  <data name="FileGeneratedFromTemplate" xml:space="preserve">
+    <value>File generated from template</value>
+  </data>
+  <data name="_AlreadyExist" xml:space="preserve">
+    <value>{0} already exist</value>
+  </data>
+  <data name="ErrorsWhileCreatingDocumentDeleteTaskAndCheckCreatedDocument" xml:space="preserve">
+    <value>Errors while creating document. Delete task and check document created for more information.</value>
+  </data>
+  <data name="TVItemID2" xml:space="preserve">
+    <value>TVItemID2</value>
+  </data>
+  <data name="OnlyOneHydrodynamicAndTransportOutputIsAllowed" xml:space="preserve">
+    <value>Only one hydrodynamic and transport output is allowed</value>
+  </data>
+  <data name="PFS_Error_" xml:space="preserve">
+    <value>PFS {0} Error {1}</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="MikeBoundaryConditionFormatShouldBeVaryingInTimeConstantAlongBoundaryToStart" xml:space="preserve">
+    <value>Mike boundary condition format should be varying in time constant along boundary to start</value>
+  </data>
+  <data name="MikeBoundaryConditionTVItemID" xml:space="preserve">
+    <value>MikeBoundaryConditionTVItemID</value>
+  </data>
+  <data name="MikeBoundaryConditionTypeShouldBeVelocityOrLevel" xml:space="preserve">
+    <value>Mike boundary condition type should be velocity or level</value>
+  </data>
+  <data name="No_FileFoundInM21Or3fmFile" xml:space="preserve">
+    <value>No {0} file found in .m21fm or .m3fm file</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="MikeScenarioAlreadyRunning" xml:space="preserve">
+    <value>Mike scenario already running</value>
+  </data>
+  <data name="SavingScenarioFiles" xml:space="preserve">
+    <value>Saving scenario files</value>
+  </data>
+  <data name="AtCoordinates" xml:space="preserve">
+    <value>At coordinate</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Date and time</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="LocalTime" xml:space="preserve">
+    <value>local time</value>
+  </data>
+  <data name="Node" xml:space="preserve">
+    <value>Node</value>
+  </data>
+  <data name="Showing24HoursBeforeStartDateJustInCaseYouNeedToSetADifferentStartDate" xml:space="preserve">
+    <value>Showing 24 hours before start date just in case you need to set a different start date</value>
+  </data>
+  <data name="TimeOffsetFromGMT" xml:space="preserve">
+    <value>Time offset from GMT</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="TVType" xml:space="preserve">
+    <value>TVType</value>
+  </data>
+  <data name="WaterLevel" xml:space="preserve">
+    <value>Water level</value>
+  </data>
+  <data name="CountryTVItemID" xml:space="preserve">
+    <value>CountryTVItemID</value>
+  </data>
+  <data name="Directory_DoesNotExist" xml:space="preserve">
+    <value>Directory [{0}] does not exist</value>
+  </data>
+  <data name="File_DoesNotExist" xml:space="preserve">
+    <value>File [{0}] does not exist</value>
+  </data>
+  <data name="CouldNotGetContourPolygonListWithin_" xml:space="preserve">
+    <value>Could not get ContourPolygonList within [{0}]</value>
+  </data>
+</root>
