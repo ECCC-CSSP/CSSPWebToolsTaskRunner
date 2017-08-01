@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPWebToolsTaskRunner", "CSSPWebToolsTaskRunner\CSSPWebToolsTaskRunner.csproj", "{1BA06916-88A6-406F-8969-E69A0FC1B2E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPWebToolsTaskRunner.Test", "CSSPWebToolsTaskRunner.Test\CSSPWebToolsTaskRunner.Test.csproj", "{EE6930BF-44C9-46A5-8CD0-84FB6BBB3159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WQMS.RTNotifiers", "..\WQMS.RTNotifiers\WQMS.RTNotifiers.csproj", "{16AAB87D-346F-4EEB-9A5B-1EE44BB56F2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WQMS.RTNotifiers", "..\WQMSRTNotifiers\WQMS.RTNotifiers.csproj", "{16AAB87D-346F-4EEB-9A5B-1EE44BB56F2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

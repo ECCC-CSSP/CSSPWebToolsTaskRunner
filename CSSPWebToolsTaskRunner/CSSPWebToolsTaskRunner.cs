@@ -461,32 +461,56 @@ namespace CSSPWebToolsTaskRunner
                 labSheetDetailModelNew.TCField1 = null;
                 if (!string.IsNullOrWhiteSpace(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCField1))
                 {
-                    labSheetDetailModelNew.TCField1 = float.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCField1);
+                    float temp = 0.0f;
+                    if (float.TryParse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCField1, out temp))
+                    {
+                        labSheetDetailModelNew.TCField1 = temp;
+                    }
                 }
                 labSheetDetailModelNew.TCLab1 = null;
                 if (!string.IsNullOrWhiteSpace(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCLab1))
                 {
-                    labSheetDetailModelNew.TCLab1 = float.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCLab1);
+                    float temp = 0.0f;
+                    if (float.TryParse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCLab1, out temp))
+                    {
+                        labSheetDetailModelNew.TCLab1 = temp;
+                    }
                 }
                 labSheetDetailModelNew.TCField2 = null;
                 if (!string.IsNullOrWhiteSpace(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCField2))
                 {
-                    labSheetDetailModelNew.TCField2 = float.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCField2);
+                    float temp = 0.0f;
+                    if (float.TryParse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCField2, out temp))
+                    {
+                        labSheetDetailModelNew.TCField2 = temp;
+                    }
                 }
                 labSheetDetailModelNew.TCLab2 = null;
                 if (!string.IsNullOrWhiteSpace(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCLab2))
                 {
-                    labSheetDetailModelNew.TCLab2 = float.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCLab2);
+                    float temp = 0.0f;
+                    if (float.TryParse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCLab2, out temp))
+                    {
+                        labSheetDetailModelNew.TCLab2 = temp;
+                    }
                 }
                 labSheetDetailModelNew.TCFirst = null;
                 if (!string.IsNullOrWhiteSpace(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCFirst) && !labSheetModelAndA1Sheet.LabSheetA1Sheet.TCFirst.Contains("-"))
                 {
-                    labSheetDetailModelNew.TCFirst = float.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCFirst);
+                    float temp = 0.0f;
+                    if (float.TryParse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCFirst, out temp))
+                    {
+                        labSheetDetailModelNew.TCFirst = temp;
+                    }
                 }
                 labSheetDetailModelNew.TCAverage = null;
                 if (!string.IsNullOrWhiteSpace(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCAverage) && !labSheetModelAndA1Sheet.LabSheetA1Sheet.TCAverage.Contains("-"))
                 {
-                    labSheetDetailModelNew.TCAverage = float.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCAverage);
+                    float temp = 0.0f;
+                    if (float.TryParse(labSheetModelAndA1Sheet.LabSheetA1Sheet.TCAverage, out temp))
+                    {
+                        labSheetDetailModelNew.TCAverage = temp;
+                    }
                 }
                 labSheetDetailModelNew.ControlLot = labSheetModelAndA1Sheet.LabSheetA1Sheet.ControlLot;
                 labSheetDetailModelNew.Positive35 = labSheetModelAndA1Sheet.LabSheetA1Sheet.Positive35;
