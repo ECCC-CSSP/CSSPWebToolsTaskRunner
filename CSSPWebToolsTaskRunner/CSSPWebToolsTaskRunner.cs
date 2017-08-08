@@ -219,7 +219,7 @@ namespace CSSPWebToolsTaskRunner
 
                     SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
-                    myClient.Host = "atlantic-exgate.Atlantic.int.ec.gc.ca";
+                    myClient.Host = "smtp.ncr.int.ec.gc.ca";
 
                     string subject = "David Benoit Issue from CSSPWebToolsTaskRunner";
 
@@ -847,7 +847,7 @@ namespace CSSPWebToolsTaskRunner
 
             SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
-            myClient.Host = "atlantic-exgate.Atlantic.int.ec.gc.ca";
+            myClient.Host = "smtp.ncr.int.ec.gc.ca";
             mail.Priority = MailPriority.High;
 
             string subject = "High MPN - Lab Sheets Sent --- " + tvItemModelProvince.TVText + " --- " + tvItemModelSubsector.TVText;
@@ -909,7 +909,7 @@ namespace CSSPWebToolsTaskRunner
 
             SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
-            myClient.Host = "atlantic-exgate.Atlantic.int.ec.gc.ca";
+            myClient.Host = "smtp.ncr.int.ec.gc.ca";
 
             string subject = "Lab Sheets Sent --- " + tvItemModelProvince.TVText + " --- " + tvItemModelSubsector.TVText;
 

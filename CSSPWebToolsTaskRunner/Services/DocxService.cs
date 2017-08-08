@@ -913,7 +913,7 @@ namespace CSSPWebToolsTaskRunner.Services
             SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
             //myClient.Host = "ssctest.itsso.gc.ca";
-            myClient.Host = "atlantic-exgate.Atlantic.int.ec.gc.ca";
+            myClient.Host = "smtp.ncr.int.ec.gc.ca";
 
             DateTime RunDate = new DateTime(labSheetModel.Year, labSheetModel.Month, labSheetModel.Day);
 
