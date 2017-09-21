@@ -1065,4 +1065,13 @@
   <data name="CouldNotGetContourPolygonListWithin_" xml:space="preserve">
     <value>Could not get ContourPolygonList within [{0}]</value>
   </data>
+  <data name="CouldNotSaveExcelFile_Error_" xml:space="preserve">
+    <value>Could not save Excel file [{0}]. Error [{1}]</value>
+  </data>
+  <data name="MWQMAnalysisReportParameter" xml:space="preserve">
+    <value>MWQMAnalysisReportParameter</value>
+  </data>
+  <data name="MWQMAnalysisReportParameterID" xml:space="preserve">
+    <value>MWQMAnalysisReportParameterID</value>
+  </data>
 </root>

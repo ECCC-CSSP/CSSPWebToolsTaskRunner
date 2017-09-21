@@ -32,6 +32,7 @@ namespace CSSPWebToolsTaskRunner.Services
         public ContactService _ContactService { get; private set; }
         public EmailDistributionListService _EmailDistributionListService { get; private set; }
         public EmailDistributionListContactService _EmailDistributionListContactService { get; private set; }
+        public MWQMAnalysisReportParameterService _MWQMAnalysisReportParameterService { get; private set; }
         #endregion Properties
 
         #region Constructors
@@ -48,6 +49,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _ContactService = new ContactService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _EmailDistributionListService = new EmailDistributionListService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _EmailDistributionListContactService = new EmailDistributionListContactService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MWQMAnalysisReportParameterService = new MWQMAnalysisReportParameterService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
         }
         #endregion Constructors
 
@@ -733,6 +735,198 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.FileGeneratedFromTemplate, FilePurposeEnum.Generated);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
+
+        }
+
+        public void CreateExcelFileForAnalysisReportParameter()
+        {
+            string NotUsed = "";
+
+            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
+            string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            int SubsectorTVItemID = 0;
+            int MWQMAnalysisReportParameterID = 0;
+            foreach (string s in ParamValueList)
+            {
+                string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                if (ParamValue.Length != 2)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
+                    return;
+                }
+
+                if (ParamValue[0] == "SubsectorTVItemID")
+                {
+                    SubsectorTVItemID = int.Parse(ParamValue[1]);
+                }
+                else if (ParamValue[0] == "MWQMAnalysisReportParameterID")
+                {
+                    MWQMAnalysisReportParameterID = int.Parse(ParamValue[1]);
+                }
+                else
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, ParamValue[0]);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, ParamValue[0].ToString());
+                    return;
+                }
+            }
+
+            if (SubsectorTVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.SubsectorTVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.SubsectorTVItemID.ToString());
+                return;
+            }
+
+            if (MWQMAnalysisReportParameterID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.MWQMAnalysisReportParameterID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.MWQMAnalysisReportParameterID.ToString());
+                return;
+            }
+
+            TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(SubsectorTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.Subsector, SubsectorTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.Subsector, SubsectorTVItemID.ToString());
+                return;
+            }
+
+            MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel = _MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterModelWithMWQMAnalysisReportParameterIDDB(MWQMAnalysisReportParameterID);
+            if (!string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MWQMAnalysisReportParameter, TaskRunnerServiceRes.MWQMAnalysisReportParameterID, MWQMAnalysisReportParameterID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MWQMAnalysisReportParameter, TaskRunnerServiceRes.MWQMAnalysisReportParameterID, MWQMAnalysisReportParameterID.ToString());
+                return;
+            }
+
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+
+            if (xlApp == null)
+            {
+                Console.WriteLine("EXCEL could not be started. Check that your office installation and project references are correct.");
+                return;
+            }
+            xlApp.Visible = false;
+
+            Microsoft.Office.Interop.Excel.Workbook wb = xlApp.Workbooks.Add();
+            Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
+
+            if (ws == null)
+            {
+                Console.WriteLine("Worksheet could not be created. Check that your office installation and project references are correct.");
+            }
+
+            ws.Cells[1, "A"] = "MWQMAnalysisReportParameterID";
+            ws.Cells[1, "B"] = mwqmAnalysisReportParameterModel.MWQMAnalysisReportParameterID;
+            ws.Cells[2, "A"] = "SubsectorTVItemID";
+            ws.Cells[2, "B"] = mwqmAnalysisReportParameterModel.SubsectorTVItemID;
+            ws.Cells[3, "A"] = "AnalysisName";
+            ws.Cells[3, "B"] = mwqmAnalysisReportParameterModel.AnalysisName;
+            ws.Cells[4, "A"] = "AnalysisReportYear";
+            ws.Cells[4, "B"] = mwqmAnalysisReportParameterModel.AnalysisReportYear;
+            ws.Cells[5, "A"] = "StartDate";
+            ws.Cells[5, "B"] = mwqmAnalysisReportParameterModel.StartDate;
+            ws.Cells[6, "A"] = "EndDate";
+            ws.Cells[6, "B"] = mwqmAnalysisReportParameterModel.EndDate;
+            ws.Cells[7, "A"] = "AnalysisCalculationType";
+            ws.Cells[7, "B"] = mwqmAnalysisReportParameterModel.AnalysisCalculationType;
+            ws.Cells[8, "A"] = "NumberOfRuns";
+            ws.Cells[8, "B"] = mwqmAnalysisReportParameterModel.NumberOfRuns;
+            ws.Cells[9, "A"] = "FullYear";
+            ws.Cells[9, "B"] = mwqmAnalysisReportParameterModel.FullYear;
+            ws.Cells[10, "A"] = "SalinityHighlightDeviationFromAverage";
+            ws.Cells[10, "B"] = mwqmAnalysisReportParameterModel.SalinityHighlightDeviationFromAverage;
+            ws.Cells[11, "A"] = "ShortRangeNumberOfDays";
+            ws.Cells[11, "B"] = mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays;
+            ws.Cells[12, "A"] = "MidRangeNumberOfDays";
+            ws.Cells[12, "B"] = mwqmAnalysisReportParameterModel.MidRangeNumberOfDays;
+            ws.Cells[13, "A"] = "DryLimit24h";
+            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit24h;
+            ws.Cells[13, "A"] = "DryLimit48h";
+            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit48h;
+            ws.Cells[13, "A"] = "DryLimit72h";
+            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit72h;
+            ws.Cells[13, "A"] = "DryLimit96h";
+            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit96h;
+            ws.Cells[14, "A"] = "WetLimit24h";
+            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit24h;
+            ws.Cells[14, "A"] = "WetLimit48h";
+            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit48h;
+            ws.Cells[14, "A"] = "WetLimit72h";
+            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit72h;
+            ws.Cells[14, "A"] = "WetLimit96h";
+            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit96h;
+            ws.Cells[15, "A"] = "RunsToOmit";
+            ws.Cells[15, "B"] = mwqmAnalysisReportParameterModel.RunsToOmit;
+            ws.Cells[16, "A"] = "ExcelTVFileTVItemID";
+            ws.Cells[16, "B"] = mwqmAnalysisReportParameterModel.ExcelTVFileTVItemID;
+            ws.Cells[17, "A"] = "Command";
+            ws.Cells[17, "B"] = mwqmAnalysisReportParameterModel.Command;
+
+            string FilePath = _TVFileService.GetServerFilePath(SubsectorTVItemID);
+
+            FileInfo fi = new FileInfo(FilePath + mwqmAnalysisReportParameterModel.AnalysisName + ".xlsx");       
+
+            TVItemModel tvItemModelTVFile = _TVItemService.PostAddChildTVItemDB(SubsectorTVItemID, mwqmAnalysisReportParameterModel.AnalysisName, TVTypeEnum.File);
+            if (!string.IsNullOrWhiteSpace(tvItemModelTVFile.Error))
+            {
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelTVFile.Error);
+                return;
+            }
+
+            try
+            {
+                wb.SaveAs(fi.FullName);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotSaveExcelFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotSaveExcelFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return;
+            }
+
+            wb.Close();
+            xlApp.Quit();
+
+            fi = new FileInfo(FilePath + mwqmAnalysisReportParameterModel.AnalysisName + ".xlsx");
+            if (!fi.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.File_DoesNotExist, fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("File_DoesNotExist", fi.FullName);
+                return;
+            }
+
+            TVFileModel tvFileModelNew = new TVFileModel();
+            tvFileModelNew.TVFileTVItemID = tvItemModelTVFile.TVItemID;
+            tvFileModelNew.FileCreatedDate_UTC = fi.CreationTimeUtc;
+            tvFileModelNew.FileDescription = "File created from analysis Excel export";
+            tvFileModelNew.FilePurpose = FilePurposeEnum.Analysis;
+            tvFileModelNew.FileSize_kb = (int)(fi.Length / 1024);
+            tvFileModelNew.FileType = FileTypeEnum.XLSX;
+            tvFileModelNew.FileInfo = "File created from analysis Excel export";
+            tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+            tvFileModelNew.ServerFileName = fi.Name;
+            tvFileModelNew.ServerFilePath = fi.Directory + @"\";
+
+            TVFileModel tvFileModelRet = _TVFileService.PostAddTVFileDB(tvFileModelNew);
+            if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+            {
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelRet.Error);
+                return;
+            }
+
+            mwqmAnalysisReportParameterModel.ExcelTVFileTVItemID = tvItemModelTVFile.TVItemID;
+
+            MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModelRet = _MWQMAnalysisReportParameterService.PostUpdateMWQMAnalysisReportParameterDB(mwqmAnalysisReportParameterModel);
+            if (!string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModelRet.Error))
+            {
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(mwqmAnalysisReportParameterModelRet.Error);
+                return;
+            }
 
         }
         #endregion Function public

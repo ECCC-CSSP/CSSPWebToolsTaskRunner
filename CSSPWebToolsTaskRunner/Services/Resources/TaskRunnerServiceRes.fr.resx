@@ -1053,4 +1053,13 @@
   <data name="CouldNotGetContourPolygonListWithin_" xml:space="preserve">
     <value>Dans l'impossibilité d'aller chercher ContourPolygonList de la filière [{0}]</value>
   </data>
+  <data name="CouldNotSaveExcelFile_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de sauvegarder la filière Excel [{0}]. Error [{1}]</value>
+  </data>
+  <data name="MWQMAnalysisReportParameter" xml:space="preserve">
+    <value>MWQMAnalysisReportParameter</value>
+  </data>
+  <data name="MWQMAnalysisReportParameterID" xml:space="preserve">
+    <value>MWQMAnalysisReportParameterID</value>
+  </data>
 </root>
