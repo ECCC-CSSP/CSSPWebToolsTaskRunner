@@ -669,7 +669,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             FileInfo fi = new FileInfo(ServerNewFilePath + fiTemplate.Name.Replace("Template_", "").Replace(".xlsx", DateText + ".xlsx"));
-          
+
             File.Copy(fiTemplate.FullName, fi.FullName, true);
             if (!fi.Exists)
             {
@@ -814,62 +814,104 @@ namespace CSSPWebToolsTaskRunner.Services
 
             Microsoft.Office.Interop.Excel.Workbook wb = xlApp.Workbooks.Add();
             Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
-
+            Microsoft.Office.Interop.Excel.Range range = ws.get_Range("A1:A1");
             if (ws == null)
             {
                 Console.WriteLine("Worksheet could not be created. Check that your office installation and project references are correct.");
             }
 
-            ws.Cells[1, "A"] = "MWQMAnalysisReportParameterID";
-            ws.Cells[1, "B"] = mwqmAnalysisReportParameterModel.MWQMAnalysisReportParameterID;
-            ws.Cells[2, "A"] = "SubsectorTVItemID";
-            ws.Cells[2, "B"] = mwqmAnalysisReportParameterModel.SubsectorTVItemID;
-            ws.Cells[3, "A"] = "AnalysisName";
-            ws.Cells[3, "B"] = mwqmAnalysisReportParameterModel.AnalysisName;
-            ws.Cells[4, "A"] = "AnalysisReportYear";
-            ws.Cells[4, "B"] = mwqmAnalysisReportParameterModel.AnalysisReportYear;
-            ws.Cells[5, "A"] = "StartDate";
-            ws.Cells[5, "B"] = mwqmAnalysisReportParameterModel.StartDate;
-            ws.Cells[6, "A"] = "EndDate";
-            ws.Cells[6, "B"] = mwqmAnalysisReportParameterModel.EndDate;
-            ws.Cells[7, "A"] = "AnalysisCalculationType";
-            ws.Cells[7, "B"] = mwqmAnalysisReportParameterModel.AnalysisCalculationType;
-            ws.Cells[8, "A"] = "NumberOfRuns";
-            ws.Cells[8, "B"] = mwqmAnalysisReportParameterModel.NumberOfRuns;
-            ws.Cells[9, "A"] = "FullYear";
-            ws.Cells[9, "B"] = mwqmAnalysisReportParameterModel.FullYear;
-            ws.Cells[10, "A"] = "SalinityHighlightDeviationFromAverage";
-            ws.Cells[10, "B"] = mwqmAnalysisReportParameterModel.SalinityHighlightDeviationFromAverage;
-            ws.Cells[11, "A"] = "ShortRangeNumberOfDays";
-            ws.Cells[11, "B"] = mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays;
-            ws.Cells[12, "A"] = "MidRangeNumberOfDays";
-            ws.Cells[12, "B"] = mwqmAnalysisReportParameterModel.MidRangeNumberOfDays;
-            ws.Cells[13, "A"] = "DryLimit24h";
-            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit24h;
-            ws.Cells[13, "A"] = "DryLimit48h";
-            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit48h;
-            ws.Cells[13, "A"] = "DryLimit72h";
-            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit72h;
-            ws.Cells[13, "A"] = "DryLimit96h";
-            ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit96h;
-            ws.Cells[14, "A"] = "WetLimit24h";
-            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit24h;
-            ws.Cells[14, "A"] = "WetLimit48h";
-            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit48h;
-            ws.Cells[14, "A"] = "WetLimit72h";
-            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit72h;
-            ws.Cells[14, "A"] = "WetLimit96h";
-            ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit96h;
-            ws.Cells[15, "A"] = "RunsToOmit";
-            ws.Cells[15, "B"] = mwqmAnalysisReportParameterModel.RunsToOmit;
-            ws.Cells[16, "A"] = "ExcelTVFileTVItemID";
-            ws.Cells[16, "B"] = mwqmAnalysisReportParameterModel.ExcelTVFileTVItemID;
-            ws.Cells[17, "A"] = "Command";
-            ws.Cells[17, "B"] = mwqmAnalysisReportParameterModel.Command;
+            ws.Name = "Stat and Data";
+            ws.Cells[1, "A"] = "Parameters";
+
+            range = xlApp.get_Range("A1:J1");
+            range.Select();
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter;
+            range.VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter;
+            //range.WrapText = false;
+            //range.Orientation = 0;
+            //range.AddIndent = false;
+            //range.IndentLevel = 0;
+            //range.ShrinkToFit = false;
+            //range.ReadingOrder = (int)Microsoft.Office.Interop.Excel.Constants.xlContext;
+            //range.MergeCells = false;
+            range.Merge();
+
+            xlApp.Selection.Borders().LineStyle = Microsoft.Office.Interop.Excel.Constants.xlNone;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlDiagonalUp).LineStyle = Microsoft.Office.Interop.Excel.Constants.xlNone;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft).LineStyle = Microsoft.Office.Interop.Excel.Constants.xlNone;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop).LineStyle = Microsoft.Office.Interop.Excel.Constants.xlNone;
+            xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom).LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom).ColorIndex = 0;
+            xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom).TintAndShade = 0;
+            xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom).Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlMedium;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight).LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight).ColorIndex = 0;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight).TintAndShade = 0;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight).Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical).LineStyle = Microsoft.Office.Interop.Excel.Constants.xlNone;
+            //xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal).LineStyle = Microsoft.Office.Interop.Excel.Constants.xlNone;
+
+            ws.Columns["A:A"].ColumnWidth = 9.22;
+            ws.Columns["B:B"].ColumnWidth = 1.33;
+            ws.Columns["E:E"].ColumnWidth = 5.67;
+            ws.Columns["H:H"].ColumnWidth = 6;
+            ws.Columns["I:I"].ColumnWidth = 6.22;
+            ws.Columns["J:J"].ColumnWidth = 6.44;
+            ws.Columns["K:K"].ColumnWidth = 6.22;
+            ws.Columns["L:L"].ColumnWidth = 1.22;
+
+            //ws.Cells[1, "A"] = "MWQMAnalysisReportParameterID";
+            //ws.Cells[1, "B"] = mwqmAnalysisReportParameterModel.MWQMAnalysisReportParameterID;
+            //ws.Cells[2, "A"] = "SubsectorTVItemID";
+            //ws.Cells[2, "B"] = mwqmAnalysisReportParameterModel.SubsectorTVItemID;
+            //ws.Cells[3, "A"] = "AnalysisName";
+            //ws.Cells[3, "B"] = mwqmAnalysisReportParameterModel.AnalysisName;
+            //ws.Cells[4, "A"] = "AnalysisReportYear";
+            //ws.Cells[4, "B"] = mwqmAnalysisReportParameterModel.AnalysisReportYear;
+            //ws.Cells[5, "A"] = "StartDate";
+            //ws.Cells[5, "B"] = mwqmAnalysisReportParameterModel.StartDate;
+            //ws.Cells[6, "A"] = "EndDate";
+            //ws.Cells[6, "B"] = mwqmAnalysisReportParameterModel.EndDate;
+            //ws.Cells[7, "A"] = "AnalysisCalculationType";
+            //ws.Cells[7, "B"] = mwqmAnalysisReportParameterModel.AnalysisCalculationType;
+            //ws.Cells[8, "A"] = "NumberOfRuns";
+            //ws.Cells[8, "B"] = mwqmAnalysisReportParameterModel.NumberOfRuns;
+            //ws.Cells[9, "A"] = "FullYear";
+            //ws.Cells[9, "B"] = mwqmAnalysisReportParameterModel.FullYear;
+            //ws.Cells[10, "A"] = "SalinityHighlightDeviationFromAverage";
+            //ws.Cells[10, "B"] = mwqmAnalysisReportParameterModel.SalinityHighlightDeviationFromAverage;
+            //ws.Cells[11, "A"] = "ShortRangeNumberOfDays";
+            //ws.Cells[11, "B"] = mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays;
+            //ws.Cells[12, "A"] = "MidRangeNumberOfDays";
+            //ws.Cells[12, "B"] = mwqmAnalysisReportParameterModel.MidRangeNumberOfDays;
+            //ws.Cells[13, "A"] = "DryLimit24h";
+            //ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit24h;
+            //ws.Cells[13, "A"] = "DryLimit48h";
+            //ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit48h;
+            //ws.Cells[13, "A"] = "DryLimit72h";
+            //ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit72h;
+            //ws.Cells[13, "A"] = "DryLimit96h";
+            //ws.Cells[13, "B"] = mwqmAnalysisReportParameterModel.DryLimit96h;
+            //ws.Cells[14, "A"] = "WetLimit24h";
+            //ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit24h;
+            //ws.Cells[14, "A"] = "WetLimit48h";
+            //ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit48h;
+            //ws.Cells[14, "A"] = "WetLimit72h";
+            //ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit72h;
+            //ws.Cells[14, "A"] = "WetLimit96h";
+            //ws.Cells[14, "B"] = mwqmAnalysisReportParameterModel.WetLimit96h;
+            //ws.Cells[15, "A"] = "RunsToOmit";
+            //ws.Cells[15, "B"] = mwqmAnalysisReportParameterModel.RunsToOmit;
+            //ws.Cells[16, "A"] = "ShowDataTypes";
+            //ws.Cells[16, "B"] = mwqmAnalysisReportParameterModel.ShowDataTypes;
+            //ws.Cells[17, "A"] = "ExcelTVFileTVItemID";
+            //ws.Cells[17, "B"] = mwqmAnalysisReportParameterModel.ExcelTVFileTVItemID;
+            //ws.Cells[18, "A"] = "Command";
+            //ws.Cells[19, "B"] = mwqmAnalysisReportParameterModel.Command;
 
             string FilePath = _TVFileService.GetServerFilePath(SubsectorTVItemID);
 
-            FileInfo fi = new FileInfo(FilePath + mwqmAnalysisReportParameterModel.AnalysisName + ".xlsx");       
+            FileInfo fi = new FileInfo(FilePath + mwqmAnalysisReportParameterModel.AnalysisName + ".xlsx");
 
             TVItemModel tvItemModelTVFile = _TVItemService.PostAddChildTVItemDB(SubsectorTVItemID, mwqmAnalysisReportParameterModel.AnalysisName, TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModelTVFile.Error))
