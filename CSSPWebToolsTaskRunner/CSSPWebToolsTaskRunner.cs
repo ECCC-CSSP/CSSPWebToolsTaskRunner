@@ -979,7 +979,7 @@ namespace CSSPWebToolsTaskRunner
                 AnalysisName = "aaaaaaaaaa",
                 AnalysisReportYear = 2017,
                 StartDate = new DateTime(2017, 8, 9),
-                EndDate = new DateTime(1985, 6, 5),
+                EndDate = new DateTime(2000, 11, 2),
                 AnalysisCalculationType = AnalysisCalculationTypeEnum.AllAllAll,
                 NumberOfRuns = 30,
                 FullYear = true,
@@ -994,8 +994,8 @@ namespace CSSPWebToolsTaskRunner
                 WetLimit48h = 25,
                 WetLimit72h = 37,
                 WetLimit96h = 50,
-                RunsToOmit = "", // ",326875,308725,308723,308720,",
-                ShowDataTypes = ",1,3,4,",
+                RunsToOmit = "", //",326875,308725,308723,308720,",
+                ShowDataTypes = "1,", //",1,3,4,",
                 ExcelTVFileTVItemID = null,
                 Command = AnalysisReportExportCommandEnum.Excel,
                 LastUpdateDate_UTC = DateTime.Now,
@@ -1075,6 +1075,15 @@ namespace CSSPWebToolsTaskRunner
             public string SiteName { get; set; }
             public int RowNumber { get; set; }
         }
+        public class RowAndType
+        {
+            public RowAndType()
+            {
+
+            }
+            public int RowNumber { get; set; }
+            public ExcelExportShowDataTypeEnum ExcelExportShowDataType { get; set; }
+        }
         private string GetTideInitial(TideTextEnum? tideText)
         {
             if (tideText == null)
@@ -1109,9 +1118,12 @@ namespace CSSPWebToolsTaskRunner
 
         private void SetupStatOnSheet1(Microsoft.Office.Interop.Excel.Application xlApp, Microsoft.Office.Interop.Excel.Workbook wb, MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel)
         {
+            int LatestYear = 0;
+            List<int> RunUsedColNumberList = new List<int>();
             TVItemService tvItemService = new TVItemService(LanguageRequest, _User);
-
             List<RunDateColNumber> runDateColNumberList = new List<RunDateColNumber>();
+            List<RowAndType> rowAndTypeList = new List<RowAndType>();
+
             List<SiteRowNumber> siteRowNumberList = new List<SiteRowNumber>();
             List<ExcelExportShowDataTypeEnum> showDataTypeList = new List<ExcelExportShowDataTypeEnum>();
             List<int> MWQMRunTVItemIDToOmitList = new List<int>();
@@ -1152,6 +1164,10 @@ namespace CSSPWebToolsTaskRunner
 
             for (int i = 0, count = mwqmSubsectorAnalysisModel.MWQMRunAnalysisModelList.Count(); i < count; i++)
             {
+                if (i == 0)
+                {
+                    LatestYear = mwqmSubsectorAnalysisModel.MWQMRunAnalysisModelList[i].DateTime_Local.Year;
+                }
                 ws.Cells[1, 13 + i] = mwqmSubsectorAnalysisModel.MWQMRunAnalysisModelList[i].DateTime_Local.ToString("yyyy\nMMM\ndd");
                 ws.Cells[2, 13 + i] = (mwqmSubsectorAnalysisModel.MWQMRunAnalysisModelList[i].RainDay0_mm == null
                     ? "--" : ((double)mwqmSubsectorAnalysisModel.MWQMRunAnalysisModelList[i].RainDay0_mm).ToString("F0"));
@@ -1192,7 +1208,22 @@ namespace CSSPWebToolsTaskRunner
                     ColNumber = 13 + i,
                     Used = false,
                 });
+
+                if (LatestYear != mwqmSubsectorAnalysisModel.MWQMRunAnalysisModelList[i].DateTime_Local.Year)
+                {
+                    ws.Columns[13 + i].Select();
+                    xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft).ColorIndex = 0;
+                    xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft).LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+                    LatestYear = mwqmSubsectorAnalysisModel.MWQMRunAnalysisModelList[i].DateTime_Local.Year;
+                }
             }
+
+            ws.Columns["A:L"].Select();
+            xlApp.Selection.HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter;
+
+            ws.Range["M15"].Select();
+            xlApp.Selection.HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlLeft;
+
             int RowCount = 16;
             List<MWQMSiteAnalysisModel> mwqmSiteAnalysisModelListAll = mwqmSubsectorAnalysisModel.MWQMSiteAnalysisModelList.Where(c => c.IsActive == true).OrderBy(c => c.MWQMSiteTVText)
                                                                         .Concat(mwqmSubsectorAnalysisModel.MWQMSiteAnalysisModelList.Where(c => c.IsActive == false).OrderBy(c => c.MWQMSiteTVText)).ToList();
@@ -1224,7 +1255,8 @@ namespace CSSPWebToolsTaskRunner
                 range = ws.Cells[RowCount, 2];
                 range.Value = "'" + (string.IsNullOrWhiteSpace(classification) ? "" : classification);
                 range.Select();
-                xlApp.Selection.Font.Color = GetLastClassificationColor(mwqmSiteAnalysisModel.MWQMSiteLatestClassification);
+                xlApp.Selection.Interior.Color = GetLastClassificationColor(mwqmSiteAnalysisModel.MWQMSiteLatestClassification);
+                xlApp.Selection.Font.Color = (classification == "P" ? 16777215 : 0);
 
                 // loading all site sample and doing the stats
                 List<MWQMSampleAnalysisModel> mwqmSampleAnalysisForSiteModelList = mwqmSubsectorAnalysisModel.MWQMSampleAnalysisModelList.Where(c => c.MWQMSiteTVItemID == siteRowNumber.MWQMSiteTVItemID).OrderByDescending(c => c.SampleDateTime_Local).ToList();
@@ -1249,14 +1281,23 @@ namespace CSSPWebToolsTaskRunner
                     int LastYear = mwqmSampleAnalysisForSiteModelToUseList[mwqmSampleAnalysisForSiteModelToUseList.Count - 1].SampleDateTime_Local.Year;
 
                     List<MWQMSampleAnalysisModel> mwqmSampleAnalysisMore = (from c in mwqmSampleAnalysisForSiteModelList
-                                                                                    where c.SampleDateTime_Local.Year == FirstYear
-                                                                                    && c.MWQMSiteTVItemID == mwqmSiteAnalysisModel.MWQMSiteTVItemID
-                                                                                    select c).Concat((from c in mwqmSampleAnalysisForSiteModelList
-                                                                                                      where c.SampleDateTime_Local.Year == LastYear
-                                                                                                      && c.MWQMSiteTVItemID == mwqmSiteAnalysisModel.MWQMSiteTVItemID
-                                                                                                      select c)).ToList();
+                                                                            where c.SampleDateTime_Local.Year == FirstYear
+                                                                            && c.MWQMSiteTVItemID == mwqmSiteAnalysisModel.MWQMSiteTVItemID
+                                                                            select c).Concat((from c in mwqmSampleAnalysisForSiteModelList
+                                                                                              where c.SampleDateTime_Local.Year == LastYear
+                                                                                              && c.MWQMSiteTVItemID == mwqmSiteAnalysisModel.MWQMSiteTVItemID
+                                                                                              select c)).ToList();
 
-                    mwqmSampleAnalysisForSiteModelToUseList = mwqmSampleAnalysisForSiteModelToUseList.Concat(mwqmSampleAnalysisMore).Distinct().ToList();
+                    List<MWQMSampleAnalysisModel> mwqmSampleAnalysisMore2 = new List<MWQMSampleAnalysisModel>();
+                    foreach (MWQMSampleAnalysisModel mwqmSampleAnalysisModel in mwqmSampleAnalysisMore)
+                    {
+                        if (!MWQMRunTVItemIDToOmitList.Contains(mwqmSampleAnalysisModel.MWQMRunTVItemID))
+                        {
+                            mwqmSampleAnalysisMore2.Add(mwqmSampleAnalysisModel);
+                        }
+                    }
+
+                    mwqmSampleAnalysisForSiteModelToUseList = mwqmSampleAnalysisForSiteModelToUseList.Concat(mwqmSampleAnalysisMore2).Distinct().ToList();
 
                     mwqmSampleAnalysisForSiteModelToUseList = mwqmSampleAnalysisForSiteModelToUseList.OrderByDescending(c => c.SampleDateTime_Local).ToList();
                 }
@@ -1418,41 +1459,65 @@ namespace CSSPWebToolsTaskRunner
                     }
 
                     range = ws.Cells[RowCount, 3];
-                    range.Value = "'" + MWQMSampleCount.ToString();
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? MWQMSampleCount.ToString() : "--");
 
                     range = ws.Cells[RowCount, 4];
-                    range.Value = "'" + (MaxYear != null ? (MaxYear.ToString() + "-" + MinYear.ToString()) : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (MaxYear != null ? (MaxYear.ToString() + "-" + MinYear.ToString()) : "--") : "--");
 
                     range = ws.Cells[RowCount, 5];
-                    range.Value = "'" + (MinFC != null ? (MinFC.ToString()) : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (MinFC != null ? (MinFC < 2 ? "< 2" : (MinFC.ToString())) : "--") : "--");
 
                     range = ws.Cells[RowCount, 6];
-                    range.Value = "'" + (MaxFC != null ? (MaxFC.ToString()) : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (MaxFC != null ? (MaxFC < 2 ? "< 2" : (MaxFC.ToString())) : "--") : "--");
 
                     range = ws.Cells[RowCount, 7];
-                    range.Value = "'" + (GeoMean != null ? ((double)GeoMean).ToString("F0") : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (GeoMean != null ? ((double)GeoMean < 2.0D ? "< 2" : ((double)GeoMean).ToString("F0")) : "--") : "--");
+                    if (GeoMean > 14)
+                    {
+                        range.Interior.Color = 65535;
+                    }
 
                     range = ws.Cells[RowCount, 8];
-                    range.Value = "'" + (Median != null ? ((double)Median).ToString("F0") : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (Median != null ? ((double)Median < 2.0D ? "< 2" : ((double)Median).ToString("F0")) : "--") : "--");
+                    if (Median > 14)
+                    {
+                        range.Interior.Color = 65535;
+                    }
 
                     range = ws.Cells[RowCount, 9];
-                    range.Value = "'" + (P90 != null ? ((double)P90).ToString("F0") : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (P90 != null ? ((double)P90 < 2.0D ? "< 2" : ((double)P90).ToString("F0")) : "--") : "--");
+                    if (P90 > 43)
+                    {
+                        range.Interior.Color = 65535;
+                    }
 
                     range = ws.Cells[RowCount, 10];
-                    range.Value = "'" + (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--") : "--");
+                    if (PercOver43 > 10)
+                    {
+                        range.Interior.Color = 65535;
+                    }
 
                     range = ws.Cells[RowCount, 11];
-                    range.Value = "'" + (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--");
+                    range.Value = "'" + (mwqmSiteAnalysisModel.IsActive ? (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--") : "--");
+                    if (PercOver260 > 10)
+                    {
+                        range.Interior.Color = 65535;
+                    }
 
-                    range = ws.Cells[RowCount, 12];
-                    range.Value = "'" + Letter;
-                    range.Select();
-                    xlApp.Selection.Interior.Color = Coloring;
+                    if (mwqmSiteAnalysisModel.IsActive)
+                    {
+                        range = ws.Cells[RowCount, 12];
+                        range.Value = "'" + Letter;
+                        range.Select();
+                        xlApp.Selection.Interior.Color = Coloring;
+                    }
                 }
 
+                int AddedRows = 0;
                 foreach (MWQMSampleAnalysisModel mwqmSampleAnalysisModel in mwqmSampleAnalysisForSiteModelList)
                 {
-
+                    AddedRows = 0;
                     int colNumber = (from c in runDateColNumberList
                                      where c.MWQMRunTVItemID == mwqmSampleAnalysisModel.MWQMRunTVItemID
                                      select c.ColNumber).FirstOrDefault();
@@ -1479,21 +1544,209 @@ namespace CSSPWebToolsTaskRunner
                     }
 
                     range = ws.Cells[RowCount, colNumber];
-                    range.Value = "'" + mwqmSampleAnalysisModel.FecCol_MPN_100ml.ToString() +
-                        (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.Temperature) ? "\n" + (mwqmSampleAnalysisModel.WaterTemp_C != null ? ((double)mwqmSampleAnalysisModel.WaterTemp_C).ToString("F0") : "--") : "") +
-                        (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.Salinity) ? "\n" + (mwqmSampleAnalysisModel.Salinity_PPT != null ? ((double)mwqmSampleAnalysisModel.Salinity_PPT).ToString("F0") : "--") : "") +
-                        (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.P90) ? "\n" + (P90 != null ? ((double)P90).ToString("F0") : "--") : "") +
-                        (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.GemetricMean) ? "\n" + (GeoMean != null ? ((double)GeoMean).ToString("F0") : "--") : "") +
-                        (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.Median) ? "\n" + (Median != null ? ((double)Median).ToString("F0") : "--") : "") +
-                        (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.PercOfP90Over43) ? "\n" + (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--") : "") +
-                        (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.PercOfP90Over260) ? "\n" + (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--") : "");
 
-                    mwqmSampleAnalysisForSiteModelToUseList = mwqmSampleAnalysisForSiteModelToUseList.Skip(1).ToList();
+                    range.Value = (mwqmSampleAnalysisModel.FecCol_MPN_100ml < 2 ? "< 2" : mwqmSampleAnalysisModel.FecCol_MPN_100ml.ToString());
+                    if (mwqmSampleAnalysisModel.FecCol_MPN_100ml > 500)
+                    {
+                        range.Interior.Color = 255;
+                    }
+                    else if (mwqmSampleAnalysisModel.FecCol_MPN_100ml > 43)
+                    {
+                        range.Interior.Color = 65535;
+                    }
+                    if (mwqmSiteAnalysisModel.IsActive == true)
+                    {
+                        if (mwqmSampleAnalysisForSiteModelToUseList.Contains(mwqmSampleAnalysisModel))
+                        {
+                            range.Select();
+                            xlApp.Selection.Borders(Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom).Color = -11489280;
+                            if (!RunUsedColNumberList.Contains(colNumber))
+                            {
+                                RunUsedColNumberList.Add(colNumber);
+                            }
+                        }
+                        else
+                        {
+                            if (MWQMRunTVItemIDToOmitList.Contains(mwqmSampleAnalysisModel.MWQMRunTVItemID))
+                            {
+                                RunUsedColNumberList.Add(colNumber);
+                            }
+                        }
+                    }
+                    if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.Temperature))
+                    {
+                        RowCount += 1;
+                        range = ws.Cells[RowCount, colNumber];
+                        range.Value = (mwqmSampleAnalysisModel.WaterTemp_C != null ? ((double)mwqmSampleAnalysisModel.WaterTemp_C).ToString("F0") : "--");
+                        if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
+                        {
+                            rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.Temperature });
+                        }
+                    }
+                    if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.Salinity))
+                    {
+                        AddedRows += 1;
+                        range = ws.Cells[RowCount + AddedRows, colNumber];
+                        range.Value = (mwqmSampleAnalysisModel.Salinity_PPT != null ? ((double)mwqmSampleAnalysisModel.Salinity_PPT).ToString("F0") : "--");
 
+                        if (mwqmSampleAnalysisModel.Salinity_PPT != null)
+                        {
+                            double? avgSal = (from c in mwqmSampleAnalysisForSiteModelList
+                                              where c.Salinity_PPT != null
+                                              select c.Salinity_PPT).Average();
+
+                            if (Math.Abs(((double)mwqmSampleAnalysisModel.Salinity_PPT) - ((double)avgSal)) >= mwqmAnalysisReportParameterModel.SalinityHighlightDeviationFromAverage)
+                            {
+                                range.Interior.Color = 65535;
+                            }
+                        }
+                        if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
+                        {
+                            rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.Salinity });
+                        }
+
+                    }
+                    if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.P90))
+                    {
+                        AddedRows += 1;
+                        range = ws.Cells[RowCount + AddedRows, colNumber];
+
+                        range.Value = (P90 != null ? ((double)P90).ToString("F0") : "--");
+                        if (P90 > 43)
+                        {
+                            range.Interior.Color = 65535;
+                        }
+                        if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
+                        {
+                            rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.P90 });
+                        }
+                    }
+                    if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.GemetricMean))
+                    {
+                        AddedRows += 1;
+                        range = ws.Cells[RowCount + AddedRows, colNumber];
+
+                        range.Value = (GeoMean != null ? ((double)GeoMean).ToString("F0") : "--");
+                        if (GeoMean > 14)
+                        {
+                            range.Interior.Color = 65535;
+                        }
+                        if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
+                        {
+                            rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.GemetricMean });
+                        }
+                    }
+                    if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.Median))
+                    {
+                        AddedRows += 1;
+                        range = ws.Cells[RowCount + AddedRows, colNumber];
+
+                        range.Value = (Median != null ? ((double)Median).ToString("F0") : "--");
+                        if (Median > 14)
+                        {
+                            range.Interior.Color = 65535;
+                        }
+                        if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
+                        {
+                            rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.Median });
+                        }
+                    }
+                    if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.PercOfP90Over43))
+                    {
+                        AddedRows += 1;
+                        range = ws.Cells[RowCount + AddedRows, colNumber];
+
+                        range.Value = (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--");
+                        if (PercOver43 > 20)
+                        {
+                            range.Interior.Color = 65535;
+                        }
+                        else if (PercOver43 > 10)
+                        {
+                            range.Interior.Color = 65535;
+                        }
+                        if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
+                        {
+                            rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.PercOfP90Over43 });
+                        }
+                    }
+                    if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.PercOfP90Over260))
+                    {
+                        AddedRows += 1;
+                        range = ws.Cells[RowCount + AddedRows, colNumber];
+
+                        range.Value = (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--");
+                        if (PercOver260 > 10)
+                        {
+                            range.Interior.Color = 65535;
+                        }
+                        if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
+                        {
+                            rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.PercOfP90Over260 });
+                        }
+                    }
+
+                    if (mwqmSampleAnalysisForSiteModelToUseList.Contains(mwqmSampleAnalysisModel))
+                    {
+                        mwqmSampleAnalysisForSiteModelToUseList = mwqmSampleAnalysisForSiteModelToUseList.Skip(1).ToList();
+                    }
                 }
 
-                RowCount += 1;
+                RowCount += (1 + AddedRows);
             }
+
+            foreach (RunDateColNumber runDateColNumber in runDateColNumberList)
+            {
+                if (MWQMRunTVItemIDToOmitList.Contains(runDateColNumber.MWQMRunTVItemID))
+                {
+                    if (RunUsedColNumberList.Contains(runDateColNumber.ColNumber))
+                    {
+                        range = ws.Cells[1, runDateColNumber.ColNumber];
+                        range.Select();
+                        xlApp.Selection.Interior.Color = 255;
+                    }
+                }
+                else
+                {
+                    if (RunUsedColNumberList.Contains(runDateColNumber.ColNumber))
+                    {
+                        range = ws.Cells[1, runDateColNumber.ColNumber];
+                        range.Select();
+                        xlApp.Selection.Interior.Color = 5296274;
+                    }
+                }
+            }
+            foreach (RowAndType rowAndType in rowAndTypeList)
+            {
+                xlApp.Range["A" + rowAndType.RowNumber.ToString() + ":L" + rowAndType.RowNumber.ToString()].Select();
+                xlApp.Selection.Merge();
+                xlApp.Selection.HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlRight;
+                switch (rowAndType.ExcelExportShowDataType)
+                {
+                    case ExcelExportShowDataTypeEnum.FecalColiform:
+                    case ExcelExportShowDataTypeEnum.Temperature:
+                    case ExcelExportShowDataTypeEnum.Salinity:
+                    case ExcelExportShowDataTypeEnum.P90:
+                    case ExcelExportShowDataTypeEnum.GemetricMean:
+                    case ExcelExportShowDataTypeEnum.Median:
+                    case ExcelExportShowDataTypeEnum.PercOfP90Over43:
+                    case ExcelExportShowDataTypeEnum.PercOfP90Over260:
+                        {
+                            xlApp.Selection.Value = _BaseEnumService.GetEnumText_ExcelExportShowDataTypeEnum(rowAndType.ExcelExportShowDataType);
+                        }
+                        break;
+                    default:
+                        {
+                            xlApp.Selection.Value = "Error";
+                        }
+                        break;
+                }
+            }
+
+            xlApp.Range["M16:M16"].Select();
+            xlApp.ActiveWindow.FreezePanes = true;
+
+            ws.Range["A1"].Select();
         }
 
         private int GetLastClassificationColor(MWQMSiteLatestClassificationEnum? mwqmSiteLatestClassification)
@@ -1679,15 +1932,19 @@ namespace CSSPWebToolsTaskRunner
                 range.Value = textList[i];
             }
 
-            ws.Columns["A:A"].ColumnWidth = 9.22;
-            ws.Columns["B:B"].ColumnWidth = 1.33;
-            ws.Columns["E:E"].ColumnWidth = 5.67;
-            ws.Columns["H:H"].ColumnWidth = 6;
-            ws.Columns["I:I"].ColumnWidth = 6.22;
-            ws.Columns["J:J"].ColumnWidth = 6.44;
-            ws.Columns["K:K"].ColumnWidth = 6.5;
+            ws.Columns["A:A"].ColumnWidth = 4.89;
+            ws.Columns["B:B"].ColumnWidth = 2.11;
+            ws.Columns["C:C"].ColumnWidth = 6.33;
+            ws.Columns["D:D"].ColumnWidth = 7.33;
+            ws.Columns["E:E"].ColumnWidth = 5.22;
+            ws.Columns["F:F"].ColumnWidth = 5.44;
+            ws.Columns["G:G"].ColumnWidth = 5.22;
+            ws.Columns["H:H"].ColumnWidth = 4.78;
+            ws.Columns["I:I"].ColumnWidth = 3.89;
+            ws.Columns["J:J"].ColumnWidth = 5.33;
+            ws.Columns["K:K"].ColumnWidth = 5.67;
             ws.Columns["L:L"].ColumnWidth = 1.22;
-            ws.Rows["1:1"].RowHeight = 48;
+            ws.Rows["1:1"].RowHeight = 43;
 
             textList = new List<string>() { "", "", "Between", "And", "Select Full Year", "Runs", "Sal", "Short Range", "Mid Range", "Calculation" };
             for (int i = 2; i < 10; i++)

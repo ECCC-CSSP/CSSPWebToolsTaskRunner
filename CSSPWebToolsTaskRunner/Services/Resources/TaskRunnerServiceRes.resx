@@ -1074,4 +1074,10 @@
   <data name="MWQMAnalysisReportParameterID" xml:space="preserve">
     <value>MWQMAnalysisReportParameterID</value>
   </data>
+  <data name="ErrorWhileCreatingExcelDocument_" xml:space="preserve">
+    <value>Error while creating Excel Document. Error: [{0}]</value>
+  </data>
+  <data name="ExcelCouldNotBeStartedCheckOfficeInstallation" xml:space="preserve">
+    <value>EXCEL could not be started. Check that your office installation and project references are correct.</value>
+  </data>
 </root>

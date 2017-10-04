@@ -1006,6 +1006,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error while creating Excel Document. Error: [{0}].
+        /// </summary>
+        public static string ErrorWhileCreatingExcelDocument_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileCreatingExcelDocument_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EXCEL could not be started. Check that your office installation and project references are correct..
+        /// </summary>
+        public static string ExcelCouldNotBeStartedCheckOfficeInstallation {
+            get {
+                return ResourceManager.GetString("ExcelCouldNotBeStartedCheckOfficeInstallation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FC Form auto generate.
         /// </summary>
         public static string FCFormAutoGenerate {
