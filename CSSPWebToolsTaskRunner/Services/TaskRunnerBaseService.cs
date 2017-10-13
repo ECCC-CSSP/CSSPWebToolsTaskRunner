@@ -557,7 +557,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TVFileModel tvFileModelNew = new TVFileModel()
                                     {
                                         TVFileTVItemID = tvItemModelNew.TVItemID,
-                                        FilePurpose = FilePurposeEnum.Generated,
+                                        FilePurpose = FilePurposeEnum.TemplateGenerated,
                                         FileDescription = "Generated File",
                                         FileType = tvFileService.GetFileType(fi.Extension),
                                         FileSize_kb = Math.Max((int)fi.Length / 1024, 1),
@@ -665,7 +665,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TVFileModel tvFileModelNew = new TVFileModel()
                                     {
                                         TVFileTVItemID = tvItemModelNew.TVItemID,
-                                        FilePurpose = FilePurposeEnum.Generated,
+                                        FilePurpose = FilePurposeEnum.TemplateGenerated,
                                         FileDescription = "Generated File",
                                         FileType = tvFileService.GetFileType(fi.Extension),
                                         FileSize_kb = Math.Max((int)fi.Length / 1024, 1),
@@ -793,7 +793,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TVFileModel tvFileModelNew = new TVFileModel()
                                     {
                                         TVFileTVItemID = tvItemModelNew.TVItemID,
-                                        FilePurpose = FilePurposeEnum.Generated,
+                                        FilePurpose = FilePurposeEnum.TemplateGenerated,
                                         FileDescription = "Generated File",
                                         FileType = tvFileService.GetFileType(fi.Extension),
                                         FileSize_kb = Math.Max((int)fi.Length / 1024, 1),
