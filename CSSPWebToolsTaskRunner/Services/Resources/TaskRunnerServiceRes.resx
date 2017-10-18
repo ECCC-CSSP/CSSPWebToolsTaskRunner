@@ -1080,4 +1080,7 @@
   <data name="ExcelCouldNotBeStartedCheckOfficeInstallation" xml:space="preserve">
     <value>EXCEL could not be started. Check that your office installation and project references are correct.</value>
   </data>
+  <data name="ReportTypeID" xml:space="preserve">
+    <value>ReportTypeID</value>
+  </data>
 </root>

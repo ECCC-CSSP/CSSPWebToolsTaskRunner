@@ -1068,4 +1068,7 @@
   <data name="ExcelCouldNotBeStartedCheckOfficeInstallation" xml:space="preserve">
     <value>EXCEL n'a pas pu être démarré. Vérifiez que les références d'installation de OFFICE sont correctes.</value>
   </data>
+  <data name="ReportTypeID" xml:space="preserve">
+    <value>ReportTypeID</value>
+  </data>
 </root>

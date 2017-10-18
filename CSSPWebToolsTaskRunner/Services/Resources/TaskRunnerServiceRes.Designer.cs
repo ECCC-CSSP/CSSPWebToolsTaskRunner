@@ -2185,6 +2185,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ReportTypeID.
+        /// </summary>
+        public static string ReportTypeID {
+            get {
+                return ResourceManager.GetString("ReportTypeID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Result Frequency.
         /// </summary>
         public static string ResultFrequency {

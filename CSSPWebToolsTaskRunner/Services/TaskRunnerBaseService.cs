@@ -315,6 +315,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case AppTaskCommandEnum.CreateDocumentFromParameters:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        ParametersService parametersService = new ParametersService(_TaskRunnerBaseService);
+                        parametersService.Generate();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
                 case AppTaskCommandEnum.CreateDocumentFromTemplate:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
