@@ -34,11 +34,15 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             string ReportTypeIDText = "";
             int ReportTypeID = 0;
+            string TVItemIDText = "";
+            int TVItemID = 0;
+            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            ReportTypeService reportTypeService = new ReportTypeService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
             string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
@@ -51,25 +55,85 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             ReportTypeIDText = GetParameters("ReportTypeID", ParamValueList);
-
             if (string.IsNullOrWhiteSpace(ReportTypeIDText))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.ReportTypeID);
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.ReportTypeID);
+                return;
             }
 
             if (!int.TryParse(ReportTypeIDText, out ReportTypeID))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.ReportTypeID);
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.ReportTypeID);
+                return;
             }
 
-            ReportTypeService reportTypeService = new ReportTypeService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             ReportTypeModel reportTypeModel = reportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
             if (!string.IsNullOrWhiteSpace(reportTypeModel.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.ReportTypeID, TaskRunnerServiceRes.ReportTypeID, ReportTypeID.ToString());
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.ReportTypeID, TaskRunnerServiceRes.ReportTypeID, ReportTypeID.ToString());
+                return;
+            }
+
+            TVItemIDText = GetParameters("TVItemID", ParamValueList);
+
+            if (string.IsNullOrWhiteSpace(TVItemIDText))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
+                return;
+            }
+
+            if (!int.TryParse(TVItemIDText, out TVItemID))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
+                return;
+            }
+
+            switch (reportTypeModel.TVType)
+            {
+                case TVTypeEnum.Subsector:
+                    {
+                        TVItemModel tvItemModelSS = tvItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+                        if (!string.IsNullOrWhiteSpace(tvItemModelSS.Error))
+                        {
+                            NotUsed = tvItemModelSS.Error;
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelSS.Error);
+                            return;
+                        }
+                        string Subsector = tvItemModelSS.TVText;
+                        int pos = Subsector.IndexOf(" ");
+                        if (pos > 0)
+                        {
+                            Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                        }
+                        reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", Subsector);
+
+
+                        string YearText = GetParameters("Year", ParamValueList);
+                        int Year = 0;
+
+                        if (string.IsNullOrWhiteSpace(TVItemIDText))
+                        {
+                            reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", "");
+                        }
+                        else
+                        {
+                            if (!int.TryParse(YearText, out Year))
+                            {
+                                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+                                return;
+                            }
+                            reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", Year.ToString());
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
 
             if (reportTypeModel.FileType == FileTypeEnum.DOCX || reportTypeModel.FileType == FileTypeEnum.XLSX)
@@ -98,6 +162,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                         _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return;
                     }
                 }
 
@@ -130,6 +195,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 NotUsed = string.Format(TaskRunnerServiceRes._NotImplemented, reportTypeModel.FileType.ToString());
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_NotImplemented", reportTypeModel.FileType.ToString());
+                return;
             }
         }
         #endregion Functions public

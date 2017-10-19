@@ -154,26 +154,21 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sbHTML.AppendLine(@"<h2>" + reportTypeModel.TVType.ToString() + " Not Implemented Yet</h2>");
 
-            if (!GetBottomHTML(sbHTML))
+            if (!GetBottomHTML(sbHTML, fi, parameters))
             {
                 return false;
             }
 
             return true;
         }
-        private bool GetAllStyle(StringBuilder sbHTML)
+        private bool GetBottomHTML(StringBuilder sbHTML, FileInfo fi, string parameters)
         {
-            sbHTML.AppendLine(@"<style type=""text/style"">");
-            sbHTML.AppendLine(@"body");
-            sbHTML.AppendLine(@"{");
-            sbHTML.AppendLine(@"    background-color: red;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@"</style");
-
-            return true;
-        }
-        private bool GetBottomHTML(StringBuilder sbHTML)
-        {
+            sbHTML.AppendLine(@"    <div class=""small"">");
+            sbHTML.AppendLine(@"        <b>File name:</b> " + fi.FullName + @"");
+            sbHTML.AppendLine(@"    </div>");
+            sbHTML.AppendLine(@"    <div class=""small"">");
+            sbHTML.AppendLine(@"        <b>Parameters:</b> " + parameters + @"");
+            sbHTML.AppendLine(@"    </div>");
             sbHTML.AppendLine(@"</body>");
             sbHTML.AppendLine(@"</html>");
 
@@ -183,7 +178,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             sbHTML.AppendLine(@"<html>");
             sbHTML.AppendLine(@"<head>");
-            GetAllStyle(sbHTML);
+            sbHTML.AppendLine(@"    <title>This is the title of the html document</title>");
+            sbHTML.AppendLine(@"    <link href=""C:\Users\leblancc\Desktop\TestHTML\ReportType.css"" rel=""stylesheet"" />");
             sbHTML.AppendLine(@"</head>");
             sbHTML.AppendLine(@"<body>");
 

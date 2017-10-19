@@ -59,7 +59,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sbHTML.AppendLine(@"<h2>Bonjour</h2>");
 
-            if (!GetBottomHTML(sbHTML))
+            if (!GetBottomHTML(sbHTML, fi, parameters))
             {
                 return false;
             }
@@ -75,7 +75,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sbHTML.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
 
-            if (!GetBottomHTML(sbHTML))
+            if (!GetBottomHTML(sbHTML, fi, parameters))
             {
                 return false;
             }
@@ -91,7 +91,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sbHTML.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
 
-            if (!GetBottomHTML(sbHTML))
+            if (!GetBottomHTML(sbHTML, fi, parameters))
             {
                 return false;
             }
