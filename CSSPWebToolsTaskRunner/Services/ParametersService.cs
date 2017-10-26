@@ -19,12 +19,22 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         #region Variables
         public TaskRunnerBaseService _TaskRunnerBaseService { get; private set; }
+        public TVFileService _TVFileService { get; private set; }
+        public TVItemService _TVItemService { get; private set; }
+        public ReportTypeService _ReportTypeService { get; private set; }
+        public MWQMSubsectorService _MWQMSubsectorService { get; private set; }
+        public MWQMAnalysisReportParameterService _MWQMAnalysisReportParameterService { get; private set; }
         #endregion Variables
 
         #region Constructors
         public ParametersService(TaskRunnerBaseService taskRunnerBaseService)
         {
             _TaskRunnerBaseService = taskRunnerBaseService;
+            _TVFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _TVItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _ReportTypeService = new ReportTypeService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MWQMSubsectorService = new MWQMSubsectorService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MWQMAnalysisReportParameterService = new MWQMAnalysisReportParameterService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
         }
         #endregion Constructors
 
@@ -36,14 +46,11 @@ namespace CSSPWebToolsTaskRunner.Services
             int ReportTypeID = 0;
             string TVItemIDText = "";
             int TVItemID = 0;
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            ReportTypeService reportTypeService = new ReportTypeService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            string ServerFilePath = _TVFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
             string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -69,7 +76,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            ReportTypeModel reportTypeModel = reportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
+            ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
             if (!string.IsNullOrWhiteSpace(reportTypeModel.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.ReportTypeID, TaskRunnerServiceRes.ReportTypeID, ReportTypeID.ToString());
@@ -97,7 +104,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 case TVTypeEnum.Subsector:
                     {
-                        TVItemModel tvItemModelSS = tvItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+                        TVItemModel tvItemModelSS = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
                         if (!string.IsNullOrWhiteSpace(tvItemModelSS.Error))
                         {
                             NotUsed = tvItemModelSS.Error;
@@ -208,6 +215,31 @@ namespace CSSPWebToolsTaskRunner.Services
             Microsoft.Office.Interop.Word.Application appWord = new Microsoft.Office.Interop.Word.Application();
             appWord.Visible = false;
             Microsoft.Office.Interop.Word.Document _Document = appWord.Documents.Open(fi.FullName);
+
+
+            if (_Document.ActiveWindow.View.SplitSpecial == Microsoft.Office.Interop.Word.WdSpecialPane.wdPaneNone)
+            {
+                _Document.ActiveWindow.ActivePane.View.Type = Microsoft.Office.Interop.Word.WdViewType.wdPrintView;
+            }
+            else
+            {
+                _Document.ActiveWindow.View.Type = Microsoft.Office.Interop.Word.WdViewType.wdPrintView;
+            }
+
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute("|||PageBreak|||"))
+                {
+                    appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
+                }
+                else
+                {
+                    Found = false;
+                }
+            }
             string NewDocxFileName = fi.FullName.Replace(".html", ".docx");
             _Document.SaveAs2(NewDocxFileName, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument);
             _Document.Close();
@@ -231,9 +263,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fi = new FileInfo(NewDocxFileName);
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            TVItemModel tvItemModel = tvItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
+            TVItemModel tvItemModel = _TVItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
             {
                 NotUsed = tvItemModel.Error;
@@ -250,7 +280,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.FilePurpose = FilePurposeEnum.ReportGenerated;
             tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
             tvFileModelNew.FileDescription = reportTypeModel.Description;
-            tvFileModelNew.FileType = tvFileService.GetFileType(fi.Extension);
+            tvFileModelNew.FileType = _TVFileService.GetFileType(fi.Extension);
             tvFileModelNew.FileSize_kb = (((int)fi.Length / 1024) == 0 ? 1 : (int)fi.Length / 1024);
             tvFileModelNew.FileInfo = TaskRunnerServiceRes.FileName + "[" + fi.Name + "]\r\n" + TaskRunnerServiceRes.FileType + "[" + fi.Extension + "]\r\n";
             tvFileModelNew.FileCreatedDate_UTC = fi.LastWriteTimeUtc;
@@ -258,7 +288,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.LastUpdateDate_UTC = DateTime.UtcNow;
             tvFileModelNew.LastUpdateContactTVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.LastUpdateContactTVItemID;
 
-            TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
+            TVFileModel tvFileModelRet = _TVFileService.PostAddTVFileDB(tvFileModelNew);
             if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
@@ -299,9 +329,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fi = new FileInfo(NewDocxFileName);
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            TVItemModel tvItemModel = tvItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
+            TVItemModel tvItemModel = _TVItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
             {
                 NotUsed = tvItemModel.Error;
@@ -318,7 +346,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.FilePurpose = FilePurposeEnum.ReportGenerated;
             tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
             tvFileModelNew.FileDescription = reportTypeModel.Description;
-            tvFileModelNew.FileType = tvFileService.GetFileType(fi.Extension);
+            tvFileModelNew.FileType = _TVFileService.GetFileType(fi.Extension);
             tvFileModelNew.FileSize_kb = (((int)fi.Length / 1024) == 0 ? 1 : (int)fi.Length / 1024);
             tvFileModelNew.FileInfo = TaskRunnerServiceRes.FileName + "[" + fi.Name + "]\r\n" + TaskRunnerServiceRes.FileType + "[" + fi.Extension + "]\r\n";
             tvFileModelNew.FileCreatedDate_UTC = fi.LastWriteTimeUtc;
@@ -326,7 +354,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.LastUpdateDate_UTC = DateTime.UtcNow;
             tvFileModelNew.LastUpdateContactTVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.LastUpdateContactTVItemID;
 
-            TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
+            TVFileModel tvFileModelRet = _TVFileService.PostAddTVFileDB(tvFileModelNew);
             if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);

@@ -841,6 +841,111 @@ namespace CSSPWebToolsTaskRunner.Services
         //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.SubsectorFileAutoGenerate, FilePurposeEnum.Generated);
         //}
 
+        public void CreateDocxPDF()
+        {
+            string NotUsed = "";
+            int TVItemID = 0;
+            int TVFileTVItemID = 0;
+
+            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
+            string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
+            }
+
+            if (ParamValueList.Count() != 2)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.ParameterCount_NotEqual_, ParamValueList.Count().ToString(), "2");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ParameterCount_NotEqual_", ParamValueList.Count().ToString(), "2");
+            }
+
+            foreach (string s in ParamValueList)
+            {
+                string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                if (ParamValue.Length != 2)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    return;
+                }
+
+                if (ParamValue[0] == "TVItemID")
+                {
+                    TVItemID = int.Parse(ParamValue[1]);
+                }
+                else if (ParamValue[0] == "TVFileTVItemID")
+                {
+                    TVFileTVItemID = int.Parse(ParamValue[1]);
+                }
+                else
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
+                    return;
+                }
+            }
+
+            TVItemModel tvItemModelParent = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelParent.Error))
+            {
+                NotUsed = tvItemModelParent.Error;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelParent.Error);
+                return;
+            }
+
+            TVItemModel tvItemModelFile = _TVItemService.GetTVItemModelWithTVItemIDDB(TVFileTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelFile.Error))
+            {
+                NotUsed = tvItemModelFile.Error;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelFile.Error);
+                return;
+            }
+
+            TVFileModel tvFileModel = _TVFileService.GetTVFileModelWithTVFileTVItemIDDB(TVFileTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvFileModel.Error))
+            {
+                NotUsed = tvFileModel.Error;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModel.Error);
+                return;
+            }
+
+            FileInfo fiDocx = new FileInfo(tvFileModel.ServerFilePath + tvFileModel.ServerFileName);
+            if (!fiDocx.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiDocx.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotFindFile_, fiDocx.FullName);
+                return;
+            }
+
+            string NewPDFFileName = fiDocx.FullName.Replace(".docx", "_docx.pdf");
+            FileInfo fiPDF = new FileInfo(NewPDFFileName);
+            try
+            {
+                // Doing PDF
+                Microsoft.Office.Interop.Word.Application _Word = new Microsoft.Office.Interop.Word.Application();
+                Microsoft.Office.Interop.Word.Document _Document = _Word.Documents.Open(fiDocx.FullName);
+                _Document.ExportAsFixedFormat(NewPDFFileName, Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF);
+                _Document.Close();
+
+                _Word.Quit();
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotExportFile_ToPDFError_, fiDocx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.CouldNotExportFile_ToPDFError_, fiDocx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                return;
+            }
+
+            TVItemModel tvItemModelFilePDF = _TaskRunnerBaseService.CreateFileTVItem(fiPDF);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+
+            _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fiPDF, tvItemModelFilePDF, tvFileModel.FileDescription, tvFileModel.FilePurpose);
+        }
         public void GeneratePDF(FileInfo fi, TVTypeEnum tvType)
         {
             // Doing PDF

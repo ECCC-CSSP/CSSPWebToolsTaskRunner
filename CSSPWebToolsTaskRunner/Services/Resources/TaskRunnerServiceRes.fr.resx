@@ -1074,4 +1074,58 @@
   <data name="Year" xml:space="preserve">
     <value>Year</value>
   </data>
+  <data name="AllAllAll" xml:space="preserve">
+    <value>Tous-Tous-Tous</value>
+  </data>
+  <data name="CurrentClassification" xml:space="preserve">
+    <value>Current classification (fr)</value>
+  </data>
+  <data name="DryAllAll" xml:space="preserve">
+    <value>Sec-Tous-Tous</value>
+  </data>
+  <data name="LetterAndColorSchema" xml:space="preserve">
+    <value>Letter and color schema (fr)</value>
+  </data>
+  <data name="NotShown" xml:space="preserve">
+    <value>pas montré</value>
+  </data>
+  <data name="WetAllAll" xml:space="preserve">
+    <value>Pluie-Tous-Tous</value>
+  </data>
+  <data name="GMean" xml:space="preserve">
+    <value>Moy Geo.</value>
+  </data>
+  <data name="MaxFC" xml:space="preserve">
+    <value>CF Max</value>
+  </data>
+  <data name="Median" xml:space="preserve">
+    <value>Médian</value>
+  </data>
+  <data name="MinFC" xml:space="preserve">
+    <value>CF Min</value>
+  </data>
+  <data name="MPN" xml:space="preserve">
+    <value>NPP</value>
+  </data>
+  <data name="MWQMSite" xml:space="preserve">
+    <value>Site PSQEM</value>
+  </data>
+  <data name="P90" xml:space="preserve">
+    <value>P90</value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>Périod</value>
+  </data>
+  <data name="Samples" xml:space="preserve">
+    <value>Échant.</value>
+  </data>
+  <data name="Site" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="SummaryStatisticsOfFCDensities" xml:space="preserve">
+    <value>Statistiques sommaire de densités de CF</value>
+  </data>
+  <data name="CouldNotExportFile_ToPDFError_" xml:space="preserve">
+    <value>Dans l'impossibilité d'exporter la filière [{0}] en PDF. Erreur: {1}</value>
+  </data>
 </root>

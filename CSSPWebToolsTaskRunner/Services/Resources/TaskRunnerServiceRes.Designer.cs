@@ -196,6 +196,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All-All-All.
+        /// </summary>
+        public static string AllAllAll {
+            get {
+                return ResourceManager.GetString("AllAllAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All elements nodes are smaller than ContourValue.
         /// </summary>
         public static string AllNodesAreSmallerThanContourValue {
@@ -502,6 +511,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not export file [{0}] to PDF. Error: {1}.
+        /// </summary>
+        public static string CouldNotExportFile_ToPDFError_ {
+            get {
+                return ResourceManager.GetString("CouldNotExportFile_ToPDFError_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find [{0}]..
         /// </summary>
         public static string CouldNotFind_ {
@@ -799,6 +817,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current classification.
+        /// </summary>
+        public static string CurrentClassification {
+            get {
+                return ResourceManager.GetString("CurrentClassification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currents Animation.
         /// </summary>
         public static string CurrentsAnim {
@@ -903,6 +930,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Directory_DoesNotExist {
             get {
                 return ResourceManager.GetString("Directory_DoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dry-All-All.
+        /// </summary>
+        public static string DryAllAll {
+            get {
+                return ResourceManager.GetString("DryAllAll", resourceCulture);
             }
         }
         
@@ -1240,6 +1276,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to G Mean.
+        /// </summary>
+        public static string GMean {
+            get {
+                return ResourceManager.GetString("GMean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HasHourly Or HasDaily Or HasMonthly Has To Be True.
         /// </summary>
         public static string HasHourlyOrHasDailyOrHasMonthlyHasToBeTrue {
@@ -1375,6 +1420,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Letter and color schema.
+        /// </summary>
+        public static string LetterAndColorSchema {
+            get {
+                return ResourceManager.GetString("LetterAndColorSchema", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line not starting with {0}. Current line is {1} in {2} at line {3}.
         /// </summary>
         public static string LineNotStartingWith_CurrentLineIs_In_AtLine_ {
@@ -1474,11 +1528,29 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max FC.
+        /// </summary>
+        public static string MaxFC {
+            get {
+                return ResourceManager.GetString("MaxFC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum number of sigma layer [{0}]..
         /// </summary>
         public static string MaximumNumberOfSigmaLayers_ {
             get {
                 return ResourceManager.GetString("MaximumNumberOfSigmaLayers_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Median.
+        /// </summary>
+        public static string Median {
+            get {
+                return ResourceManager.GetString("Median", resourceCulture);
             }
         }
         
@@ -1726,6 +1798,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Min FC.
+        /// </summary>
+        public static string MinFC {
+            get {
+                return ResourceManager.GetString("MinFC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to minutes.
         /// </summary>
         public static string MinutesLowerCase {
@@ -1762,6 +1843,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MPN.
+        /// </summary>
+        public static string MPN {
+            get {
+                return ResourceManager.GetString("MPN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Municipality file auto generate.
         /// </summary>
         public static string MunicipalityFileAutoGenerate {
@@ -1794,6 +1884,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MWQMSamplingPlanAutoGenerate {
             get {
                 return ResourceManager.GetString("MWQMSamplingPlanAutoGenerate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM site.
+        /// </summary>
+        public static string MWQMSite {
+            get {
+                return ResourceManager.GetString("MWQMSite", resourceCulture);
             }
         }
         
@@ -1875,6 +1974,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NotIncludedLowerCase {
             get {
                 return ResourceManager.GetString("NotIncludedLowerCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to not shown.
+        /// </summary>
+        public static string NotShown {
+            get {
+                return ResourceManager.GetString("NotShown", resourceCulture);
             }
         }
         
@@ -1969,6 +2077,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to P90.
+        /// </summary>
+        public static string P90 {
+            get {
+                return ResourceManager.GetString("P90", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to parameter.
         /// </summary>
         public static string Parameter {
@@ -2010,6 +2127,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ParameterType {
             get {
                 return ResourceManager.GetString("ParameterType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Period.
+        /// </summary>
+        public static string Period {
+            get {
+                return ResourceManager.GetString("Period", resourceCulture);
             }
         }
         
@@ -2266,6 +2392,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Samples.
+        /// </summary>
+        public static string Samples {
+            get {
+                return ResourceManager.GetString("Samples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SamplingPlan.
         /// </summary>
         public static string SamplingPlan {
@@ -2388,6 +2523,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SigmaLayers {
             get {
                 return ResourceManager.GetString("SigmaLayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site.
+        /// </summary>
+        public static string Site {
+            get {
+                return ResourceManager.GetString("Site", resourceCulture);
             }
         }
         
@@ -2577,6 +2721,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SubsectorTVItemID {
             get {
                 return ResourceManager.GetString("SubsectorTVItemID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary statistics of FC densities.
+        /// </summary>
+        public static string SummaryStatisticsOfFCDensities {
+            get {
+                return ResourceManager.GetString("SummaryStatisticsOfFCDensities", resourceCulture);
             }
         }
         
@@ -2901,6 +3054,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WebTideDataSet {
             get {
                 return ResourceManager.GetString("WebTideDataSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wet-All-All.
+        /// </summary>
+        public static string WetAllAll {
+            get {
+                return ResourceManager.GetString("WetAllAll", resourceCulture);
             }
         }
         

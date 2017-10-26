@@ -315,6 +315,38 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case AppTaskCommandEnum.CreateDocxPDF:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        DocxService docxService = new DocxService(_TaskRunnerBaseService);
+                        docxService.CreateDocxPDF();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.CreateXlsxPDF:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        XlsxService xlsxService = new XlsxService(_TaskRunnerBaseService);
+                        xlsxService.CreateXlsxPDF();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
                 case AppTaskCommandEnum.CreateDocumentFromParameters:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -1675,6 +1707,9 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 TVFileModel tvFileModelNew = new TVFileModel();
                 tvFileModelNew.TVFileTVItemID = tvItemModelNew.TVItemID;
+                tvFileModelNew.TemplateTVType = TVTypeEnum.Error;
+                tvFileModelNew.ReportTypeID = null;
+                tvFileModelNew.Parameters = null;
                 tvFileModelNew.ServerFileName = fi.Name;
                 tvFileModelNew.FilePurpose = FilePurpose;
                 tvFileModelNew.Language = _BWObj.appTaskModel.Language;
