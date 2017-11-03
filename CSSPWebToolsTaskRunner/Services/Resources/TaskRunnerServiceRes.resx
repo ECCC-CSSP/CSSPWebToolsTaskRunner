@@ -1140,4 +1140,19 @@
   <data name="CouldNotExportFile_ToPDFError_" xml:space="preserve">
     <value>Could not export file [{0}] to PDF. Error: {1}</value>
   </data>
+  <data name="Annotated" xml:space="preserve">
+    <value>Annotated</value>
+  </data>
+  <data name="CouldNotCreate_ImageError_" xml:space="preserve">
+    <value>Could not create {0} image. Error: {1}</value>
+  </data>
+  <data name="CouldNotDownloadWebAddress_Error_" xml:space="preserve">
+    <value>Could not download web address {0}. Error: {1}</value>
+  </data>
+  <data name="CouldNotFindPolygonForSubsector_" xml:space="preserve">
+    <value>Could not find polygon for subsector {0}</value>
+  </data>
+  <data name="Inset" xml:space="preserve">
+    <value>Inset</value>
+  </data>
 </root>

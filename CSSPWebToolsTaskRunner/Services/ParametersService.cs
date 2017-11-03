@@ -119,23 +119,25 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", Subsector);
 
-
-                        string YearText = GetParameters("Year", ParamValueList);
-                        int Year = 0;
-
-                        if (string.IsNullOrWhiteSpace(TVItemIDText))
+                        if (!reportTypeModel.UniqueCode.StartsWith("Map"))
                         {
-                            reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", "");
-                        }
-                        else
-                        {
-                            if (!int.TryParse(YearText, out Year))
+                            string YearText = GetParameters("Year", ParamValueList);
+                            int Year = 0;
+
+                            if (string.IsNullOrWhiteSpace(TVItemIDText))
                             {
-                                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
-                                return;
+                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", "");
                             }
-                            reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", Year.ToString());
+                            else
+                            {
+                                if (!int.TryParse(YearText, out Year))
+                                {
+                                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+                                    return;
+                                }
+                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", Year.ToString());
+                            }
                         }
                     }
                     break;
@@ -210,12 +212,12 @@ namespace CSSPWebToolsTaskRunner.Services
         #region Functions private
         private bool CreateDocxWithHTML(FileInfo fi, string Parameters, ReportTypeModel reportTypeModel)
         {
+            string FileNameRandom = "";
             string NotUsed = "";
 
             Microsoft.Office.Interop.Word.Application appWord = new Microsoft.Office.Interop.Word.Application();
             appWord.Visible = false;
             Microsoft.Office.Interop.Word.Document _Document = appWord.Documents.Open(fi.FullName);
-
 
             if (_Document.ActiveWindow.View.SplitSpecial == Microsoft.Office.Interop.Word.WdSpecialPane.wdPaneNone)
             {
@@ -226,12 +228,14 @@ namespace CSSPWebToolsTaskRunner.Services
                 _Document.ActiveWindow.View.Type = Microsoft.Office.Interop.Word.WdViewType.wdPrintView;
             }
 
+            // turn all |||PageBreak||| into word page break
+            string SearchMarker = "|||PageBreak|||";
             bool Found = true;
             while (Found)
             {
                 appWord.Selection.Find.ClearFormatting();
                 appWord.Selection.Find.Replacement.ClearFormatting();
-                if (appWord.Selection.Find.Execute("|||PageBreak|||"))
+                if (appWord.Selection.Find.Execute(SearchMarker))
                 {
                     appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
                 }
@@ -240,6 +244,88 @@ namespace CSSPWebToolsTaskRunner.Services
                     Found = false;
                 }
             }
+
+            // importing images/graphics where we find |||FileNameImport|||
+            Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                appWord.Selection.Find.MatchWildcards = true;
+                appWord.Selection.Find.Text = "|||*|||";
+                if (appWord.Selection.Find.Execute())
+                {
+                    if (appWord.Selection.Find.Found)
+                    {
+                        string textFound = appWord.Selection.Text;
+
+                        appWord.Selection.Text = "";
+
+                        // --------------------------------------------------
+                        //           |||Image|
+                        // --------------------------------------------------
+                        if (textFound.StartsWith("|||Image|"))
+                        {
+                            string FileName = "";
+                            int width = 0;
+                            int height = 0;
+                            textFound = textFound.Substring("|||Image|".Length).Replace("|||", "");
+
+                            List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                            foreach (string s in ImageParamList)
+                            {
+                                List<string> ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                                if (ParamValue.Count() == 2)
+                                {
+                                    if (ParamValue[0] == "FileName")
+                                    {
+                                        FileName = ParamValue[1];
+                                    }
+                                    else if (ParamValue[0] == "width")
+                                    {
+                                        width = int.Parse(ParamValue[1]);
+                                    }
+                                    else if (ParamValue[0] == "height")
+                                    {
+                                        height = int.Parse(ParamValue[1]);
+                                    }
+                                }
+                            }
+                            appWord.Selection.InlineShapes.AddPicture(FileName, false, true);
+                        }
+
+                        // --------------------------------------------------
+                        //           |||FileNameExtra|
+                        // --------------------------------------------------
+                        if (textFound.StartsWith("|||FileNameExtra|"))
+                        {
+                            textFound = textFound.Substring("|||FileNameExtra|".Length).Replace("|||", "");
+
+                            List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                            foreach (string s in ImageParamList)
+                            {
+                                List<string> ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                                if (ParamValue.Count() == 2)
+                                {
+                                    if (ParamValue[0] == "Random")
+                                    {
+                                        FileNameRandom = ParamValue[1];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+            }
+
             string NewDocxFileName = fi.FullName.Replace(".html", ".docx");
             _Document.SaveAs2(NewDocxFileName, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument);
             _Document.Close();
@@ -294,6 +380,26 @@ namespace CSSPWebToolsTaskRunner.Services
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
                 return false;
+            }
+
+            if (reportTypeModel.UniqueCode.StartsWith("Map"))
+            {
+                DirectoryInfo di = new DirectoryInfo(fi.Directory + @"\");
+                List<FileInfo> fiList = di.GetFiles().Where(c => c.Name.Contains(FileNameRandom)).ToList();
+
+                foreach (FileInfo fiToDelete in fiList)
+                {
+                    try
+                    {
+                        fiToDelete.Delete();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiToDelete.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiToDelete.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                        return false;
+                    }
+                }
             }
 
             return true;

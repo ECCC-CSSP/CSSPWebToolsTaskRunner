@@ -223,6 +223,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Annotated.
+        /// </summary>
+        public static string Annotated {
+            get {
+                return ResourceManager.GetString("Annotated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Area file auto generate.
         /// </summary>
         public static string AreaFileAutoGenerate {
@@ -457,6 +466,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not create {0} image. Error: {1}.
+        /// </summary>
+        public static string CouldNotCreate_ImageError_ {
+            get {
+                return ResourceManager.GetString("CouldNotCreate_ImageError_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not create document from template. Error [{0}]..
         /// </summary>
         public static string CouldNotCreateDocumentFromTemplateError_ {
@@ -507,6 +525,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotDeleteFile_Error_ {
             get {
                 return ResourceManager.GetString("CouldNotDeleteFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not download web address {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotDownloadWebAddress_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDownloadWebAddress_Error_", resourceCulture);
             }
         }
         
@@ -597,6 +624,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotFindPart_CurrentPartIs_In_AtLine_ {
             get {
                 return ResourceManager.GetString("CouldNotFindPart_CurrentPartIs_In_AtLine_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find polygon for subsector {0}.
+        /// </summary>
+        public static string CouldNotFindPolygonForSubsector_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindPolygonForSubsector_", resourceCulture);
             }
         }
         
@@ -1317,6 +1353,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Input {
             get {
                 return ResourceManager.GetString("Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inset.
+        /// </summary>
+        public static string Inset {
+            get {
+                return ResourceManager.GetString("Inset", resourceCulture);
             }
         }
         

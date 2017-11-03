@@ -1128,4 +1128,19 @@
   <data name="CouldNotExportFile_ToPDFError_" xml:space="preserve">
     <value>Dans l'impossibilité d'exporter la filière [{0}] en PDF. Erreur: {1}</value>
   </data>
+  <data name="Annotated" xml:space="preserve">
+    <value>Annotated</value>
+  </data>
+  <data name="CouldNotCreate_ImageError_" xml:space="preserve">
+    <value>Dans l'impossibilité de créer l'image {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotDownloadWebAddress_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de télécharger l'adresse web {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotFindPolygonForSubsector_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver le polygone du sous-secteur {0}</value>
+  </data>
+  <data name="Inset" xml:space="preserve">
+    <value>Inset</value>
+  </data>
 </root>

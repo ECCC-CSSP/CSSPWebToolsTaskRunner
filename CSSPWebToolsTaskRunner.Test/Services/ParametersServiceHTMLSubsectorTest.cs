@@ -134,7 +134,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
                 taskRunnerBaseService._BWObj = bwObj;
                 ParametersService parameterService = new ParametersService(taskRunnerBaseService);
-                bool retBool = parameterService.PublicGenerateHTMLSubsector_SubsectorTestDocx(fi, sbHTML, Parameters, reportTypeModel);
+                bool retBool = parameterService.PublicGenerateHTMLSubsectorFCSummaryStatDocx(fi, sbHTML, Parameters, reportTypeModel);
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();
