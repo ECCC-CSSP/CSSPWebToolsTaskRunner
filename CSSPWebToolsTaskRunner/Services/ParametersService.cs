@@ -18,12 +18,21 @@ namespace CSSPWebToolsTaskRunner.Services
     public partial class ParametersService
     {
         #region Variables
-        public TaskRunnerBaseService _TaskRunnerBaseService { get; private set; }
-        public TVFileService _TVFileService { get; private set; }
-        public TVItemService _TVItemService { get; private set; }
-        public ReportTypeService _ReportTypeService { get; private set; }
-        public MWQMSubsectorService _MWQMSubsectorService { get; private set; }
-        public MWQMAnalysisReportParameterService _MWQMAnalysisReportParameterService { get; private set; }
+        private TaskRunnerBaseService _TaskRunnerBaseService { get; set; }
+        private TVFileService _TVFileService { get; set; }
+        private TVItemService _TVItemService { get; set; }
+        private ReportTypeService _ReportTypeService { get; set; }
+        private MWQMSubsectorService _MWQMSubsectorService { get; set; }
+        private MWQMAnalysisReportParameterService _MWQMAnalysisReportParameterService { get; set; }
+        private MapInfoService _MapInfoService { get; set; }
+        private MikeScenarioService _MikeScenarioService { get; set; }
+        private MikeBoundaryConditionService _MikeBoundaryConditionService { get; set; }
+        private MikeSourceService _MikeSourceService { get; set; }
+        private MikeSourceStartEndService _MikeSourceStartEndService { get; set; }
+
+        private List<Node> InterpolatedContourNodeList = new List<Node>();
+        private Dictionary<String, Vector> ForwardVector = new Dictionary<String, Vector>();
+        private Dictionary<String, Vector> BackwardVector = new Dictionary<String, Vector>();
         #endregion Variables
 
         #region Constructors
@@ -35,6 +44,11 @@ namespace CSSPWebToolsTaskRunner.Services
             _ReportTypeService = new ReportTypeService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMSubsectorService = new MWQMSubsectorService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMAnalysisReportParameterService = new MWQMAnalysisReportParameterService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MikeScenarioService = new MikeScenarioService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MikeBoundaryConditionService = new MikeBoundaryConditionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MikeSourceService = new MikeSourceService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MikeSourceStartEndService = new MikeSourceStartEndService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
         }
         #endregion Constructors
 
@@ -100,51 +114,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            switch (reportTypeModel.TVType)
-            {
-                case TVTypeEnum.Subsector:
-                    {
-                        TVItemModel tvItemModelSS = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
-                        if (!string.IsNullOrWhiteSpace(tvItemModelSS.Error))
-                        {
-                            NotUsed = tvItemModelSS.Error;
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelSS.Error);
-                            return;
-                        }
-                        string Subsector = tvItemModelSS.TVText;
-                        int pos = Subsector.IndexOf(" ");
-                        if (pos > 0)
-                        {
-                            Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
-                        }
-                        reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", Subsector);
-
-                        if (!reportTypeModel.UniqueCode.StartsWith("Map"))
-                        {
-                            string YearText = GetParameters("Year", ParamValueList);
-                            int Year = 0;
-
-                            if (string.IsNullOrWhiteSpace(TVItemIDText))
-                            {
-                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", "");
-                            }
-                            else
-                            {
-                                if (!int.TryParse(YearText, out Year))
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
-                                    return;
-                                }
-                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", Year.ToString());
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-
             if (reportTypeModel.FileType == FileTypeEnum.DOCX || reportTypeModel.FileType == FileTypeEnum.XLSX)
             {
                 StringBuilder sbHTML = new StringBuilder();
@@ -157,6 +126,11 @@ namespace CSSPWebToolsTaskRunner.Services
                     "_" + (CD.Day > 9 ? CD.Day.ToString() : "0" + CD.Day.ToString()) +
                     "_" + (CD.Hour > 9 ? CD.Hour.ToString() : "0" + CD.Hour.ToString()) +
                     "_" + (CD.Minute > 9 ? CD.Minute.ToString() : "0" + CD.Minute.ToString());
+
+                if (!RenameStartOfFileName(reportTypeModel, TVItemID, TVItemIDText, ParamValueList))
+                {
+                    return;
+                }
 
                 FileInfo fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".html");
 
@@ -207,6 +181,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
         }
+
         #endregion Functions public
 
         #region Functions private
@@ -486,6 +461,57 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             return "";
+        }
+        private bool RenameStartOfFileName(ReportTypeModel reportTypeModel, int TVItemID, string TVItemIDText, List<string> ParamValueList)
+        {
+            string NotUsed = "";
+
+            switch (reportTypeModel.TVType)
+            {
+                case TVTypeEnum.Subsector:
+                    {
+                        TVItemModel tvItemModelSS = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+                        if (!string.IsNullOrWhiteSpace(tvItemModelSS.Error))
+                        {
+                            NotUsed = tvItemModelSS.Error;
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelSS.Error);
+                            return false;
+                        }
+                        string Subsector = tvItemModelSS.TVText;
+                        int pos = Subsector.IndexOf(" ");
+                        if (pos > 0)
+                        {
+                            Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                        }
+                        reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", Subsector);
+
+                        if (!reportTypeModel.UniqueCode.StartsWith("Map"))
+                        {
+                            string YearText = GetParameters("Year", ParamValueList);
+                            int Year = 0;
+
+                            if (string.IsNullOrWhiteSpace(TVItemIDText))
+                            {
+                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", "");
+                            }
+                            else
+                            {
+                                if (!int.TryParse(YearText, out Year))
+                                {
+                                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+                                    return false;
+                                }
+                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", Year.ToString());
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
         }
         #endregion Functions private
     }

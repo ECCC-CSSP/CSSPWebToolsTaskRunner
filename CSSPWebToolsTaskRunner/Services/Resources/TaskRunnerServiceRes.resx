@@ -1155,4 +1155,61 @@
   <data name="Inset" xml:space="preserve">
     <value>Inset</value>
   </data>
+  <data name="BottomOfLayer" xml:space="preserve">
+    <value>Bottom of layer</value>
+  </data>
+  <data name="ContourValues" xml:space="preserve">
+    <value>ContourValues</value>
+  </data>
+  <data name="Depths" xml:space="preserve">
+    <value>Depths</value>
+  </data>
+  <data name="ElementNodes" xml:space="preserve">
+    <value>Element nodes</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorOccuredWhileCreatingKMZDocument_" xml:space="preserve">
+    <value>Error occured while creating KMZ document {0}</value>
+  </data>
+  <data name="Error_WhileCreatingKMZDocument_" xml:space="preserve">
+    <value>Error {0} while creating KMZ document {1}</value>
+  </data>
+  <data name="ManningNumber" xml:space="preserve">
+    <value>Manning number</value>
+  </data>
+  <data name="MIKEBoundaryConditions" xml:space="preserve">
+    <value>MIKE boundary conditions</value>
+  </data>
+  <data name="MIKEMesh" xml:space="preserve">
+    <value>MIKE mesh</value>
+  </data>
+  <data name="MIKEPollutionAnimation" xml:space="preserve">
+    <value>MIKE pollution animation</value>
+  </data>
+  <data name="MIKEPollutionLimit" xml:space="preserve">
+    <value>MIKE pollution limit</value>
+  </data>
+  <data name="MIKESourceNameIsEmpty" xml:space="preserve">
+    <value>MIKE source name is empty</value>
+  </data>
+  <data name="MIKEStudyArea" xml:space="preserve">
+    <value>MIKE study area</value>
+  </data>
+  <data name="Nodes" xml:space="preserve">
+    <value>Nodes</value>
+  </data>
+  <data name="PollutionAnimation" xml:space="preserve">
+    <value>Pollution animation</value>
+  </data>
+  <data name="Polygons" xml:space="preserve">
+    <value>Polygons</value>
+  </data>
+  <data name="WebTideNodes" xml:space="preserve">
+    <value>Web tide nodes</value>
+  </data>
+  <data name="_ShouldNotBe0InFunction_" xml:space="preserve">
+    <value>{0} should not be 0 in function {1}</value>
+  </data>
 </root>

@@ -18,7 +18,7 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateKMZ(string ServerFilePath, string Parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateKMZ(string ServerFilePath, string parameters, ReportTypeModel reportTypeModel)
         {
             string NotUsed = "";
             StringBuilder sbKMZ = new StringBuilder();
@@ -31,6 +31,21 @@ namespace CSSPWebToolsTaskRunner.Services
                 "_" + (CD.Day > 9 ? CD.Day.ToString() : "0" + CD.Day.ToString()) +
                 "_" + (CD.Hour > 9 ? CD.Hour.ToString() : "0" + CD.Hour.ToString()) +
                 "_" + (CD.Minute > 9 ? CD.Minute.ToString() : "0" + CD.Minute.ToString());
+
+            switch (reportTypeModel.TVType)
+            {
+                case TVTypeEnum.MikeScenario:
+                    break;
+                case TVTypeEnum.Subsector:
+                    break;
+                default:
+                    break;
+            }
+
+            if (!RenameStartOfFileNameKMZ(parameters, reportTypeModel))
+            {
+                return false;
+            }
 
             FileInfo fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".kml");
 
@@ -53,7 +68,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 case TVTypeEnum.Root:
                     {
-                        if (!GenerateKMZRoot(fi, sbKMZ, Parameters, reportTypeModel))
+                        if (!GenerateKMZRoot(fi, sbKMZ, parameters, reportTypeModel))
                         {
                             return false;
                         }
@@ -63,6 +78,13 @@ namespace CSSPWebToolsTaskRunner.Services
                 case TVTypeEnum.Country:
                 case TVTypeEnum.Infrastructure:
                 case TVTypeEnum.MikeScenario:
+                    {
+                        if (!GenerateKMZMikeScenario(fi, sbKMZ, parameters, reportTypeModel))
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case TVTypeEnum.MikeSource:
                 case TVTypeEnum.Municipality:
                 case TVTypeEnum.MWQMSite:
@@ -72,7 +94,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 case TVTypeEnum.Subsector:
                 case TVTypeEnum.BoxModel:
                 case TVTypeEnum.VisualPlumesScenario:
-                    if (!GenerateKMZNotImplemented(fi, sbKMZ, Parameters, reportTypeModel))
+                    if (!GenerateKMZNotImplemented(fi, sbKMZ, parameters, reportTypeModel))
                     {
                         return false;
                     }
@@ -161,7 +183,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.TVFileTVItemID = tvItemModel.TVItemID;
             tvFileModelNew.TemplateTVType = 0;
             tvFileModelNew.ReportTypeID = reportTypeModel.ReportTypeID;
-            tvFileModelNew.Parameters = Parameters;
+            tvFileModelNew.Parameters = parameters;
             tvFileModelNew.ServerFileName = fi.Name;
             tvFileModelNew.FilePurpose = FilePurposeEnum.ReportGenerated;
             tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
@@ -201,5 +223,68 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
+        private bool RenameStartOfFileNameKMZ(string parameters, ReportTypeModel reportTypeModel)
+        {
+            string NotUsed = "";
+            switch (reportTypeModel.TVType)
+            {
+                case TVTypeEnum.MikeScenario:
+                    {
+                        string TVItemIDStr = "";
+                        int TVItemID = 0;
+                        string ContourValues = "";
+                        List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                        TVItemIDStr = GetParameters("TVItemID", ParamValueList);
+                        if (string.IsNullOrWhiteSpace(TVItemIDStr))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                        }
+
+                        int.TryParse(TVItemIDStr, out TVItemID);
+                        if (TVItemID == 0)
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                        }
+
+                        ContourValues = GetParameters("ContourValues", ParamValueList);
+                        ContourValues = ContourValues.Trim().Replace(" ", "_");
+
+                        TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+                        if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+                        {
+                            NotUsed = tvItemModelMikeScenario.Error;
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelMikeScenario.Error);
+                            return false;
+                        }
+                        string MikeScenarioName = tvItemModelMikeScenario.TVText;
+                        int pos = MikeScenarioName.IndexOf(" ");
+                        if (pos > 0)
+                        {
+                            MikeScenarioName = MikeScenarioName.Trim();
+                        }
+                        reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{MikeScenarioName}", MikeScenarioName);
+
+                    
+                        // it is possible that ContourValues parameter does not exist or is empty
+                        ContourValues = GetParameters("ContourValues", ParamValueList);
+                        ContourValues = ContourValues.Trim().Replace(" ", "_");
+
+                        if (!string.IsNullOrWhiteSpace(ContourValues))
+                        {
+
+                            reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{ContourValues}", ContourValues);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        }
+
     }
 }

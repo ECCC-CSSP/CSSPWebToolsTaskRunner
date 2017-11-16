@@ -1143,4 +1143,61 @@
   <data name="Inset" xml:space="preserve">
     <value>Inset</value>
   </data>
+  <data name="BottomOfLayer" xml:space="preserve">
+    <value>Dessous de la tranche</value>
+  </data>
+  <data name="ContourValues" xml:space="preserve">
+    <value>ContourValues</value>
+  </data>
+  <data name="Depths" xml:space="preserve">
+    <value>Profondeurs</value>
+  </data>
+  <data name="ElementNodes" xml:space="preserve">
+    <value>Noeuds d'éléments</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="ErrorOccuredWhileCreatingKMZDocument_" xml:space="preserve">
+    <value>Erreur lors de la création du document KMZ {0}</value>
+  </data>
+  <data name="Error_WhileCreatingKMZDocument_" xml:space="preserve">
+    <value>Erreur {0} lors de la création du document KMZ {1}</value>
+  </data>
+  <data name="ManningNumber" xml:space="preserve">
+    <value>Coefficient Manning</value>
+  </data>
+  <data name="MIKEBoundaryConditions" xml:space="preserve">
+    <value>MIKE conditions aux limites</value>
+  </data>
+  <data name="MIKEMesh" xml:space="preserve">
+    <value>Grillage de MIKE</value>
+  </data>
+  <data name="MIKEPollutionAnimation" xml:space="preserve">
+    <value>Animation de pollution MIKE</value>
+  </data>
+  <data name="MIKEPollutionLimit" xml:space="preserve">
+    <value>MIKE limite de pollution</value>
+  </data>
+  <data name="MIKESourceNameIsEmpty" xml:space="preserve">
+    <value>Nom de la source MIKE est vide</value>
+  </data>
+  <data name="MIKEStudyArea" xml:space="preserve">
+    <value>MIKE région d'étude</value>
+  </data>
+  <data name="Nodes" xml:space="preserve">
+    <value>Noeuds</value>
+  </data>
+  <data name="PollutionAnimation" xml:space="preserve">
+    <value>Animation de pollution</value>
+  </data>
+  <data name="Polygons" xml:space="preserve">
+    <value>Polygones</value>
+  </data>
+  <data name="WebTideNodes" xml:space="preserve">
+    <value>Noeuds d'éléments web tide</value>
+  </data>
+  <data name="_ShouldNotBe0InFunction_" xml:space="preserve">
+    <value>{0} ne devrait pas être 0 dans la fonction {1}</value>
+  </data>
 </root>

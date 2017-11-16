@@ -160,6 +160,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} should not be 0 in function {1}.
+        /// </summary>
+        public static string _ShouldNotBe0InFunction_ {
+            get {
+                return ResourceManager.GetString("_ShouldNotBe0InFunction_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [{0}] should not be null.
         /// </summary>
         public static string _ShouldNotBeNull {
@@ -304,6 +313,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bottom of layer.
+        /// </summary>
+        public static string BottomOfLayer {
+            get {
+                return ResourceManager.GetString("BottomOfLayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BoundaryConditionCode.
         /// </summary>
         public static string BoundaryConditionCode {
@@ -399,6 +417,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ContourValue {
             get {
                 return ResourceManager.GetString("ContourValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ContourValues.
+        /// </summary>
+        public static string ContourValues {
+            get {
+                return ResourceManager.GetString("ContourValues", resourceCulture);
             }
         }
         
@@ -952,6 +979,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Depths.
+        /// </summary>
+        public static string Depths {
+            get {
+                return ResourceManager.GetString("Depths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directory.
         /// </summary>
         public static string Directory {
@@ -1002,6 +1038,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ElementLayerContainingNode {
             get {
                 return ResourceManager.GetString("ElementLayerContainingNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Element nodes.
+        /// </summary>
+        public static string ElementNodes {
+            get {
+                return ResourceManager.GetString("ElementNodes", resourceCulture);
             }
         }
         
@@ -1060,11 +1105,38 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error {0} while creating KMZ document {1}.
+        /// </summary>
+        public static string Error_WhileCreatingKMZDocument_ {
+            get {
+                return ResourceManager.GetString("Error_WhileCreatingKMZDocument_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error in index {0} {1} {2}..
         /// </summary>
         public static string ErrorInIndex___ {
             get {
                 return ResourceManager.GetString("ErrorInIndex___", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured while creating KMZ document {0}.
+        /// </summary>
+        public static string ErrorOccuredWhileCreatingKMZDocument_ {
+            get {
+                return ResourceManager.GetString("ErrorOccuredWhileCreatingKMZDocument_", resourceCulture);
             }
         }
         
@@ -1510,6 +1582,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manning number.
+        /// </summary>
+        public static string ManningNumber {
+            get {
+                return ResourceManager.GetString("ManningNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MapInfo.
         /// </summary>
         public static string MapInfo {
@@ -1672,6 +1753,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MIKE boundary conditions.
+        /// </summary>
+        public static string MIKEBoundaryConditions {
+            get {
+                return ResourceManager.GetString("MIKEBoundaryConditions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MikeBoundaryConditionTVItemID.
         /// </summary>
         public static string MikeBoundaryConditionTVItemID {
@@ -1695,6 +1785,33 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MikeBoundaryElementNodes {
             get {
                 return ResourceManager.GetString("MikeBoundaryElementNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKE mesh.
+        /// </summary>
+        public static string MIKEMesh {
+            get {
+                return ResourceManager.GetString("MIKEMesh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKE pollution animation.
+        /// </summary>
+        public static string MIKEPollutionAnimation {
+            get {
+                return ResourceManager.GetString("MIKEPollutionAnimation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKE pollution limit.
+        /// </summary>
+        public static string MIKEPollutionLimit {
+            get {
+                return ResourceManager.GetString("MIKEPollutionLimit", resourceCulture);
             }
         }
         
@@ -1825,6 +1942,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MIKE source name is empty.
+        /// </summary>
+        public static string MIKESourceNameIsEmpty {
+            get {
+                return ResourceManager.GetString("MIKESourceNameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MikeSources.
         /// </summary>
         public static string MikeSources {
@@ -1839,6 +1965,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MikeSourceStartEnd {
             get {
                 return ResourceManager.GetString("MikeSourceStartEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKE study area.
+        /// </summary>
+        public static string MIKEStudyArea {
+            get {
+                return ResourceManager.GetString("MIKEStudyArea", resourceCulture);
             }
         }
         
@@ -1974,6 +2109,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Node {
             get {
                 return ResourceManager.GetString("Node", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nodes.
+        /// </summary>
+        public static string Nodes {
+            get {
+                return ResourceManager.GetString("Nodes", resourceCulture);
             }
         }
         
@@ -2239,6 +2383,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pollution animation.
+        /// </summary>
+        public static string PollutionAnimation {
+            get {
+                return ResourceManager.GetString("PollutionAnimation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pollution Contour.
         /// </summary>
         public static string PollutionContour {
@@ -2262,6 +2415,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string PollutionVideo {
             get {
                 return ResourceManager.GetString("PollutionVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polygons.
+        /// </summary>
+        public static string Polygons {
+            get {
+                return ResourceManager.GetString("Polygons", resourceCulture);
             }
         }
         
@@ -3099,6 +3261,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WebTideDataSet {
             get {
                 return ResourceManager.GetString("WebTideDataSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web tide nodes.
+        /// </summary>
+        public static string WebTideNodes {
+            get {
+                return ResourceManager.GetString("WebTideNodes", resourceCulture);
             }
         }
         

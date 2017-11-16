@@ -2081,7 +2081,7 @@ namespace CSSPWebToolsTaskRunner.Services
         public void GenerateMikeScenarioMesh(FileInfo fi)
         {
             string NotUsed = "";
-            //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
+            string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
 
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);

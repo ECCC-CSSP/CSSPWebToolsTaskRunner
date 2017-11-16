@@ -21,14 +21,6 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "MikeScenarioTestDocx":
-                    {
-                        if (!GenerateHTMLMikeScenario_MikeScenarioTestDocx(fi, sbHTML, parameters, reportTypeModel))
-                        {
-                            return false;
-                        }
-                    }
-                    break;
                 case "MikeScenarioTestExcel":
                     {
                         if (!GenerateHTMLMikeScenario_MikeScenarioTestXlsx(fi, sbHTML, parameters, reportTypeModel))
@@ -48,22 +40,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     break;
             }
-            return true;
-        }
-        private bool GenerateHTMLMikeScenario_MikeScenarioTestDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
-        {
-            if (!GetTopHTML(sbHTML))
-            {
-                return false;
-            }
-
-            sbHTML.AppendLine(@"<h2>Bonjour</h2>");
-
-            if (!GetBottomHTML(sbHTML, fi, parameters))
-            {
-                return false;
-            }
-
             return true;
         }
         private bool GenerateHTMLMikeScenario_MikeScenarioTestXlsx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
