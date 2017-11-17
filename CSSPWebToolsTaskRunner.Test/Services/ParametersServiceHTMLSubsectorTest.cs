@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
+using CSSPWebToolsTaskRunner.Services.Resources;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -83,6 +84,44 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         #endregion Initialize and Cleanup
 
         #region Functions public
+        [TestMethod]
+        public void Excel_Image_Test()
+        {
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Workbook workbook = xlApp.Workbooks.Add();
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Sheets.Add();
+
+            worksheet.Shapes.AddChart().Select();
+            xlApp.ActiveChart.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xl3DColumn);
+            xlApp.ActiveChart.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            xlApp.ActiveChart.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            xlApp.ActiveChart.Legend.Select();
+            xlApp.Selection.Delete();
+
+            Microsoft.Office.Interop.Excel.SeriesCollection seriesCollection = (Microsoft.Office.Interop.Excel.SeriesCollection)xlApp.ActiveChart.SeriesCollection();
+            Microsoft.Office.Interop.Excel.Series series = seriesCollection.NewSeries();
+
+            xlApp.ActiveChart.Parent.Width = 600;
+            xlApp.ActiveChart.Parent.Height = 100;
+
+            series.Values = new double[] { 1d, 3d, 2d, 5d };
+            series.XValues = new string[] { "A", "B", "C", "D" };
+
+            xlApp.ActiveChart.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.YearsWithSamplesUsed;
+
+            xlApp.ActiveChart.Export(@"C:\Users\leblancc\Desktop\test.png", "PNG", false);
+
+            if (workbook != null)
+            {
+                workbook.Close(false);
+            }
+            if (xlApp != null)
+            {
+                xlApp.Quit();
+            }
+        }
         [TestMethod]
         public void GenerateHTMLSubsector_With_UniqueCode_FCSummaryStatDocx_Test()
         {

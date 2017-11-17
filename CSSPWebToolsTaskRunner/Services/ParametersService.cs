@@ -220,7 +220,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            // importing images/graphics where we find |||FileNameImport|||
+            appWord.Selection.Range.Start = 1;
+            appWord.Selection.Range.End = 1;
+            // importing images/graphics where we find |||Image|||
             Found = true;
             while (Found)
             {

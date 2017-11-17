@@ -3337,6 +3337,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Years with samples used.
+        /// </summary>
+        public static string YearsWithSamplesUsed {
+            get {
+                return ResourceManager.GetString("YearsWithSamplesUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Z Layers.
         /// </summary>
         public static string ZLayers {

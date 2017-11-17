@@ -13,6 +13,7 @@ using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using System.Windows.Forms;
+using System.Web.Helpers;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -171,6 +172,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             int CountAllSiteTotal = mwqmSiteAnalysisModelListFirst.Count() * mwqmAnalysisReportParameterModelList.Count();
             int CountAllSite = 0;
+            int CountAnalysisReportParameterModel = 0;
             foreach (MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel in mwqmAnalysisReportParameterModelList)
             {
                 List<DateTime> DateTimeList = new List<DateTime>();
@@ -648,16 +650,60 @@ namespace CSSPWebToolsTaskRunner.Services
                                       orderby c
                                       select c.Year).ToList();
 
-                string ChartAddress = "";
-                if (Application.ExecutablePath.StartsWith(@"C:\CSSP Latest Code Old\CSSPWebToolsTaskRunner"))
+                List<int> YearDistinct = YearList.Distinct().ToList();
+                List<int> CountPerYear = new List<int>();
+                foreach (int YearWithData in YearDistinct)
                 {
-                    ChartAddress = "http://localhost:11562/" + _TaskRunnerBaseService._BWObj.appTaskModel.Language.ToString() + "-CA/Chart/SummaryStatisticsOfFCUsedRuns?Years=";
+                    CountPerYear.Add(YearList.Where(c => c == YearWithData).Count());
                 }
-                else
+
+                Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                Microsoft.Office.Interop.Excel.Workbook workbook = xlApp.Workbooks.Add();
+                Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Sheets.Add();
+
+                worksheet.Shapes.AddChart().Select();
+                xlApp.ActiveChart.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xl3DColumn);
+                xlApp.ActiveChart.ChartTitle.Select();
+                xlApp.Selection.Delete();
+                xlApp.ActiveChart.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+                xlApp.Selection.Delete();
+                xlApp.ActiveChart.Legend.Select();
+                xlApp.Selection.Delete();
+
+                Microsoft.Office.Interop.Excel.SeriesCollection seriesCollection = (Microsoft.Office.Interop.Excel.SeriesCollection)xlApp.ActiveChart.SeriesCollection();
+                Microsoft.Office.Interop.Excel.Series series = seriesCollection.NewSeries();
+   
+                xlApp.ActiveChart.Parent.Width = 600;
+                xlApp.ActiveChart.Parent.Height = 100;
+
+                series.XValues = YearDistinct.ToArray();
+                series.Values = CountPerYear.ToArray();
+
+                Random random = new Random();
+                string FileNameExtra = "";
+                for (int i = 0; i < 10; i++)
                 {
-                    ChartAddress = "http://wmon01dtchlebl2/csspwebtools/" + _TaskRunnerBaseService._BWObj.appTaskModel.Language.ToString() + "-CA/Chart/SummaryStatisticsOfFCUsedRuns?Years=";
+                    FileNameExtra = FileNameExtra + (char)random.Next(97, 122);
                 }
-                sbHTML.AppendLine($@"            <td colspan=""12""><img src=""{ ChartAddress }{ String.Join("_", YearList) }""</td>");
+
+                CountAnalysisReportParameterModel += 1;
+                // need to save the file with a unique name under the TVItemID
+                FileInfo fiImage = new FileInfo(fi.DirectoryName + @"\" + FileNameExtra + CountAnalysisReportParameterModel.ToString() + ".png");
+                xlApp.ActiveChart.Export(fiImage.FullName, "PNG", false);
+
+                if (workbook != null)
+                {
+                    workbook.Close(false);
+                }
+                if (xlApp != null)
+                {
+                    xlApp.Quit();
+                }
+
+                sbHTML.AppendLine($@"            <td colspan=""12"">");
+                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,600|height,100|||");
+                sbHTML.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
+                sbHTML.AppendLine(@"            </td>");
                 sbHTML.AppendLine(@"        </tr>");
                 sbHTML.AppendLine(@"    </tfoot>");
                 sbHTML.AppendLine(@"</table>");

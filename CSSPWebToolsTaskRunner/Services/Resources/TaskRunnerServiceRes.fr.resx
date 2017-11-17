@@ -1200,4 +1200,7 @@
   <data name="_ShouldNotBe0InFunction_" xml:space="preserve">
     <value>{0} ne devrait pas être 0 dans la fonction {1}</value>
   </data>
+  <data name="YearsWithSamplesUsed" xml:space="preserve">
+    <value>Années avec des échantillons utilisés</value>
+  </data>
 </root>
