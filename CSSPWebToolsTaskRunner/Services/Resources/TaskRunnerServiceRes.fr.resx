@@ -1203,4 +1203,112 @@
   <data name="YearsWithSamplesUsed" xml:space="preserve">
     <value>Années avec des échantillons utilisés</value>
   </data>
+  <data name="AnalysisName" xml:space="preserve">
+    <value>Nom de l'analyse</value>
+  </data>
+  <data name="CalculationType" xml:space="preserve">
+    <value>Type de calcul</value>
+  </data>
+  <data name="Dry24h" xml:space="preserve">
+    <value>Sec 24h</value>
+  </data>
+  <data name="Dry48h" xml:space="preserve">
+    <value>Sec 48h</value>
+  </data>
+  <data name="Dry72h" xml:space="preserve">
+    <value>Sec 72h</value>
+  </data>
+  <data name="Dry96h" xml:space="preserve">
+    <value>Sec 96h</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Vide</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Date de fin</value>
+  </data>
+  <data name="FullYear" xml:space="preserve">
+    <value>L'année complète</value>
+  </data>
+  <data name="NumberOfRuns" xml:space="preserve">
+    <value>Nombre d'échantillons</value>
+  </data>
+  <data name="ReportYear" xml:space="preserve">
+    <value>L'année du rapport</value>
+  </data>
+  <data name="RunsOmitted" xml:space="preserve">
+    <value>Échantillons omis</value>
+  </data>
+  <data name="ShortRangeNumberOfDays" xml:space="preserve">
+    <value>Nombre de jour pour court terme</value>
+  </data>
+  <data name="Wet24h" xml:space="preserve">
+    <value>Pluie 24h</value>
+  </data>
+  <data name="Wet48h" xml:space="preserve">
+    <value>Pluie 48h</value>
+  </data>
+  <data name="Wet72h" xml:space="preserve">
+    <value>Pluie 72h</value>
+  </data>
+  <data name="Wet96h" xml:space="preserve">
+    <value>Pluie 96h</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+  <data name="Dry" xml:space="preserve">
+    <value>Sec</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Wet" xml:space="preserve">
+    <value>Pluie</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="BecauseOfMissingRainData" xml:space="preserve">
+    <value>puisqu'il y a des données de pluie manquantes</value>
+  </data>
+  <data name="Agriculture" xml:space="preserve">
+    <value>Agriculture</value>
+  </data>
+  <data name="Forested" xml:space="preserve">
+    <value>Forestière</value>
+  </data>
+  <data name="HighRisk" xml:space="preserve">
+    <value>Risque élevé</value>
+  </data>
+  <data name="Industry" xml:space="preserve">
+    <value>Industrie</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Légende</value>
+  </data>
+  <data name="LowRisk" xml:space="preserve">
+    <value>Risque faible</value>
+  </data>
+  <data name="Marine" xml:space="preserve">
+    <value>Marine</value>
+  </data>
+  <data name="MarineWaterQualityMonitoringSites" xml:space="preserve">
+    <value>Sites d'échantillonnage de qualité d'eau marine</value>
+  </data>
+  <data name="ModerateRisk" xml:space="preserve">
+    <value>Risque modéré</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Autre</value>
+  </data>
+  <data name="PollutionSourceSites" xml:space="preserve">
+    <value>Sites de source de pollution</value>
+  </data>
+  <data name="Recreation" xml:space="preserve">
+    <value>Récréative</value>
+  </data>
+  <data name="Urban" xml:space="preserve">
+    <value>Urbain</value>
+  </data>
 </root>

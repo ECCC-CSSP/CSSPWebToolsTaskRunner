@@ -87,31 +87,33 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         [TestMethod]
         public void Excel_Image_Test()
         {
-            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel._Application xlApp = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel.Workbook workbook = xlApp.Workbooks.Add();
-            Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Sheets.Add();
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets.get_Item(1);
 
-            worksheet.Shapes.AddChart().Select();
-            xlApp.ActiveChart.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xl3DColumn);
-            xlApp.ActiveChart.ChartTitle.Select();
-            xlApp.Selection.Delete();
-            xlApp.ActiveChart.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            xlApp.Selection.Delete();
-            xlApp.ActiveChart.Legend.Select();
-            xlApp.Selection.Delete();
+            Microsoft.Office.Interop.Excel.ChartObjects xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
+            Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 600, 100);
+            Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
-            Microsoft.Office.Interop.Excel.SeriesCollection seriesCollection = (Microsoft.Office.Interop.Excel.SeriesCollection)xlApp.ActiveChart.SeriesCollection();
+            chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
+
+            Microsoft.Office.Interop.Excel.SeriesCollection seriesCollection = chartPage.SeriesCollection();
             Microsoft.Office.Interop.Excel.Series series = seriesCollection.NewSeries();
 
-            xlApp.ActiveChart.Parent.Width = 600;
-            xlApp.ActiveChart.Parent.Height = 100;
+            series.Values = new double[] { 1d, 3d, 2d, 5d, 6d, 7d };
+            series.XValues = new double[] { 1d, 2d, 3d, 4d, 7d, 19d };
 
-            series.Values = new double[] { 1d, 3d, 2d, 5d };
-            series.XValues = new string[] { "A", "B", "C", "D" };
+            chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+            chartPage.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Legend.Select();
+            xlApp.Selection.Delete();
 
-            xlApp.ActiveChart.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.YearsWithSamplesUsed;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.YearsWithSamplesUsed;
 
-            xlApp.ActiveChart.Export(@"C:\Users\leblancc\Desktop\test.png", "PNG", false);
+            chartPage.Export(@"C:\Users\charles\Desktop\test.png", "PNG", false);
 
             if (workbook != null)
             {

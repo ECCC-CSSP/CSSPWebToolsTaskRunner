@@ -205,6 +205,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agriculture.
+        /// </summary>
+        public static string Agriculture {
+            get {
+                return ResourceManager.GetString("Agriculture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All-All-All.
         /// </summary>
         public static string AllAllAll {
@@ -228,6 +246,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Amplitude {
             get {
                 return ResourceManager.GetString("Amplitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Analysis name.
+        /// </summary>
+        public static string AnalysisName {
+            get {
+                return ResourceManager.GetString("AnalysisName", resourceCulture);
             }
         }
         
@@ -304,6 +331,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to because of missing rain data.
+        /// </summary>
+        public static string BecauseOfMissingRainData {
+            get {
+                return ResourceManager.GetString("BecauseOfMissingRainData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bed Resistance Type.
         /// </summary>
         public static string BedResistanceType {
@@ -327,6 +363,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string BoundaryConditionCode {
             get {
                 return ResourceManager.GetString("BoundaryConditionCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation type.
+        /// </summary>
+        public static string CalculationType {
+            get {
+                return ResourceManager.GetString("CalculationType", resourceCulture);
             }
         }
         
@@ -1006,6 +1051,51 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dry.
+        /// </summary>
+        public static string Dry {
+            get {
+                return ResourceManager.GetString("Dry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dry 24h.
+        /// </summary>
+        public static string Dry24h {
+            get {
+                return ResourceManager.GetString("Dry24h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dry 48h.
+        /// </summary>
+        public static string Dry48h {
+            get {
+                return ResourceManager.GetString("Dry48h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dry 72h.
+        /// </summary>
+        public static string Dry72h {
+            get {
+                return ResourceManager.GetString("Dry72h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dry 96h.
+        /// </summary>
+        public static string Dry96h {
+            get {
+                return ResourceManager.GetString("Dry96h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dry-All-All.
         /// </summary>
         public static string DryAllAll {
@@ -1074,6 +1164,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ElementTypeIsOtherThan_Its_ {
             get {
                 return ResourceManager.GetString("ElementTypeIsOtherThan_Its_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty.
+        /// </summary>
+        public static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date.
+        /// </summary>
+        public static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
             }
         }
         
@@ -1357,11 +1465,29 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forested.
+        /// </summary>
+        public static string Forested {
+            get {
+                return ResourceManager.GetString("Forested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From.
         /// </summary>
         public static string From {
             get {
                 return ResourceManager.GetString("From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full year.
+        /// </summary>
+        public static string FullYear {
+            get {
+                return ResourceManager.GetString("FullYear", resourceCulture);
             }
         }
         
@@ -1402,6 +1528,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to High risk.
+        /// </summary>
+        public static string HighRisk {
+            get {
+                return ResourceManager.GetString("HighRisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to hours.
         /// </summary>
         public static string Hours {
@@ -1416,6 +1551,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string IncludedLowerCase {
             get {
                 return ResourceManager.GetString("IncludedLowerCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Industry.
+        /// </summary>
+        public static string Industry {
+            get {
+                return ResourceManager.GetString("Industry", resourceCulture);
             }
         }
         
@@ -1537,6 +1681,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Legend.
+        /// </summary>
+        public static string Legend {
+            get {
+                return ResourceManager.GetString("Legend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Letter and color schema.
         /// </summary>
         public static string LetterAndColorSchema {
@@ -1578,6 +1731,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string LongitudeInfo {
             get {
                 return ResourceManager.GetString("LongitudeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low risk.
+        /// </summary>
+        public static string LowRisk {
+            get {
+                return ResourceManager.GetString("LowRisk", resourceCulture);
             }
         }
         
@@ -1650,6 +1812,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MapInfoPolyPoint {
             get {
                 return ResourceManager.GetString("MapInfoPolyPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marine.
+        /// </summary>
+        public static string Marine {
+            get {
+                return ResourceManager.GetString("Marine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marine Water Quality Monitoring Sites.
+        /// </summary>
+        public static string MarineWaterQualityMonitoringSites {
+            get {
+                return ResourceManager.GetString("MarineWaterQualityMonitoringSites", resourceCulture);
             }
         }
         
@@ -2023,6 +2203,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Moderate risk.
+        /// </summary>
+        public static string ModerateRisk {
+            get {
+                return ResourceManager.GetString("ModerateRisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MPN.
         /// </summary>
         public static string MPN {
@@ -2091,6 +2280,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NeedToImplement {
             get {
                 return ResourceManager.GetString("NeedToImplement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
@@ -2194,6 +2392,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of runs.
+        /// </summary>
+        public static string NumberOfRuns {
+            get {
+                return ResourceManager.GetString("NumberOfRuns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of WebTide nodes.
         /// </summary>
         public static string NumberOfWebTideNodes {
@@ -2253,6 +2460,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string OnlyOneHydrodynamicAndTransportOutputIsAllowed {
             get {
                 return ResourceManager.GetString("OnlyOneHydrodynamicAndTransportOutputIsAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
             }
         }
         
@@ -2410,6 +2626,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pollution Source Sites.
+        /// </summary>
+        public static string PollutionSourceSites {
+            get {
+                return ResourceManager.GetString("PollutionSourceSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pollution Video.
         /// </summary>
         public static string PollutionVideo {
@@ -2518,11 +2743,29 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recreation.
+        /// </summary>
+        public static string Recreation {
+            get {
+                return ResourceManager.GetString("Recreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ReportTypeID.
         /// </summary>
         public static string ReportTypeID {
             get {
                 return ResourceManager.GetString("ReportTypeID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report year.
+        /// </summary>
+        public static string ReportYear {
+            get {
+                return ResourceManager.GetString("ReportYear", resourceCulture);
             }
         }
         
@@ -2559,6 +2802,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Running {
             get {
                 return ResourceManager.GetString("Running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Runs omitted.
+        /// </summary>
+        public static string RunsOmitted {
+            get {
+                return ResourceManager.GetString("RunsOmitted", resourceCulture);
             }
         }
         
@@ -2712,6 +2964,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SharedStringIsRequired {
             get {
                 return ResourceManager.GetString("SharedStringIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short range number of days.
+        /// </summary>
+        public static string ShortRangeNumberOfDays {
+            get {
+                return ResourceManager.GetString("ShortRangeNumberOfDays", resourceCulture);
             }
         }
         
@@ -3220,6 +3481,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Urban.
+        /// </summary>
+        public static string Urban {
+            get {
+                return ResourceManager.GetString("Urban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to used.
         /// </summary>
         public static string UsedLowerCase {
@@ -3270,6 +3540,51 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WebTideNodes {
             get {
                 return ResourceManager.GetString("WebTideNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wet.
+        /// </summary>
+        public static string Wet {
+            get {
+                return ResourceManager.GetString("Wet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wet 24h.
+        /// </summary>
+        public static string Wet24h {
+            get {
+                return ResourceManager.GetString("Wet24h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wet 48h.
+        /// </summary>
+        public static string Wet48h {
+            get {
+                return ResourceManager.GetString("Wet48h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wet 72h.
+        /// </summary>
+        public static string Wet72h {
+            get {
+                return ResourceManager.GetString("Wet72h", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wet 96h.
+        /// </summary>
+        public static string Wet96h {
+            get {
+                return ResourceManager.GetString("Wet96h", resourceCulture);
             }
         }
         
@@ -3342,6 +3657,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string YearsWithSamplesUsed {
             get {
                 return ResourceManager.GetString("YearsWithSamplesUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
         

@@ -22,6 +22,10 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
             int TVItemID = 0;
+            string HideVerticalScale = "";
+            string HideHorizontalScale = "";
+            string HideNorthArrow = "";
+            string HideSubsectorName = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
 
@@ -29,7 +33,6 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 return false;
             }
-
             List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (!int.TryParse(GetParameters("TVItemID", ParamValueList), out TVItemID))
@@ -39,6 +42,11 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
+            HideVerticalScale = GetParameters("HideVerticalScale", ParamValueList);
+            HideHorizontalScale = GetParameters("HideHorizontalScale", ParamValueList);
+            HideNorthArrow = GetParameters("HideNorthArrow", ParamValueList);
+            HideSubsectorName = GetParameters("HideSubsectorName", ParamValueList);
+
             string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
 
             sbHTML.AppendLine($@"<h1>{ SubsectorTVText }</h1>");
@@ -46,7 +54,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
-            GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService);
+            GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService, HideVerticalScale, HideHorizontalScale, HideNorthArrow, HideSubsectorName);
 
             if (!googleMapToPNG.CreateSubsectorGoogleMapPNGForMWQMSites(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, "hybrid"))
             {

@@ -18,6 +18,12 @@ namespace CSSPWebToolsTaskRunner.Services
     public partial class ParametersService
     {
         #region Variables
+        private List<Node> InterpolatedContourNodeList = new List<Node>();
+        private Dictionary<String, Vector> ForwardVector = new Dictionary<String, Vector>();
+        private Dictionary<String, Vector> BackwardVector = new Dictionary<String, Vector>();
+        #endregion Variables
+
+        #region Properties
         private TaskRunnerBaseService _TaskRunnerBaseService { get; set; }
         private TVFileService _TVFileService { get; set; }
         private TVItemService _TVItemService { get; set; }
@@ -29,11 +35,8 @@ namespace CSSPWebToolsTaskRunner.Services
         private MikeBoundaryConditionService _MikeBoundaryConditionService { get; set; }
         private MikeSourceService _MikeSourceService { get; set; }
         private MikeSourceStartEndService _MikeSourceStartEndService { get; set; }
-
-        private List<Node> InterpolatedContourNodeList = new List<Node>();
-        private Dictionary<String, Vector> ForwardVector = new Dictionary<String, Vector>();
-        private Dictionary<String, Vector> BackwardVector = new Dictionary<String, Vector>();
-        #endregion Variables
+        private MWQMRunService _MWQMRunService { get; set; }
+        #endregion Properties
 
         #region Constructors
         public ParametersService(TaskRunnerBaseService taskRunnerBaseService)
@@ -49,6 +52,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _MikeBoundaryConditionService = new MikeBoundaryConditionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MikeSourceService = new MikeSourceService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MikeSourceStartEndService = new MikeSourceStartEndService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MWQMRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
         }
         #endregion Constructors
 
@@ -220,8 +224,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            appWord.Selection.Range.Start = 1;
-            appWord.Selection.Range.End = 1;
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
             // importing images/graphics where we find |||Image|||
             Found = true;
             while (Found)
@@ -359,7 +365,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
-            if (reportTypeModel.UniqueCode.StartsWith("Map"))
+            if (!string.IsNullOrWhiteSpace(FileNameRandom))
             {
                 DirectoryInfo di = new DirectoryInfo(fi.Directory + @"\");
                 List<FileInfo> fiList = di.GetFiles().Where(c => c.Name.Contains(FileNameRandom)).ToList();

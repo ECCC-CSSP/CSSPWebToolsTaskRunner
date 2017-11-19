@@ -16,17 +16,23 @@ namespace CSSPWebToolsTaskRunner.Services
     public partial class GoogleMapToPNG
     {
         #region Variables
+        string HideVerticalScale = "";
+        string HideHorizontalScale = "";
+        string HideNorthArrow = "";
+        string HideSubsectorName = "";
+        int IconSize = 10;
         #endregion Variables
 
         #region Properties
-        public TaskRunnerBaseService _TaskRunnerBaseService { get; private set; }
-        public TVItemService _TVItemService { get; private set; }
-        public MapInfoService _MapInfoService { get; private set; }
-        public MapInfoPointService _MapInfoPointService { get; private set; }
-        public PolSourceSiteService _PolSourceSiteService { get; private set; }
-        public PolSourceObservationService _PolSourceObservationService { get; private set; }
-        public PolSourceObservationIssueService _PolSourceObservationIssueService { get; private set; }
-        public TVFileService _TVFileService { get; private set; }
+        private TaskRunnerBaseService _TaskRunnerBaseService { get; set; }
+        private string _Parameters { get; set; }
+        private TVItemService _TVItemService { get; set; }
+        private MapInfoService _MapInfoService { get; set; }
+        private MapInfoPointService _MapInfoPointService { get; set; }
+        private PolSourceSiteService _PolSourceSiteService { get; set; }
+        private PolSourceObservationService _PolSourceObservationService { get; set; }
+        private PolSourceObservationIssueService _PolSourceObservationIssueService { get; set; }
+        private TVFileService _TVFileService { get; set; }
 
         public string DirName { get; set; }
         private string FileNameNW { get; set; }
@@ -48,9 +54,13 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Properties
 
         #region Constructors
-        public GoogleMapToPNG(TaskRunnerBaseService taskRunnerBaseService)
+        public GoogleMapToPNG(TaskRunnerBaseService taskRunnerBaseService, string HideVerticalScale, string HideHorizontalScale, string HideNorthArrow, string HideSubsectorName)
         {
             _TaskRunnerBaseService = taskRunnerBaseService;
+            this.HideVerticalScale = HideVerticalScale;
+            this.HideHorizontalScale = HideHorizontalScale;
+            this.HideNorthArrow = HideNorthArrow;
+            this.HideSubsectorName = HideSubsectorName;
             _TVItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MapInfoPointService = new MapInfoPointService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -67,7 +77,7 @@ namespace CSSPWebToolsTaskRunner.Services
         #region Functions public
         public bool CreateSubsectorGoogleMapPNGForPolSourceSites(int SubsectorTVItemID, string MapType)
         {
-            string NotUsed = "";
+            //string NotUsed = "";
             this.MapType = MapType;
 
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(SubsectorTVItemID);
@@ -182,6 +192,109 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Functions public
 
         #region Functions private
+
+        #region Functions private draw icons
+        private void DrawAgricultureIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
+        {
+            Point[] pointArr = new List<Point>()
+                            {
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
+                            }.ToArray();
+            g.DrawPolygon(pen, pointArr);
+            g.FillPolygon(brush, pointArr);
+        }
+        private void DrawForestedIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
+        {
+            Point[] pointArr = new List<Point>()
+                            {
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2)*2 },
+                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                            }.ToArray();
+            g.DrawPolygon(pen, pointArr);
+            g.FillPolygon(brush, pointArr);
+        }
+        private void DrawIndustryIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
+        {
+            Point[] pointArr = new List<Point>()
+                            {
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY },
+                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY },
+                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                            }.ToArray();
+            g.DrawPolygon(pen, pointArr);
+            g.FillPolygon(brush, pointArr);
+        }
+        private void DrawMarineIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
+        {
+            Point[] pointArr = new List<Point>()
+                            {
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY },
+                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                            }.ToArray();
+            g.DrawPolygon(pen, pointArr);
+            g.FillPolygon(brush, pointArr);
+        }
+        private void DrawRecreationIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
+        {
+            Point[] pointArr = new List<Point>()
+                            {
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY },
+                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                            }.ToArray();
+            g.DrawPolygon(pen, pointArr);
+            g.FillPolygon(brush, pointArr);
+        }
+        private void DrawUrbanIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
+        {
+            Point[] pointArr = new List<Point>()
+                            {
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY - (width/3) },
+                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY - (width/4) },
+                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
+                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY - width },
+                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
+                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
+                            }.ToArray();
+            g.DrawPolygon(pen, pointArr);
+            g.FillPolygon(brush, pointArr);
+        }
+        private void DrawOtherIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
+        {
+            g.DrawEllipse(pen, (int)LngX - (width / 2), (int)LatY - (width / 2), width, width);
+            g.FillEllipse(brush, (int)LngX - (width / 2), (int)LatY - (width / 2), width, width);
+        }
+        #endregion Functions private draw icons
+
         private bool CombineAllImageIntoOne()
         {
             Rectangle cropRect = new Rectangle(0, 0, GoogleImageWidth, GoogleImageHeight - GoogleLogoHeight);
@@ -264,51 +377,54 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool DrawHorizontalScale(Graphics g, CoordMap coordMap)
         {
             string NotUsed = "";
-            try
+            if (string.IsNullOrWhiteSpace(HideHorizontalScale))
             {
-                int MinLngX = (int)(GoogleImageWidth * 2 * 3 / 5);
-                int MaxLngX = (int)(GoogleImageWidth * 2 * 4 / 5);
-
-                g.DrawLine(new Pen(Color.LightBlue, 2), MinLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40, MaxLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40);
-
-                double MinLng = coordMap.NorthEast.Lng - (coordMap.NorthEast.Lng - coordMap.SouthWest.Lng) / 5;
-                double distLng = _MapInfoService.CalculateDistance(coordMap.NorthEast.Lat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, coordMap.NorthEast.Lat * _MapInfoService.d2r, MinLng * _MapInfoService.d2r, _MapInfoService.R) / 1000;
-
-
-                string distText = distLng.ToString("F2") + " km";
-                Font font = new Font("Arial", 10, FontStyle.Regular);
-                Brush brush = new SolidBrush(Color.LightBlue);
-
-                SizeF sizeF = g.MeasureString(distText, font);
-
-                g.DrawString(distText, font, brush, GoogleImageWidth * 2 * 4 / 5, GoogleImageHeight * 2 - GoogleLogoHeight - 60);
-
-                font = new Font("Arial", 10, FontStyle.Regular);
-                brush = new SolidBrush(Color.LightBlue);
-
-                for (int i = 0; i < 10; i++)
+                try
                 {
-                    if ((double)i > distLng)
+                    int MinLngX = (int)(GoogleImageWidth * 2 * 3 / 5);
+                    int MaxLngX = (int)(GoogleImageWidth * 2 * 4 / 5);
+
+                    g.DrawLine(new Pen(Color.LightBlue, 2), MinLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40, MaxLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40);
+
+                    double MinLng = coordMap.NorthEast.Lng - (coordMap.NorthEast.Lng - coordMap.SouthWest.Lng) / 5;
+                    double distLng = _MapInfoService.CalculateDistance(coordMap.NorthEast.Lat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, coordMap.NorthEast.Lat * _MapInfoService.d2r, MinLng * _MapInfoService.d2r, _MapInfoService.R) / 1000;
+
+
+                    string distText = distLng.ToString("F2") + " km";
+                    Font font = new Font("Arial", 10, FontStyle.Regular);
+                    Brush brush = new SolidBrush(Color.LightBlue);
+
+                    SizeF sizeF = g.MeasureString(distText, font);
+
+                    g.DrawString(distText, font, brush, GoogleImageWidth * 2 * 4 / 5, GoogleImageHeight * 2 - GoogleLogoHeight - 60);
+
+                    font = new Font("Arial", 10, FontStyle.Regular);
+                    brush = new SolidBrush(Color.LightBlue);
+
+                    for (int i = 0; i < 10; i++)
                     {
-                        g.DrawLine(new Pen(Color.LightBlue, 1), MaxLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40 - 1, MaxLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40 + 10 - 1);
-                        break;
+                        if ((double)i > distLng)
+                        {
+                            g.DrawLine(new Pen(Color.LightBlue, 1), MaxLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40 - 1, MaxLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40 + 10 - 1);
+                            break;
+                        }
+                        g.DrawLine(new Pen(Color.LightBlue, 1), MinLngX + (int)(i / distLng * (MaxLngX - MinLngX)), GoogleImageHeight * 2 - GoogleLogoHeight - 40 - 1, MinLngX + (int)(i / distLng * (MaxLngX - MinLngX)), GoogleImageHeight * 2 - GoogleLogoHeight - 40 + 10 - 1);
+
+                        distText = i.ToString();
+
+                        sizeF = g.MeasureString(distText, font);
+
+                        g.DrawString(distText, font, brush, MinLngX + (int)(i / distLng * (MaxLngX - MinLngX)) - (sizeF.Width / 2), GoogleImageHeight * 2 - GoogleLogoHeight - 60);
+
                     }
-                    g.DrawLine(new Pen(Color.LightBlue, 1), MinLngX + (int)(i / distLng * (MaxLngX - MinLngX)), GoogleImageHeight * 2 - GoogleLogoHeight - 40 - 1, MinLngX + (int)(i / distLng * (MaxLngX - MinLngX)), GoogleImageHeight * 2 - GoogleLogoHeight - 40 + 10 - 1);
-
-                    distText = i.ToString();
-
-                    sizeF = g.MeasureString(distText, font);
-
-                    g.DrawString(distText, font, brush, MinLngX + (int)(i / distLng * (MaxLngX - MinLngX)) - (sizeF.Width / 2), GoogleImageHeight * 2 - GoogleLogoHeight - 60);
 
                 }
-
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_ImageError_, TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_ImageError_", TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                return false;
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_ImageError_, TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_ImageError_", TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                    return false;
+                }
             }
 
             return true;
@@ -507,14 +623,14 @@ namespace CSSPWebToolsTaskRunner.Services
             int LegendHeight = 0;
             int LegendWidth = 200;
             // Calculating Total legend height
-            string LegendText = "Legend";
+            string LegendText = TaskRunnerServiceRes.Legend;
             SizeF sizeF = g.MeasureString(LegendText, font);
             LegendHeight = LegendHeight + (int)(sizeF.Height) + 10;
 
             font = new Font("Arial", 12, FontStyle.Bold);
-            string ApprovedText = "Approved"; // Approved, Restricted, Conditional Approved, Conditionaly Restricted, Prohibited, Unclassified
+            string ApprovedText = "Some Text"; // just to measure the text height
             sizeF = g.MeasureString(ApprovedText, font);
-            LegendHeight = LegendHeight + ((int)(sizeF.Height) + 5) * 12; // Passing, Fail, No Depuration, Colors (3)
+            LegendHeight = LegendHeight + ((int)(sizeF.Height) + 5) * 13;
 
             g.DrawRectangle(pen, GoogleImageWidth * 2 - LegendWidth, StartingHeight, LegendWidth - 5, LegendHeight);
             g.FillRectangle(brush, GoogleImageWidth * 2 - LegendWidth, StartingHeight, LegendWidth - 5, LegendHeight);
@@ -529,11 +645,12 @@ namespace CSSPWebToolsTaskRunner.Services
             g.DrawString(LegendText, font, brush, CenterOfLegend - (sizeF.Width / 2), CurrentHeight);
 
             CurrentHeight += 20;
-            font = new Font("Arial", 8, FontStyle.Bold);
+            font = new Font("Arial", 10, FontStyle.Bold);
             brush = new SolidBrush(Color.Blue);
             List<string> MajorGroupList = new List<string>()
             {
-                "Agriculture", "Forested", "Industry", "Marine", "Recreation", "Urban", "Other"
+                TaskRunnerServiceRes.Agriculture, TaskRunnerServiceRes.Forested, TaskRunnerServiceRes.Industry,
+                TaskRunnerServiceRes.Marine, TaskRunnerServiceRes.Recreation, TaskRunnerServiceRes.Urban, TaskRunnerServiceRes.Other
             };
 
             sizeF = g.MeasureString(MajorGroupList[0], font);
@@ -550,7 +667,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 brush = new SolidBrush(Color.Green);
                 int LatY = CurrentHeight + RectHeight / 2;
                 int LngX = CenterOfLegend - LegendWidth / 2 + 20 + RectWidth / 2;
-                int IconSize = 8;
                 switch (i)
                 {
                     case 0: // Agriculture
@@ -597,7 +713,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             List<string> RiskList = new List<string>()
             {
-                "High Risk", "Moderate Risk", "Low Risk"
+               TaskRunnerServiceRes.HighRisk, TaskRunnerServiceRes.ModerateRisk, TaskRunnerServiceRes.LowRisk
             };
 
             for (int i = 0, count = RiskList.Count; i < count; i++)
@@ -621,105 +737,6 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             return true;
-        }
-        private void DrawAgricultureIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
-        {
-            Point[] pointArr = new List<Point>()
-                            {
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
-                            }.ToArray();
-            g.DrawPolygon(pen, pointArr);
-            g.FillPolygon(brush, pointArr);
-        }
-        private void DrawForestedIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
-        {
-            Point[] pointArr = new List<Point>()
-                            {
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2)*2 },
-                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                            }.ToArray();
-            g.DrawPolygon(pen, pointArr);
-            g.FillPolygon(brush, pointArr);
-        }
-        private void DrawIndustryIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
-        {
-            Point[] pointArr = new List<Point>()
-                            {
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY },
-                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY },
-                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                            }.ToArray();
-            g.DrawPolygon(pen, pointArr);
-            g.FillPolygon(brush, pointArr);
-        }
-        private void DrawMarineIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
-        {
-            Point[] pointArr = new List<Point>()
-                            {
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY },
-                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                            }.ToArray();
-            g.DrawPolygon(pen, pointArr);
-            g.FillPolygon(brush, pointArr);
-        }
-        private void DrawRecreationIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
-        {
-            Point[] pointArr = new List<Point>()
-                            {
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY },
-                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                            }.ToArray();
-            g.DrawPolygon(pen, pointArr);
-            g.FillPolygon(brush, pointArr);
-        }
-        private void DrawUrbanIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
-        {
-            Point[] pointArr = new List<Point>()
-                            {
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY - (width/3) },
-                                new Point() { X = (int)LngX + (width/2), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY - (width/4) },
-                                new Point() { X = (int)LngX + (width/3), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX, Y = (int)LatY - (width/2) },
-                                new Point() { X = (int)LngX, Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY - width },
-                                new Point() { X = (int)LngX - (width/3), Y = (int)LatY + (width/2) },
-                                new Point() { X = (int)LngX - (width/2), Y = (int)LatY + (width/2) },
-                            }.ToArray();
-            g.DrawPolygon(pen, pointArr);
-            g.FillPolygon(brush, pointArr);
-        }
-        private void DrawOtherIcon(Graphics g, Pen pen, SolidBrush brush, int width, int LatY, int LngX)
-        {
-            g.DrawEllipse(pen, (int)LngX - (width / 2), (int)LatY - (width / 2), width, width);
-            g.FillEllipse(brush, (int)LngX - (width / 2), (int)LatY - (width / 2), width, width);
         }
         private bool DrawMWQMSitesPoints(Graphics g, CoordMap coordMap, List<MapInfoPointModel> mapInfoPointModelMWQMSiteList, List<TVItemModel> tvItemModelMWQMSiteList)
         {
@@ -772,39 +789,42 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool DrawNorthArrow(Graphics g, CoordMap coordMap)
         {
             string NotUsed = "";
-            try
+            if (string.IsNullOrWhiteSpace(HideNorthArrow))
             {
-                string NorthText = "N";
-                Font font = new Font("Arial", 16, FontStyle.Bold);
-                Brush brush = new SolidBrush(Color.LightBlue);
+                try
+                {
+                    string NorthText = "N";
+                    Font font = new Font("Arial", 16, FontStyle.Bold);
+                    Brush brush = new SolidBrush(Color.LightBlue);
 
-                SizeF sizeF = g.MeasureString(NorthText, font);
+                    SizeF sizeF = g.MeasureString(NorthText, font);
 
-                g.MeasureString(NorthText, font);
-                g.DrawString(NorthText, font, brush, GoogleImageWidth * 2 - 50 - (int)(sizeF.Width / 2), 30);
+                    g.MeasureString(NorthText, font);
+                    g.DrawString(NorthText, font, brush, GoogleImageWidth * 2 - 50 - (int)(sizeF.Width / 2), 30);
 
-                Pen pen = new Pen(Color.LightBlue, 6);
-                pen.StartCap = LineCap.NoAnchor;
-                pen.EndCap = LineCap.RoundAnchor;
-                g.DrawLine(pen, GoogleImageWidth * 2 - 50, 55, GoogleImageWidth * 2 - 50, 70);
+                    Pen pen = new Pen(Color.LightBlue, 6);
+                    pen.StartCap = LineCap.NoAnchor;
+                    pen.EndCap = LineCap.RoundAnchor;
+                    g.DrawLine(pen, GoogleImageWidth * 2 - 50, 55, GoogleImageWidth * 2 - 50, 70);
 
-                pen = new Pen(Color.LightBlue, 6);
-                pen.StartCap = LineCap.ArrowAnchor;
-                pen.EndCap = LineCap.NoAnchor;
-                g.DrawLine(pen, GoogleImageWidth * 2 - 50, 15, GoogleImageWidth * 2 - 50, 30);
+                    pen = new Pen(Color.LightBlue, 6);
+                    pen.StartCap = LineCap.ArrowAnchor;
+                    pen.EndCap = LineCap.NoAnchor;
+                    g.DrawLine(pen, GoogleImageWidth * 2 - 50, 15, GoogleImageWidth * 2 - 50, 30);
 
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_ImageError_, TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_ImageError_", TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                    return false;
+                }
             }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_ImageError_, TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_ImageError_", TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                return false;
-            }
+
             return true;
         }
         private bool DrawPolSourceSitesPoints(Graphics g, CoordMap coordMap, List<MapInfoPointModel> mapInfoPointModelPolSourceSiteList, List<TVItemModel> tvItemModelPolSourceSiteList)
         {
-            int IconSize = 8;
             if (tvItemModelPolSourceSiteList.Count > 0)
             {
 
@@ -1010,7 +1030,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             return false;
                         }
 
-                        if (!DrawTitles(g, tvItemModelSubsector.TVText, "Marine Water Quality Monitoring Sites"))
+                        if (!DrawTitles(g, tvItemModelSubsector.TVText, TaskRunnerServiceRes.MarineWaterQualityMonitoringSites))
                         {
                             return false;
                         }
@@ -1108,7 +1128,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         return false;
                     }
 
-                    if (!DrawTitles(g, tvItemModelSubsector.TVText, "Pollution Source Site"))
+                    if (!DrawTitles(g, tvItemModelSubsector.TVText, TaskRunnerServiceRes.PollutionSourceSites))
                     {
                         return false;
                     }
@@ -1151,32 +1171,34 @@ namespace CSSPWebToolsTaskRunner.Services
             try
             {
                 float FirstTitleHeight = 0;
-
-                // First Title
                 Font font = new Font("Arial", 20, FontStyle.Bold);
                 Brush brush = new SolidBrush(Color.LightBlue);
 
                 SizeF sizeFInit = g.MeasureString(FirstTitle, font);
                 SizeF sizeF = g.MeasureString(FirstTitle, font);
-                while (true)
+                if (string.IsNullOrWhiteSpace(HideSubsectorName))
                 {
-                    sizeF = g.MeasureString(FirstTitle, font);
-                    if (sizeF.Width > (GoogleImageWidth * 2 - 200 - 200 - 100)) // 200 is the Inset and Legend width
+                    // First Title
+                    while (true)
                     {
-                        FirstTitle = FirstTitle.Substring(0, FirstTitle.Length - 2);
+                        sizeF = g.MeasureString(FirstTitle, font);
+                        if (sizeF.Width > (GoogleImageWidth * 2 - 200 - 200 - 100)) // 200 is the Inset and Legend width
+                        {
+                            FirstTitle = FirstTitle.Substring(0, FirstTitle.Length - 2);
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
+                    if (sizeFInit.Width != sizeF.Width)
                     {
-                        break;
+                        FirstTitle = FirstTitle + "...";
                     }
-                }
-                if (sizeFInit.Width != sizeF.Width)
-                {
-                    FirstTitle = FirstTitle + "...";
-                }
-                g.DrawString(FirstTitle, font, brush, new Point(GoogleImageWidth - (int)(sizeF.Width / 2), 3));
+                    g.DrawString(FirstTitle, font, brush, new Point(GoogleImageWidth - (int)(sizeF.Width / 2), 3));
 
-                FirstTitleHeight = sizeF.Height;
+                    FirstTitleHeight = sizeF.Height;
+                }
 
                 // Second Title
                 font = new Font("Arial", 16, FontStyle.Bold);
@@ -1213,47 +1235,50 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool DrawVerticalScale(Graphics g, CoordMap coordMap)
         {
             string NotUsed = "";
-            try
+            if (string.IsNullOrWhiteSpace(HideVerticalScale))
             {
-                int MinLatY = (GoogleImageHeight * 2 - GoogleLogoHeight) - 60;
-                int MaxLatY = ((GoogleImageHeight * 2 - GoogleLogoHeight) * 4 / 5) - 60;
-
-                g.DrawLine(new Pen(Color.LightBlue, 2), 40, MinLatY, 40, MaxLatY);
-
-                double MinLat = coordMap.NorthEast.Lat - (coordMap.NorthEast.Lat - coordMap.SouthWest.Lat) / 5;
-                double distLat = _MapInfoService.CalculateDistance(MinLat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, coordMap.NorthEast.Lat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, _MapInfoService.R) / 1000;
-
-                string distText = distLat.ToString("F2") + " km";
-                Font font = new Font("Arial", 10, FontStyle.Regular);
-                Brush brush = new SolidBrush(Color.LightBlue);
-
-                SizeF sizeF = g.MeasureString(distText, font);
-
-                g.DrawString(distText, font, brush, 45, ((GoogleImageHeight * 2 - GoogleLogoHeight) * 4 / 5) - 60 - sizeF.Height);
-
-                for (int i = 0; i < 100; i++)
+                try
                 {
-                    if ((double)i > distLat)
+                    int MinLatY = (GoogleImageHeight * 2 - GoogleLogoHeight) - 60;
+                    int MaxLatY = ((GoogleImageHeight * 2 - GoogleLogoHeight) * 4 / 5) - 60;
+
+                    g.DrawLine(new Pen(Color.LightBlue, 2), 40, MinLatY, 40, MaxLatY);
+
+                    double MinLat = coordMap.NorthEast.Lat - (coordMap.NorthEast.Lat - coordMap.SouthWest.Lat) / 5;
+                    double distLat = _MapInfoService.CalculateDistance(MinLat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, coordMap.NorthEast.Lat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, _MapInfoService.R) / 1000;
+
+                    string distText = distLat.ToString("F2") + " km";
+                    Font font = new Font("Arial", 10, FontStyle.Regular);
+                    Brush brush = new SolidBrush(Color.LightBlue);
+
+                    SizeF sizeF = g.MeasureString(distText, font);
+
+                    g.DrawString(distText, font, brush, 45, ((GoogleImageHeight * 2 - GoogleLogoHeight) * 4 / 5) - 60 - sizeF.Height);
+
+                    for (int i = 0; i < 100; i++)
                     {
-                        g.DrawLine(new Pen(Color.LightBlue, 1), 40 - 1, MaxLatY, 40 - 1 - 10, MaxLatY);
-                        break;
+                        if ((double)i > distLat)
+                        {
+                            g.DrawLine(new Pen(Color.LightBlue, 1), 40 - 1, MaxLatY, 40 - 1 - 10, MaxLatY);
+                            break;
+                        }
+                        g.DrawLine(new Pen(Color.LightBlue, 1), 40 - 1, MinLatY + (int)(i / distLat * (MaxLatY - MinLatY)), 40 - 1 - 10, MinLatY + (int)(i / distLat * (MaxLatY - MinLatY)));
+
+                        distText = i.ToString();
+                        font = new Font("Arial", 10, FontStyle.Regular);
+                        brush = new SolidBrush(Color.LightBlue);
+
+                        sizeF = g.MeasureString(distText, font);
+
+                        g.DrawString(distText, font, brush, 45, MinLatY + (int)(i / distLat * (MaxLatY - MinLatY)) - (sizeF.Height / 2));
                     }
-                    g.DrawLine(new Pen(Color.LightBlue, 1), 40 - 1, MinLatY + (int)(i / distLat * (MaxLatY - MinLatY)), 40 - 1 - 10, MinLatY + (int)(i / distLat * (MaxLatY - MinLatY)));
-
-                    distText = i.ToString();
-                    font = new Font("Arial", 10, FontStyle.Regular);
-                    brush = new SolidBrush(Color.LightBlue);
-
-                    sizeF = g.MeasureString(distText, font);
-
-                    g.DrawString(distText, font, brush, 45, MinLatY + (int)(i / distLat * (MaxLatY - MinLatY)) - (sizeF.Height / 2));
                 }
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_ImageError_, TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_ImageError_", TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                return false;
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_ImageError_, TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_ImageError_", TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                    return false;
+                }
             }
 
             return true;
