@@ -825,15 +825,43 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private bool DrawPolSourceSitesPoints(Graphics g, CoordMap coordMap, List<MapInfoPointModel> mapInfoPointModelPolSourceSiteList, List<TVItemModel> tvItemModelPolSourceSiteList)
         {
+            float LabelHeight = 0.0f;
+            float LabelWidth = 0.0f;
+
+            Font font = new Font("Arial", 10, FontStyle.Regular);
+            Brush brush = new SolidBrush(Color.LightGreen);
+
+            SizeF sizeF = g.MeasureString("AA", font);
+            LabelHeight = sizeF.Height;
+            LabelWidth = sizeF.Width;
             if (tvItemModelPolSourceSiteList.Count > 0)
             {
+                List<LabelPosition> LabelPositionList = new List<LabelPosition>();
+
+                foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelPolSourceSiteList)
+                {
+                    LabelPosition labelPosition = new LabelPosition()
+                    {
+                        TVItemID = mapInfoPointModel.TVItemID,
+                        SitePoint = new Coord() { Lat = (float)mapInfoPointModel.Lat, Lng = (float)mapInfoPointModel.Lng, Ordinal = 0 },
+                        LabelPoint = new Coord() { Lat = (float)mapInfoPointModel.Lat - 1, Lng = (float)mapInfoPointModel.Lng + 1, Ordinal = 0 },
+                        LabelNorthEast = new Coord() { Lat = (float)mapInfoPointModel.Lat - LabelHeight, Lng = (float)mapInfoPointModel.Lng + LabelWidth, Ordinal = 0 },
+                        LabelSouthWest = new Coord() { Lat = (float)mapInfoPointModel.Lat - 1, Lng = (float)mapInfoPointModel.Lng + 1, Ordinal = 0 },
+                        Position = PositionEnum.LeftBottom,
+                        Distance = 0.0f,
+                        Ordinal = LabelPositionList.Count(),
+                    };
+                    LabelPositionList.Add(labelPosition);
+                }
+
+                FillLabelPositionList(LabelPositionList, LabelHeight, LabelWidth);
 
                 List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
                 List<PolSourceObservationModel> polSourceObservationModelList = _PolSourceObservationService.GetPolSourceObservationModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
                 List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
 
-                Font font = new Font("Arial", 8, FontStyle.Regular);
-                Brush brush = new SolidBrush(Color.LightGreen);
+                //Font font = new Font("Arial", 8, FontStyle.Regular);
+                //Brush brush = new SolidBrush(Color.LightGreen);
 
                 double TotalWidthLng = coordMap.NorthEast.Lng - coordMap.SouthWest.Lng;
                 double TotalHeightLat = coordMap.NorthEast.Lat - coordMap.SouthWest.Lat;
@@ -1282,6 +1310,251 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             return true;
+        }
+        private void FillLabelPositionList(List<LabelPosition> LabelPositionList, float LabelHeight, float LabelWidth)
+        {
+            float StepSize = 5.0f;
+
+            if (LabelPositionList.Count > 0)
+            {
+                Point AveragePoint = new Point((int)LabelPositionList.Average(c => c.SitePoint.Lng), (int)LabelPositionList.Average(c => c.SitePoint.Lat));
+
+                foreach (LabelPosition labelPosition in LabelPositionList)
+                {
+                    labelPosition.LabelPoint = labelPosition.SitePoint;
+                    labelPosition.Distance = (float)Math.Sqrt((labelPosition.SitePoint.Lng - AveragePoint.X) * (labelPosition.SitePoint.Lng - AveragePoint.X) + (labelPosition.SitePoint.Lat - AveragePoint.Y) * (labelPosition.SitePoint.Lat - AveragePoint.Y));
+
+                    if ((labelPosition.SitePoint.Lng - AveragePoint.X) >= 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) <= 0) // first quartier
+                    {
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat - 1, Lng = labelPosition.SitePoint.Lng + 1, Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - LabelHeight - 1, Lng = labelPosition.SitePoint.Lng + LabelWidth + 1, Ordinal = 0 };
+                        labelPosition.Position = PositionEnum.LeftBottom;
+                    }
+                    else if ((labelPosition.SitePoint.Lng - AveragePoint.X) > 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) > 0) // second quartier
+                    {
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat + LabelHeight + 1, Lng = labelPosition.SitePoint.Lng + 1, Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - 1, Lng = labelPosition.SitePoint.Lng + LabelWidth + 1, Ordinal = 0 };
+                        labelPosition.Position = PositionEnum.LeftTop;
+                    }
+                    else if ((labelPosition.SitePoint.Lng - AveragePoint.X) < 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) > 0) // third quartier
+                    {
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat + LabelHeight + 1, Lng = labelPosition.SitePoint.Lng - LabelWidth - 1, Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat + 1, Lng = labelPosition.SitePoint.Lng + 1, Ordinal = 0 };
+                        labelPosition.Position = PositionEnum.RightTop;
+                    }
+                    else // forth quartier
+                    {
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat - 1, Lng = labelPosition.SitePoint.Lng - LabelWidth - 1, Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - LabelHeight - 1, Lng = labelPosition.SitePoint.Lng - 1, Ordinal = 0 };
+                        labelPosition.Position = PositionEnum.RightBottom;
+                    }
+                }
+                foreach (LabelPosition labelPosition in LabelPositionList.OrderBy(c => c.Distance))
+                {
+                    bool HidingPoint = true;
+                    while (HidingPoint)
+                    {
+                        List<Coord> coordList = new List<Coord>()
+                        {
+                            new Coord() { Lat = labelPosition.LabelSouthWest.Lat, Lng = labelPosition.LabelSouthWest.Lng, Ordinal = 0 },
+                            new Coord() { Lat = labelPosition.LabelSouthWest.Lat, Lng = labelPosition.LabelNorthEast.Lng, Ordinal = 0 },
+                            new Coord() { Lat = labelPosition.LabelNorthEast.Lat, Lng = labelPosition.LabelNorthEast.Lng, Ordinal = 0 },
+                            new Coord() { Lat = labelPosition.LabelNorthEast.Lat, Lng = labelPosition.LabelSouthWest.Lng, Ordinal = 0 },
+                        };
+
+                        bool PleaseRedo = false;
+                        foreach (LabelPosition labelPosition2 in LabelPositionList.Where(c => c.Ordinal != labelPosition.Ordinal))
+                        {
+                            Coord coord = new Coord()
+                            {
+                                Lat = labelPosition2.LabelPoint.Lat,
+                                Lng = labelPosition2.LabelPoint.Lng,
+                                Ordinal = 0,
+                            };
+                            if (_MapInfoService.CoordInPolygon(coordList, coord))
+                            {
+                                float XNew = StepSize;
+                                float YNew = StepSize;
+                                float dist = (float)Math.Sqrt((AveragePoint.Y - labelPosition.SitePoint.Lat) * (AveragePoint.Y - labelPosition.SitePoint.Lat) + (AveragePoint.X - labelPosition.SitePoint.Lng) * (AveragePoint.X - labelPosition.SitePoint.Lng));
+                                float factor = dist / StepSize;
+                                float deltX = Math.Abs((AveragePoint.X - labelPosition.LabelPoint.Lng) / factor);
+                                float deltY = Math.Abs((AveragePoint.Y - labelPosition.LabelPoint.Lat) / factor);
+                                switch (labelPosition.Position)
+                                {
+                                    case PositionEnum.Error:
+                                        break;
+                                    case PositionEnum.LeftBottom:
+                                        {
+                                            XNew = labelPosition.LabelPoint.Lng + deltX;
+                                            YNew = labelPosition.LabelPoint.Lat - deltY;
+                                            labelPosition.LabelSouthWest = new Coord() { Lat = YNew, Lng = XNew, Ordinal = 0 };
+                                            labelPosition.LabelNorthEast = new Coord() { Lat = YNew - LabelHeight, Lng = XNew + LabelWidth, Ordinal = 0 };
+                                        }
+                                        break;
+                                    case PositionEnum.RightBottom:
+                                        {
+                                            XNew = labelPosition.LabelPoint.Lng - deltX;
+                                            YNew = labelPosition.LabelPoint.Lat - deltY;
+                                            labelPosition.LabelSouthWest = new Coord() { Lat = YNew, Lng = XNew - LabelWidth, Ordinal = 0 };
+                                            labelPosition.LabelNorthEast = new Coord() { Lat = YNew - LabelHeight, Lng = XNew, Ordinal = 0 };
+                                        }
+                                        break;
+                                    case PositionEnum.LeftTop:
+                                        {
+                                            XNew = labelPosition.LabelPoint.Lng + deltX;
+                                            YNew = labelPosition.LabelPoint.Lat + deltY;
+                                            labelPosition.LabelSouthWest = new Coord() { Lat = YNew + LabelHeight, Lng = XNew, Ordinal = 0 };
+                                            labelPosition.LabelNorthEast = new Coord() { Lat = YNew, Lng = XNew + LabelWidth, Ordinal = 0 };
+                                        }
+                                        break;
+                                    case PositionEnum.RightTop:
+                                        {
+                                            XNew = labelPosition.LabelPoint.Lng - deltX;
+                                            YNew = labelPosition.LabelPoint.Lat + deltY;
+                                            labelPosition.LabelSouthWest = new Coord() { Lat = YNew + LabelHeight, Lng = XNew - LabelWidth, Ordinal = 0 };
+                                            labelPosition.LabelNorthEast = new Coord() { Lat = YNew, Lng = XNew, Ordinal = 0 };
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                labelPosition.LabelPoint = new Coord() { Lat = YNew, Lng = XNew, Ordinal = 0 };
+                                PleaseRedo = true;
+                                break;
+                            }
+                        }
+                        if (!PleaseRedo)
+                        {
+                            HidingPoint = false;
+                        }
+                    }
+
+                    HidingPoint = true;
+                    while (HidingPoint)
+                    {
+                        List<Coord> coordList = new List<Coord>()
+                        {
+                            new Coord() { Lat = labelPosition.LabelSouthWest.Lat, Lng = labelPosition.LabelSouthWest.Lng, Ordinal = 0 },
+                            new Coord() { Lat = labelPosition.LabelSouthWest.Lat, Lng = labelPosition.LabelNorthEast.Lng, Ordinal = 0 },
+                            new Coord() { Lat = labelPosition.LabelNorthEast.Lat, Lng = labelPosition.LabelNorthEast.Lng, Ordinal = 0 },
+                            new Coord() { Lat = labelPosition.LabelNorthEast.Lat, Lng = labelPosition.LabelSouthWest.Lng, Ordinal = 0 },
+                        };
+
+                        bool PleaseRedo = false;
+                        foreach (LabelPosition labelPosition2 in LabelPositionList.Where(c => c.Ordinal != labelPosition.Ordinal && c.Distance <= labelPosition.Distance))
+                        {
+                            List<Coord> coordToCompare = new List<Coord>()
+                            {
+                                new Coord() { Lat = labelPosition2.LabelSouthWest.Lat, Lng = labelPosition2.LabelSouthWest.Lng, Ordinal = 0 },
+                                new Coord() { Lat = labelPosition2.LabelSouthWest.Lat, Lng = labelPosition2.LabelNorthEast.Lng, Ordinal = 0 },
+                                new Coord() { Lat = labelPosition2.LabelNorthEast.Lat, Lng = labelPosition2.LabelNorthEast.Lng, Ordinal = 0 },
+                                new Coord() { Lat = labelPosition2.LabelNorthEast.Lat, Lng = labelPosition2.LabelSouthWest.Lng, Ordinal = 0 },
+                            };
+                            for (int i = 0; i < 4; i++)
+                            {
+                                if (_MapInfoService.CoordInPolygon(coordList, coordToCompare[i]))
+                                {
+                                    float XNew = StepSize;
+                                    float YNew = StepSize;
+                                    float dist = (float)Math.Sqrt((AveragePoint.Y - labelPosition.SitePoint.Lat) * (AveragePoint.Y - labelPosition.SitePoint.Lat) + (AveragePoint.X - labelPosition.SitePoint.Lng) * (AveragePoint.X - labelPosition.SitePoint.Lng));
+                                    float factor = dist / StepSize;
+                                    float deltX = Math.Abs((AveragePoint.X - labelPosition.LabelPoint.Lng) / factor);
+                                    float deltY = Math.Abs((AveragePoint.Y - labelPosition.LabelPoint.Lat) / factor);
+                                    switch (labelPosition.Position)
+                                    {
+                                        case PositionEnum.Error:
+                                            break;
+                                        case PositionEnum.LeftBottom:
+                                            {
+                                                XNew = labelPosition.LabelPoint.Lng + deltX;
+                                                YNew = labelPosition.LabelPoint.Lat - deltY;
+                                                labelPosition.LabelSouthWest = new Coord() { Lat = YNew, Lng = XNew, Ordinal = 0 };
+                                                labelPosition.LabelNorthEast = new Coord() { Lat = YNew - LabelHeight, Lng = XNew + LabelWidth, Ordinal = 0 };
+                                            }
+                                            break;
+                                        case PositionEnum.RightBottom:
+                                            {
+                                                XNew = labelPosition.LabelPoint.Lng - deltX;
+                                                YNew = labelPosition.LabelPoint.Lat - deltY;
+                                                labelPosition.LabelSouthWest = new Coord() { Lat = YNew, Lng = XNew - LabelWidth, Ordinal = 0 };
+                                                labelPosition.LabelNorthEast = new Coord() { Lat = YNew - LabelHeight, Lng = XNew, Ordinal = 0 };
+                                            }
+                                            break;
+                                        case PositionEnum.LeftTop:
+                                            {
+                                                XNew = labelPosition.LabelPoint.Lng + deltX;
+                                                YNew = labelPosition.LabelPoint.Lat + deltY;
+                                                labelPosition.LabelSouthWest = new Coord() { Lat = YNew + LabelHeight, Lng = XNew, Ordinal = 0 };
+                                                labelPosition.LabelNorthEast = new Coord() { Lat = YNew, Lng = XNew + LabelWidth, Ordinal = 0 };
+                                            }
+                                            break;
+                                        case PositionEnum.RightTop:
+                                            {
+                                                XNew = labelPosition.LabelPoint.Lng - deltX;
+                                                YNew = labelPosition.LabelPoint.Lat + deltY;
+                                                labelPosition.LabelSouthWest = new Coord() { Lat = YNew + LabelHeight, Lng = XNew - LabelWidth, Ordinal = 0 };
+                                                labelPosition.LabelNorthEast = new Coord() { Lat = YNew, Lng = XNew, Ordinal = 0 };
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    labelPosition.LabelPoint = new Coord() { Lat = YNew, Lng = XNew, Ordinal = 0 };
+                                    PleaseRedo = true;
+                                    break;
+                                }
+                                if (PleaseRedo)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        if (!PleaseRedo)
+                        {
+                            HidingPoint = false;
+                        }
+                    }
+                }
+                //using (Graphics g = pictureBoxLabelPosition.CreateGraphics())
+                //{
+                //    g.Clear(Color.White);
+
+                //    foreach (LabelPosition labelPosition in LabelPositionList)
+                //    {
+                //        g.DrawLine(new Pen(Color.Blue, 1.0f), new PointF(labelPosition.SitePoint.Lng, labelPosition.SitePoint.Lat), AveragePoint);
+                //        PointF p = new PointF();
+                //        switch (labelPosition.Position)
+                //        {
+                //            case PositionEnum.Error:
+                //                break;
+                //            case PositionEnum.LeftBottom:
+                //                {
+                //                    p = new PointF(labelPosition.LabelSouthWest.Lng, labelPosition.LabelSouthWest.Lat);
+                //                }
+                //                break;
+                //            case PositionEnum.RightBottom:
+                //                {
+                //                    p = new PointF(labelPosition.LabelNorthEast.Lng, labelPosition.LabelSouthWest.Lat);
+                //                }
+                //                break;
+                //            case PositionEnum.LeftTop:
+                //                {
+                //                    p = new PointF(labelPosition.LabelSouthWest.Lng, labelPosition.LabelNorthEast.Lat);
+                //                }
+                //                break;
+                //            case PositionEnum.RightTop:
+                //                {
+                //                    p = new PointF(labelPosition.LabelNorthEast.Lng, labelPosition.LabelNorthEast.Lat);
+                //                }
+                //                break;
+                //            default:
+                //                break;
+                //        }
+                //        g.DrawLine(new Pen(Color.Red, 1.0f), new PointF(labelPosition.SitePoint.Lng, labelPosition.SitePoint.Lat), p);
+                //        g.DrawRectangle(new Pen(Color.Red, 1.0f), labelPosition.LabelSouthWest.Lng, labelPosition.LabelNorthEast.Lat, labelPosition.LabelNorthEast.Lng - labelPosition.LabelSouthWest.Lng, labelPosition.LabelSouthWest.Lat - labelPosition.LabelNorthEast.Lat);
+                //    }
+                //}
+            }
         }
         private bool GetInset(Coord CoordNE, Coord CoordSW)
         {
