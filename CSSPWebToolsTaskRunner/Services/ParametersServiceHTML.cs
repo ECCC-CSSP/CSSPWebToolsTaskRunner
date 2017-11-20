@@ -259,7 +259,6 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine(@"    color: #ffffff;");
             sbHTML.AppendLine(@"}");
             sbHTML.AppendLine(@"    </style>");
-            //sbHTML.AppendLine(@"    <link href=""C:\Users\charles\Desktop\TestHTML\ReportType.css"" rel=""stylesheet"" />");
             sbHTML.AppendLine(@"</head>");
             sbHTML.AppendLine(@"<body>");
 

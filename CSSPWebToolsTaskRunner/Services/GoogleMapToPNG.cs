@@ -71,6 +71,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             LoadDefaults();
         }
+        public GoogleMapToPNG()
+        {
+        }
 
         #endregion Constructors
 
@@ -121,6 +124,14 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 15);
 
             CoordMap coordMap = GetMapCoordinateWhileGettingGooglePNG(MinLat, MaxLat, MinLng, MaxLng);
+
+            //int a = 234;
+
+            //CoordMap coordMap = new CoordMap()
+            //{
+            //    NorthEast = new Coord() { Lat = 46.5364151f, Lng = -64.55215f, Ordinal = 0 },
+            //    SouthWest = new Coord() { Lat = 46.23907f, Lng = -64.99161f, Ordinal = 0 },
+            //};
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 20);
 
@@ -823,48 +834,54 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool DrawPolSourceSitesPoints(Graphics g, CoordMap coordMap, List<MapInfoPointModel> mapInfoPointModelPolSourceSiteList, List<TVItemModel> tvItemModelPolSourceSiteList)
+        public bool DrawPolSourceSitesPoints(Graphics g, int GraphicWidth, int GraphicHeight, CoordMap coordMap, List<MapInfoPointModel> mapInfoPointModelPolSourceSiteList, List<TVItemModel> tvItemModelPolSourceSiteList)
         {
-            float LabelHeight = 0.0f;
-            float LabelWidth = 0.0f;
+            float LabelHeightY = 0.0f;
+            float LabelWidthX = 0.0f;
+            float LabelHeightLat = 0.0f;
+            float LabelWidthLng = 0.0f;
 
             Font font = new Font("Arial", 10, FontStyle.Regular);
             Brush brush = new SolidBrush(Color.LightGreen);
 
             SizeF sizeF = g.MeasureString("AA", font);
-            LabelHeight = sizeF.Height;
-            LabelWidth = sizeF.Width;
+            LabelHeightY = sizeF.Height;
+            LabelWidthX = sizeF.Width;
+
+            // calculating LabelHeightLat and LabelWidthLng
+            double TotalWidthLng = coordMap.NorthEast.Lng - coordMap.SouthWest.Lng;
+            double TotalHeightLat = coordMap.NorthEast.Lat - coordMap.SouthWest.Lat;
+
+            LabelHeightLat = (float)TotalHeightLat * (LabelHeightY / GraphicHeight);
+            LabelWidthLng = (float)TotalWidthLng * (LabelWidthX / GraphicWidth);
+
+            float StepSize = LabelHeightLat / 2.0f;
+
             if (tvItemModelPolSourceSiteList.Count > 0)
             {
-                List<LabelPosition> LabelPositionList = new List<LabelPosition>();
+                //List<LabelPosition> LabelPositionList = new List<LabelPosition>();
 
-                foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelPolSourceSiteList)
-                {
-                    LabelPosition labelPosition = new LabelPosition()
-                    {
-                        TVItemID = mapInfoPointModel.TVItemID,
-                        SitePoint = new Coord() { Lat = (float)mapInfoPointModel.Lat, Lng = (float)mapInfoPointModel.Lng, Ordinal = 0 },
-                        LabelPoint = new Coord() { Lat = (float)mapInfoPointModel.Lat - 1, Lng = (float)mapInfoPointModel.Lng + 1, Ordinal = 0 },
-                        LabelNorthEast = new Coord() { Lat = (float)mapInfoPointModel.Lat - LabelHeight, Lng = (float)mapInfoPointModel.Lng + LabelWidth, Ordinal = 0 },
-                        LabelSouthWest = new Coord() { Lat = (float)mapInfoPointModel.Lat - 1, Lng = (float)mapInfoPointModel.Lng + 1, Ordinal = 0 },
-                        Position = PositionEnum.LeftBottom,
-                        Distance = 0.0f,
-                        Ordinal = LabelPositionList.Count(),
-                    };
-                    LabelPositionList.Add(labelPosition);
-                }
+                //foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelPolSourceSiteList)
+                //{
+                //    LabelPosition labelPosition = new LabelPosition()
+                //    {
+                //        TVItemID = mapInfoPointModel.TVItemID,
+                //        SitePoint = new Coord() { Lat = (float)mapInfoPointModel.Lat, Lng = (float)mapInfoPointModel.Lng, Ordinal = 0 },
+                //        LabelPoint = new Coord() { Lat = (float)mapInfoPointModel.Lat, Lng = (float)mapInfoPointModel.Lng, Ordinal = 0 },
+                //        LabelNorthEast = new Coord() { Lat = (float)mapInfoPointModel.Lat + LabelHeightLat, Lng = (float)mapInfoPointModel.Lng + LabelWidthLng, Ordinal = 0 },
+                //        LabelSouthWest = new Coord() { Lat = (float)mapInfoPointModel.Lat, Lng = (float)mapInfoPointModel.Lng, Ordinal = 0 },
+                //        Position = PositionEnum.LeftBottom,
+                //        Distance = 0.0f,
+                //        Ordinal = LabelPositionList.Count(),
+                //    };
+                //    LabelPositionList.Add(labelPosition);
+                //}
 
-                FillLabelPositionList(LabelPositionList, LabelHeight, LabelWidth);
+                //FillLabelPositionList(LabelPositionList, LabelHeightLat, LabelWidthLng, StepSize);
 
                 List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
                 List<PolSourceObservationModel> polSourceObservationModelList = _PolSourceObservationService.GetPolSourceObservationModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
                 List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
-
-                //Font font = new Font("Arial", 8, FontStyle.Regular);
-                //Brush brush = new SolidBrush(Color.LightGreen);
-
-                double TotalWidthLng = coordMap.NorthEast.Lng - coordMap.SouthWest.Lng;
-                double TotalHeightLat = coordMap.NorthEast.Lat - coordMap.SouthWest.Lat;
 
                 int count = 0;
                 foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelPolSourceSiteList)
@@ -874,9 +891,13 @@ namespace CSSPWebToolsTaskRunner.Services
                     if (tvItemModel != null && tvItemModel.IsActive == true)
                     {
                         PolSourceSiteModel polSourceSiteModel = polSourceSiteModelList.Where(c => c.PolSourceSiteTVItemID == tvItemModel.TVItemID).FirstOrDefault();
-
                         if (polSourceSiteModel != null)
                         {
+                            //LabelPosition labelPosition = LabelPositionList.Where(c => c.TVItemID == polSourceSiteModel.PolSourceSiteTVItemID).FirstOrDefault();
+                            //if (labelPosition == null)
+                            //{
+                            //    continue;
+                            //}
                             PolSourceObservationModel polSourceObservationModelLastest = polSourceObservationModelList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
 
                             if (polSourceObservationModelLastest != null)
@@ -884,12 +905,160 @@ namespace CSSPWebToolsTaskRunner.Services
                                 count += 1;
                                 double LngX = ((mapInfoPointModel.Lng - coordMap.SouthWest.Lng) / TotalWidthLng) * GoogleImageWidth * 2.0D;
                                 double LatY = ((GoogleImageHeight * 2) - GoogleLogoHeight) - ((TotalHeightLat - (coordMap.NorthEast.Lat - mapInfoPointModel.Lat)) / TotalHeightLat) * ((GoogleImageHeight * 2) - GoogleLogoHeight);
+                                //double LngXLabel = ((labelPosition.LabelPoint.Lng - coordMap.SouthWest.Lng) / TotalWidthLng) * GoogleImageWidth * 2.0D;
+                                //double LatYLabel = ((GoogleImageHeight * 2) - GoogleLogoHeight) - ((TotalHeightLat - (coordMap.NorthEast.Lat - labelPosition.LabelPoint.Lat)) / TotalHeightLat) * ((GoogleImageHeight * 2) - GoogleLogoHeight);
+
+                                //double LngXSW = ((labelPosition.LabelSouthWest.Lng - coordMap.SouthWest.Lng) / TotalWidthLng) * GoogleImageWidth * 2.0D;
+                                //double LatYSW = ((GoogleImageHeight * 2) - GoogleLogoHeight) - ((TotalHeightLat - (coordMap.NorthEast.Lat - labelPosition.LabelSouthWest.Lat)) / TotalHeightLat) * ((GoogleImageHeight * 2) - GoogleLogoHeight);
+
+                                //double LngXNE = ((labelPosition.LabelNorthEast.Lng - coordMap.SouthWest.Lng) / TotalWidthLng) * GoogleImageWidth * 2.0D;
+                                //double LatYNE = ((GoogleImageHeight * 2) - GoogleLogoHeight) - ((TotalHeightLat - (coordMap.NorthEast.Lat - labelPosition.LabelNorthEast.Lat)) / TotalHeightLat) * ((GoogleImageHeight * 2) - GoogleLogoHeight);
+
+                                //g.DrawLine(new Pen(Color.Green, 1.0f), (int)LngXLabel, (int)LatYLabel, (int)LngX, (int)LatY);
+                                //g.DrawRectangle(new Pen(Color.Green, 1.0f), (int)LngXSW, (int)LatYSW, (int)LngXNE, (int)LatYNE);
 
                                 List<PolSourceObservationIssueModel> polSourceObservationIssueModelListSelected = polSourceObservationIssueModelList.Where(c => c.PolSourceObservationID == polSourceObservationModelLastest.PolSourceObservationID).OrderBy(c => c.Ordinal).ToList();
 
+                                //------------------------------------------------------------------------
+                                // used this code to show map with moved labels
+                                //------------------------------------------------------------------------
+                                //if (polSourceObservationIssueModelListSelected.Count == 0)
+                                //{
+                                //    DrawOtherIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //}
+                                //else
+                                //{
+                                //    if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",10501,")) // Agriculture
+                                //    {
+                                //        if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",93001,")
+                                //            || polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92002,")) // High Risk
+                                //        {
+                                //            DrawAgricultureIcon(g, new Pen(Color.Red, 1.0f), new SolidBrush(Color.Red), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92001,")) // Moderate Risk
+                                //        {
+                                //            DrawAgricultureIcon(g, new Pen(Color.YellowGreen, 1.0f), new SolidBrush(Color.YellowGreen), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",91001,")) // Low Risk
+                                //        {
+                                //            DrawAgricultureIcon(g, new Pen(Color.Green, 1.0f), new SolidBrush(Color.Green), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else
+                                //        {
+                                //            DrawAgricultureIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //    }
+                                //    else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",10502,")) // Forested
+                                //    {
+                                //        if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",93001,")
+                                //            || polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92002,")) // High Risk
+                                //        {
+                                //            DrawForestedIcon(g, new Pen(Color.Red, 1.0f), new SolidBrush(Color.Red), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92001,")) // Moderate Risk
+                                //        {
+                                //            DrawForestedIcon(g, new Pen(Color.YellowGreen, 1.0f), new SolidBrush(Color.YellowGreen), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",91001,")) // Low Risk
+                                //        {
+                                //            DrawForestedIcon(g, new Pen(Color.Green, 1.0f), new SolidBrush(Color.Green), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else
+                                //        {
+                                //            DrawForestedIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //    }
+                                //    else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",10503,")) // Industry
+                                //    {
+                                //        if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",93001,")
+                                //            || polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92002,")) // High Risk
+                                //        {
+                                //            DrawIndustryIcon(g, new Pen(Color.Red, 1.0f), new SolidBrush(Color.Red), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92001,")) // Moderate Risk
+                                //        {
+                                //            DrawIndustryIcon(g, new Pen(Color.YellowGreen, 1.0f), new SolidBrush(Color.YellowGreen), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",91001,")) // Low Risk
+                                //        {
+                                //            DrawIndustryIcon(g, new Pen(Color.Green, 1.0f), new SolidBrush(Color.Green), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else
+                                //        {
+                                //            DrawIndustryIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW) / 2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //    }
+                                //    else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",10504,")) // Marine
+                                //    {
+                                //        if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",93001,")
+                                //            || polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92002,")) // High Risk
+                                //        {
+                                //            DrawMarineIcon(g, new Pen(Color.Red, 1.0f), new SolidBrush(Color.Red), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92001,")) // Moderate Risk
+                                //        {
+                                //            DrawMarineIcon(g, new Pen(Color.YellowGreen, 1.0f), new SolidBrush(Color.YellowGreen), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",91001,")) // Low Risk
+                                //        {
+                                //            DrawMarineIcon(g, new Pen(Color.Green, 1.0f), new SolidBrush(Color.Green), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else
+                                //        {
+                                //            DrawMarineIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //    }
+                                //    else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",10505,")) // Recreation
+                                //    {
+                                //        if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",93001,")
+                                //            || polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92002,")) // High Risk
+                                //        {
+                                //            DrawRecreationIcon(g, new Pen(Color.Red, 1.0f), new SolidBrush(Color.Red), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92001,")) // Moderate Risk
+                                //        {
+                                //            DrawRecreationIcon(g, new Pen(Color.YellowGreen, 1.0f), new SolidBrush(Color.YellowGreen), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",91001,")) // Low Risk
+                                //        {
+                                //            DrawRecreationIcon(g, new Pen(Color.Green, 1.0f), new SolidBrush(Color.Green), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else
+                                //        {
+                                //            DrawRecreationIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //    }
+                                //    else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",10506,")) // Urban
+                                //    {
+                                //        if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",93001,")
+                                //            || polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92002,")) // High Risk
+                                //        {
+                                //            DrawUrbanIcon(g, new Pen(Color.Red, 1.0f), new SolidBrush(Color.Red), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",92001,")) // Moderate Risk
+                                //        {
+                                //            DrawUrbanIcon(g, new Pen(Color.YellowGreen, 1.0f), new SolidBrush(Color.YellowGreen), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else if (polSourceObservationIssueModelListSelected[0].ObservationInfo.Contains(",91001,")) // Low Risk
+                                //        {
+                                //            DrawUrbanIcon(g, new Pen(Color.Green, 1.0f), new SolidBrush(Color.Green), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //        else
+                                //        {
+                                //            DrawUrbanIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        DrawOtherIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)((LatYNE + LatYSW)/2), (int)((LngXNE + LngXSW) / 2));
+                                //    }
+                                //}
+
+                                //------------------------------------------------------------------------
+                                // used this code to show map No moved labels
+                                //------------------------------------------------------------------------
                                 if (polSourceObservationIssueModelListSelected.Count == 0)
                                 {
-
                                     DrawOtherIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)LatY, (int)LngX);
                                 }
                                 else
@@ -1139,6 +1308,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             using (Bitmap targetAll = new Bitmap(DirName + FileNameFull))
             {
+                int GraphicWidth = targetAll.Width;
+                int GraphicHeight = targetAll.Height;
+
                 using (Graphics g = Graphics.FromImage(targetAll))
                 {
                     using (Bitmap targetImg = new Bitmap(DirName + FileNameInsetFinal))
@@ -1181,7 +1353,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         return false;
                     }
 
-                    if (!DrawPolSourceSitesPoints(g, coordMap, mapInfoPointModelPolSourceSiteList, tvItemModelPolSourceSiteList))
+                    if (!DrawPolSourceSitesPoints(g, GraphicWidth, GraphicHeight, coordMap, mapInfoPointModelPolSourceSiteList, tvItemModelPolSourceSiteList))
                     {
                         return false;
                     }
@@ -1311,42 +1483,47 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private void FillLabelPositionList(List<LabelPosition> LabelPositionList, float LabelHeight, float LabelWidth)
+        private void FillLabelPositionList(List<LabelPosition> LabelPositionList, float LabelHeight, float LabelWidth, float StepSize)
         {
-            float StepSize = 5.0f;
-
+            if (_MapInfoService == null)
+            {
+                _MapInfoService = new MapInfoService(LanguageEnum.en, null);
+            }
             if (LabelPositionList.Count > 0)
             {
-                Point AveragePoint = new Point((int)LabelPositionList.Average(c => c.SitePoint.Lng), (int)LabelPositionList.Average(c => c.SitePoint.Lat));
+                PointF AveragePoint = new PointF(LabelPositionList.Average(c => c.SitePoint.Lng), LabelPositionList.Average(c => c.SitePoint.Lat));
 
                 foreach (LabelPosition labelPosition in LabelPositionList)
                 {
-                    labelPosition.LabelPoint = labelPosition.SitePoint;
                     labelPosition.Distance = (float)Math.Sqrt((labelPosition.SitePoint.Lng - AveragePoint.X) * (labelPosition.SitePoint.Lng - AveragePoint.X) + (labelPosition.SitePoint.Lat - AveragePoint.Y) * (labelPosition.SitePoint.Lat - AveragePoint.Y));
 
-                    if ((labelPosition.SitePoint.Lng - AveragePoint.X) >= 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) <= 0) // first quartier
+                    if ((labelPosition.SitePoint.Lng - AveragePoint.X) >= 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) >= 0) // first quartier
                     {
-                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat - 1, Lng = labelPosition.SitePoint.Lng + 1, Ordinal = 0 };
-                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - LabelHeight - 1, Lng = labelPosition.SitePoint.Lng + LabelWidth + 1, Ordinal = 0 };
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat + (LabelHeight / 2), Lng = labelPosition.SitePoint.Lng + (LabelWidth / 2), Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat + (LabelHeight * 3 / 2), Lng = labelPosition.SitePoint.Lng + (LabelWidth * 3 / 2), Ordinal = 0 };
                         labelPosition.Position = PositionEnum.LeftBottom;
+                        labelPosition.LabelPoint = new Coord() { Lat = labelPosition.LabelSouthWest.Lat, Lng = labelPosition.LabelSouthWest.Lng, Ordinal = 0 };
                     }
-                    else if ((labelPosition.SitePoint.Lng - AveragePoint.X) > 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) > 0) // second quartier
+                    else if ((labelPosition.SitePoint.Lng - AveragePoint.X) > 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) < 0) // second quartier
                     {
-                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat + LabelHeight + 1, Lng = labelPosition.SitePoint.Lng + 1, Ordinal = 0 };
-                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - 1, Lng = labelPosition.SitePoint.Lng + LabelWidth + 1, Ordinal = 0 };
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat - (LabelHeight * 3 / 2), Lng = labelPosition.SitePoint.Lng + (LabelWidth / 2), Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - (LabelHeight / 2), Lng = labelPosition.SitePoint.Lng + (LabelWidth * 3 / 2), Ordinal = 0 };
                         labelPosition.Position = PositionEnum.LeftTop;
+                        labelPosition.LabelPoint = new Coord() { Lat = labelPosition.LabelNorthEast.Lat, Lng = labelPosition.LabelSouthWest.Lng, Ordinal = 0 };
                     }
-                    else if ((labelPosition.SitePoint.Lng - AveragePoint.X) < 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) > 0) // third quartier
+                    else if ((labelPosition.SitePoint.Lng - AveragePoint.X) < 0 && (labelPosition.SitePoint.Lat - AveragePoint.Y) < 0) // third quartier
                     {
-                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat + LabelHeight + 1, Lng = labelPosition.SitePoint.Lng - LabelWidth - 1, Ordinal = 0 };
-                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat + 1, Lng = labelPosition.SitePoint.Lng + 1, Ordinal = 0 };
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat - (LabelHeight * 3 / 2), Lng = labelPosition.SitePoint.Lng - (LabelWidth * 3 / 2), Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - (LabelHeight / 2), Lng = labelPosition.SitePoint.Lng - (LabelWidth / 2), Ordinal = 0 };
                         labelPosition.Position = PositionEnum.RightTop;
+                        labelPosition.LabelPoint = new Coord() { Lat = labelPosition.LabelNorthEast.Lat, Lng = labelPosition.LabelNorthEast.Lng, Ordinal = 0 };
                     }
                     else // forth quartier
                     {
-                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat - 1, Lng = labelPosition.SitePoint.Lng - LabelWidth - 1, Ordinal = 0 };
-                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat - LabelHeight - 1, Lng = labelPosition.SitePoint.Lng - 1, Ordinal = 0 };
+                        labelPosition.LabelSouthWest = new Coord() { Lat = labelPosition.SitePoint.Lat + (LabelHeight / 2), Lng = labelPosition.SitePoint.Lng - (LabelWidth * 3 / 2), Ordinal = 0 };
+                        labelPosition.LabelNorthEast = new Coord() { Lat = labelPosition.SitePoint.Lat + (LabelHeight * 3 / 2), Lng = labelPosition.SitePoint.Lng - (LabelWidth / 2), Ordinal = 0 };
                         labelPosition.Position = PositionEnum.RightBottom;
+                        labelPosition.LabelPoint = new Coord() { Lat = labelPosition.LabelSouthWest.Lat, Lng = labelPosition.LabelNorthEast.Lng, Ordinal = 0 };
                     }
                 }
                 foreach (LabelPosition labelPosition in LabelPositionList.OrderBy(c => c.Distance))

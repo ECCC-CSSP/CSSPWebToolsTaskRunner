@@ -17,6 +17,7 @@ using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPWebToolsTaskRunner.Services.Resources;
+using System.Drawing;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -84,6 +85,37 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         #endregion Initialize and Cleanup
 
         #region Functions public
+        [TestMethod]
+        public void DrawPolSourceSitesPoints_test()
+        {
+            csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
+            MapInfoService mapInfoService = new MapInfoService(LanguageEnum.en, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            TVItemService tvItemService = new TVItemService(LanguageEnum.en, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+
+            Bitmap bitmap = new Bitmap(1280, 1200);
+            Graphics g = Graphics.FromImage(bitmap);
+            int GraphicWidth = bitmap.Width;
+            int GraphicHeight = bitmap.Height;
+
+            CoordMap coordMap = new CoordMap()
+            {
+                NorthEast = new Coord() { Lat = 46.5364151f, Lng = -64.55215f, Ordinal = 0 },
+                SouthWest = new Coord() { Lat = 46.23907f, Lng = -64.99161f, Ordinal = 0 },
+            };
+
+            int SubsectorTVItemID = 635;
+
+            List<MapInfoPointModel> mapInfoPointModelPolSourceSiteList = new List<MapInfoPointModel>();
+            List<TVItemModel> tvItemModelPolSourceSiteList = new List<TVItemModel>();
+
+            mapInfoPointModelPolSourceSiteList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithParentIDAndTVTypeAndMapInfoDrawTypeDB(SubsectorTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
+            tvItemModelPolSourceSiteList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(SubsectorTVItemID, TVTypeEnum.PolSourceSite).Where(c => c.IsActive == true).ToList();
+
+            GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(); // (new TaskRunnerBaseService(new List<BWObj>()), "", "", "", "");
+            googleMapToPNG.DrawPolSourceSitesPoints(g, GraphicWidth, GraphicHeight, coordMap, mapInfoPointModelPolSourceSiteList, tvItemModelPolSourceSiteList);
+
+
+        }
         [TestMethod]
         public void Excel_Image_Test()
         {
