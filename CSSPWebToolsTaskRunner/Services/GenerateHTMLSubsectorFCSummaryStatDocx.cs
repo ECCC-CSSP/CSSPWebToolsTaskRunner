@@ -693,7 +693,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets.get_Item(1);
 
                 Microsoft.Office.Interop.Excel.ChartObjects xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
-                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 1000, 100);
+                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 800, 100);
                 Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
                 chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
@@ -710,7 +710,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
                 xlApp.Selection.Delete();
                 chartPage.Legend.Select();
-                xlApp.Selection.Delete();              
+                xlApp.Selection.Delete();
+                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+                chartPage.Parent.RoundedCorners = true;
 
                 chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.YearsWithSamplesUsed;
 
@@ -730,24 +733,24 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                 {
-                    sbHTML.AppendLine($@"            <td colspan=""12"">");
+                    sbHTML.AppendLine($@"            <td class=""imageCellPadding"" colspan=""12"">");
                 }
                 else
                 {
-                    sbHTML.AppendLine($@"            <td colspan=""11"">");
+                    sbHTML.AppendLine($@"            <td class=""imageCellPadding"" colspan=""11"">");
                 }
-                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,1000|height,100|||");
+                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,600|height,100|||");
                 sbHTML.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
                 sbHTML.AppendLine(@"            </td>");
                 sbHTML.AppendLine(@"        </tr>");
                 sbHTML.AppendLine(@"        <tr>");
                 if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                 {
-                    sbHTML.AppendLine($@"            <td colspan=""12"">");
+                    sbHTML.AppendLine($@"            <td class=""textAlignLeft"" colspan=""12"">");
                 }
                 else
                 {
-                    sbHTML.AppendLine($@"            <td colspan=""11"">");
+                    sbHTML.AppendLine($@"            <td class=""textAlignLeft"" colspan=""11"">");
                 }
                 sbHTML.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
                 sbHTML.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
