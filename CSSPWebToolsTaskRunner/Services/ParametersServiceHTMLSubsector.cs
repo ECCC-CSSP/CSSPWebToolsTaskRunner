@@ -46,6 +46,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case "FullReportCoverPage":
+                    {
+                        if (!GenerateHTMLSubsectorFullReportCoverPage(fi, sbHTML, parameters, reportTypeModel))
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "FCSummaryStatXlsx":
                     {
                         if (!GenerateHTMLSubsector_SubsectorTestXlsx(fi, sbHTML, parameters, reportTypeModel))

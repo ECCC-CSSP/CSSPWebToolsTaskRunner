@@ -1323,4 +1323,16 @@
   <data name="Urban" xml:space="preserve">
     <value>Urban</value>
   </data>
+  <data name="AtlanticMarineWaterQualityMonitoring" xml:space="preserve">
+    <value>Atlantic Marine Water Quality Monitoring</value>
+  </data>
+  <data name="MarineWaterQualityReEvaluationReport" xml:space="preserve">
+    <value>Marine Water Quality Re-Evaluation Report</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="ShellfishGrowingArea" xml:space="preserve">
+    <value>Shellfish Growing Area</value>
+  </data>
 </root>

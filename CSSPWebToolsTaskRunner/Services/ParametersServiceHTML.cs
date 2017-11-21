@@ -195,6 +195,9 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine(@"    border: 1px solid black;");
             sbHTML.AppendLine(@"    text-align: center;");
             sbHTML.AppendLine(@"}");
+            sbHTML.AppendLine(@".letterhead {");
+            sbHTML.AppendLine(@"    font: bold 16px arial;");
+            sbHTML.AppendLine(@"}");
             sbHTML.AppendLine(@".imageCellPadding {");
             sbHTML.AppendLine(@"    text-align: left;");
             sbHTML.AppendLine(@"}");
@@ -203,6 +206,9 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine(@"}");
             sbHTML.AppendLine(@".textAlignCenter {");
             sbHTML.AppendLine(@"    text-align: center;");
+            sbHTML.AppendLine(@"}");
+            sbHTML.AppendLine(@".textAlignRight {");
+            sbHTML.AppendLine(@"    text-align: right;");
             sbHTML.AppendLine(@"}");
             sbHTML.AppendLine(@".bglightblue {");
             sbHTML.AppendLine(@"    background-color: lightblue;");

@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GenerateHTMLSubsectorFullReportCoverPage.cs" />
     <Compile Include="Services\GoogleMapToPNG.cs" />
     <Compile Include="Services\KmzServiceMikeScenario.cs" />
     <Compile Include="Services\ParametersService.cs" />
@@ -696,7 +697,7 @@
     <Content Include="settings.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WQMSRTNotifiers\WQMS.RTNotifiers.csproj">
+    <ProjectReference Include="..\..\WQMSRTNotifiers\WQMS.RTNotifiers\WQMS.RTNotifiers.csproj">
       <Project>{16aab87d-346f-4eeb-9a5b-1ee44bb56f2f}</Project>
       <Name>WQMS.RTNotifiers</Name>
     </ProjectReference>

@@ -286,6 +286,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Atlantic Marine Water Quality Monitoring.
+        /// </summary>
+        public static string AtlanticMarineWaterQualityMonitoring {
+            get {
+                return ResourceManager.GetString("AtlanticMarineWaterQualityMonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to at.
         /// </summary>
         public static string AtLowerCase {
@@ -1834,6 +1843,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Marine Water Quality Re-Evaluation Report.
+        /// </summary>
+        public static string MarineWaterQualityReEvaluationReport {
+            get {
+                return ResourceManager.GetString("MarineWaterQualityReEvaluationReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max FC.
         /// </summary>
         public static string MaxFC {
@@ -2752,6 +2770,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report.
+        /// </summary>
+        public static string Report {
+            get {
+                return ResourceManager.GetString("Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ReportTypeID.
         /// </summary>
         public static string ReportTypeID {
@@ -2964,6 +2991,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SharedStringIsRequired {
             get {
                 return ResourceManager.GetString("SharedStringIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shellfish Growing Area.
+        /// </summary>
+        public static string ShellfishGrowingArea {
+            get {
+                return ResourceManager.GetString("ShellfishGrowingArea", resourceCulture);
             }
         }
         
