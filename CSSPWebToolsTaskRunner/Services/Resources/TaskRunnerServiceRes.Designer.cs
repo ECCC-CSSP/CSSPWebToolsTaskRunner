@@ -493,6 +493,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coord.
+        /// </summary>
+        public static string Coord {
+            get {
+                return ResourceManager.GetString("Coord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Coordinates.
         /// </summary>
         public static string Coordinates {

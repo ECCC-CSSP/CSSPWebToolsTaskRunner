@@ -1359,4 +1359,7 @@
   <data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="Coord" xml:space="preserve">
+    <value>Coord</value>
+  </data>
 </root>

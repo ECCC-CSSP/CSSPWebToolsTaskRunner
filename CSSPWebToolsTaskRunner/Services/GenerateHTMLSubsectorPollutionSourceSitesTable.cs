@@ -65,98 +65,118 @@ namespace CSSPWebToolsTaskRunner.Services
             List<PolSourceObservationModel> polSourceObservationModelList = _PolSourceObservationService.GetPolSourceObservationModelListWithSubsectorTVItemIDDB(TVItemID);
             List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithSubsectorTVItemIDDB(TVItemID);
 
-            sbHTML.AppendLine($@" <h3>{ TaskRunnerServiceRes.LandBasePollutionSourceSiteObservationAndIssues }</h3>");
-            sbHTML.AppendLine($@" <table border=""0"">");
-            sbHTML.AppendLine($@"    <tr> ");
-            sbHTML.AppendLine($@"       <th>{ TaskRunnerServiceRes.ID }</th>");
-            sbHTML.AppendLine($@"       <th>{ TaskRunnerServiceRes.Dist }</th>");
-            sbHTML.AppendLine($@"       <th>{ TaskRunnerServiceRes.Slope }</th>");
-            sbHTML.AppendLine($@"       <th>{ TaskRunnerServiceRes.Type }</th>");
-            sbHTML.AppendLine($@"       <th>{ TaskRunnerServiceRes.Issues }</th>");
-            sbHTML.AppendLine($@"       <th>{ TaskRunnerServiceRes.Photos }</th>");
-            sbHTML.AppendLine($@"    </tr> ");
-            foreach (TVItemModel tvItemModel in tvItemModelListPolSourceSite)
+            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListPolSourceType = new List<PolSourceObsInfoEnumTextAndID>();
+
+            foreach (int id in Enum.GetValues(typeof(PolSourceObsInfoEnum)))
             {
-                PolSourceSiteModel polSourceSiteModel = polSourceSiteModelList.Where(c => c.PolSourceSiteTVItemID == tvItemModel.TVItemID).FirstOrDefault();
-                if (polSourceSiteModel != null)
+                if (id == 0)
+                    continue;
+
+                if (id.ToString().StartsWith("105") && !id.ToString().EndsWith("00"))
                 {
-                    PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
-                    if (polSourceObservationModel != null)
+                    polSourceObsInfoEnumTextAndIDListPolSourceType.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                }
+            }
+
+            polSourceObsInfoEnumTextAndIDListPolSourceType = polSourceObsInfoEnumTextAndIDListPolSourceType.OrderBy(c => c.Text).ToList();
+
+            sbHTML.AppendLine($@" <h3>{ TaskRunnerServiceRes.LandBasePollutionSourceSiteObservationAndIssues }</h3>");
+            foreach (PolSourceObsInfoEnumTextAndID PolSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListPolSourceType)
+            {
+                sbHTML.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
+                foreach (TVItemModel tvItemModel in tvItemModelListPolSourceSite)
+                {
+                    PolSourceSiteModel polSourceSiteModel = polSourceSiteModelList.Where(c => c.PolSourceSiteTVItemID == tvItemModel.TVItemID).FirstOrDefault();
+                    if (polSourceSiteModel != null)
                     {
-                        List<PolSourceObservationIssueModel> polSourceObservationIssueModelList2 = polSourceObservationIssueModelList.Where(c => c.PolSourceObservationID == polSourceObservationModel.PolSourceObservationID).OrderBy(c => c.Ordinal).ToList();
-                        if (polSourceObservationIssueModelList2.Count > 0)
+                        PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
+                        if (polSourceObservationModel != null)
                         {
-                            if (polSourceObservationIssueModelList2[0].ObservationInfo.Contains(((int)PolSourceObsInfoEnum.LandBased).ToString() + ","))
+                            List<PolSourceObservationIssueModel> polSourceObservationIssueModelList2 = polSourceObservationIssueModelList.Where(c => c.PolSourceObservationID == polSourceObservationModel.PolSourceObservationID).OrderBy(c => c.Ordinal).ToList();
+                            if (polSourceObservationIssueModelList2.Count > 0)
                             {
-                                sbHTML.AppendLine($@"    <tr> ");
-                                sbHTML.AppendLine($@"       <td rowspan=""2""> ");
-                                sbHTML.AppendLine($@"           <span>{ polSourceSiteModel.Site }</span>");
-                                sbHTML.AppendLine($@"       </td> ");
-                                if (polSourceObservationModel == null)
+                                if (polSourceObservationIssueModelList2[0].ObservationInfo.Contains(((int)PolSourceObsInfoEnum.LandBased).ToString() + ","))
                                 {
-                                    sbHTML.AppendLine($@"       <td rowspan=""2"" colspan=""5""> ");
-                                    sbHTML.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
-                                    sbHTML.AppendLine($@"       </td> ");
-                                }
-                                else
-                                {
-                                    if (polSourceObservationIssueModelList2.Count == 0)
+                                    if (polSourceObservationModel == null)
                                     {
-                                        sbHTML.AppendLine($@"       <td rowspan=""2"" colspan=""5""> ");
-                                        sbHTML.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
-                                        sbHTML.AppendLine($@"       </td> ");
+                                        sbHTML.AppendLine($@" <blockquote>");
+                                        sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
+
+                                        List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
+                                        if (mapInfoPointModelList.Count > 0)
+                                        {
+                                            sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
+                                        }
+                                        sbHTML.AppendLine($@"           <br />");
+                                        sbHTML.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
+                                        sbHTML.AppendLine($@" </blockquote>");
                                     }
                                     else
                                     {
-                                        //sbHTML.AppendLine($@" <table border=""0"">");
-
-                                        foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList2)
+                                        if (polSourceObservationIssueModelList2.Count == 0)
                                         {
-                                            //sbHTML.AppendLine($@"    <tr> ");
-                                            List<int> obsInfoList = polSourceObservationIssueModel.ObservationInfo.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Where(c => !string.IsNullOrWhiteSpace(c)).Select(c => int.Parse(c)).ToList();
-                                            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDList = new List<PolSourceObsInfoEnumTextAndID>();
-                                            foreach (int id in Enum.GetValues(typeof(PolSourceObsInfoEnum)))
-                                            {
-                                                if (id == 0)
-                                                    continue;
+                                            sbHTML.AppendLine($@" <blockquote>");
+                                            sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
 
-                                                polSourceObsInfoEnumTextAndIDList.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-                                            }
-                                            if (obsInfoList.Count > 1)
+                                            List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
+                                            if (mapInfoPointModelList.Count > 0)
                                             {
-                                                sbHTML.AppendLine($@"           <td><span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault().Text }</span></td>");
+                                                sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
                                             }
-                                            if (obsInfoList.Count > 2)
-                                            {
-                                                sbHTML.AppendLine($@"           <td><span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault().Text }</span></td>");
-                                            }
-                                            if (obsInfoList.Count > 3)
-                                            {
-                                                sbHTML.AppendLine($@"           <td><span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[3]).FirstOrDefault().Text }</span></td>");
-                                            }
-
-                                            sbHTML.AppendLine($@"          <td>");
-                                            foreach (int obsInfo in obsInfoList.Skip(4))
-                                            {
-                                                sbHTML.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span>");
-                                            }
-                                            sbHTML.AppendLine($@"           </td>");
-                                            sbHTML.AppendLine($@"           <td><span>Photo</span></td>");
-
-                                            //sbHTML.AppendLine($@"    <tr> ");
+                                            sbHTML.AppendLine($@"           <br />");
+                                            sbHTML.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
+                                            sbHTML.AppendLine($@" </blockquote>");
                                         }
-                                        //sbHTML.AppendLine($@" </table>");
+                                        else
+                                        {
+                                            bool IssueOfSourceTypeExist = false;
+                                            foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList2)
+                                            {
+                                                if (polSourceObservationIssueModel.ObservationInfo.Contains(PolSourceObsInfoEnumTextAndID.ID.ToString()))
+                                                {
+                                                    IssueOfSourceTypeExist = true;
+                                                }
+                                            }
+
+                                            if (IssueOfSourceTypeExist)
+                                            {
+                                                foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList2)
+                                                {
+                                                    List<int> obsInfoList = polSourceObservationIssueModel.ObservationInfo.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Where(c => !string.IsNullOrWhiteSpace(c)).Select(c => int.Parse(c)).ToList();
+                                                    List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDList = new List<PolSourceObsInfoEnumTextAndID>();
+                                                    foreach (int id in Enum.GetValues(typeof(PolSourceObsInfoEnum)))
+                                                    {
+                                                        if (id == 0)
+                                                            continue;
+
+                                                        polSourceObsInfoEnumTextAndIDList.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                                                    }
+                                                    if (obsInfoList.Count > 1)
+                                                    {
+                                                        sbHTML.AppendLine($@"           <span>{ TaskRunnerServiceRes.Dist }: { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault().Text }</span>");
+                                                    }
+                                                    if (obsInfoList.Count > 2)
+                                                    {
+                                                        sbHTML.AppendLine($@"           <span>{ TaskRunnerServiceRes.Slope }: { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault().Text }</span>");
+                                                    }
+
+                                                    foreach (int obsInfo in obsInfoList.Skip(4))
+                                                    {
+                                                        sbHTML.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span>");
+                                                    }
+                                                    sbHTML.AppendLine($@"           <br />");
+                                                    sbHTML.AppendLine($@"           <span>Photo</span>");
+
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-
-                                sbHTML.AppendLine($@"    </tr>");
                             }
                         }
                     }
                 }
             }
-            sbHTML.AppendLine($@" </table>");
-
 
             sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
 
