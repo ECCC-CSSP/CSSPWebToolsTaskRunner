@@ -1377,4 +1377,13 @@
   <data name="WaterBasePollutionSourceSiteObservationAndIssues" xml:space="preserve">
     <value>Water base pollution source sites, observations and issues</value>
   </data>
+  <data name="CouldNotFind_M21OrM3MDBWith_Equal_" xml:space="preserve">
+    <value>Could not find {0} for M21 or M3 MDB file with {1} equal {2}</value>
+  </data>
+  <data name="NumberOfIssuesByLandBasePollutionType" xml:space="preserve">
+    <value>Number of issues by land base pollution type</value>
+  </data>
+  <data name="NumberOfIssuesByWaterBasePollutionType" xml:space="preserve">
+    <value>Number of issues by water base pollution type</value>
+  </data>
 </root>

@@ -463,16 +463,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 MapInfoModel mapInfoModel = mapInfoService.PostDeleteMapInfoWithTVItemIDDB(mikeBoundaryConditionModelWebTide.MikeBoundaryConditionTVItemID);
                 if (!string.IsNullOrWhiteSpace(mapInfoModel.Error))
                 {
-                    NotUsed = mapInfoModel.Error;
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(mapInfoModel.Error);
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDelete_With_Equal_Error_, TaskRunnerServiceRes.MapInfo, TaskRunnerServiceRes.TVItemID, mikeBoundaryConditionModelWebTide.MikeBoundaryConditionTVItemID, mapInfoModel.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(string.Format(TaskRunnerServiceRes.CouldNotDelete_With_Equal_Error_, TaskRunnerServiceRes.MapInfo, TaskRunnerServiceRes.TVItemID, mikeBoundaryConditionModelWebTide.MikeBoundaryConditionTVItemID, mapInfoModel.Error));
                     return;
                 }
 
                 mapInfoModel = mapInfoService.CreateMapInfoObjectDB(CoordList, MapInfoDrawTypeEnum.Polyline, TVTypeEnum.MikeBoundaryConditionWebTide, mikeBoundaryConditionModelWebTide.MikeBoundaryConditionTVItemID);
                 if (!string.IsNullOrWhiteSpace(mapInfoModel.Error))
                 {
-                    NotUsed = mapInfoModel.Error;
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(mapInfoModel.Error);
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_Error_, TaskRunnerServiceRes.MapInfo, mapInfoModel.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_Error_", TaskRunnerServiceRes.MapInfo, mapInfoModel.Error);
                     return;
                 }
 
@@ -483,8 +483,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVFileModel tvFileModelM21_3 = tvFileService.GetTVFileModelWithTVItemIDAndTVFileTypeM21FMOrM3FMDB(MikeScenarioTVItemID);
             if (!string.IsNullOrWhiteSpace(tvFileModelM21_3.Error))
             {
-                NotUsed = tvFileModelM21_3.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelM21_3.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_M21OrM3MDBWith_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(string.Format(TaskRunnerServiceRes.CouldNotFind_M21OrM3MDBWith_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString()));
                 return;
             }
 

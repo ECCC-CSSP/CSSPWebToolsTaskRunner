@@ -159,7 +159,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParseLabSheetWithLabSheetID_, LabSheetID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotParseLabSheetWithLabSheetID_, fi.Name);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParseLabSheetWithLabSheetID_", fi.Name);
                 return;
             }
 
@@ -170,7 +170,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (!string.IsNullOrWhiteSpace(retStr))
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_, fi.Name);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotCreateFile_, fi.Name);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotCreateFile_", fi.Name);
                     return;
                 }
 
@@ -869,7 +869,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (ParamValue.Length != 2)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
                     return;
                 }
 
@@ -892,24 +892,24 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModelParent = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelParent.Error))
             {
-                NotUsed = tvItemModelParent.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelParent.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString()));
                 return;
             }
 
             TVItemModel tvItemModelFile = _TVItemService.GetTVItemModelWithTVItemIDDB(TVFileTVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelFile.Error))
             {
-                NotUsed = tvItemModelFile.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelFile.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVFileTVItemID, TVFileTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVFileTVItemID, TVFileTVItemID.ToString()));
                 return;
             }
 
             TVFileModel tvFileModel = _TVFileService.GetTVFileModelWithTVFileTVItemIDDB(TVFileTVItemID);
             if (!string.IsNullOrWhiteSpace(tvFileModel.Error))
             {
-                NotUsed = tvFileModel.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModel.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVFileTVItemID, TVFileTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVFileTVItemID, TVFileTVItemID.ToString()));
                 return;
             }
 
@@ -917,7 +917,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!fiDocx.Exists)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiDocx.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotFindFile_, fiDocx.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiDocx.FullName);
                 return;
             }
 
@@ -936,7 +936,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotExportFile_ToPDFError_, fiDocx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.CouldNotExportFile_ToPDFError_, fiDocx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotExportFile_ToPDFError_", fiDocx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
                 return;
             }
 

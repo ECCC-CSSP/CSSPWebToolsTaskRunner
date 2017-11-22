@@ -20,7 +20,7 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSubsectorPollutionSourceSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSubsectorMWQMSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
         {
             string NotUsed = "";
             int TVItemID = 0;
@@ -60,34 +60,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
-            List<TVItemModel> tvItemModelListPolSourceSite = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.PolSourceSite).Where(c => c.IsActive == true).ToList();
-            List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(TVItemID).OrderBy(c => c.Site).ToList();
-            List<PolSourceObservationModel> polSourceObservationModelList = _PolSourceObservationService.GetPolSourceObservationModelListWithSubsectorTVItemIDDB(TVItemID);
-            List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithSubsectorTVItemIDDB(TVItemID);
-            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDList = new List<PolSourceObsInfoEnumTextAndID>();
-            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBasePolSourceType = new List<PolSourceObsInfoEnumTextAndID>();
-            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType = new List<PolSourceObsInfoEnumTextAndID>();
+            List<TVItemModel> tvItemModelListMWQMSites = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite).Where(c => c.IsActive == true).ToList();
+            List<MWQMSiteModel> mwqmSiteModelList = _MWQMSiteService.GetMWQMSiteModelListWithSubsectorTVItemIDDB(TVItemID).ToList();
+            List<MWQMRunModel> mwqmRunModelList = _MWQMSiteService.GetMWQMRunModelListWithSubsectorTVItemIDDB(TVItemID).ToList();
 
-            foreach (int id in Enum.GetValues(typeof(PolSourceObsInfoEnum)))
-            {
-                if (id == 0)
-                    continue;
-
-                polSourceObsInfoEnumTextAndIDList.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-
-                if (id.ToString().StartsWith("105") && !id.ToString().EndsWith("00"))
-                {
-                    polSourceObsInfoEnumTextAndIDListLandBasePolSourceType.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-                }
-
-                if (id.ToString().StartsWith("152") && !id.ToString().EndsWith("00"))
-                {
-                    polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-                }
-            }
-
-            polSourceObsInfoEnumTextAndIDListLandBasePolSourceType = polSourceObsInfoEnumTextAndIDListLandBasePolSourceType.OrderBy(c => c.Text).ToList();
-            polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType = polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType.OrderBy(c => c.Text).ToList();
 
             // ---------------------------------------------------------------------------------------------------------------
             // graphic showing the number of polsource issues of different pollution source type (Agriculture, Forested, ...)
@@ -536,9 +512,9 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSubsectorPollutionSourceSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        public bool PublicGenerateHTMLSubsectorMWQMSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
         {
-            bool retBool = GenerateHTMLSubsectorPollutionSourceSites(fi, sbHTML, parameters, reportTypeModel);
+            bool retBool = GenerateHTMLSubsectorMWQMSites(fi, sbHTML, parameters, reportTypeModel);
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sbHTML.ToString());

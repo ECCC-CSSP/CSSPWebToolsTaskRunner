@@ -191,8 +191,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModel = tvItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
             {
-                NotUsed = tvItemModel.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModel.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVItem, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVItem, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
                 return false;
             }
 
@@ -256,14 +256,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         if (string.IsNullOrWhiteSpace(TVItemIDStr))
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
                         }
 
                         int.TryParse(TVItemIDStr, out TVItemID);
                         if (TVItemID == 0)
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
                         }
 
                         ContourValues = GetParameters("ContourValues", ParamValueList);
@@ -272,8 +272,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
                         if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
                         {
-                            NotUsed = tvItemModelMikeScenario.Error;
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelMikeScenario.Error);
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
                             return false;
                         }
                         string MikeScenarioName = tvItemModelMikeScenario.TVText;

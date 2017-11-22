@@ -888,7 +888,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     else if (ElementList[j].Type == 24)
                     {
                         NotUsed = string.Format(TaskRunnerServiceRes.NotImplementedYet, dfsuFile.NumberOfSigmaLayers.ToString());
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.NotImplementedYet, dfsuFile.NumberOfSigmaLayers.ToString());
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("NotImplementedYet", dfsuFile.NumberOfSigmaLayers.ToString());
                         return false;
                     }
                     else if (ElementList[j].Type == 25)
@@ -949,7 +949,7 @@ namespace CSSPWebToolsTaskRunner.Services
             else
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.NotImplementedYet, dfsuFile.NumberOfSigmaLayers.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.NotImplementedYet, dfsuFile.NumberOfSigmaLayers.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("NotImplementedYet", dfsuFile.NumberOfSigmaLayers.ToString());
                 return false;
             }
 
@@ -1278,7 +1278,7 @@ namespace CSSPWebToolsTaskRunner.Services
             else
             {
                 NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
                 return false;
             }
 
@@ -1876,7 +1876,7 @@ namespace CSSPWebToolsTaskRunner.Services
             else
             {
                 NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
                 return false;
             }
 
@@ -1899,7 +1899,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return FileName;
                 }
 
@@ -1912,7 +1912,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     catch (Exception ex)
                     {
                         NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                         return FileName;
                     }
                 }
@@ -1928,15 +1928,15 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBe0InFunction_, "_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID", "GetHydrodynamicDfsuFile");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes._ShouldNotBe0InFunction_, "_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID", "GetHydrodynamicDfsuFile");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_ShouldNotBe0InFunction_", "_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID", "GetHydrodynamicDfsuFile");
                 return dfsuFile;
             }
 
             TVFileModel tvFileModelM21_3fm = _TVFileService.GetTVFileModelWithTVItemIDAndTVFileTypeM21FMOrM3FMDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
             if (!string.IsNullOrWhiteSpace(tvFileModelM21_3fm.Error))
             {
-                NotUsed = tvFileModelM21_3fm.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelM21_3fm.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_M21OrM3MDBWith_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_M21OrM3MDBWith_Equal_", TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
                 return dfsuFile;
             }
 
@@ -1946,8 +1946,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
-                    NotUsed = tvFileModelM21_3fm.Error;
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelM21_3fm.Error);
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "file_name", "need to specify the error");
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "file_name", "need to specify the error");
                 }
                 return dfsuFile;
             }
@@ -1956,7 +1956,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!fiHydro.Exists)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.File_DoesNotExist, fiHydro.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.File_DoesNotExist, fiHydro.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("File_DoesNotExist", fiHydro.FullName);
                 return dfsuFile;
             }
 
@@ -1967,7 +1967,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotOpenFile_, fiHydro.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotOpenFile_, fiHydro.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotOpenFile_", fiHydro.FullName);
                 return dfsuFile;
             }
 
@@ -1995,7 +1995,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 return SourceCoord;
             }
 
@@ -2010,7 +2010,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, ";", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, ";", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", ";", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourceCoord;
                 }
             }
@@ -2029,7 +2029,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 return SourceFlow;
             }
 
@@ -2042,7 +2042,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, ";", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, ";", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", ";", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourceFlow;
                 }
             }
@@ -2062,7 +2062,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 return SourceIncluded;
             }
 
@@ -2075,7 +2075,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourceIncluded;
                 }
             }
@@ -2135,7 +2135,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 return SourcePollution;
             }
 
@@ -2148,7 +2148,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourcePollution;
                 }
             }
@@ -2167,7 +2167,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 return SourcePollutionContinuous;
             }
 
@@ -2180,7 +2180,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourcePollutionContinuous;
                 }
             }
@@ -2199,7 +2199,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 return SourceSalinity;
             }
 
@@ -2212,7 +2212,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourceSalinity;
                 }
             }
@@ -2231,7 +2231,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                 return SourceTemperature;
             }
 
@@ -2244,7 +2244,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourceTemperature;
                 }
             }
@@ -2259,15 +2259,15 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBe0InFunction_, "_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID", "GetHydrodynamicDfsuFile");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes._ShouldNotBe0InFunction_, "_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID", "GetHydrodynamicDfsuFile");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_ShouldNotBe0InFunction_", "_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID", "GetHydrodynamicDfsuFile");
                 return dfsuFile;
             }
 
             TVFileModel tvFileModelM21_3fm = _TVFileService.GetTVFileModelWithTVItemIDAndTVFileTypeM21FMOrM3FMDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
             if (!string.IsNullOrWhiteSpace(tvFileModelM21_3fm.Error))
             {
-                NotUsed = tvFileModelM21_3fm.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelM21_3fm.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_M21OrM3MDBWith_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_M21OrM3MDBWith_Equal_", TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
                 return dfsuFile;
             }
 
@@ -2277,8 +2277,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
-                    NotUsed = tvFileModelM21_3fm.Error;
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelM21_3fm.Error);
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "file_name", "need to fill the error message");
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "file_name", "need to fill the error message");
                 }
                 return dfsuFile;
             }
@@ -2287,7 +2287,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!fiTrans.Exists)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.File_DoesNotExist, fiTrans.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.File_DoesNotExist, fiTrans.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("File_DoesNotExist", fiTrans.FullName);
                 return dfsuFile;
             }
 
@@ -2298,7 +2298,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotOpenFile_, fiTrans.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotOpenFile_, fiTrans.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotOpenFile_", fiTrans.FullName);
                 return dfsuFile;
             }
 
@@ -2488,7 +2488,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (ItemNumber == 0)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, "eumIConcentration");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, "eumIConcentration");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.ParameterType, "eumIConcentration");
                 return false;
             }
 
@@ -2664,7 +2664,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 else
                                 {
                                     NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
                                     return false;
                                 }
                             }
@@ -2771,7 +2771,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 else
                                 {
                                     NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
                                     return false;
                                 }
                             }
@@ -2845,7 +2845,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 else
                                 {
                                     NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
                                     return false;
                                 }
                             }
@@ -2868,7 +2868,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             else if (el.Type == 24)
                             {
                                 NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue);
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
                                 return false;
                             }
                             else if (el.Type == 25)
@@ -2886,7 +2886,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             else
                             {
                                 NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
                                 return false;
                             }
 
@@ -3465,7 +3465,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!fiServer.Exists)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiServer.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotFindFile_, fiServer.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiServer.FullName);
                 return false;
             }
 
@@ -3475,7 +3475,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
                 return false;
             }
 
@@ -3483,7 +3483,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
                 return false;
             }
 
@@ -3491,7 +3491,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (mikeSourceModelList.Count == 0)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.MikeScenarioTVItemID, mikeScenarioModel.MikeScenarioTVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.MikeScenarioTVItemID, mikeScenarioModel.MikeScenarioTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.MikeScenarioTVItemID, mikeScenarioModel.MikeScenarioTVItemID.ToString());
                 return false;
             }
 
@@ -3557,7 +3557,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (mikeSourceStartEndModelListLocal.Count == 0)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSourceStartEnd, TaskRunnerServiceRes.MikeSourceID, mikeSourceModel.MikeSourceID.ToString());
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSourceStartEnd, TaskRunnerServiceRes.MikeSourceID, mikeSourceModel.MikeSourceID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeSourceStartEnd, TaskRunnerServiceRes.MikeSourceID, mikeSourceModel.MikeSourceID.ToString());
                 }
 
                 if (mikeSourceModel.Include)
@@ -3646,7 +3646,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     if (mikeSourceModelLocal == null)
                     {
                         NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.SourceNumberString, "Source_" + i.ToString());
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.SourceNumberString, "Source_" + i.ToString());
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.SourceNumberString, "Source_" + i.ToString());
                         pfsFile.Close();
                         return false;
                     }
@@ -3691,7 +3691,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     if (mikeSourceModelLocal == null)
                     {
                         NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.SourceNumberString, "Source_" + i.ToString());
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.SourceNumberString, "Source_" + i.ToString());
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.SourceNumberString, "Source_" + i.ToString());
                         pfsFile.Close();
                         return false;
                     }
@@ -3739,7 +3739,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (ItemNumber == 0)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, "eumIConcentration1");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, "eumIConcentration1");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.ParameterType, "eumIConcentration1");
                 return false;
             }
 
@@ -3894,7 +3894,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             else
                             {
                                 NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
                                 return false;
                             }
                         }
@@ -4003,7 +4003,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             else
                             {
                                 NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
                                 return false;
                             }
                         }
@@ -4077,7 +4077,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             else
                             {
                                 NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
                                 return false;
                             }
                         }
@@ -4099,7 +4099,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         else if (el.Type == 24)
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
                             return false;
                         }
                         else if (el.Type == 25)
@@ -4117,7 +4117,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         else
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
                             return false;
                         }
 
@@ -4769,7 +4769,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (string.IsNullOrWhiteSpace(SourceName))
             {
                 NotUsed = TaskRunnerServiceRes.MIKESourceNameIsEmpty;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(TaskRunnerServiceRes.MIKESourceNameIsEmpty);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("MIKESourceNameIsEmpty");
                 return false;
             }
 

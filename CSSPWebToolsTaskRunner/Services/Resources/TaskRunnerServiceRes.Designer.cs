@@ -673,6 +673,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find {0} for M21 or M3 MDB file with {1} equal {2}.
+        /// </summary>
+        public static string CouldNotFind_M21OrM3MDBWith_Equal_ {
+            get {
+                return ResourceManager.GetString("CouldNotFind_M21OrM3MDBWith_Equal_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find [{0}] with [{1}] equal [{2}]..
         /// </summary>
         public static string CouldNotFind_With_Equal_ {
@@ -2487,6 +2496,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NoWind {
             get {
                 return ResourceManager.GetString("NoWind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of issues by land base pollution type.
+        /// </summary>
+        public static string NumberOfIssuesByLandBasePollutionType {
+            get {
+                return ResourceManager.GetString("NumberOfIssuesByLandBasePollutionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of issues by water base pollution type.
+        /// </summary>
+        public static string NumberOfIssuesByWaterBasePollutionType {
+            get {
+                return ResourceManager.GetString("NumberOfIssuesByWaterBasePollutionType", resourceCulture);
             }
         }
         

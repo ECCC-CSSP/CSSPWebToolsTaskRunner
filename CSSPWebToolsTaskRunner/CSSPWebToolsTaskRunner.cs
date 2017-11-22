@@ -106,7 +106,7 @@ namespace CSSPWebToolsTaskRunner
                 AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
                 AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
                 NotUsed = TaskRunnerServiceRes.GenerateOrCommandNeedsToBeTrue;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(TaskRunnerServiceRes.GenerateOrCommandNeedsToBeTrue);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("GenerateOrCommandNeedsToBeTrue");
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
                     appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);

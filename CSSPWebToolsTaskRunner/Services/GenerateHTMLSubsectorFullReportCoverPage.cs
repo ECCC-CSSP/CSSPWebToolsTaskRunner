@@ -51,7 +51,7 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
             {
-                NotUsed = tvItemModelSubsector.Error;
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelSubsector.Error);
                 return false;
             }
@@ -66,8 +66,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModelRoot = _TVItemService.GetRootTVItemModelDB();
             if (!string.IsNullOrWhiteSpace(tvItemModelRoot.Error))
             {
-                NotUsed = tvItemModelRoot.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelRoot.Error);
+                NotUsed = TaskRunnerServiceRes.CouldNotFindTVItemRoot;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CouldNotFindTVItemRoot");
                 return false;
             }
 
@@ -76,8 +76,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVFileModel tvFileModelFullReportCoverPageCanadaFlag = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, "CanadaFlag.png");
             if (!string.IsNullOrWhiteSpace(tvFileModelFullReportCoverPageCanadaFlag.Error))
             {
-                NotUsed = tvFileModelFullReportCoverPageCanadaFlag.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelFullReportCoverPageCanadaFlag.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ServerPath + "CanadaFlag.png");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ServerPath + "CanadaFlag.png");
                 return false;
             }
 
@@ -93,8 +93,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVFileModel tvFileModelFullReportCoverPageCanadaBanner = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, "CanadaBanner.png");
             if (!string.IsNullOrWhiteSpace(tvFileModelFullReportCoverPageCanadaBanner.Error))
             {
-                NotUsed = tvFileModelFullReportCoverPageCanadaBanner.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelFullReportCoverPageCanadaBanner.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ServerPath + "CanadaBanner.png");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ServerPath + "CanadaBanner.png");
                 return false;
             }
 
@@ -110,8 +110,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVFileModel tvFileModelFullReportCoverPageCanadaWithFlag = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, "CanadaWithFlag.png");
             if (!string.IsNullOrWhiteSpace(tvFileModelFullReportCoverPageCanadaWithFlag.Error))
             {
-                NotUsed = tvFileModelFullReportCoverPageCanadaWithFlag.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModelFullReportCoverPageCanadaWithFlag.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ServerPath + "CanadaWithFlag.png");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ServerPath + "CanadaWithFlag.png");
                 return false;
             }
 

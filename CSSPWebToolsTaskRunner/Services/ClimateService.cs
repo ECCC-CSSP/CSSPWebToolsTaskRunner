@@ -258,7 +258,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         else
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotReadFile_, url);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
                             return;
                         }
                     }
@@ -306,7 +306,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 else
                                 {
                                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url2);
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotReadFile_, url2);
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url2);
                                     return;
                                 }
                             }
@@ -406,8 +406,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModelProv = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelProv.Error))
             {
-                NotUsed = tvItemModelProv.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelProv.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString()));
                 return;
             }
 
@@ -1191,7 +1191,7 @@ namespace CSSPWebToolsTaskRunner.Services
         //            else
         //            {
         //                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        //                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotReadFile_, url);
+        //                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
         //                return;
         //            }
         //        }
@@ -1243,7 +1243,7 @@ namespace CSSPWebToolsTaskRunner.Services
         //        if (ParamValue.Length != 2)
         //        {
         //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
         //            return;
         //        }
 
@@ -1428,7 +1428,7 @@ namespace CSSPWebToolsTaskRunner.Services
         //                    else
         //                    {
         //                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotReadFile_, url);
+        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
         //                        return;
         //                    }
         //                }
@@ -1520,7 +1520,7 @@ namespace CSSPWebToolsTaskRunner.Services
         //        //                    else
         //        //                    {
         //        //                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        //        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotReadFile_, url);
+        //        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
         //        //                        return;
         //        //                    }
         //        //                }

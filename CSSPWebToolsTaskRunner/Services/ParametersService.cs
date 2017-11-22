@@ -40,6 +40,8 @@ namespace CSSPWebToolsTaskRunner.Services
         private PolSourceSiteService _PolSourceSiteService { get; set; }
         private PolSourceObservationService _PolSourceObservationService { get; set; }
         private PolSourceObservationIssueService _PolSourceObservationIssueService { get; set; }
+        private MWQMSiteService _MWQMSiteService { get; set; }
+        private MWQMSampleService _MWQMSampleService { get; set; }
         private BaseEnumService _BaseEnumService { get; set; }
         #endregion Properties
 
@@ -61,6 +63,8 @@ namespace CSSPWebToolsTaskRunner.Services
             _PolSourceSiteService = new PolSourceSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _PolSourceObservationService = new PolSourceObservationService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _PolSourceObservationIssueService = new PolSourceObservationIssueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MWQMSiteService = new MWQMSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MWQMSampleService = new MWQMSampleService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
         }
         #endregion Constructors
@@ -362,8 +366,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModel = _TVItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
             {
-                NotUsed = tvItemModel.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModel.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVItem, tvItemModel.Error.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVItem, tvItemModel.Error.ToString());
                 return false;
             }
 
@@ -448,8 +452,8 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModel = _TVItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
             {
-                NotUsed = tvItemModel.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModel.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVItem, tvItemModel.Error.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVItem, tvItemModel.Error.ToString());
                 return false;
             }
 
@@ -508,8 +512,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         TVItemModel tvItemModelSS = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
                         if (!string.IsNullOrWhiteSpace(tvItemModelSS.Error))
                         {
-                            NotUsed = tvItemModelSS.Error;
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelSS.Error);
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
                             return false;
                         }
                         string Subsector = tvItemModelSS.TVText;

@@ -486,7 +486,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (ParamValue.Length != 2)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
                     return;
                 }
 
@@ -509,24 +509,24 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModelParent = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelParent.Error))
             {
-                NotUsed = tvItemModelParent.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelParent.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
                 return;
             }
 
             TVItemModel tvItemModelFile = _TVItemService.GetTVItemModelWithTVItemIDDB(TVFileTVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelFile.Error))
             {
-                NotUsed = tvItemModelFile.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelFile.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVFileTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVFileTVItemID.ToString());
                 return;
             }
 
             TVFileModel tvFileModel = _TVFileService.GetTVFileModelWithTVFileTVItemIDDB(TVFileTVItemID);
             if (!string.IsNullOrWhiteSpace(tvFileModel.Error))
             {
-                NotUsed = tvFileModel.Error;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvFileModel.Error);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVFileTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVFileTVItemID.ToString());
                 return;
             }
 
@@ -534,7 +534,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (!fiXlsx.Exists)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiXlsx.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List(TaskRunnerServiceRes.CouldNotFindFile_, fiXlsx.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiXlsx.FullName);
                 return;
             }
 
@@ -553,7 +553,7 @@ namespace CSSPWebToolsTaskRunner.Services
             catch (Exception ex)
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotExportFile_ToPDFError_, fiXlsx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List(TaskRunnerServiceRes.CouldNotExportFile_ToPDFError_, fiXlsx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotExportFile_ToPDFError_", fiXlsx.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
                 return;
             }
 
