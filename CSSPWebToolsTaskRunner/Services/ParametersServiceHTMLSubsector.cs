@@ -54,6 +54,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case "PollutionSourceSitesTable":
+                    {
+                        if (!GenerateHTMLSubsectorPollutionSourceSitesTable(fi, sbHTML, parameters, reportTypeModel))
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "FCSummaryStatXlsx":
                     {
                         if (!GenerateHTMLSubsector_SubsectorTestXlsx(fi, sbHTML, parameters, reportTypeModel))

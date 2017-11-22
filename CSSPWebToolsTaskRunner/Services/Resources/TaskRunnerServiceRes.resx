@@ -1335,4 +1335,28 @@
   <data name="ShellfishGrowingArea" xml:space="preserve">
     <value>Shellfish Growing Area</value>
   </data>
+  <data name="Dist" xml:space="preserve">
+    <value>Dist</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Issues" xml:space="preserve">
+    <value>Issues</value>
+  </data>
+  <data name="LandBasePollutionSourceSiteObservationAndIssues" xml:space="preserve">
+    <value>Land base pollution source sites, observations and issues</value>
+  </data>
+  <data name="NoObservationForThisPollutionSourceSite" xml:space="preserve">
+    <value>No observation for this pollution source site</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>Photos</value>
+  </data>
+  <data name="Slope" xml:space="preserve">
+    <value>Slope</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

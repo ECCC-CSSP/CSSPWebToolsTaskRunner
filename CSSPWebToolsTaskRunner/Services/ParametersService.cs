@@ -12,6 +12,7 @@ using CSSPWebToolsDBDLL.Models;
 using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
+using CSSPEnumsDLL.Services;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -36,6 +37,10 @@ namespace CSSPWebToolsTaskRunner.Services
         private MikeSourceService _MikeSourceService { get; set; }
         private MikeSourceStartEndService _MikeSourceStartEndService { get; set; }
         private MWQMRunService _MWQMRunService { get; set; }
+        private PolSourceSiteService _PolSourceSiteService { get; set; }
+        private PolSourceObservationService _PolSourceObservationService { get; set; }
+        private PolSourceObservationIssueService _PolSourceObservationIssueService { get; set; }
+        private BaseEnumService _BaseEnumService { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -53,6 +58,10 @@ namespace CSSPWebToolsTaskRunner.Services
             _MikeSourceService = new MikeSourceService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MikeSourceStartEndService = new MikeSourceStartEndService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _PolSourceSiteService = new PolSourceSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _PolSourceObservationService = new PolSourceObservationService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _PolSourceObservationIssueService = new PolSourceObservationIssueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
         }
         #endregion Constructors
 
@@ -276,7 +285,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                     }
                                 }
                             }
-                            appWord.Selection.InlineShapes.AddPicture(FileName, false, true);
+                            Microsoft.Office.Interop.Word.InlineShape shape = appWord.Selection.InlineShapes.AddPicture(FileName, false, true);
+                            shape.Width = width;
+                            shape.Height = height;
                         }
 
                         // --------------------------------------------------
@@ -493,9 +504,9 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", Subsector);
 
-                        if (!reportTypeModel.UniqueCode.StartsWith("Map"))
+                        string YearText = GetParameters("Year", ParamValueList);
+                        if (!string.IsNullOrWhiteSpace(YearText))
                         {
-                            string YearText = GetParameters("Year", ParamValueList);
                             int Year = 0;
 
                             if (string.IsNullOrWhiteSpace(TVItemIDText))

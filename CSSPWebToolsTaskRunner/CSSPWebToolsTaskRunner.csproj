@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GenerateHTMLSubsectorPollutionSourceSitesTable.cs" />
     <Compile Include="Services\GenerateHTMLSubsectorFullReportCoverPage.cs" />
     <Compile Include="Services\GoogleMapToPNG.cs" />
     <Compile Include="Services\KmzServiceMikeScenario.cs" />

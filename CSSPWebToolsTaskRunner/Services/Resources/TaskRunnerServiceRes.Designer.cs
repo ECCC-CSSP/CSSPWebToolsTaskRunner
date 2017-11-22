@@ -1060,6 +1060,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dist.
+        /// </summary>
+        public static string Dist {
+            get {
+                return ResourceManager.GetString("Dist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dry.
         /// </summary>
         public static string Dry {
@@ -1555,6 +1564,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ID.
+        /// </summary>
+        public static string ID {
+            get {
+                return ResourceManager.GetString("ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to included.
         /// </summary>
         public static string IncludedLowerCase {
@@ -1609,6 +1627,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Issues.
+        /// </summary>
+        public static string Issues {
+            get {
+                return ResourceManager.GetString("Issues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Julian day. There is no year 0..
         /// </summary>
         public static string JulianDayThereIsNoYear0 {
@@ -1650,6 +1677,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string LabSheetTubeMPNDetail {
             get {
                 return ResourceManager.GetString("LabSheetTubeMPNDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Land base pollution source sites, observations and issues.
+        /// </summary>
+        public static string LandBasePollutionSourceSiteObservationAndIssues {
+            get {
+                return ResourceManager.GetString("LandBasePollutionSourceSiteObservationAndIssues", resourceCulture);
             }
         }
         
@@ -2338,6 +2374,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No observation for this pollution source site.
+        /// </summary>
+        public static string NoObservationForThisPollutionSourceSite {
+            get {
+                return ResourceManager.GetString("NoObservationForThisPollutionSourceSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal run completion.
         /// </summary>
         public static string NormalRunCompletion {
@@ -2568,6 +2613,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string PFS_Error_ {
             get {
                 return ResourceManager.GetString("PFS_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photos.
+        /// </summary>
+        public static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
             }
         }
         
@@ -3040,6 +3094,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Slope.
+        /// </summary>
+        public static string Slope {
+            get {
+                return ResourceManager.GetString("Slope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source Included.
         /// </summary>
         public static string SourceIncluded {
@@ -3495,6 +3558,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string TVTypeShouldBe_ {
             get {
                 return ResourceManager.GetString("TVTypeShouldBe_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         
