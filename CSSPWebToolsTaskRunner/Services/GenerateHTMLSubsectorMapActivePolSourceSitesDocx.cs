@@ -57,6 +57,22 @@ namespace CSSPWebToolsTaskRunner.Services
 
             GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService, HideVerticalScale, HideHorizontalScale, HideNorthArrow, HideSubsectorName);
 
+            DirectoryInfo di = new DirectoryInfo(googleMapToPNG.DirName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
             if (!googleMapToPNG.CreateSubsectorGoogleMapPNGForPolSourceSites(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, "hybrid"))
             {
                 string Error = _TaskRunnerBaseService._BWObj.TextLanguageList[(_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? 1 : 0)].Text;
@@ -64,7 +80,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbHTML.AppendLine($@"<h1>{ Error }</h1>");
             }
 
-            sbHTML.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,640|height,630|||");
+            sbHTML.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
 
             sbHTML.AppendLine($@"|||FileNameExtra|Random,{ googleMapToPNG.FileNameExtra }|||");
             if (!GetBottomHTML(sbHTML, fi, parameters))

@@ -565,6 +565,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not create directory {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotCreateDirectory__ {
+            get {
+                return ResourceManager.GetString("CouldNotCreateDirectory__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not create document from template. Error [{0}]..
         /// </summary>
         public static string CouldNotCreateDocumentFromTemplateError_ {
@@ -1636,6 +1645,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Issue.
+        /// </summary>
+        public static string Issue {
+            get {
+                return ResourceManager.GetString("Issue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Issues.
         /// </summary>
         public static string Issues {
@@ -2365,6 +2383,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No active sites.
+        /// </summary>
+        public static string NoActiveSites {
+            get {
+                return ResourceManager.GetString("NoActiveSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Node.
         /// </summary>
         public static string Node {
@@ -2865,6 +2892,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ResultFrequency {
             get {
                 return ResourceManager.GetString("ResultFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Risk.
+        /// </summary>
+        public static string Risk {
+            get {
+                return ResourceManager.GetString("Risk", resourceCulture);
             }
         }
         
@@ -3630,6 +3666,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WaitingToRun {
             get {
                 return ResourceManager.GetString("WaitingToRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Water base pollution source sites, observations and issues.
+        /// </summary>
+        public static string WaterBasePollutionSourceSiteObservationAndIssues {
+            get {
+                return ResourceManager.GetString("WaterBasePollutionSourceSiteObservationAndIssues", resourceCulture);
             }
         }
         

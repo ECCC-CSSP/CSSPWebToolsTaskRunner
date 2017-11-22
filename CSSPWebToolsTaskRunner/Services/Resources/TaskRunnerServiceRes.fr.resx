@@ -1333,7 +1333,7 @@
     <value>Issues</value>
   </data>
   <data name="LandBasePollutionSourceSiteObservationAndIssues" xml:space="preserve">
-    <value>Site de source de polution, la dernière observation et les enjeux</value>
+    <value>Site de source de polution sur terre, dernière observation et les enjeux</value>
   </data>
   <data name="NoObservationForThisPollutionSourceSite" xml:space="preserve">
     <value>Aucune observation pour ce site de pollution</value>
@@ -1349,5 +1349,20 @@
   </data>
   <data name="Coord" xml:space="preserve">
     <value>Coord</value>
+  </data>
+  <data name="CouldNotCreateDirectory__" xml:space="preserve">
+    <value>Dans l'impossibilité de créer le répertoire {0}. Erreur: {1}</value>
+  </data>
+  <data name="Issue" xml:space="preserve">
+    <value>Enjeux</value>
+  </data>
+  <data name="NoActiveSites" xml:space="preserve">
+    <value>Aucun site actif</value>
+  </data>
+  <data name="Risk" xml:space="preserve">
+    <value>Risque</value>
+  </data>
+  <data name="WaterBasePollutionSourceSiteObservationAndIssues1" xml:space="preserve">
+    <value>Site de source de polution sur l'eau, dernière observation et les enjeux</value>
   </data>
 </root>

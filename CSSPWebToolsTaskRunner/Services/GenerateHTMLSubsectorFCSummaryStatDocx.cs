@@ -176,6 +176,15 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine($@"<h2>{ SubsectorTVText }</h2>");
             sbHTML.AppendLine($@"<br />");
 
+            MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID);
+
+            if (mwqmSubsectorAnalysisModel.MWQMSampleAnalysisModelList.Count == 0)
+            {
+                NotUsed = TaskRunnerServiceRes.NoActiveSites;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("NoActiveSites");
+                return false;
+            }
+
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
             MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModelFirst = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID);
@@ -188,7 +197,6 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 List<DateTime> DateTimeList = new List<DateTime>();
 
-                MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID);
 
                 if (mwqmAnalysisReportParameterModel.StartDate.Year == 1900)
                 {
@@ -254,7 +262,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbHTML.Append($@" --- { AllWetDry } ---");
                 sbHTML.Append($@" ({ Year })");
                 sbHTML.AppendLine(@"</h4>");
-                sbHTML.AppendLine(@"<table>");
+                sbHTML.AppendLine(@"<table class=""FCStatTableClass"">");
                 sbHTML.AppendLine(@"    <thead>");
                 sbHTML.AppendLine(@"        <tr>");
                 sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Site }</th>");
@@ -693,7 +701,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets.get_Item(1);
 
                 Microsoft.Office.Interop.Excel.ChartObjects xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
-                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 800, 100);
+                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 600, 90);
                 Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
                 chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
@@ -720,6 +728,23 @@ namespace CSSPWebToolsTaskRunner.Services
                 CountAnalysisReportParameterModel += 1;
                 // need to save the file with a unique name under the TVItemID
                 FileInfo fiImage = new FileInfo(fi.DirectoryName + @"\" + FileNameExtra + CountAnalysisReportParameterModel.ToString() + ".png");
+
+                DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+
+                if (!di.Exists)
+                {
+                    try
+                    {
+                        di.Create();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return false;
+                    }
+                }
+
                 chartPage.Export(fiImage.FullName, "PNG", false);
 
                 if (workbook != null)
@@ -733,13 +758,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                 {
-                    sbHTML.AppendLine($@"            <td class=""imageCellPadding"" colspan=""12"">");
+                    sbHTML.AppendLine($@"            <td class=""textAlignCenter"" colspan=""12"">");
                 }
                 else
                 {
-                    sbHTML.AppendLine($@"            <td class=""imageCellPadding"" colspan=""11"">");
+                    sbHTML.AppendLine($@"            <td class=""textAlignCenter"" colspan=""11"">");
                 }
-                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,600|height,100|||");
+                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,340|height,50|||");
                 sbHTML.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
                 sbHTML.AppendLine(@"            </td>");
                 sbHTML.AppendLine(@"        </tr>");

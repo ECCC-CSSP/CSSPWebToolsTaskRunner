@@ -103,6 +103,23 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
             }
 
+
+            DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
             StreamWriter sw = fi.CreateText();
             sw.Write(sbKMZ.ToString());
             sw.Flush();

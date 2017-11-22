@@ -167,6 +167,22 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
 
+                DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+
+                if (!di.Exists)
+                {
+                    try
+                    {
+                        di.Create();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return;
+                    }
+                }
+
                 StreamWriter sw = fi.CreateText();
                 sw.Write(sbHTML.ToString());
                 sw.Close();
@@ -259,8 +275,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         if (textFound.StartsWith("|||Image|"))
                         {
                             string FileName = "";
-                            int width = 0;
-                            int height = 0;
+                            float width = 0;
+                            float height = 0;
                             textFound = textFound.Substring("|||Image|".Length).Replace("|||", "");
 
                             List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -277,11 +293,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                     }
                                     else if (ParamValue[0] == "width")
                                     {
-                                        width = int.Parse(ParamValue[1]);
+                                        width = float.Parse(ParamValue[1]);
                                     }
                                     else if (ParamValue[0] == "height")
                                     {
-                                        height = int.Parse(ParamValue[1]);
+                                        height = float.Parse(ParamValue[1]);
                                     }
                                 }
                             }

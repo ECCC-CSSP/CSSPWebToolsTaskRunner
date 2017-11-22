@@ -1362,4 +1362,19 @@
   <data name="Coord" xml:space="preserve">
     <value>Coord</value>
   </data>
+  <data name="CouldNotCreateDirectory__" xml:space="preserve">
+    <value>Could not create directory {0}. Error: {1}</value>
+  </data>
+  <data name="Issue" xml:space="preserve">
+    <value>Issue</value>
+  </data>
+  <data name="NoActiveSites" xml:space="preserve">
+    <value>No active sites</value>
+  </data>
+  <data name="Risk" xml:space="preserve">
+    <value>Risk</value>
+  </data>
+  <data name="WaterBasePollutionSourceSiteObservationAndIssues" xml:space="preserve">
+    <value>Water base pollution source sites, observations and issues</value>
+  </data>
 </root>
