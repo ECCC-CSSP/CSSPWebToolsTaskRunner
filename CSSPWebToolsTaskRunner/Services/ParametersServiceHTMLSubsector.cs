@@ -62,6 +62,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case "MWQMSites":
+                    {
+                        if (!GenerateHTMLSubsectorMWQMSites(fi, sbHTML, parameters, reportTypeModel))
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "FullReport":
+                    {
+                        if (!GenerateHTMLSubsectorFullReport(fi, sbHTML, parameters, reportTypeModel))
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "FCSummaryStatXlsx":
                     {
                         if (!GenerateHTMLSubsector_SubsectorTestXlsx(fi, sbHTML, parameters, reportTypeModel))

@@ -1069,6 +1069,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directory.
         /// </summary>
         public static string Directory {
@@ -2356,6 +2365,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MWQM site sample data availability.
+        /// </summary>
+        public static string MWQMSiteSampleDataAvailability {
+            get {
+                return ResourceManager.GetString("MWQMSiteSampleDataAvailability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM sites information.
+        /// </summary>
+        public static string MWQMSitesInformation {
+            get {
+                return ResourceManager.GetString("MWQMSitesInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MWQMSubsector.
         /// </summary>
         public static string MWQMSubsector {
@@ -2451,6 +2478,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NotDetermined {
             get {
                 return ResourceManager.GetString("NotDetermined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NOTE.
+        /// </summary>
+        public static string NOTE {
+            get {
+                return ResourceManager.GetString("NOTE", resourceCulture);
             }
         }
         
@@ -3099,6 +3135,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ServerFullPath {
             get {
                 return ResourceManager.GetString("ServerFullPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shaded.
+        /// </summary>
+        public static string Shaded {
+            get {
+                return ResourceManager.GetString("Shaded", resourceCulture);
             }
         }
         

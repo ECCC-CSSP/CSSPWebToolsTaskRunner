@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GenerateHTMLSubsectorFullReport.cs" />
     <Compile Include="Services\GenerateHTMLSubsectorMWQMSites.cs" />
     <Compile Include="Services\GenerateHTMLSubsectorPollutionSourceSites.cs" />
     <Compile Include="Services\GenerateHTMLSubsectorFullReportCoverPage.cs" />

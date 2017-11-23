@@ -1099,7 +1099,7 @@
     <value>CF Max</value>
   </data>
   <data name="Median" xml:space="preserve">
-    <value>Médian</value>
+    <value>Médiane</value>
   </data>
   <data name="MinFC" xml:space="preserve">
     <value>CF Min</value>
@@ -1114,7 +1114,7 @@
     <value>P90</value>
   </data>
   <data name="Period" xml:space="preserve">
-    <value>Périod</value>
+    <value>Période</value>
   </data>
   <data name="Samples" xml:space="preserve">
     <value>Échant.</value>
@@ -1373,5 +1373,20 @@
   </data>
   <data name="NumberOfIssuesByWaterBasePollutionType" xml:space="preserve">
     <value>Nombre d'enjeux par type de pollution marine</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="MWQMSiteSampleDataAvailability" xml:space="preserve">
+    <value>MWQM site sample data availability (fr)</value>
+  </data>
+  <data name="MWQMSitesInformation" xml:space="preserve">
+    <value>MWQM sites information (fr)</value>
+  </data>
+  <data name="NOTE" xml:space="preserve">
+    <value>NOTE (fr)</value>
+  </data>
+  <data name="Shaded" xml:space="preserve">
+    <value>Shaded (fr)</value>
   </data>
 </root>

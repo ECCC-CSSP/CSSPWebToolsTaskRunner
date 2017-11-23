@@ -82,6 +82,9 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
 
             sbHTML.AppendLine($@"|||FileNameExtra|Random,{ googleMapToPNG.FileNameExtra }|||");
+
+            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+
             if (!GetBottomHTML(sbHTML, fi, parameters))
             {
                 return false;

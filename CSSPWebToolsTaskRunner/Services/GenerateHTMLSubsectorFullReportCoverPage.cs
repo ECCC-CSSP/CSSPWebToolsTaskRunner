@@ -152,11 +152,11 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine($@" <p>&nbsp;</p>");
             sbHTML.AppendLine($@" <table>");
             sbHTML.AppendLine($@"    <tr> ");
-            sbHTML.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,66|height,28|||</td> ");
+            sbHTML.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,45|height,20|||</td> ");
             sbHTML.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbHTML.AppendLine($@"        <td class=""textAlignLeft""><h5>Environment and <br />Climate Change Canada</h5></td>");
+            sbHTML.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environment and <br />Climate Change Canada</h5></td>");
             sbHTML.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbHTML.AppendLine($@"        <td class=""textAlignLeft""><h5>Environnement et <br />Changement climatique Canada</h5></td>");
+            sbHTML.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environnement et <br />Changement climatique Canada</h5></td>");
             sbHTML.AppendLine($@"    </tr>");
             sbHTML.AppendLine($@" </table>");
             sbHTML.AppendLine($@" <div class=""textAlignLeft"">");
@@ -186,7 +186,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine($@"   <h5 class=""textAlignRight"">{ TaskRunnerServiceRes.Report } <span>_______________________</span></h5>");
             sbHTML.AppendLine($@"   <h5 class=""textAlignRight"">{ ReportDateText }</h5>");
             sbHTML.AppendLine($@" </div>");
-            sbHTML.AppendLine($@" <div class=""textAlignRight"">|||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,25|||</div>");
+            sbHTML.AppendLine($@" <div class=""textAlignRight"">|||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,22|||</div>");
 
             sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
 

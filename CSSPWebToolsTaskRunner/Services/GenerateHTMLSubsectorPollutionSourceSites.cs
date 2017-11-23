@@ -68,6 +68,15 @@ namespace CSSPWebToolsTaskRunner.Services
             List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBasePolSourceType = new List<PolSourceObsInfoEnumTextAndID>();
             List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType = new List<PolSourceObsInfoEnumTextAndID>();
 
+            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseAgriculture = new List<PolSourceObsInfoEnumTextAndID>();
+            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseForested = new List<PolSourceObsInfoEnumTextAndID>();
+            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseIndustry = new List<PolSourceObsInfoEnumTextAndID>();
+            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseMarine = new List<PolSourceObsInfoEnumTextAndID>();
+            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseRecreational = new List<PolSourceObsInfoEnumTextAndID>();
+            List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseUrban = new List<PolSourceObsInfoEnumTextAndID>();
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+
             foreach (int id in Enum.GetValues(typeof(PolSourceObsInfoEnum)))
             {
                 if (id == 0)
@@ -84,14 +93,52 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
                 }
+
+                if (id.ToString().StartsWith("106") && !id.ToString().EndsWith("00"))
+                {
+                    polSourceObsInfoEnumTextAndIDListLandBaseAgriculture.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                }
+
+                if (id.ToString().StartsWith("111") && !id.ToString().EndsWith("00"))
+                {
+                    polSourceObsInfoEnumTextAndIDListLandBaseForested.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                }
+
+                if (id.ToString().StartsWith("112") && !id.ToString().EndsWith("00"))
+                {
+                    polSourceObsInfoEnumTextAndIDListLandBaseIndustry.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                }
+
+                if (id.ToString().StartsWith("114") && !id.ToString().EndsWith("00"))
+                {
+                    polSourceObsInfoEnumTextAndIDListLandBaseMarine.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                }
+
+                if (id.ToString().StartsWith("117") && !id.ToString().EndsWith("00"))
+                {
+                    polSourceObsInfoEnumTextAndIDListLandBaseRecreational.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                }
+
+                if (id.ToString().StartsWith("121") && !id.ToString().EndsWith("00"))
+                {
+                    polSourceObsInfoEnumTextAndIDListLandBaseUrban.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
+                }
             }
 
             polSourceObsInfoEnumTextAndIDListLandBasePolSourceType = polSourceObsInfoEnumTextAndIDListLandBasePolSourceType.OrderBy(c => c.Text).ToList();
             polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType = polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType.OrderBy(c => c.Text).ToList();
+            polSourceObsInfoEnumTextAndIDListLandBaseAgriculture = polSourceObsInfoEnumTextAndIDListLandBaseAgriculture.OrderBy(c => c.Text).ToList();
+            polSourceObsInfoEnumTextAndIDListLandBaseForested = polSourceObsInfoEnumTextAndIDListLandBaseForested.OrderBy(c => c.Text).ToList();
+            polSourceObsInfoEnumTextAndIDListLandBaseIndustry = polSourceObsInfoEnumTextAndIDListLandBaseIndustry.OrderBy(c => c.Text).ToList();
+            polSourceObsInfoEnumTextAndIDListLandBaseMarine = polSourceObsInfoEnumTextAndIDListLandBaseMarine.OrderBy(c => c.Text).ToList();
+            polSourceObsInfoEnumTextAndIDListLandBaseRecreational = polSourceObsInfoEnumTextAndIDListLandBaseRecreational.OrderBy(c => c.Text).ToList();
+            polSourceObsInfoEnumTextAndIDListLandBaseUrban = polSourceObsInfoEnumTextAndIDListLandBaseUrban.OrderBy(c => c.Text).ToList();
 
             // ---------------------------------------------------------------------------------------------------------------
-            // graphic showing the number of polsource issues of different pollution source type (Agriculture, Forested, ...)
+            // Land Base graphic showing the number of polsource issues of different pollution source type (Agriculture, Forested, ...)
             // ---------------------------------------------------------------------------------------------------------------
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 15);
 
             List<string> PolSourceTypeList = new List<string>();
             List<int> CountOfPolSourceType = new List<int>();
@@ -171,17 +218,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             chartPage.Export(fiImageLand.FullName, "PNG", false);
 
-            if (workbook != null)
-            {
-                workbook.Close(false);
-            }
-            if (xlApp != null)
-            {
-                xlApp.Quit();
-            }
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 25);
 
             // ---------------------------------------------------------------------------------------------------------------
-            // graphic showing the number of polsource issues of different pollution source type (Aquaculture, Seaport ...)
+            // Water Base graphic showing the number of polsource issues of different pollution source type (Aquaculture, Seaport ...)
             // ---------------------------------------------------------------------------------------------------------------
 
             PolSourceTypeList = new List<string>();
@@ -212,11 +252,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 CountOfPolSourceType.Add(count);
             }
 
-            xlApp = new Microsoft.Office.Interop.Excel.Application();
-            workbook = xlApp.Workbooks.Add();
-            worksheet = workbook.Worksheets.get_Item(1);
-
-            xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
             chart = xlCharts.Add(100, 100, 600, 200);
             chartPage = chart.Chart;
 
@@ -262,6 +297,480 @@ namespace CSSPWebToolsTaskRunner.Services
 
             chartPage.Export(fiImageWater.FullName, "PNG", false);
 
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 35);
+
+            // ---------------------------------------------------------------------------------------------------------------
+            // Agriculture graphic showing the number of polsource issues of different pollution source type
+            // ---------------------------------------------------------------------------------------------------------------
+
+            PolSourceTypeList = new List<string>();
+            CountOfPolSourceType = new List<int>();
+
+            foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseAgriculture)
+            {
+                List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
+                                                                         from t in tvItemModelListPolSourceSite
+                                                                         where pss.PolSourceSiteTVItemID == t.TVItemID
+                                                                         && t.IsActive == true
+                                                                         select pss).ToList();
+
+                List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
+                                                                                         let psoLast = (from pso in polSourceObservationModelList
+                                                                                                        where pss.PolSourceSiteID == pso.PolSourceSiteID
+                                                                                                        orderby pso.ObservationDate_Local descending
+                                                                                                        select pso).FirstOrDefault()
+                                                                                         select psoLast).ToList();
+
+                int count = (from pso in polSourceObservationModelLastOfActive
+                             from psoi in polSourceObservationIssueModelList
+                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
+                             select psoi.PolSourceObservationIssueID).Count();
+
+                PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
+                CountOfPolSourceType.Add(count);
+            }
+
+            chart = xlCharts.Add(100, 100, 600, 200);
+            chartPage = chart.Chart;
+
+            chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
+
+            seriesCollection = chartPage.SeriesCollection();
+            series = seriesCollection.NewSeries();
+
+            series.XValues = PolSourceTypeList.ToArray();
+            series.Values = CountOfPolSourceType.ToArray();
+
+            chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+            chartPage.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Legend.Select();
+            xlApp.Selection.Delete();
+            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+            chartPage.Parent.RoundedCorners = true;
+
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
+
+            // need to save the file with a unique name under the TVItemID
+            FileInfo fiImageAgriculture = new FileInfo(fi.DirectoryName + @"\AgricultureStat" + FileNameExtra + ".png");
+
+            di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
+            chartPage.Export(fiImageAgriculture.FullName, "PNG", false);
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 45);
+
+            // ---------------------------------------------------------------------------------------------------------------
+            // Forested graphic showing the number of polsource issues of different pollution source type
+            // ---------------------------------------------------------------------------------------------------------------
+
+            PolSourceTypeList = new List<string>();
+            CountOfPolSourceType = new List<int>();
+
+            foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseForested)
+            {
+                List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
+                                                                         from t in tvItemModelListPolSourceSite
+                                                                         where pss.PolSourceSiteTVItemID == t.TVItemID
+                                                                         && t.IsActive == true
+                                                                         select pss).ToList();
+
+                List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
+                                                                                         let psoLast = (from pso in polSourceObservationModelList
+                                                                                                        where pss.PolSourceSiteID == pso.PolSourceSiteID
+                                                                                                        orderby pso.ObservationDate_Local descending
+                                                                                                        select pso).FirstOrDefault()
+                                                                                         select psoLast).ToList();
+
+                int count = (from pso in polSourceObservationModelLastOfActive
+                             from psoi in polSourceObservationIssueModelList
+                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
+                             select psoi.PolSourceObservationIssueID).Count();
+
+                PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
+                CountOfPolSourceType.Add(count);
+            }
+
+            chart = xlCharts.Add(100, 100, 600, 200);
+            chartPage = chart.Chart;
+
+            chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
+
+            seriesCollection = chartPage.SeriesCollection();
+            series = seriesCollection.NewSeries();
+
+            series.XValues = PolSourceTypeList.ToArray();
+            series.Values = CountOfPolSourceType.ToArray();
+
+            chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+            chartPage.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Legend.Select();
+            xlApp.Selection.Delete();
+            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+            chartPage.Parent.RoundedCorners = true;
+
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
+
+            // need to save the file with a unique name under the TVItemID
+            FileInfo fiImageForested = new FileInfo(fi.DirectoryName + @"\ForestedStat" + FileNameExtra + ".png");
+
+            di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
+            chartPage.Export(fiImageForested.FullName, "PNG", false);
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 55);
+
+            // ---------------------------------------------------------------------------------------------------------------
+            // Industry graphic showing the number of polsource issues of different pollution source type
+            // ---------------------------------------------------------------------------------------------------------------
+
+            PolSourceTypeList = new List<string>();
+            CountOfPolSourceType = new List<int>();
+
+            foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseIndustry)
+            {
+                List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
+                                                                         from t in tvItemModelListPolSourceSite
+                                                                         where pss.PolSourceSiteTVItemID == t.TVItemID
+                                                                         && t.IsActive == true
+                                                                         select pss).ToList();
+
+                List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
+                                                                                         let psoLast = (from pso in polSourceObservationModelList
+                                                                                                        where pss.PolSourceSiteID == pso.PolSourceSiteID
+                                                                                                        orderby pso.ObservationDate_Local descending
+                                                                                                        select pso).FirstOrDefault()
+                                                                                         select psoLast).ToList();
+
+                int count = (from pso in polSourceObservationModelLastOfActive
+                             from psoi in polSourceObservationIssueModelList
+                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
+                             select psoi.PolSourceObservationIssueID).Count();
+
+                PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
+                CountOfPolSourceType.Add(count);
+            }
+
+            chart = xlCharts.Add(100, 100, 600, 200);
+            chartPage = chart.Chart;
+
+            chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
+
+            seriesCollection = chartPage.SeriesCollection();
+            series = seriesCollection.NewSeries();
+
+            series.XValues = PolSourceTypeList.ToArray();
+            series.Values = CountOfPolSourceType.ToArray();
+
+            chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+            chartPage.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Legend.Select();
+            xlApp.Selection.Delete();
+            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+            chartPage.Parent.RoundedCorners = true;
+
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
+
+            // need to save the file with a unique name under the TVItemID
+            FileInfo fiImageIndustry = new FileInfo(fi.DirectoryName + @"\IndustryStat" + FileNameExtra + ".png");
+
+            di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
+            chartPage.Export(fiImageIndustry.FullName, "PNG", false);
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 65);
+
+            // ---------------------------------------------------------------------------------------------------------------
+            // Marine graphic showing the number of polsource issues of different pollution source type
+            // ---------------------------------------------------------------------------------------------------------------
+
+            PolSourceTypeList = new List<string>();
+            CountOfPolSourceType = new List<int>();
+
+            foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseMarine)
+            {
+                List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
+                                                                         from t in tvItemModelListPolSourceSite
+                                                                         where pss.PolSourceSiteTVItemID == t.TVItemID
+                                                                         && t.IsActive == true
+                                                                         select pss).ToList();
+
+                List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
+                                                                                         let psoLast = (from pso in polSourceObservationModelList
+                                                                                                        where pss.PolSourceSiteID == pso.PolSourceSiteID
+                                                                                                        orderby pso.ObservationDate_Local descending
+                                                                                                        select pso).FirstOrDefault()
+                                                                                         select psoLast).ToList();
+
+                int count = (from pso in polSourceObservationModelLastOfActive
+                             from psoi in polSourceObservationIssueModelList
+                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
+                             select psoi.PolSourceObservationIssueID).Count();
+
+                PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
+                CountOfPolSourceType.Add(count);
+            }
+
+            chart = xlCharts.Add(100, 100, 600, 200);
+            chartPage = chart.Chart;
+
+            chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
+
+            seriesCollection = chartPage.SeriesCollection();
+            series = seriesCollection.NewSeries();
+
+            series.XValues = PolSourceTypeList.ToArray();
+            series.Values = CountOfPolSourceType.ToArray();
+
+            chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+            chartPage.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Legend.Select();
+            xlApp.Selection.Delete();
+            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+            chartPage.Parent.RoundedCorners = true;
+
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
+
+            // need to save the file with a unique name under the TVItemID
+            FileInfo fiImageMarine = new FileInfo(fi.DirectoryName + @"\MarineStat" + FileNameExtra + ".png");
+
+            di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
+            chartPage.Export(fiImageMarine.FullName, "PNG", false);
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 75);
+
+            // ---------------------------------------------------------------------------------------------------------------
+            // Recreational graphic showing the number of polsource issues of different pollution source type
+            // ---------------------------------------------------------------------------------------------------------------
+
+            PolSourceTypeList = new List<string>();
+            CountOfPolSourceType = new List<int>();
+
+            foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseRecreational)
+            {
+                List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
+                                                                         from t in tvItemModelListPolSourceSite
+                                                                         where pss.PolSourceSiteTVItemID == t.TVItemID
+                                                                         && t.IsActive == true
+                                                                         select pss).ToList();
+
+                List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
+                                                                                         let psoLast = (from pso in polSourceObservationModelList
+                                                                                                        where pss.PolSourceSiteID == pso.PolSourceSiteID
+                                                                                                        orderby pso.ObservationDate_Local descending
+                                                                                                        select pso).FirstOrDefault()
+                                                                                         select psoLast).ToList();
+
+                int count = (from pso in polSourceObservationModelLastOfActive
+                             from psoi in polSourceObservationIssueModelList
+                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
+                             select psoi.PolSourceObservationIssueID).Count();
+
+                PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
+                CountOfPolSourceType.Add(count);
+            }
+
+            chart = xlCharts.Add(100, 100, 600, 200);
+            chartPage = chart.Chart;
+
+            chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
+
+            seriesCollection = chartPage.SeriesCollection();
+            series = seriesCollection.NewSeries();
+
+            series.XValues = PolSourceTypeList.ToArray();
+            series.Values = CountOfPolSourceType.ToArray();
+
+            chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+            chartPage.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Legend.Select();
+            xlApp.Selection.Delete();
+            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+            chartPage.Parent.RoundedCorners = true;
+
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
+
+            // need to save the file with a unique name under the TVItemID
+            FileInfo fiImageRecreational = new FileInfo(fi.DirectoryName + @"\RecreationalStat" + FileNameExtra + ".png");
+
+            di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
+            chartPage.Export(fiImageRecreational.FullName, "PNG", false);
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 85);
+
+            // ---------------------------------------------------------------------------------------------------------------
+            // Urban graphic showing the number of polsource issues of different pollution source type
+            // ---------------------------------------------------------------------------------------------------------------
+
+            PolSourceTypeList = new List<string>();
+            CountOfPolSourceType = new List<int>();
+
+            foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseUrban)
+            {
+                List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
+                                                                         from t in tvItemModelListPolSourceSite
+                                                                         where pss.PolSourceSiteTVItemID == t.TVItemID
+                                                                         && t.IsActive == true
+                                                                         select pss).ToList();
+
+                List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
+                                                                                         let psoLast = (from pso in polSourceObservationModelList
+                                                                                                        where pss.PolSourceSiteID == pso.PolSourceSiteID
+                                                                                                        orderby pso.ObservationDate_Local descending
+                                                                                                        select pso).FirstOrDefault()
+                                                                                         select psoLast).ToList();
+
+                int count = (from pso in polSourceObservationModelLastOfActive
+                             from psoi in polSourceObservationIssueModelList
+                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
+                             select psoi.PolSourceObservationIssueID).Count();
+
+                PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
+                CountOfPolSourceType.Add(count);
+            }
+
+            chart = xlCharts.Add(100, 100, 600, 200);
+            chartPage = chart.Chart;
+
+            chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
+
+            seriesCollection = chartPage.SeriesCollection();
+            series = seriesCollection.NewSeries();
+
+            series.XValues = PolSourceTypeList.ToArray();
+            series.Values = CountOfPolSourceType.ToArray();
+
+            chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+            chartPage.ChartTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+            xlApp.Selection.Delete();
+            chartPage.Legend.Select();
+            xlApp.Selection.Delete();
+            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+            chartPage.Parent.RoundedCorners = true;
+
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
+
+            // need to save the file with a unique name under the TVItemID
+            FileInfo fiImageUrban = new FileInfo(fi.DirectoryName + @"\UrbanStat" + FileNameExtra + ".png");
+
+            di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
+                }
+            }
+
+            chartPage.Export(fiImageUrban.FullName, "PNG", false);
+
             if (workbook != null)
             {
                 workbook.Close(false);
@@ -279,6 +788,44 @@ namespace CSSPWebToolsTaskRunner.Services
             foreach (PolSourceObsInfoEnumTextAndID PolSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBasePolSourceType)
             {
                 sbHTML.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
+
+                switch (PolSourceObsInfoEnumTextAndID.ID)
+                {
+                    case 10501: // Agriculture
+                        {
+                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageAgriculture.FullName }|width,400|height,150|||</div>");
+                        }
+                        break;
+                    case 10502: // Forested
+                        {
+                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageForested.FullName }|width,400|height,150|||</div>");
+                        }
+                        break;
+                    case 10503: // Industry
+                        {
+                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageIndustry.FullName }|width,400|height,150|||</div>");
+                        }
+                        break;
+                    case 10504: // Marine
+                        {
+                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageMarine.FullName }|width,400|height,150|||</div>");
+                        }
+                        break;
+                    case 10505: // Recreational
+                        {
+                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageRecreational.FullName }|width,400|height,150|||</div>");
+                        }
+                        break;
+                    case 10506: // Urban
+                        {
+                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageUrban.FullName }|width,400|height,150|||</div>");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+
                 int countPolSourceSiteForPollutionType = 0;
                 foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList)
                 {
@@ -531,6 +1078,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 return false;
             }
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 90);
 
             return true;
         }

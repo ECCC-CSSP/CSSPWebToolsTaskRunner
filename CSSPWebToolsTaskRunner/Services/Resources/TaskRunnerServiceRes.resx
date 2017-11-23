@@ -1386,4 +1386,19 @@
   <data name="NumberOfIssuesByWaterBasePollutionType" xml:space="preserve">
     <value>Number of issues by water base pollution type</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="MWQMSiteSampleDataAvailability" xml:space="preserve">
+    <value>MWQM site sample data availability</value>
+  </data>
+  <data name="MWQMSitesInformation" xml:space="preserve">
+    <value>MWQM sites information</value>
+  </data>
+  <data name="NOTE" xml:space="preserve">
+    <value>NOTE</value>
+  </data>
+  <data name="Shaded" xml:space="preserve">
+    <value>Shaded</value>
+  </data>
 </root>

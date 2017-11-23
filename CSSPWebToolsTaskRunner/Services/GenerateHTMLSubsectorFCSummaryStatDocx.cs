@@ -262,23 +262,26 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbHTML.Append($@" --- { AllWetDry } ---");
                 sbHTML.Append($@" ({ Year })");
                 sbHTML.AppendLine(@"</h4>");
+                sbHTML.AppendLine(@"<table class=""textAlignCenter"">");
+                sbHTML.AppendLine(@"        <tr>");
+                sbHTML.AppendLine(@"        <td>");
                 sbHTML.AppendLine(@"<table class=""FCStatTableClass"">");
                 sbHTML.AppendLine(@"    <thead>");
                 sbHTML.AppendLine(@"        <tr>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Site }</th>");
+                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Site }&nbsp;&nbsp;</th>");
                 sbHTML.AppendLine($@"            <th></th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Samples }</th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Period }</th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.MinFC }</th>");
+                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Samples }&nbsp;&nbsp;</th>");
+                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Period }&nbsp;&nbsp;</th>");
+                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.MinFC }&nbsp;&nbsp;</th>");
                 if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                 {
-                    sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.MaxFC }</th>");
+                    sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.MaxFC }&nbsp;&nbsp;</th>");
                 }
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.GMean }</th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Median }</th> ");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.P90 }</th>");
-                sbHTML.AppendLine($@"            <th>% &gt; 43</th>");
-                sbHTML.AppendLine($@"            <th>% &gt; 260</th>");
+                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.GMean }&nbsp;&nbsp;</th>");
+                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Median }&nbsp;&nbsp;</th> ");
+                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.P90 }&nbsp;&nbsp;</th>");
+                sbHTML.AppendLine($@"            <th>% &gt; 43&nbsp;&nbsp;</th>");
+                sbHTML.AppendLine($@"            <th>% &gt; 260&nbsp;&nbsp;</th>");
                 sbHTML.AppendLine($@"            <th></th>");
                 sbHTML.AppendLine(@"        </tr>");
                 sbHTML.AppendLine(@"    </thead>");
@@ -684,6 +687,12 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbHTML.AppendLine(@"    <tfoot>");
                 sbHTML.AppendLine(@"        <tr>");
 
+                sbHTML.AppendLine(@"        </tr>");
+                sbHTML.AppendLine(@"    </tfoot>");
+                sbHTML.AppendLine(@"</table>");
+                sbHTML.AppendLine(@"</td>");
+                sbHTML.AppendLine(@"</tr>");
+
                 List<int> YearList = new List<int>();
                 for (int year = 1980, maxYear = Math.Min(Year, DateTime.Now.Year) + 1; year < maxYear; year++)
                 {
@@ -701,7 +710,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets.get_Item(1);
 
                 Microsoft.Office.Interop.Excel.ChartObjects xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
-                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 600, 90);
+                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 700, 80);
                 Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
                 chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
@@ -756,27 +765,19 @@ namespace CSSPWebToolsTaskRunner.Services
                     xlApp.Quit();
                 }
 
-                if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
-                {
-                    sbHTML.AppendLine($@"            <td class=""textAlignCenter"" colspan=""12"">");
-                }
-                else
-                {
-                    sbHTML.AppendLine($@"            <td class=""textAlignCenter"" colspan=""11"">");
-                }
-                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,340|height,50|||");
+                sbHTML.AppendLine(@"        <tr>");
+                sbHTML.AppendLine($@"            <td class=""textAlignLeft"">");
+                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.NOTE }</b> : { TaskRunnerServiceRes.Shaded } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.GMean } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.Median } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.P90 } &gt; 43 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (% &gt; 43) &gt; 10");
+                sbHTML.AppendLine($@"            </td>");
+                sbHTML.AppendLine(@"        </tr>");
+                sbHTML.AppendLine(@"        <tr>");
+                sbHTML.AppendLine($@"            <td class=""textAlignCenter"">");
+                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,70|||");
                 sbHTML.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
                 sbHTML.AppendLine(@"            </td>");
                 sbHTML.AppendLine(@"        </tr>");
                 sbHTML.AppendLine(@"        <tr>");
-                if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
-                {
-                    sbHTML.AppendLine($@"            <td class=""textAlignLeft"" colspan=""12"">");
-                }
-                else
-                {
-                    sbHTML.AppendLine($@"            <td class=""textAlignLeft"" colspan=""11"">");
-                }
+                sbHTML.AppendLine($@"            <td class=""textAlignLeft"">");
                 sbHTML.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
                 sbHTML.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
                 sbHTML.Append($@"<b>{ TaskRunnerServiceRes.ReportYear }</b> : { mwqmAnalysisReportParameterModel.AnalysisReportYear }&nbsp;&nbsp;&nbsp;");
@@ -822,8 +823,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 sbHTML.AppendLine($@"");
                 sbHTML.AppendLine(@"            </td>");
-                sbHTML.AppendLine(@"        </tr>");
-                sbHTML.AppendLine(@"    </tfoot>");
+
                 sbHTML.AppendLine(@"</table>");
 
                 sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
