@@ -1389,4 +1389,49 @@
   <data name="Shaded" xml:space="preserve">
     <value>Shaded (fr)</value>
   </data>
+  <data name="ActiveMWQMSites" xml:space="preserve">
+    <value>Active MWQM sites (fr)</value>
+  </data>
+  <data name="EndTide" xml:space="preserve">
+    <value>End tide (fr)</value>
+  </data>
+  <data name="FCDensities" xml:space="preserve">
+    <value>FC Densities (fr)</value>
+  </data>
+  <data name="Minus1Day" xml:space="preserve">
+    <value>0-24 h</value>
+  </data>
+  <data name="Minus2Day" xml:space="preserve">
+    <value>24-48 h</value>
+  </data>
+  <data name="Minus3Day" xml:space="preserve">
+    <value>48-72 h</value>
+  </data>
+  <data name="Minus4Day" xml:space="preserve">
+    <value>(-4) j</value>
+  </data>
+  <data name="Minus5Day" xml:space="preserve">
+    <value>(-5) j</value>
+  </data>
+  <data name="MWQMSitesSummary" xml:space="preserve">
+    <value>MWQM Sites Summary (fr)</value>
+  </data>
+  <data name="NumberOfMWQMRunsByYear" xml:space="preserve">
+    <value>Number of MWQM runs by year (fr)</value>
+  </data>
+  <data name="NumberOfMWQMSitesByYear" xml:space="preserve">
+    <value>Number of MWQM sites by year (fr)</value>
+  </data>
+  <data name="NumberOfSamplesByYear" xml:space="preserve">
+    <value>Number of samples by year (fr)</value>
+  </data>
+  <data name="Rain" xml:space="preserve">
+    <value>Rain (fr)</value>
+  </data>
+  <data name="Routine" xml:space="preserve">
+    <value>Routine</value>
+  </data>
+  <data name="StartTide" xml:space="preserve">
+    <value>Start tide (fr)</value>
+  </data>
 </root>

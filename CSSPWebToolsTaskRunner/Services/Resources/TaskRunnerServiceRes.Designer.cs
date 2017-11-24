@@ -205,6 +205,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active MWQM sites.
+        /// </summary>
+        public static string ActiveMWQMSites {
+            get {
+                return ResourceManager.GetString("ActiveMWQMSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agriculture.
         /// </summary>
         public static string Agriculture {
@@ -1258,6 +1267,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End tide.
+        /// </summary>
+        public static string EndTide {
+            get {
+                return ResourceManager.GetString("EndTide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EndYear.
         /// </summary>
         public static string EndYear {
@@ -1326,6 +1344,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ExcelCouldNotBeStartedCheckOfficeInstallation {
             get {
                 return ResourceManager.GetString("ExcelCouldNotBeStartedCheckOfficeInstallation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FC Densities.
+        /// </summary>
+        public static string FCDensities {
+            get {
+                return ResourceManager.GetString("FCDensities", resourceCulture);
             }
         }
         
@@ -2266,6 +2293,51 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 0-24 h.
+        /// </summary>
+        public static string Minus1Day {
+            get {
+                return ResourceManager.GetString("Minus1Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 24-48 h.
+        /// </summary>
+        public static string Minus2Day {
+            get {
+                return ResourceManager.GetString("Minus2Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48-72 h.
+        /// </summary>
+        public static string Minus3Day {
+            get {
+                return ResourceManager.GetString("Minus3Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (-4) d.
+        /// </summary>
+        public static string Minus4Day {
+            get {
+                return ResourceManager.GetString("Minus4Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (-5) d.
+        /// </summary>
+        public static string Minus5Day {
+            get {
+                return ResourceManager.GetString("Minus5Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to minutes.
         /// </summary>
         public static string MinutesLowerCase {
@@ -2379,6 +2451,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MWQMSitesInformation {
             get {
                 return ResourceManager.GetString("MWQMSitesInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM Sites Summary.
+        /// </summary>
+        public static string MWQMSitesSummary {
+            get {
+                return ResourceManager.GetString("MWQMSitesSummary", resourceCulture);
             }
         }
         
@@ -2554,11 +2635,38 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of MWQM runs by year.
+        /// </summary>
+        public static string NumberOfMWQMRunsByYear {
+            get {
+                return ResourceManager.GetString("NumberOfMWQMRunsByYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of MWQM sites by year.
+        /// </summary>
+        public static string NumberOfMWQMSitesByYear {
+            get {
+                return ResourceManager.GetString("NumberOfMWQMSitesByYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of runs.
         /// </summary>
         public static string NumberOfRuns {
             get {
                 return ResourceManager.GetString("NumberOfRuns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of samples by year.
+        /// </summary>
+        public static string NumberOfSamplesByYear {
+            get {
+                return ResourceManager.GetString("NumberOfSamplesByYear", resourceCulture);
             }
         }
         
@@ -2896,6 +3004,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rain.
+        /// </summary>
+        public static string Rain {
+            get {
+                return ResourceManager.GetString("Rain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reading file [{0}]..
         /// </summary>
         public static string ReadingFile_ {
@@ -2973,6 +3090,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string RootFileAutoGenerate {
             get {
                 return ResourceManager.GetString("RootFileAutoGenerate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Routine.
+        /// </summary>
+        public static string Routine {
+            get {
+                return ResourceManager.GetString("Routine", resourceCulture);
             }
         }
         
@@ -3324,6 +3450,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string StartMonth {
             get {
                 return ResourceManager.GetString("StartMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start tide.
+        /// </summary>
+        public static string StartTide {
+            get {
+                return ResourceManager.GetString("StartTide", resourceCulture);
             }
         }
         
