@@ -556,29 +556,36 @@ namespace CSSPWebToolsTaskRunner.Services
                         Median = _TVItemService.GetMedian(SampleList);
                         PercOver43 = ((((double)SampleList.Where(c => c > 43).Count()) / (double)SampleList.Count()) * 100.0D);
                         PercOver260 = ((((double)SampleList.Where(c => c > 260).Count()) / (double)SampleList.Count()) * 100.0D);
-                        if ((GeoMean > 88) || (Median > 88) || (P90 > 260) || (PercOver260 > 10))
+
+                        int P90Int = (int)Math.Round((double)P90, 0);
+                        int GeoMeanInt = (int)Math.Round((double)GeoMean, 0);
+                        int MedianInt = (int)Math.Round((double)Median, 0);
+                        int PercOver43Int = (int)Math.Round((double)PercOver43, 0);
+                        int PercOver260Int = (int)Math.Round((double)PercOver260, 0);
+
+                        if ((GeoMeanInt > 88) || (MedianInt > 88) || (P90Int > 260) || (PercOver260Int > 10))
                         {
-                            if ((GeoMean > 181.33) || (Median > 181.33) || (P90 > 460.0) || (PercOver260 > 18.33))
+                            if ((GeoMeanInt > 181) || (MedianInt > 181) || (P90Int > 460) || (PercOver260Int > 18))
                             {
                                 Coloring = "bgbluef";
                                 Letter = "F";
                             }
-                            else if ((GeoMean > 162.67) || (Median > 162.67) || (P90 > 420.0) || (PercOver260 > 16.67))
+                            else if ((GeoMeanInt > 163) || (MedianInt > 163) || (P90Int > 420) || (PercOver260Int > 17))
                             {
                                 Coloring = "bgbluee";
                                 Letter = "E";
                             }
-                            else if ((GeoMean > 144.0) || (Median > 144.0) || (P90 > 380.0) || (PercOver260 > 15.0))
+                            else if ((GeoMeanInt > 144) || (MedianInt > 144) || (P90Int > 380) || (PercOver260Int > 15))
                             {
                                 Coloring = "bgblued";
                                 Letter = "D";
                             }
-                            else if ((GeoMean > 125.33) || (Median > 125.33) || (P90 > 340.0) || (PercOver260 > 13.33))
+                            else if ((GeoMeanInt > 125) || (MedianInt > 125) || (P90Int > 340) || (PercOver260Int > 13))
                             {
                                 Coloring = "bgbluec";
                                 Letter = "C";
                             }
-                            else if ((GeoMean > 106.67) || (Median > 106.67) || (P90 > 300.0) || (PercOver260 > 11.67))
+                            else if ((GeoMeanInt > 107) || (MedianInt > 107) || (P90Int > 300) || (PercOver260Int > 12))
                             {
                                 Coloring = "bgblueb";
                                 Letter = "B";
@@ -588,30 +595,60 @@ namespace CSSPWebToolsTaskRunner.Services
                                 Coloring = "bgbluea";
                                 Letter = "A";
                             }
+                            //if ((GeoMeanInt > 181.33) || (MedianInt > 181.33) || (P90Int > 460.0) || (PercOver260Int > 18.33))
+                            //{
+                            //    Coloring = "bgbluef";
+                            //    Letter = "F";
+                            //}
+                            //else if ((GeoMeanInt > 162.67) || (MedianInt > 162.67) || (P90Int > 420.0) || (PercOver260Int > 16.67))
+                            //{
+                            //    Coloring = "bgbluee";
+                            //    Letter = "E";
+                            //}
+                            //else if ((GeoMeanInt > 144.0) || (MedianInt > 144.0) || (P90Int > 380.0) || (PercOver260Int > 15.0))
+                            //{
+                            //    Coloring = "bgblued";
+                            //    Letter = "D";
+                            //}
+                            //else if ((GeoMeanInt > 125.33) || (MedianInt > 125.33) || (P90Int > 340.0) || (PercOver260Int > 13.33))
+                            //{
+                            //    Coloring = "bgbluec";
+                            //    Letter = "C";
+                            //}
+                            //else if ((GeoMeanInt > 106.67) || (MedianInt > 106.67) || (P90Int > 300.0) || (PercOver260Int > 11.67))
+                            //{
+                            //    Coloring = "bgblueb";
+                            //    Letter = "B";
+                            //}
+                            //else
+                            //{
+                            //    Coloring = "bgbluea";
+                            //    Letter = "A";
+                            //}
                         }
-                        else if ((GeoMean > 14) || (Median > 14) || (P90 > 43) || (PercOver43 > 10))
+                        else if ((GeoMeanInt > 14) || (MedianInt > 14) || (P90Int > 43) || (PercOver43Int > 10))
                         {
-                            if ((GeoMean > 75.67) || (Median > 75.67) || (P90 > 223.83) || (PercOver43 > 26.67))
+                            if ((GeoMeanInt > 76) || (MedianInt > 76) || (P90Int > 224) || (PercOver43Int > 27))
                             {
                                 Coloring = "bgredf";
                                 Letter = "F";
                             }
-                            else if ((GeoMean > 63.33) || (Median > 63.33) || (P90 > 187.67) || (PercOver43 > 23.33))
+                            else if ((GeoMeanInt > 63) || (MedianInt > 63) || (P90Int > 188) || (PercOver43Int > 23))
                             {
                                 Coloring = "bgrede";
                                 Letter = "E";
                             }
-                            else if ((GeoMean > 51.0) || (Median > 51.0) || (P90 > 151.5) || (PercOver43 > 20.0))
+                            else if ((GeoMeanInt > 51) || (MedianInt > 51) || (P90Int > 152) || (PercOver43Int > 20))
                             {
                                 Coloring = "bgredd";
                                 Letter = "D";
                             }
-                            else if ((GeoMean > 38.67) || (Median > 38.67) || (P90 > 115.33) || (PercOver43 > 16.67))
+                            else if ((GeoMeanInt > 39) || (MedianInt > 39) || (P90Int > 115) || (PercOver43Int > 17))
                             {
                                 Coloring = "bgredc";
                                 Letter = "C";
                             }
-                            else if ((GeoMean > 26.33) || (Median > 26.33) || (P90 > 79.17) || (PercOver43 > 13.33))
+                            else if ((GeoMeanInt > 26) || (MedianInt > 26) || (P90Int > 79) || (PercOver43Int > 13))
                             {
                                 Coloring = "bgredb";
                                 Letter = "B";
@@ -621,30 +658,60 @@ namespace CSSPWebToolsTaskRunner.Services
                                 Coloring = "bgreda";
                                 Letter = "A";
                             }
+                            //if ((GeoMeanInt > 75.67) || (MedianInt > 75.67) || (P90Int > 223.83) || (PercOver43Int > 26.67))
+                            //{
+                            //    Coloring = "bgredf";
+                            //    Letter = "F";
+                            //}
+                            //else if ((GeoMeanInt > 63.33) || (MedianInt > 63.33) || (P90Int > 187.67) || (PercOver43Int > 23.33))
+                            //{
+                            //    Coloring = "bgrede";
+                            //    Letter = "E";
+                            //}
+                            //else if ((GeoMeanInt > 51.0) || (MedianInt > 51.0) || (P90Int > 151.5) || (PercOver43Int > 20.0))
+                            //{
+                            //    Coloring = "bgredd";
+                            //    Letter = "D";
+                            //}
+                            //else if ((GeoMeanInt > 38.67) || (MedianInt > 38.67) || (P90Int > 115.33) || (PercOver43Int > 16.67))
+                            //{
+                            //    Coloring = "bgredc";
+                            //    Letter = "C";
+                            //}
+                            //else if ((GeoMeanInt > 26.33) || (MedianInt > 26.33) || (P90Int > 79.17) || (PercOver43Int > 13.33))
+                            //{
+                            //    Coloring = "bgredb";
+                            //    Letter = "B";
+                            //}
+                            //else
+                            //{
+                            //    Coloring = "bgreda";
+                            //    Letter = "A";
+                            //}
                         }
                         else
                         {
-                            if ((GeoMean > 11.67) || (Median > 11.67) || (P90 > 35.83) || (PercOver43 > 8.33))
+                            if ((GeoMeanInt > 12) || (MedianInt > 12) || (P90Int > 36) || (PercOver43Int > 8))
                             {
                                 Coloring = "bggreenf";
                                 Letter = "F";
                             }
-                            else if ((GeoMean > 9.33) || (Median > 9.33) || (P90 > 28.67) || (PercOver43 > 6.67))
+                            else if ((GeoMeanInt > 9) || (MedianInt > 9) || (P90Int > 29) || (PercOver43Int > 7))
                             {
                                 Coloring = "bggreene";
                                 Letter = "E";
                             }
-                            else if ((GeoMean > 7.0) || (Median > 7.0) || (P90 > 21.5) || (PercOver43 > 5.0))
+                            else if ((GeoMeanInt > 7) || (MedianInt > 7) || (P90Int > 22) || (PercOver43Int > 5))
                             {
                                 Coloring = "bggreend";
                                 Letter = "D";
                             }
-                            else if ((GeoMean > 4.67) || (Median > 4.67) || (P90 > 14.33) || (PercOver43 > 3.33))
+                            else if ((GeoMeanInt > 5) || (MedianInt > 5) || (P90Int > 14) || (PercOver43Int > 3))
                             {
                                 Coloring = "bggreenc";
                                 Letter = "C";
                             }
-                            else if ((GeoMean > 2.33) || (Median > 2.33) || (P90 > 7.17) || (PercOver43 > 1.67))
+                            else if ((GeoMeanInt > 2) || (MedianInt > 2) || (P90Int > 7) || (PercOver43Int > 2))
                             {
                                 Coloring = "bggreenb";
                                 Letter = "B";
@@ -654,6 +721,36 @@ namespace CSSPWebToolsTaskRunner.Services
                                 Coloring = "bggreena";
                                 Letter = "A";
                             }
+                            //if ((GeoMeanInt > 11.67) || (MedianInt > 11.67) || (P90Int > 35.83) || (PercOver43Int > 8.33))
+                            //{
+                            //    Coloring = "bggreenf";
+                            //    Letter = "F";
+                            //}
+                            //else if ((GeoMeanInt > 9.33) || (MedianInt > 9.33) || (P90Int > 28.67) || (PercOver43Int > 6.67))
+                            //{
+                            //    Coloring = "bggreene";
+                            //    Letter = "E";
+                            //}
+                            //else if ((GeoMeanInt > 7.0) || (MedianInt > 7.0) || (P90Int > 21.5) || (PercOver43Int > 5.0))
+                            //{
+                            //    Coloring = "bggreend";
+                            //    Letter = "D";
+                            //}
+                            //else if ((GeoMeanInt > 4.67) || (MedianInt > 4.67) || (P90Int > 14.33) || (PercOver43Int > 3.33))
+                            //{
+                            //    Coloring = "bggreenc";
+                            //    Letter = "C";
+                            //}
+                            //else if ((GeoMeanInt > 2.33) || (MedianInt > 2.33) || (P90Int > 7.17) || (PercOver43Int > 1.67))
+                            //{
+                            //    Coloring = "bggreenb";
+                            //    Letter = "B";
+                            //}
+                            //else
+                            //{
+                            //    Coloring = "bggreena";
+                            //    Letter = "A";
+                            //}
                         }
 
                         sbHTML.AppendLine(@"        <tr>");

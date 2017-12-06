@@ -163,9 +163,9 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             {
                 SetupTest(LanguageRequest);
 
-                int SubsectorTVItemID = 635;
+                int SubsectorTVItemID = 1142;
                 int ReportTypeID = 23;
-                int Year = 2016;
+                int Year = 2017;
 
                 FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\TestGenerateHTMLSubsector_FCSummaryStatDocx_" + LanguageRequest.ToString() + ".html");
                 StringBuilder sbHTML = new StringBuilder();
