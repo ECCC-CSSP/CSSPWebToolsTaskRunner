@@ -910,12 +910,15 @@ namespace CSSPWebToolsTaskRunner.Services
                                                             {
                                                                 if (obsInfoList.Count > 1)
                                                                 {
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault().Text }</span>");
+                                                                    PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault();
+                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
                                                                 }
                                                                 if (obsInfoList.Count > 2)
                                                                 {
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault().Text }</span>");
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault().Text }</span>");
+                                                                    PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault();
+                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
+                                                                    polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault();
+                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
                                                                 }
                                                                 sbHTML.AppendLine($@"           <br />");
                                                             }
