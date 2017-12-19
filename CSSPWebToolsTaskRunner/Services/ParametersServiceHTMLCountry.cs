@@ -17,13 +17,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLCountry(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLCountry()
         {
             switch (reportTypeModel.UniqueCode)
             {
                 case "CountryTestDocx":
                     {
-                        if (!GenerateHTMLCountry_CountryTestDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLCountry_CountryTestDocx())
                         {
                             return false;
                         }
@@ -31,7 +31,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "CountryTestExcel":
                     {
-                        if (!GenerateHTMLCountry_CountryTestXlsx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLCountry_CountryTestXlsx())
                         {
                             return false;
                         }
@@ -42,7 +42,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     break;
                 default:
-                    if (!GenerateHTMLCountry_NotImplemented(fi, sbHTML, parameters, reportTypeModel))
+                    if (!GenerateHTMLCountry_NotImplemented())
                     {
                         return false;
                     }
@@ -50,48 +50,48 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateHTMLCountry_CountryTestDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLCountry_CountryTestDocx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour</h2>");
+            sb.AppendLine(@"<h2>Bonjour</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLCountry_CountryTestXlsx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLCountry_CountryTestXlsx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
+            sb.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLCountry_NotImplemented(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLCountry_NotImplemented()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
+            sb.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }

@@ -19,47 +19,22 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSubsectorFullReportCoverPage(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(StringBuilder sbTemp)
         {
             string NotUsed = "";
-            int TVItemID = 0;
-            int Year = 0;
 
-            Random random = new Random();
-            string FileNameExtra = "";
-            for (int i = 0; i < 10; i++)
-            {
-                FileNameExtra = FileNameExtra + (char)random.Next(97, 122);
-            }
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_FULL_REPORT_COVER_PAGE.ToString()));
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (!GetTopHTML(sbHTML))
-            {
-                return false;
-            }
-
-            List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            if (!int.TryParse(GetParameters("TVItemID", ParamValueList), out TVItemID))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                return false;
-            }
+            // TVItemID and Year already loaded
 
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelSubsector.Error);
-                return false;
-            }
-
-            if (!int.TryParse(GetParameters("Year", ParamValueList), out Year))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.Year);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.Year);
                 return false;
             }
 
@@ -149,62 +124,57 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
-            sbHTML.AppendLine($@" <p>&nbsp;</p>");
-            sbHTML.AppendLine($@" <table>");
-            sbHTML.AppendLine($@"    <tr> ");
-            sbHTML.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,45|height,20|||</td> ");
-            sbHTML.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbHTML.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environment and <br />Climate Change Canada</h5></td>");
-            sbHTML.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbHTML.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environnement et <br />Changement climatique Canada</h5></td>");
-            sbHTML.AppendLine($@"    </tr>");
-            sbHTML.AppendLine($@" </table>");
-            sbHTML.AppendLine($@" <div class=""textAlignLeft"">");
-            sbHTML.AppendLine($@"        |||Image|FileName,{ fiFullReportCoverPageImageCanadaBanner.FullName }|width,480|height,48|||");
-            sbHTML.AppendLine($@" </div>");
-            sbHTML.AppendLine($@" <div>");
-            sbHTML.AppendLine($@"   <br />");
-            sbHTML.AppendLine($@"   <br />");
-            sbHTML.AppendLine($@"   <blockquote>");
-            sbHTML.AppendLine($@"       <hr />");
-            sbHTML.AppendLine($@"       <h5 class=""textAlignLeft"">{ TaskRunnerServiceRes.MarineWaterQualityReEvaluationReport }</h5>");
-            sbHTML.AppendLine($@"       <hr />");
-            sbHTML.AppendLine($@"       <h5 class=""textAlignLeft"">{ tvItemModelProvince.TVText } { TaskRunnerServiceRes.ShellfishGrowingArea}</h5>");
-            sbHTML.AppendLine($@"       <h5 class=""textAlignLeft"">{ SubsectorShort }</h5>");
-            sbHTML.AppendLine($@"       <h5 class=""textAlignLeft"">{ SubsectorEndPart }</h5>");
-            sbHTML.AppendLine($@"       <hr />");
-            sbHTML.AppendLine($@"       <h5 class=""textAlignLeft"">{ NamesOfAuthors }</h5>");
-            sbHTML.AppendLine($@"       <hr />");
-            sbHTML.AppendLine($@"   </blockquote>");
-            sbHTML.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbHTML.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbHTML.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbHTML.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbHTML.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbHTML.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbHTML.AppendLine($@"   <h5 class=""textAlignRight"">{ TaskRunnerServiceRes.AtlanticMarineWaterQualityMonitoring }</h5>");
-            sbHTML.AppendLine($@"   <h5 class=""textAlignRight"">{ TaskRunnerServiceRes.Report } <span>_______________________</span></h5>");
-            sbHTML.AppendLine($@"   <h5 class=""textAlignRight"">{ ReportDateText }</h5>");
-            sbHTML.AppendLine($@" </div>");
-            sbHTML.AppendLine($@" <div class=""textAlignRight"">|||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,22|||</div>");
+            sbTemp.AppendLine($@" <p>&nbsp;</p>");
+            sbTemp.AppendLine($@" <table>");
+            sbTemp.AppendLine($@"    <tr> ");
+            sbTemp.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,45|height,20|||</td> ");
+            sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
+            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environment and <br />Climate Change Canada</h5></td>");
+            sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
+            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environnement et <br />Changement climatique Canada</h5></td>");
+            sbTemp.AppendLine($@"    </tr>");
+            sbTemp.AppendLine($@" </table>");
+            sbTemp.AppendLine($@" <div class=""textAlignLeft"">");
+            sbTemp.AppendLine($@"        |||Image|FileName,{ fiFullReportCoverPageImageCanadaBanner.FullName }|width,480|height,48|||");
+            sbTemp.AppendLine($@" </div>");
+            sbTemp.AppendLine($@" <div>");
+            sbTemp.AppendLine($@"   <br />");
+            sbTemp.AppendLine($@"   <br />");
+            sbTemp.AppendLine($@"   <blockquote>");
+            sbTemp.AppendLine($@"       <hr />");
+            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ TaskRunnerServiceRes.MarineWaterQualityReEvaluationReport }</h5>");
+            sbTemp.AppendLine($@"       <hr />");
+            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ tvItemModelProvince.TVText } { TaskRunnerServiceRes.ShellfishGrowingArea}</h5>");
+            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ SubsectorShort }</h5>");
+            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ SubsectorEndPart }</h5>");
+            sbTemp.AppendLine($@"       <hr />");
+            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ NamesOfAuthors }</h5>");
+            sbTemp.AppendLine($@"       <hr />");
+            sbTemp.AppendLine($@"   </blockquote>");
+            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
+            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
+            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
+            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
+            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
+            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
+            sbTemp.AppendLine($@"   <h5 class=""textAlignRight"">{ TaskRunnerServiceRes.AtlanticMarineWaterQualityMonitoring }</h5>");
+            sbTemp.AppendLine($@"   <h5 class=""textAlignRight"">{ TaskRunnerServiceRes.Report } <span>_______________________</span></h5>");
+            sbTemp.AppendLine($@"   <h5 class=""textAlignRight"">{ ReportDateText }</h5>");
+            sbTemp.AppendLine($@" </div>");
+            sbTemp.AppendLine($@" <div class=""textAlignRight"">|||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,22|||</div>");
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
-
-            if (!GetBottomHTML(sbHTML, fi, parameters))
-            {
-                return false;
-            }
+            sbTemp.AppendLine(@"<span>|||PAGE_BREAK|||</span>");
 
             return true;
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSubsectorFullReportCoverPage(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        public bool PublicGenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLSubsectorFullReportCoverPage(fi, sbHTML, parameters, reportTypeModel);
+            bool retBool = GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(sbTemp);
 
             StreamWriter sw = fi.CreateText();
-            sw.Write(sbHTML.ToString());
+            sw.Write(sbTemp.ToString());
             sw.Flush();
             sw.Close();
 

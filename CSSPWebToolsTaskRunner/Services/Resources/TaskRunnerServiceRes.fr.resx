@@ -1434,4 +1434,7 @@
   <data name="StartTide" xml:space="preserve">
     <value>Start tide (fr)</value>
   </data>
+  <data name="Creating_" xml:space="preserve">
+    <value>Création de [{0}]</value>
+  </data>
 </root>

@@ -17,13 +17,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLMunicipality(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMunicipality()
         {
             switch (reportTypeModel.UniqueCode)
             {
                 case "MunicipalityTestDocx":
                     {
-                        if (!GenerateHTMLMunicipality_MunicipalityTestDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMunicipality_MunicipalityTestDocx())
                         {
                             return false;
                         }
@@ -31,7 +31,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MunicipalityTestExcel":
                     {
-                        if (!GenerateHTMLMunicipality_MunicipalityTestXlsx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMunicipality_MunicipalityTestXlsx())
                         {
                             return false;
                         }
@@ -42,7 +42,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     break;
                 default:
-                    if (!GenerateHTMLMunicipality_NotImplemented(fi, sbHTML, parameters, reportTypeModel))
+                    if (!GenerateHTMLMunicipality_NotImplemented())
                     {
                         return false;
                     }
@@ -50,48 +50,48 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateHTMLMunicipality_MunicipalityTestDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMunicipality_MunicipalityTestDocx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour</h2>");
+            sb.AppendLine(@"<h2>Bonjour</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLMunicipality_MunicipalityTestXlsx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMunicipality_MunicipalityTestXlsx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
+            sb.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLMunicipality_NotImplemented(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMunicipality_NotImplemented()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
+            sb.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }

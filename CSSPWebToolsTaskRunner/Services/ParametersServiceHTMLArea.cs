@@ -17,13 +17,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLArea(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLArea()
         {
             switch (reportTypeModel.UniqueCode)
             {
                 case "AreaTestDocx":
                     {
-                        if (!GenerateHTMLArea_AreaTestDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLArea_AreaTestDocx())
                         {
                             return false;
                         }
@@ -31,7 +31,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "AreaTestExcel":
                     {
-                        if (!GenerateHTMLArea_AreaTestXlsx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLArea_AreaTestXlsx())
                         {
                             return false;
                         }
@@ -42,7 +42,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     break;
                 default:
-                    if (!GenerateHTMLArea_NotImplemented(fi, sbHTML, parameters, reportTypeModel))
+                    if (!GenerateHTMLArea_NotImplemented())
                     {
                         return false;
                     }
@@ -50,48 +50,48 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateHTMLArea_AreaTestDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLArea_AreaTestDocx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour</h2>");
+            sb.AppendLine(@"<h2>Bonjour</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLArea_AreaTestXlsx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLArea_AreaTestXlsx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
+            sb.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLArea_NotImplemented(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLArea_NotImplemented()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
+            sb.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }

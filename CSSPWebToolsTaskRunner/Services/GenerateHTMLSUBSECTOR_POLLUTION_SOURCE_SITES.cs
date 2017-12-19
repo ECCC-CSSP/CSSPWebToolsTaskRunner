@@ -20,33 +20,20 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSubsectorPollutionSourceSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(StringBuilder sbTemp)
         {
             string NotUsed = "";
-            int TVItemID = 0;
-
-            Random random = new Random();
-            string FileNameExtra = "";
-            for (int i = 0; i < 10; i++)
-            {
-                FileNameExtra = FileNameExtra + (char)random.Next(97, 122);
-            }
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
 
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (!int.TryParse(GetParameters("TVItemID", ParamValueList), out TVItemID))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                return false;
-            }
+            // TVItemID and Year already loaded
 
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
@@ -781,44 +768,44 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
 
-            sbHTML.AppendLine($@" <h3>{ TaskRunnerServiceRes.LandBasePollutionSourceSiteObservationAndIssues }</h3>");
+            sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.LandBasePollutionSourceSiteObservationAndIssues }</h3>");
 
-            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageLand.FullName }|width,400|height,150|||</div>");
+            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageLand.FullName }|width,400|height,150|||</div>");
 
             foreach (PolSourceObsInfoEnumTextAndID PolSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBasePolSourceType)
             {
-                sbHTML.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
+                sbTemp.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
 
                 switch (PolSourceObsInfoEnumTextAndID.ID)
                 {
                     case 10501: // Agriculture
                         {
-                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageAgriculture.FullName }|width,400|height,150|||</div>");
+                            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageAgriculture.FullName }|width,400|height,150|||</div>");
                         }
                         break;
                     case 10502: // Forested
                         {
-                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageForested.FullName }|width,400|height,150|||</div>");
+                            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageForested.FullName }|width,400|height,150|||</div>");
                         }
                         break;
                     case 10503: // Industry
                         {
-                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageIndustry.FullName }|width,400|height,150|||</div>");
+                            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageIndustry.FullName }|width,400|height,150|||</div>");
                         }
                         break;
                     case 10504: // Marine
                         {
-                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageMarine.FullName }|width,400|height,150|||</div>");
+                            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageMarine.FullName }|width,400|height,150|||</div>");
                         }
                         break;
                     case 10505: // Recreational
                         {
-                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageRecreational.FullName }|width,400|height,150|||</div>");
+                            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageRecreational.FullName }|width,400|height,150|||</div>");
                         }
                         break;
                     case 10506: // Urban
                         {
-                            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageUrban.FullName }|width,400|height,150|||</div>");
+                            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageUrban.FullName }|width,400|height,150|||</div>");
                         }
                         break;
                     default:
@@ -846,17 +833,17 @@ namespace CSSPWebToolsTaskRunner.Services
                                         {
                                             countPolSourceSiteForPollutionType += 1;
 
-                                            sbHTML.AppendLine($@" <blockquote>");
-                                            sbHTML.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
+                                            sbTemp.AppendLine($@" <blockquote>");
+                                            sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
 
                                             List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
                                             if (mapInfoPointModelList.Count > 0)
                                             {
-                                                sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
+                                                sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
                                             }
-                                            sbHTML.AppendLine($@"           <br />");
-                                            sbHTML.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
-                                            sbHTML.AppendLine($@" </blockquote>");
+                                            sbTemp.AppendLine($@"           <br />");
+                                            sbTemp.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
+                                            sbTemp.AppendLine($@" </blockquote>");
                                         }
                                         else
                                         {
@@ -864,17 +851,17 @@ namespace CSSPWebToolsTaskRunner.Services
                                             {
                                                 countPolSourceSiteForPollutionType += 1;
 
-                                                sbHTML.AppendLine($@" <blockquote>");
-                                                sbHTML.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
+                                                sbTemp.AppendLine($@" <blockquote>");
+                                                sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
 
                                                 List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
                                                 if (mapInfoPointModelList.Count > 0)
                                                 {
-                                                    sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
+                                                    sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
                                                 }
-                                                sbHTML.AppendLine($@"           <br />");
-                                                sbHTML.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
-                                                sbHTML.AppendLine($@" </blockquote>");
+                                                sbTemp.AppendLine($@"           <br />");
+                                                sbTemp.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
+                                                sbTemp.AppendLine($@" </blockquote>");
                                             }
                                             else
                                             {
@@ -889,13 +876,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
                                                 if (IssueOfSourceTypeExist)
                                                 {
-                                                    sbHTML.AppendLine($@" <blockquote>");
-                                                    sbHTML.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
+                                                    sbTemp.AppendLine($@" <blockquote>");
+                                                    sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
 
                                                     List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
                                                     if (mapInfoPointModelList.Count > 0)
                                                     {
-                                                        sbHTML.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Coord }:</b> { mapInfoPointModelList[0].Lat.ToString("F5") } { mapInfoPointModelList[0].Lng.ToString("F5") }</span>");
+                                                        sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Coord }:</b> { mapInfoPointModelList[0].Lat.ToString("F5") } { mapInfoPointModelList[0].Lng.ToString("F5") }</span>");
                                                     }
 
                                                     int CountIssues = 0;
@@ -911,34 +898,34 @@ namespace CSSPWebToolsTaskRunner.Services
                                                                 if (obsInfoList.Count > 1)
                                                                 {
                                                                     PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault();
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
                                                                 }
                                                                 if (obsInfoList.Count > 2)
                                                                 {
                                                                     PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault();
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
                                                                     polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault();
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
                                                                 }
-                                                                sbHTML.AppendLine($@"           <br />");
+                                                                sbTemp.AppendLine($@"           <br />");
                                                             }
 
-                                                            sbHTML.AppendLine($@"&nbsp;&nbsp;&nbsp;&nbsp;{ countPolSourceSiteForPollutionType }) - ");
+                                                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;&nbsp;{ countPolSourceSiteForPollutionType }) - ");
                                                             int CountObsInfo = 0;
                                                             foreach (int obsInfo in obsInfoList)
                                                             {
                                                                 CountObsInfo += 1;
                                                                 if (CountObsInfo > 3 && CountObsInfo < obsInfoList.Count - 2)
                                                                 {
-                                                                    sbHTML.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span> | ");
+                                                                    sbTemp.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span> | ");
                                                                 }
                                                             }
-                                                            sbHTML.AppendLine($@"           <br />");
+                                                            sbTemp.AppendLine($@"           <br />");
                                                         }
                                                     }
-                                                    sbHTML.AppendLine($@"           <br />");
-                                                    sbHTML.AppendLine($@"           &nbsp;&nbsp;&nbsp;&nbsp;<span>Photo</span>");
-                                                    sbHTML.AppendLine($@" </blockquote>");
+                                                    sbTemp.AppendLine($@"           <br />");
+                                                    sbTemp.AppendLine($@"           &nbsp;&nbsp;&nbsp;&nbsp;<span>Photo</span>");
+                                                    sbTemp.AppendLine($@" </blockquote>");
                                                 }
                                             }
                                         }
@@ -950,15 +937,15 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
-            sbHTML.AppendLine($@" <h3>{ TaskRunnerServiceRes.WaterBasePollutionSourceSiteObservationAndIssues }</h3>");
+            sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.WaterBasePollutionSourceSiteObservationAndIssues }</h3>");
 
-            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageWater.FullName }|width,400|height,150|||</div>");
+            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageWater.FullName }|width,400|height,150|||</div>");
 
             foreach (PolSourceObsInfoEnumTextAndID PolSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType)
             {
-                sbHTML.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
+                sbTemp.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
                 foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList)
                 {
                     TVItemModel tvItemModel = tvItemModelListPolSourceSite.Where(c => c.TVItemID == polSourceSiteModel.PolSourceSiteTVItemID).FirstOrDefault();
@@ -976,33 +963,33 @@ namespace CSSPWebToolsTaskRunner.Services
                                     {
                                         if (polSourceObservationModel == null)
                                         {
-                                            sbHTML.AppendLine($@" <blockquote>");
-                                            sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
+                                            sbTemp.AppendLine($@" <blockquote>");
+                                            sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
 
                                             List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
                                             if (mapInfoPointModelList.Count > 0)
                                             {
-                                                sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
+                                                sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
                                             }
-                                            sbHTML.AppendLine($@"           <br />");
-                                            sbHTML.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
-                                            sbHTML.AppendLine($@" </blockquote>");
+                                            sbTemp.AppendLine($@"           <br />");
+                                            sbTemp.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
+                                            sbTemp.AppendLine($@" </blockquote>");
                                         }
                                         else
                                         {
                                             if (polSourceObservationIssueModelList2.Count == 0)
                                             {
-                                                sbHTML.AppendLine($@" <blockquote>");
-                                                sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
+                                                sbTemp.AppendLine($@" <blockquote>");
+                                                sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
 
                                                 List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
                                                 if (mapInfoPointModelList.Count > 0)
                                                 {
-                                                    sbHTML.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
+                                                    sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
                                                 }
-                                                sbHTML.AppendLine($@"           <br />");
-                                                sbHTML.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
-                                                sbHTML.AppendLine($@" </blockquote>");
+                                                sbTemp.AppendLine($@"           <br />");
+                                                sbTemp.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
+                                                sbTemp.AppendLine($@" </blockquote>");
                                             }
                                             else
                                             {
@@ -1017,13 +1004,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
                                                 if (IssueOfSourceTypeExist)
                                                 {
-                                                    sbHTML.AppendLine($@" <blockquote>");
-                                                    sbHTML.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
+                                                    sbTemp.AppendLine($@" <blockquote>");
+                                                    sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
 
                                                     List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
                                                     if (mapInfoPointModelList.Count > 0)
                                                     {
-                                                        sbHTML.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Coord }:</b> { mapInfoPointModelList[0].Lat.ToString("F5") }, { mapInfoPointModelList[0].Lng.ToString("F5") }</span>");
+                                                        sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Coord }:</b> { mapInfoPointModelList[0].Lat.ToString("F5") }, { mapInfoPointModelList[0].Lng.ToString("F5") }</span>");
                                                     }
 
                                                     int CountIssues = 0;
@@ -1037,14 +1024,14 @@ namespace CSSPWebToolsTaskRunner.Services
                                                             {
                                                                 if (obsInfoList.Count > 1)
                                                                 {
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault().Text }</span>");
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault().Text }</span>");
                                                                 }
                                                                 if (obsInfoList.Count > 2)
                                                                 {
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault().Text }</span>");
-                                                                    sbHTML.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault().Text }</span>");
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault().Text }</span>");
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault().Text }</span>");
                                                                 }
-                                                                sbHTML.AppendLine($@"           <br />");
+                                                                sbTemp.AppendLine($@"           <br />");
                                                             }
 
                                                             int CountObsInfo = 0;
@@ -1053,15 +1040,15 @@ namespace CSSPWebToolsTaskRunner.Services
                                                                 CountObsInfo += 1;
                                                                 if (CountObsInfo > 3 && CountObsInfo < obsInfoList.Count - 2)
                                                                 {
-                                                                    sbHTML.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span> | ");
+                                                                    sbTemp.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span> | ");
                                                                 }
                                                             }
-                                                            sbHTML.AppendLine($@"           <br />");
+                                                            sbTemp.AppendLine($@"           <br />");
                                                         }
 
                                                     }
-                                                    sbHTML.AppendLine($@"           <span>Photo</span>");
-                                                    sbHTML.AppendLine($@" </blockquote>");
+                                                    sbTemp.AppendLine($@"           <span>Photo</span>");
+                                                    sbTemp.AppendLine($@" </blockquote>");
                                                 }
                                             }
                                         }
@@ -1073,11 +1060,11 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
-            sbHTML.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
+            sbTemp.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
@@ -1088,12 +1075,12 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSubsectorPollutionSourceSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        public bool PublicGenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLSubsectorPollutionSourceSites(fi, sbHTML, parameters, reportTypeModel);
+            bool retBool = GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(sbTemp);
 
             StreamWriter sw = fi.CreateText();
-            sw.Write(sbHTML.ToString());
+            sw.Write(sbTemp.ToString());
             sw.Flush();
             sw.Close();
 

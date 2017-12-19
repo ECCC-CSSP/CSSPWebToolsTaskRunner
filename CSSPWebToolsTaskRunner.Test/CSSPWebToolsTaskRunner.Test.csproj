@@ -36,41 +36,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSSPEnumsDLL">
-      <HintPath>..\..\CSSPModelsDLL\CSSPModelsDLL\bin\Debug\CSSPEnumsDLL.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPEnumsDLL.1.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\CSSPEnumsDLL.1.0.0.0.Fakes.dll</HintPath>
+    <Reference Include="CSSPEnumsDLL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CSSPEnumsDLL\CSSPEnumsDLL\bin\Debug\CSSPEnumsDLL.dll</HintPath>
     </Reference>
     <Reference Include="CSSPFCFormWriterDLL">
       <HintPath>..\..\CSSPFCFormWriterDLL\CSSPFCFormWriterDLL\bin\Debug\CSSPFCFormWriterDLL.dll</HintPath>
     </Reference>
-    <Reference Include="CSSPFCFormWriterDLL.1.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\CSSPFCFormWriterDLL.1.0.0.0.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="CSSPLabSheetParserDLL">
       <HintPath>..\..\CSSPLabSheetParserDLL\CSSPLabSheetParserDLL\bin\Debug\CSSPLabSheetParserDLL.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPLabSheetParserDLL.1.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\CSSPLabSheetParserDLL.1.0.0.0.Fakes.dll</HintPath>
     </Reference>
     <Reference Include="CSSPModelsDLL">
       <HintPath>..\..\CSSPModelsDLL\CSSPModelsDLL\bin\Debug\CSSPModelsDLL.dll</HintPath>
     </Reference>
-    <Reference Include="CSSPModelsDLL.1.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\CSSPModelsDLL.1.0.0.0.Fakes.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPWebToolsDB.1.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\CSSPWebToolsDB.1.0.0.0.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="CSSPWebToolsDBDLL">
       <HintPath>..\..\CSSPWebToolsDBDLL\CSSPWebToolsDBDLL\bin\Debug\CSSPWebToolsDBDLL.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPWebToolsDBDLL.1.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\CSSPWebToolsDBDLL.1.0.0.0.Fakes.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPWebToolsTaskRunner.Fakes">
-      <HintPath>FakesAssemblies\CSSPWebToolsTaskRunner.Fakes.dll</HintPath>
     </Reference>
     <Reference Include="DHI.Generic.MikeZero, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -169,13 +149,6 @@
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
-    <Fakes Include="Fakes\CSSPWebToolsDB.fakes" />
-    <Fakes Include="Fakes\CSSPEnumsDLL.fakes" />
-    <Fakes Include="Fakes\CSSPFCFormWriterDLL.fakes" />
-    <Fakes Include="Fakes\CSSPLabSheetParserDLL.fakes" />
-    <Fakes Include="Fakes\CSSPModelsDLL.fakes" />
-    <Fakes Include="Fakes\CSSPWebToolsDBDLL.fakes" />
-    <Fakes Include="Fakes\CSSPWebToolsTaskRunner.fakes" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -187,10 +187,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorFullReport.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorMWQMSites.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorPollutionSourceSites.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorFullReportCoverPage.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE.cs" />
+    <Compile Include="Services\GenerateHTMLSubsectorTestObjectsOfFullReportDocx.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES.cs" />
     <Compile Include="Services\GoogleMapToPNG.cs" />
     <Compile Include="Services\KmzServiceMikeScenario.cs" />
     <Compile Include="Services\ParametersService.cs" />
@@ -205,9 +208,8 @@
     <Compile Include="Services\ParametersServiceHTMLProvince.cs" />
     <Compile Include="Services\ParametersServiceHTMLBoxModel.cs" />
     <Compile Include="Services\ParametersServiceHTMLMWQMRun.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorFCSummaryStatDocx.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorMapActivePolSourceSitesDocx.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorMapActiveMWQMSitesDocx.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MAP_ACTIVE_POL_SOURCE_SITES.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MAP_ACTIVE_MWQM_SITES.cs" />
     <Compile Include="Services\ParametersServiceHTMLVisualPlumesScenario.cs" />
     <Compile Include="Services\ParametersServiceHTMLSubsector.cs" />
     <Compile Include="Services\ParametersServiceHTMLSector.cs" />

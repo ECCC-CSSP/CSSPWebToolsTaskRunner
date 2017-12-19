@@ -17,13 +17,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLMikeSource(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMikeSource()
         {
             switch (reportTypeModel.UniqueCode)
             {
                 case "MikeSourceTestDocx":
                     {
-                        if (!GenerateHTMLMikeSource_MikeSourceTestDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMikeSource_MikeSourceTestDocx())
                         {
                             return false;
                         }
@@ -31,7 +31,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MikeSourceTestExcel":
                     {
-                        if (!GenerateHTMLMikeSource_MikeSourceTestXlsx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMikeSource_MikeSourceTestXlsx())
                         {
                             return false;
                         }
@@ -42,7 +42,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     break;
                 default:
-                    if (!GenerateHTMLMikeSource_NotImplemented(fi, sbHTML, parameters, reportTypeModel))
+                    if (!GenerateHTMLMikeSource_NotImplemented())
                     {
                         return false;
                     }
@@ -50,48 +50,48 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateHTMLMikeSource_MikeSourceTestDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMikeSource_MikeSourceTestDocx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour</h2>");
+            sb.AppendLine(@"<h2>Bonjour</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLMikeSource_MikeSourceTestXlsx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMikeSource_MikeSourceTestXlsx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
+            sb.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLMikeSource_NotImplemented(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLMikeSource_NotImplemented()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
+            sb.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }

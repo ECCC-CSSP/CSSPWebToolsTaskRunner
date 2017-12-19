@@ -17,13 +17,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSector(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSector()
         {
             switch (reportTypeModel.UniqueCode)
             {
                 case "SectorTestDocx":
                     {
-                        if (!GenerateHTMLSector_SectorTestDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSector_SectorTestDocx())
                         {
                             return false;
                         }
@@ -31,7 +31,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "SectorTestExcel":
                     {
-                        if (!GenerateHTMLSector_SectorTestXlsx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSector_SectorTestXlsx())
                         {
                             return false;
                         }
@@ -42,7 +42,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     break;
                 default:
-                    if (!GenerateHTMLSector_NotImplemented(fi, sbHTML, parameters, reportTypeModel))
+                    if (!GenerateHTMLSector_NotImplemented())
                     {
                         return false;
                     }
@@ -50,48 +50,48 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateHTMLSector_SectorTestDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSector_SectorTestDocx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour</h2>");
+            sb.AppendLine(@"<h2>Bonjour</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLSector_SectorTestXlsx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSector_SectorTestXlsx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
+            sb.AppendLine(@"<h2>Bonjour 2 for xlsx</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLSector_NotImplemented(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSector_NotImplemented()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
+            sb.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }

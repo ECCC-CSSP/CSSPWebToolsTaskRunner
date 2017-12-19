@@ -20,33 +20,20 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSubsectorMWQMSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSUBSECTOR_MWQM_SITES(StringBuilder sbTemp)
         {
             string NotUsed = "";
-            int TVItemID = 0;
-
-            Random random = new Random();
-            string FileNameExtra = "";
-            for (int i = 0; i < 10; i++)
-            {
-                FileNameExtra = FileNameExtra + (char)random.Next(97, 122);
-            }
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
 
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (!int.TryParse(GetParameters("TVItemID", ParamValueList), out TVItemID))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                return false;
-            }
+            // TVItemID and Year already loaded
 
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
@@ -65,10 +52,10 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MWQMRunModel> mwqmRunModelList = _MWQMRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(TVItemID);
             List<MWQMSampleModel> mwqmSampleModelList = _MWQMSampleService.GetMWQMSampleModelListWithSubsectorTVItemIDDB(TVItemID);
 
-            sbHTML.AppendLine($@" <h3>{ TaskRunnerServiceRes.MWQMSiteSampleDataAvailability }</h3>");
-            sbHTML.AppendLine($@" <table cellpadding=""5"">");
-            sbHTML.AppendLine($@" <tr>");
-            sbHTML.AppendLine($@" <th>{ TaskRunnerServiceRes.Site }</th>");
+            sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.MWQMSiteSampleDataAvailability }</h3>");
+            sbTemp.AppendLine($@" <table cellpadding=""5"">");
+            sbTemp.AppendLine($@" <tr>");
+            sbTemp.AppendLine($@" <th>{ TaskRunnerServiceRes.Site }</th>");
             bool FirstHit = false;
             for (int year = DateTime.Now.Year; year > 1975; year--)
             {
@@ -80,14 +67,14 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         colSpan = 4;
                     }
-                    sbHTML.AppendLine($@" <th class=""textAlignLeftAndLeftBorder"" colspan=""{ colSpan }"">{ year }</th>");
+                    sbTemp.AppendLine($@" <th class=""textAlignLeftAndLeftBorder"" colspan=""{ colSpan }"">{ year }</th>");
                 }
                 if (!FirstHit)
                 {
-                    sbHTML.AppendLine($@" <th>&nbsp;</th>");
+                    sbTemp.AppendLine($@" <th>&nbsp;</th>");
                 }
             }
-            sbHTML.AppendLine($@" </tr>");
+            sbTemp.AppendLine($@" </tr>");
             int countSite = 0;
             foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelList)
             {
@@ -102,8 +89,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             bottomClass = "bottomBorder";
                         }
-                        sbHTML.AppendLine($@" <tr>");
-                        sbHTML.AppendLine($@" <td class=""{ bottomClass }"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@" <tr>");
+                        sbTemp.AppendLine($@" <td class=""{ bottomClass }"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
                         for (int year = DateTime.Now.Year; year > 1979; year--)
                         {
                             string leftClass = year % 5 == 0 ? "leftBorder" : "";
@@ -114,22 +101,22 @@ namespace CSSPWebToolsTaskRunner.Services
                                 {
                                     if (bottomClass != "")
                                     {
-                                        sbHTML.AppendLine($@" <td class=""bggreenfLeftAndBottomBorder"">&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td class=""bggreenfLeftAndBottomBorder"">&nbsp;</td>");
                                     }
                                     else
                                     {
-                                        sbHTML.AppendLine($@" <td class=""bggreenfLeftBorder"">&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td class=""bggreenfLeftBorder"">&nbsp;</td>");
                                     }
                                 }
                                 else
                                 {
                                     if (bottomClass != "")
                                     {
-                                        sbHTML.AppendLine($@" <td class=""bggreenfBottomBorder"">&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td class=""bggreenfBottomBorder"">&nbsp;</td>");
                                     }
                                     else
                                     {
-                                        sbHTML.AppendLine($@" <td class=""bggreenf"">&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td class=""bggreenf"">&nbsp;</td>");
                                     }
                                 }
                             }
@@ -139,33 +126,33 @@ namespace CSSPWebToolsTaskRunner.Services
                                 {
                                     if (bottomClass != "")
                                     {
-                                        sbHTML.AppendLine($@" <td class=""leftAndBottomBorder"">&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td class=""leftAndBottomBorder"">&nbsp;</td>");
                                     }
                                     else
                                     {
-                                        sbHTML.AppendLine($@" <td class=""leftBorder"">&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td class=""leftBorder"">&nbsp;</td>");
                                     }
                                 }
                                 else
                                 {
                                     if (bottomClass != "")
                                     {
-                                        sbHTML.AppendLine($@" <td class=""bottomBorder"">&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td class=""bottomBorder"">&nbsp;</td>");
                                     }
                                     else
                                     {
-                                        sbHTML.AppendLine($@" <td>&nbsp;</td>");
+                                        sbTemp.AppendLine($@" <td>&nbsp;</td>");
                                     }
                                 }
                             }
                         }
-                        sbHTML.AppendLine($@" </tr>");
+                        sbTemp.AppendLine($@" </tr>");
                     }
                 }
             }
-            sbHTML.AppendLine($@" </table>");
+            sbTemp.AppendLine($@" </table>");
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
 
@@ -383,27 +370,27 @@ namespace CSSPWebToolsTaskRunner.Services
                 xlApp.Quit();
             }
 
-            sbHTML.AppendLine($@" <h3>{ TaskRunnerServiceRes.MWQMSitesSummary }</h3>");
-            sbHTML.AppendLine($@" <br /");
-            sbHTML.AppendLine($@" <h4>{ TaskRunnerServiceRes.NumberOfMWQMSitesByYear }</h4>");
-            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfSitesByYearStat.FullName }|width,400|height,150|||</div>");
-            sbHTML.AppendLine($@" <h4>{ TaskRunnerServiceRes.NumberOfMWQMRunsByYear }</h4>");
-            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfRunsByYearStat.FullName }|width,400|height,150|||</div>");
-            sbHTML.AppendLine($@" <h4>{ TaskRunnerServiceRes.NumberOfSamplesByYear }</h4>");
-            sbHTML.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfSamplesByYearStat.FullName }|width,400|height,150|||</div>");
+            sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.MWQMSitesSummary }</h3>");
+            sbTemp.AppendLine($@" <br /");
+            sbTemp.AppendLine($@" <h4>{ TaskRunnerServiceRes.NumberOfMWQMSitesByYear }</h4>");
+            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfSitesByYearStat.FullName }|width,400|height,150|||</div>");
+            sbTemp.AppendLine($@" <h4>{ TaskRunnerServiceRes.NumberOfMWQMRunsByYear }</h4>");
+            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfRunsByYearStat.FullName }|width,400|height,150|||</div>");
+            sbTemp.AppendLine($@" <h4>{ TaskRunnerServiceRes.NumberOfSamplesByYear }</h4>");
+            sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfSamplesByYearStat.FullName }|width,400|height,150|||</div>");
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 40);
 
-            sbHTML.AppendLine($@" <h3>{ TaskRunnerServiceRes.MWQMSitesInformation }</h3>");
-            sbHTML.AppendLine($@" <table cellpadding=""5"" class=""textAlignCenter"">");
-            sbHTML.AppendLine($@" <tr>");
-            sbHTML.AppendLine($@" <th colspan=""2"">{ TaskRunnerServiceRes.Site }</th>");
-            sbHTML.AppendLine($@" <th>{ TaskRunnerServiceRes.Coordinates }</th>");
-            sbHTML.AppendLine($@" <th>{ TaskRunnerServiceRes.Description }</th>");
-            sbHTML.AppendLine($@" <th>{ TaskRunnerServiceRes.Photos }</th>");
-            sbHTML.AppendLine($@" </tr>");
+            sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.MWQMSitesInformation }</h3>");
+            sbTemp.AppendLine($@" <table cellpadding=""5"" class=""textAlignCenter"">");
+            sbTemp.AppendLine($@" <tr>");
+            sbTemp.AppendLine($@" <th colspan=""2"">{ TaskRunnerServiceRes.Site }</th>");
+            sbTemp.AppendLine($@" <th>{ TaskRunnerServiceRes.Coordinates }</th>");
+            sbTemp.AppendLine($@" <th>{ TaskRunnerServiceRes.Description }</th>");
+            sbTemp.AppendLine($@" <th>{ TaskRunnerServiceRes.Photos }</th>");
+            sbTemp.AppendLine($@" </tr>");
             foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelList)
             {
                 TVItemModel tvItemModel = tvItemModelListMWQMSites.Where(c => c.TVItemID == mwqmSiteModel.MWQMSiteTVItemID).FirstOrDefault();
@@ -417,29 +404,29 @@ namespace CSSPWebToolsTaskRunner.Services
                         classificationLetter = GetLastClassificationInitial(mwqmSiteModel.MWQMSiteLatestClassification);
                         classificationColor = GetLastClassificationColor(mwqmSiteModel.MWQMSiteLatestClassification);
 
-                        sbHTML.AppendLine($@" <tr>");
-                        sbHTML.AppendLine($@" <td>{ mwqmSiteModel.MWQMSiteTVText }</td>");
-                        sbHTML.AppendLine($@" <td class=""{ classificationColor }"">{ classificationLetter }</td>");
+                        sbTemp.AppendLine($@" <tr>");
+                        sbTemp.AppendLine($@" <td>{ mwqmSiteModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@" <td class=""{ classificationColor }"">{ classificationLetter }</td>");
 
                         List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mwqmSiteModel.MWQMSiteTVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
                         if (mapInfoPointModelList.Count > 0)
                         {
-                            sbHTML.AppendLine($@" <td>{ mapInfoPointModelList[0].Lat.ToString("F5") } { mapInfoPointModelList[0].Lng.ToString("F5") }</td>");
+                            sbTemp.AppendLine($@" <td>{ mapInfoPointModelList[0].Lat.ToString("F5") } { mapInfoPointModelList[0].Lng.ToString("F5") }</td>");
                         }
                         else
                         {
-                            sbHTML.AppendLine($@" <td>&nbsp;</td>");
+                            sbTemp.AppendLine($@" <td>&nbsp;</td>");
                         }
-                        sbHTML.AppendLine($@" <td class=""textAlignLeft"">{ mwqmSiteModel.MWQMSiteDescription }</td>");
-                        sbHTML.AppendLine($@" <td>Photo</td>");
-                        sbHTML.AppendLine($@" </tr>");
+                        sbTemp.AppendLine($@" <td class=""textAlignLeft"">{ mwqmSiteModel.MWQMSiteDescription }</td>");
+                        sbTemp.AppendLine($@" <td>Photo</td>");
+                        sbTemp.AppendLine($@" </tr>");
                     }
                 }
             }
-            sbHTML.AppendLine($@" </table>");
+            sbTemp.AppendLine($@" </table>");
 
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 50);
 
@@ -467,20 +454,20 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<MWQMRunModel> mwqmRunModelList2 = mwqmRunModelList.Where(c => c.RunSampleType == SampleTypeEnum.Routine).OrderByDescending(c => c.DateTime_Local).Skip(skip).Take(take).ToList();
                 if (mwqmRunModelList2.Count > 0)
                 {
-                    sbHTML.AppendLine($@" <h4>{ TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.FCDensities }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count -1].DateTime_Local.ToString("yyyy MMMM dd") }</h4>");
-                    sbHTML.AppendLine($@" <table class=""FCSalTempDataTableClass"">");
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
+                    sbTemp.AppendLine($@" <h4>{ TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.FCDensities }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count -1].DateTime_Local.ToString("yyyy MMMM dd") }</h4>");
+                    sbTemp.AppendLine($@" <table class=""FCSalTempDataTableClass"">");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
-                        sbHTML.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
+                        sbTemp.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
                     foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelList2)
                     {
-                        sbHTML.AppendLine($@" <tr>");
-                        sbHTML.AppendLine($@" <td class=""rightBorder"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@" <tr>");
+                        sbTemp.AppendLine($@" <td class=""rightBorder"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
                         foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                         {
                             float? value = (from s in mwqmSampleModelList
@@ -489,22 +476,22 @@ namespace CSSPWebToolsTaskRunner.Services
                                            select s.FecCol_MPN_100ml).FirstOrDefault();
 
                             string valueStr = value != null ? (value == 1 ? "< 2" : ((float)value).ToString("F0")) : "--";
-                            sbHTML.AppendLine($@" <td>{ valueStr }</td>");
+                            sbTemp.AppendLine($@" <td>{ valueStr }</td>");
                         }
-                        sbHTML.AppendLine($@" </tr>");
+                        sbTemp.AppendLine($@" </tr>");
                     }
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.StartTide }<br />{ TaskRunnerServiceRes.EndTide }</td>");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.StartTide }<br />{ TaskRunnerServiceRes.EndTide }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
                         string StartTide = GetTideInitial(mwqmRunModel.Tide_Start);
                         string EndTide = GetTideInitial(mwqmRunModel.Tide_End);
-                        sbHTML.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
+                        sbTemp.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.Rain }(mm)<br />{ TaskRunnerServiceRes.Minus1Day }<br />{ TaskRunnerServiceRes.Minus2Day }<br />{ TaskRunnerServiceRes.Minus3Day }<br />{ TaskRunnerServiceRes.Minus4Day }<br />{ TaskRunnerServiceRes.Minus5Day }</td>");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.Rain }(mm)<br />{ TaskRunnerServiceRes.Minus1Day }<br />{ TaskRunnerServiceRes.Minus2Day }<br />{ TaskRunnerServiceRes.Minus3Day }<br />{ TaskRunnerServiceRes.Minus4Day }<br />{ TaskRunnerServiceRes.Minus5Day }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
                         string RainDay1 = mwqmRunModel.RainDay1_mm != null ? ((double)mwqmRunModel.RainDay1_mm).ToString("F0") : "--";
@@ -512,13 +499,13 @@ namespace CSSPWebToolsTaskRunner.Services
                         string RainDay3 = mwqmRunModel.RainDay3_mm != null ? ((double)mwqmRunModel.RainDay3_mm).ToString("F0") : "--";
                         string RainDay4 = mwqmRunModel.RainDay4_mm != null ? ((double)mwqmRunModel.RainDay4_mm).ToString("F0") : "--";
                         string RainDay5 = mwqmRunModel.RainDay5_mm != null ? ((double)mwqmRunModel.RainDay5_mm).ToString("F0") : "--";
-                        sbHTML.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<br />{ RainDay2 }<br />{ RainDay3 }<br />{ RainDay4 }<br />{ RainDay5 }</td>");
+                        sbTemp.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<br />{ RainDay2 }<br />{ RainDay3 }<br />{ RainDay4 }<br />{ RainDay5 }</td>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
-                    sbHTML.AppendLine($@" </table>");
+                    sbTemp.AppendLine($@" </table>");
 
-                    sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+                    sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
                     skip += take;
                 }
@@ -547,20 +534,20 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<MWQMRunModel> mwqmRunModelList2 = mwqmRunModelList.Where(c => c.RunSampleType == SampleTypeEnum.Routine).OrderByDescending(c => c.DateTime_Local).Skip(skip).Take(take).ToList();
                 if (mwqmRunModelList2.Count > 0)
                 {
-                    sbHTML.AppendLine($@" <h4>{ TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.Salinity }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count - 1].DateTime_Local.ToString("yyyy MMMM dd") }</h4>");
-                    sbHTML.AppendLine($@" <table class=""FCSalTempDataTableClass"">");
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
+                    sbTemp.AppendLine($@" <h4>{ TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.Salinity }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count - 1].DateTime_Local.ToString("yyyy MMMM dd") }</h4>");
+                    sbTemp.AppendLine($@" <table class=""FCSalTempDataTableClass"">");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
-                        sbHTML.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
+                        sbTemp.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
                     foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelList2)
                     {
-                        sbHTML.AppendLine($@" <tr>");
-                        sbHTML.AppendLine($@" <td class=""rightBorder"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@" <tr>");
+                        sbTemp.AppendLine($@" <td class=""rightBorder"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
                         foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                         {
                             float? value = (float?)(from s in mwqmSampleModelList
@@ -569,22 +556,22 @@ namespace CSSPWebToolsTaskRunner.Services
                                             select s.Salinity_PPT).FirstOrDefault();
 
                             string valueStr = value != null ? (value == 1 ? "< 2" : ((float)value).ToString("F0")) : "--";
-                            sbHTML.AppendLine($@" <td>{ valueStr }</td>");
+                            sbTemp.AppendLine($@" <td>{ valueStr }</td>");
                         }
-                        sbHTML.AppendLine($@" </tr>");
+                        sbTemp.AppendLine($@" </tr>");
                     }
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.StartTide }<br />{ TaskRunnerServiceRes.EndTide }</td>");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.StartTide }<br />{ TaskRunnerServiceRes.EndTide }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
                         string StartTide = GetTideInitial(mwqmRunModel.Tide_Start);
                         string EndTide = GetTideInitial(mwqmRunModel.Tide_End);
-                        sbHTML.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
+                        sbTemp.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.Rain }(mm)<br />{ TaskRunnerServiceRes.Minus1Day }<br />{ TaskRunnerServiceRes.Minus2Day }<br />{ TaskRunnerServiceRes.Minus3Day }<br />{ TaskRunnerServiceRes.Minus4Day }<br />{ TaskRunnerServiceRes.Minus5Day }</td>");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.Rain }(mm)<br />{ TaskRunnerServiceRes.Minus1Day }<br />{ TaskRunnerServiceRes.Minus2Day }<br />{ TaskRunnerServiceRes.Minus3Day }<br />{ TaskRunnerServiceRes.Minus4Day }<br />{ TaskRunnerServiceRes.Minus5Day }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
                         string RainDay1 = mwqmRunModel.RainDay1_mm != null ? ((double)mwqmRunModel.RainDay1_mm).ToString("F0") : "--";
@@ -592,13 +579,13 @@ namespace CSSPWebToolsTaskRunner.Services
                         string RainDay3 = mwqmRunModel.RainDay3_mm != null ? ((double)mwqmRunModel.RainDay3_mm).ToString("F0") : "--";
                         string RainDay4 = mwqmRunModel.RainDay4_mm != null ? ((double)mwqmRunModel.RainDay4_mm).ToString("F0") : "--";
                         string RainDay5 = mwqmRunModel.RainDay5_mm != null ? ((double)mwqmRunModel.RainDay5_mm).ToString("F0") : "--";
-                        sbHTML.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<br />{ RainDay2 }<br />{ RainDay3 }<br />{ RainDay4 }<br />{ RainDay5 }</td>");
+                        sbTemp.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<br />{ RainDay2 }<br />{ RainDay3 }<br />{ RainDay4 }<br />{ RainDay5 }</td>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
-                    sbHTML.AppendLine($@" </table>");
+                    sbTemp.AppendLine($@" </table>");
 
-                    sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+                    sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
                     skip += take;
                 }
@@ -627,20 +614,20 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<MWQMRunModel> mwqmRunModelList2 = mwqmRunModelList.Where(c => c.RunSampleType == SampleTypeEnum.Routine).OrderByDescending(c => c.DateTime_Local).Skip(skip).Take(take).ToList();
                 if (mwqmRunModelList2.Count > 0)
                 {
-                    sbHTML.AppendLine($@" <h4>{ TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.Temperature }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count - 1].DateTime_Local.ToString("yyyy MMMM dd") }</h4>");
-                    sbHTML.AppendLine($@" <table class=""FCSalTempDataTableClass"">");
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
+                    sbTemp.AppendLine($@" <h4>{ TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.Temperature }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count - 1].DateTime_Local.ToString("yyyy MMMM dd") }</h4>");
+                    sbTemp.AppendLine($@" <table class=""FCSalTempDataTableClass"">");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
-                        sbHTML.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
+                        sbTemp.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
                     foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelList2)
                     {
-                        sbHTML.AppendLine($@" <tr>");
-                        sbHTML.AppendLine($@" <td class=""rightBorder"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@" <tr>");
+                        sbTemp.AppendLine($@" <td class=""rightBorder"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
                         foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                         {
                             float? value = (float?)(from s in mwqmSampleModelList
@@ -649,22 +636,22 @@ namespace CSSPWebToolsTaskRunner.Services
                                             select s.WaterTemp_C).FirstOrDefault();
 
                             string valueStr = value != null ? (value == 1 ? "< 2" : ((float)value).ToString("F0")) : "--";
-                            sbHTML.AppendLine($@" <td>{ valueStr }</td>");
+                            sbTemp.AppendLine($@" <td>{ valueStr }</td>");
                         }
-                        sbHTML.AppendLine($@" </tr>");
+                        sbTemp.AppendLine($@" </tr>");
                     }
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.StartTide }<br />{ TaskRunnerServiceRes.EndTide }</td>");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.StartTide }<br />{ TaskRunnerServiceRes.EndTide }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
                         string StartTide = GetTideInitial(mwqmRunModel.Tide_Start);
                         string EndTide = GetTideInitial(mwqmRunModel.Tide_End);
-                        sbHTML.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
+                        sbTemp.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
-                    sbHTML.AppendLine($@" <tr>");
-                    sbHTML.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.Rain }(mm)<br />{ TaskRunnerServiceRes.Minus1Day }<br />{ TaskRunnerServiceRes.Minus2Day }<br />{ TaskRunnerServiceRes.Minus3Day }<br />{ TaskRunnerServiceRes.Minus4Day }<br />{ TaskRunnerServiceRes.Minus5Day }</td>");
+                    sbTemp.AppendLine($@" <tr>");
+                    sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.Rain }(mm)<br />{ TaskRunnerServiceRes.Minus1Day }<br />{ TaskRunnerServiceRes.Minus2Day }<br />{ TaskRunnerServiceRes.Minus3Day }<br />{ TaskRunnerServiceRes.Minus4Day }<br />{ TaskRunnerServiceRes.Minus5Day }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
                         string RainDay1 = mwqmRunModel.RainDay1_mm != null ? ((double)mwqmRunModel.RainDay1_mm).ToString("F0") : "--";
@@ -672,13 +659,13 @@ namespace CSSPWebToolsTaskRunner.Services
                         string RainDay3 = mwqmRunModel.RainDay3_mm != null ? ((double)mwqmRunModel.RainDay3_mm).ToString("F0") : "--";
                         string RainDay4 = mwqmRunModel.RainDay4_mm != null ? ((double)mwqmRunModel.RainDay4_mm).ToString("F0") : "--";
                         string RainDay5 = mwqmRunModel.RainDay5_mm != null ? ((double)mwqmRunModel.RainDay5_mm).ToString("F0") : "--";
-                        sbHTML.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<br />{ RainDay2 }<br />{ RainDay3 }<br />{ RainDay4 }<br />{ RainDay5 }</td>");
+                        sbTemp.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<br />{ RainDay2 }<br />{ RainDay3 }<br />{ RainDay4 }<br />{ RainDay5 }</td>");
                     }
-                    sbHTML.AppendLine($@" </tr>");
+                    sbTemp.AppendLine($@" </tr>");
 
-                    sbHTML.AppendLine($@" </table>");
+                    sbTemp.AppendLine($@" </table>");
 
-                    sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+                    sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
                     skip += take;
                 }
@@ -689,11 +676,11 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
 
-            sbHTML.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
+            sbTemp.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
@@ -704,12 +691,12 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSubsectorMWQMSites(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        public bool PublicGenerateHTMLSUBSECTOR_MWQM_SITES(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLSubsectorMWQMSites(fi, sbHTML, parameters, reportTypeModel);
+            bool retBool = GenerateHTMLSUBSECTOR_MWQM_SITES(sbTemp);
 
             StreamWriter sw = fi.CreateText();
-            sw.Write(sbHTML.ToString());
+            sw.Write(sbTemp.ToString());
             sw.Flush();
             sw.Close();
 

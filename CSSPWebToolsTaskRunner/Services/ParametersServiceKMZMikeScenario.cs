@@ -24,13 +24,13 @@ namespace CSSPWebToolsTaskRunner.Services
     public partial class ParametersService
     {
         // commands
-        private bool GenerateKMZMikeScenario(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateKMZMikeScenario()
         {
             switch (reportTypeModel.UniqueCode)
             {
                 case "MikeScenarioBoundaryConditionsKMZ":
                     {
-                        if (!GenerateMikeScenarioBoundaryConditionsKMZ(fi, sbKMZ, parameters, reportTypeModel))
+                        if (!GenerateMikeScenarioBoundaryConditionsKMZ())
                         {
                             return false;
                         }
@@ -38,7 +38,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MikeScenarioMeshKMZ":
                     {
-                        if (!GenerateMikeScenarioMeshKMZ(fi, sbKMZ, parameters, reportTypeModel))
+                        if (!GenerateMikeScenarioMeshKMZ())
                         {
                             return false;
                         }
@@ -46,7 +46,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MikeScenarioPollutionLimitKMZ":
                     {
-                        if (!GenerateMikeScenarioPollutionLimitKMZ(fi, sbKMZ, parameters, reportTypeModel))
+                        if (!GenerateMikeScenarioPollutionLimitKMZ())
                         {
                             return false;
                         }
@@ -54,7 +54,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MikeScenarioPollutionAnimationKMZ":
                     {
-                        if (!GenerateMikeScenarioPollutionAnimationKMZ(fi, sbKMZ, parameters, reportTypeModel))
+                        if (!GenerateMikeScenarioPollutionAnimationKMZ())
                         {
                             return false;
                         }
@@ -62,7 +62,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MikeScenarioStudyAreaKMZ":
                     {
-                        if (!GenerateMikeScenarioStudyAreaKMZ(fi, sbKMZ, parameters, reportTypeModel))
+                        if (!GenerateMikeScenarioStudyAreaKMZ())
                         {
                             return false;
                         }
@@ -70,7 +70,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MikeScenarioTestKMZ":
                     {
-                        if (!GenerateKMZMikeScenario_MikeScenarioTestKMZ(fi, sbKMZ, parameters, reportTypeModel))
+                        if (!GenerateKMZMikeScenario_MikeScenarioTestKMZ())
                         {
                             return false;
                         }
@@ -85,22 +85,22 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateMikeScenarioBoundaryConditionsKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateMikeScenarioBoundaryConditionsKMZ()
         {
             string NotUsed = "";
 
             bool ErrorInDoc = false;
-            if (!WriteKMLTop(sbKMZ))
+            if (!WriteKMLTop(sb))
             {
                 ErrorInDoc = true;
             }
-            sbKMZ.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEBoundaryConditions + "_" + GetScenarioName()));
-            if (!WriteKMLBoundaryConditionNode(sbKMZ))
+            sb.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEBoundaryConditions + "_" + GetScenarioName()));
+            if (!WriteKMLBoundaryConditionNode(sb))
             {
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLBottom(sbKMZ))
+            if (!WriteKMLBottom(sb))
             {
                 ErrorInDoc = true;
             }
@@ -114,65 +114,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool GenerateMikeScenarioMeshKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
-        {
-            string NotUsed = "";
-            bool ErrorInDoc = false;
-
-            DfsuFile dfsuFile = null;
-            List<ElementLayer> elementLayerList = new List<ElementLayer>();
-            List<Element> elementList = new List<Element>();
-            List<Node> nodeList = new List<Node>();
-            List<NodeLayer> topNodeLayerList = new List<NodeLayer>();
-            List<NodeLayer> bottomNodeLayerList = new List<NodeLayer>();
-
-            dfsuFile = GetHydrodynamicDfsuFile();
-            if (dfsuFile == null)
-            {
-                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "GettingHydrodynamicDfsuFile", fi.FullName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "GettingHydrodynamicDfsuFile", fi.FullName);
-                }
-                return false;
-            }
-            if (!FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
-            {
-                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "FillRequiredList", fi.FullName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "FillRequiredList", fi.FullName);
-                }
-                return false;
-            }
-
-            if (!WriteKMLTop(sbKMZ))
-            {
-                ErrorInDoc = true;
-            }
-            sbKMZ.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEMesh + "_" + GetScenarioName()));
-            if (!WriteKMLMesh(sbKMZ, elementLayerList))
-            {
-                ErrorInDoc = true;
-            }
-
-            if (!WriteKMLBottom(sbKMZ))
-            {
-                ErrorInDoc = true;
-            }
-
-            dfsuFile.Close();
-
-            if (ErrorInDoc)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreatingKMZDocument_, fi.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ErrorOccuredWhileCreatingKMZDocument_", fi.FullName);
-                return false;
-            }
-
-            return true;
-        }
-        private bool GenerateMikeScenarioStudyAreaKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateMikeScenarioMeshKMZ()
         {
             string NotUsed = "";
             bool ErrorInDoc = false;
@@ -204,17 +146,17 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
-            if (!WriteKMLTop(sbKMZ))
+            if (!WriteKMLTop(sb))
             {
                 ErrorInDoc = true;
             }
-            sbKMZ.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEStudyArea + "_" + GetScenarioName()));
-            if (!WriteKMLStudyAreaLine(sbKMZ, elementLayerList, nodeList))
+            sb.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEMesh + "_" + GetScenarioName()));
+            if (!WriteKMLMesh(sb, elementLayerList))
             {
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLBottom(sbKMZ))
+            if (!WriteKMLBottom(sb))
             {
                 ErrorInDoc = true;
             }
@@ -230,13 +172,71 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool GenerateMikeScenarioPollutionAnimationKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateMikeScenarioStudyAreaKMZ()
+        {
+            string NotUsed = "";
+            bool ErrorInDoc = false;
+
+            DfsuFile dfsuFile = null;
+            List<ElementLayer> elementLayerList = new List<ElementLayer>();
+            List<Element> elementList = new List<Element>();
+            List<Node> nodeList = new List<Node>();
+            List<NodeLayer> topNodeLayerList = new List<NodeLayer>();
+            List<NodeLayer> bottomNodeLayerList = new List<NodeLayer>();
+
+            dfsuFile = GetHydrodynamicDfsuFile();
+            if (dfsuFile == null)
+            {
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "GettingHydrodynamicDfsuFile", fi.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "GettingHydrodynamicDfsuFile", fi.FullName);
+                }
+                return false;
+            }
+            if (!FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            {
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "FillRequiredList", fi.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "FillRequiredList", fi.FullName);
+                }
+                return false;
+            }
+
+            if (!WriteKMLTop(sb))
+            {
+                ErrorInDoc = true;
+            }
+            sb.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEStudyArea + "_" + GetScenarioName()));
+            if (!WriteKMLStudyAreaLine(sb, elementLayerList, nodeList))
+            {
+                ErrorInDoc = true;
+            }
+
+            if (!WriteKMLBottom(sb))
+            {
+                ErrorInDoc = true;
+            }
+
+            dfsuFile.Close();
+
+            if (ErrorInDoc)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreatingKMZDocument_, fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ErrorOccuredWhileCreatingKMZDocument_", fi.FullName);
+                return false;
+            }
+
+            return true;
+        }
+        private bool GenerateMikeScenarioPollutionAnimationKMZ()
         {
             string NotUsed = "";
             bool ErrorInDoc = false;
 
             string ContourValues = "";
-            List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
             ContourValues = GetParameters("ContourValues", ParamValueList);
             if (string.IsNullOrWhiteSpace(ContourValues))
@@ -275,32 +275,32 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
-            if (!WriteKMLTop(sbKMZ))
+            if (!WriteKMLTop(sb))
             {
                 ErrorInDoc = true;
             }
-            sbKMZ.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEPollutionAnimation + "_" + GetScenarioName()));
+            sb.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEPollutionAnimation + "_" + GetScenarioName()));
 
-            if (!WriteKMLStyleModelInput(sbKMZ))
-            {
-                ErrorInDoc = true;
-            }
-
-            if (!DrawKMLContourStyle(sbKMZ))
+            if (!WriteKMLStyleModelInput(sb))
             {
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLModelInput(sbKMZ, ContourValueList))
-            {
-                ErrorInDoc = true;
-            }
-            if (!WriteKMLFecalColiformContourLine(dfsuFile, sbKMZ, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList))
+            if (!DrawKMLContourStyle(sb))
             {
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLBottom(sbKMZ))
+            if (!WriteKMLModelInput(sb, ContourValueList))
+            {
+                ErrorInDoc = true;
+            }
+            if (!WriteKMLFecalColiformContourLine(dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList))
+            {
+                ErrorInDoc = true;
+            }
+
+            if (!WriteKMLBottom(sb))
             {
                 ErrorInDoc = true;
             }
@@ -315,13 +315,13 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateMikeScenarioPollutionLimitKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateMikeScenarioPollutionLimitKMZ()
         {
             string NotUsed = "";
             bool ErrorInDoc = false;
 
             string ContourValues = "";
-            List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
             ContourValues = GetParameters("ContourValues", ParamValueList);
             if (string.IsNullOrWhiteSpace(ContourValues))
@@ -360,33 +360,33 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
-            if (!WriteKMLTop(sbKMZ))
+            if (!WriteKMLTop(sb))
             {
                 ErrorInDoc = true;
             }
 
-            sbKMZ.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEPollutionLimit + "_" + GetScenarioName()));
+            sb.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKEPollutionLimit + "_" + GetScenarioName()));
 
-            if (!WriteKMLStyleModelInput(sbKMZ))
+            if (!WriteKMLStyleModelInput(sb))
             {
                 ErrorInDoc = true;
             }
 
-            if (!DrawKMLContourStyle(sbKMZ))
+            if (!DrawKMLContourStyle(sb))
             {
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLModelInput(sbKMZ, ContourValueList))
+            if (!WriteKMLModelInput(sb, ContourValueList))
             {
                 ErrorInDoc = true;
             }
-            if (!WriteKMLPollutionLimitsContourLine(dfsuFile, sbKMZ, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList))
+            if (!WriteKMLPollutionLimitsContourLine(dfsuFile, sb, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList))
             {
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLBottom(sbKMZ))
+            if (!WriteKMLBottom(sb))
             {
                 ErrorInDoc = true;
             }
@@ -402,237 +402,237 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool GenerateKMZMikeScenario_MikeScenarioTestKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateKMZMikeScenario_MikeScenarioTestKMZ()
         {
-            sbKMZ.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
-            sbKMZ.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
-            sbKMZ.AppendLine(@"<Document>");
-            sbKMZ.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
-            sbKMZ.AppendLine(@"	<Placemark>");
-            sbKMZ.AppendLine(@"		<name>My Parents Home</name> ");
-            sbKMZ.AppendLine(@"		<Point>");
-            sbKMZ.AppendLine(@"			<coordinates>-64.69002452357093,46.48465663502946,0</coordinates>");
-            sbKMZ.AppendLine(@"		</Point> ");
-            sbKMZ.AppendLine(@"	</Placemark>");
-            sbKMZ.AppendLine(@"</Document> ");
-            sbKMZ.AppendLine(@"</kml>");
+            sb.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+            sb.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+            sb.AppendLine(@"<Document>");
+            sb.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
+            sb.AppendLine(@"	<Placemark>");
+            sb.AppendLine(@"		<name>My Parents Home</name> ");
+            sb.AppendLine(@"		<Point>");
+            sb.AppendLine(@"			<coordinates>-64.69002452357093,46.48465663502946,0</coordinates>");
+            sb.AppendLine(@"		</Point> ");
+            sb.AppendLine(@"	</Placemark>");
+            sb.AppendLine(@"</Document> ");
+            sb.AppendLine(@"</kml>");
 
             return true;
         }
-        private bool GenerateKMZMikeScenario_NotImplementedKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateKMZMikeScenario_NotImplementedKMZ(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
         {
-            sbKMZ.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
-            sbKMZ.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
-            sbKMZ.AppendLine(@"<Document>");
-            sbKMZ.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
-            sbKMZ.AppendLine(@"	<Placemark>");
-            sbKMZ.AppendLine(@"		<name>Not Implemented</name> ");
-            sbKMZ.AppendLine(@"		<Point>");
-            sbKMZ.AppendLine(@"			<coordinates>-90,50,0</coordinates>");
-            sbKMZ.AppendLine(@"		</Point> ");
-            sbKMZ.AppendLine(@"	</Placemark>");
-            sbKMZ.AppendLine(@"</Document> ");
-            sbKMZ.AppendLine(@"</kml>");
+            sbHTML.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+            sbHTML.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+            sbHTML.AppendLine(@"<Document>");
+            sbHTML.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
+            sbHTML.AppendLine(@"	<Placemark>");
+            sbHTML.AppendLine(@"		<name>Not Implemented</name> ");
+            sbHTML.AppendLine(@"		<Point>");
+            sbHTML.AppendLine(@"			<coordinates>-90,50,0</coordinates>");
+            sbHTML.AppendLine(@"		</Point> ");
+            sbHTML.AppendLine(@"	</Placemark>");
+            sbHTML.AppendLine(@"</Document> ");
+            sbHTML.AppendLine(@"</kml>");
 
             return true;
         }
 
 
         // helpers
-        private void DrawKMLContourPolygon(List<ContourPolygon> ContourPolygonList, DfsuFile dfsuFile, int ParamCount, StringBuilder sbKMZ)
+        private void DrawKMLContourPolygon(List<ContourPolygon> ContourPolygonList, DfsuFile dfsuFile, int ParamCount)
         {
             int Count = 0;
             float MaxXCoord = -180;
             float MaxYCoord = -90;
             float MinXCoord = 180;
             float MinYCoord = 90;
-            sbKMZ.AppendLine(@"  <Folder>");
-            sbKMZ.AppendLine(@"    <visibility>0</visibility>");
-            sbKMZ.AppendLine(string.Format(@"    <name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
-            sbKMZ.AppendLine(@"    <TimeSpan>");
-            sbKMZ.AppendLine(string.Format(@"    <begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
-            sbKMZ.AppendLine(string.Format(@"    <end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds)));
-            sbKMZ.AppendLine(@"    </TimeSpan>");
+            sb.AppendLine(@"  <Folder>");
+            sb.AppendLine(@"    <visibility>0</visibility>");
+            sb.AppendLine(string.Format(@"    <name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
+            sb.AppendLine(@"    <TimeSpan>");
+            sb.AppendLine(string.Format(@"    <begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
+            sb.AppendLine(string.Format(@"    <end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds)));
+            sb.AppendLine(@"    </TimeSpan>");
             foreach (ContourPolygon contourPolygon in ContourPolygonList)
             {
                 Count += 1;
                 // draw the polygons
-                sbKMZ.AppendLine(@"    <Placemark>");
-                sbKMZ.AppendLine(@"      <visibility>0</visibility>");
-                sbKMZ.AppendLine(string.Format(@"      <name>{0} {1}</name>", contourPolygon.ContourValue, TaskRunnerServiceRes.PollutionContour));
+                sb.AppendLine(@"    <Placemark>");
+                sb.AppendLine(@"      <visibility>0</visibility>");
+                sb.AppendLine(string.Format(@"      <name>{0} {1}</name>", contourPolygon.ContourValue, TaskRunnerServiceRes.PollutionContour));
                 if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
                 {
-                    sbKMZ.AppendLine(@"      <styleUrl>#fc_14</styleUrl>");
+                    sb.AppendLine(@"      <styleUrl>#fc_14</styleUrl>");
                 }
                 else if (contourPolygon.ContourValue >= 88)
                 {
-                    sbKMZ.AppendLine(@"      <styleUrl>#fc_88</styleUrl>");
+                    sb.AppendLine(@"      <styleUrl>#fc_88</styleUrl>");
                 }
                 else
                 {
-                    sbKMZ.AppendLine(@"      <styleUrl>#fc_LT14</styleUrl>");
+                    sb.AppendLine(@"      <styleUrl>#fc_LT14</styleUrl>");
                 }
 
-                sbKMZ.AppendLine(@"        <Polygon>");
+                sb.AppendLine(@"        <Polygon>");
                 //sbPlacemarkFeacalColiformContour.AppendLine(@"<extrude>1</extrude>");
                 //sbPlacemarkFeacalColiformContour.AppendLine(@"<tessellate>1</tessellate>");
                 //sbPlacemarkFeacalColiformContour.AppendLine(@"<altitudeMode>absolute</altitudeMode>");
                 //sbPlacemarkFeacalColiformContour.AppendLine(@"<gx:drawOrder>" + contourPolygon.Layer +"</gx:drawOrder>"); 
-                sbKMZ.AppendLine(@"        <outerBoundaryIs>");
-                sbKMZ.AppendLine(@"        <LinearRing>");
-                sbKMZ.AppendLine(@"        <coordinates>");
+                sb.AppendLine(@"        <outerBoundaryIs>");
+                sb.AppendLine(@"        <LinearRing>");
+                sb.AppendLine(@"        <coordinates>");
                 foreach (Node node in contourPolygon.ContourNodeList)
                 {
                     if (MaxXCoord < node.X) MaxXCoord = node.X;
                     if (MaxYCoord < node.Y) MaxYCoord = node.Y;
                     if (MinXCoord > node.X) MinXCoord = node.X;
                     if (MinYCoord > node.Y) MinYCoord = node.Y;
-                    sbKMZ.Append("        " + node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
+                    sb.Append("        " + node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
                 }
-                sbKMZ.AppendLine(@"        </coordinates>");
-                sbKMZ.AppendLine(@"        </LinearRing>");
-                sbKMZ.AppendLine(@"        </outerBoundaryIs>");
-                sbKMZ.AppendLine(@"        </Polygon>");
-                sbKMZ.AppendLine(@"    </Placemark>");
+                sb.AppendLine(@"        </coordinates>");
+                sb.AppendLine(@"        </LinearRing>");
+                sb.AppendLine(@"        </outerBoundaryIs>");
+                sb.AppendLine(@"        </Polygon>");
+                sb.AppendLine(@"    </Placemark>");
             }
-            sbKMZ.AppendLine(@"  </Folder>");
+            sb.AppendLine(@"  </Folder>");
         }
-        private bool DrawKMLContourStyle(StringBuilder sbKMZ)
+        private bool DrawKMLContourStyle(StringBuilder sbHTML)
         {
-            sbKMZ.AppendLine(@"	<StyleMap id=""msn_ylw-pushpin"">");
-            sbKMZ.AppendLine(@"		<Pair>");
-            sbKMZ.AppendLine(@"			<key>normal</key>");
-            sbKMZ.AppendLine(@"			<styleUrl>#sn_ylw-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"		</Pair>");
-            sbKMZ.AppendLine(@"		<Pair>");
-            sbKMZ.AppendLine(@"			<key>highlight</key>");
-            sbKMZ.AppendLine(@"			<styleUrl>#sh_ylw-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"		</Pair>");
-            sbKMZ.AppendLine(@"	</StyleMap>");
-            sbKMZ.AppendLine(@"	<Style id=""sn_ylw-pushpin"">");
-            sbKMZ.AppendLine(@"		<IconStyle>");
-            sbKMZ.AppendLine(@"			<scale>1.1</scale>");
-            sbKMZ.AppendLine(@"			<Icon>");
-            sbKMZ.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
-            sbKMZ.AppendLine(@"			</Icon>");
-            sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"		</IconStyle>");
-            sbKMZ.AppendLine(@"      <LineStyle>");
-            sbKMZ.AppendLine(@"         <color>ff000000</color>");
-            sbKMZ.AppendLine(@"       </LineStyle>");
-            sbKMZ.AppendLine(@"	</Style>");
-            sbKMZ.AppendLine(@"	<Style id=""sh_ylw-pushpin"">");
-            sbKMZ.AppendLine(@"		<IconStyle>");
-            sbKMZ.AppendLine(@"			<scale>1.3</scale>");
-            sbKMZ.AppendLine(@"			<Icon>");
-            sbKMZ.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
-            sbKMZ.AppendLine(@"			</Icon>");
-            sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"		</IconStyle>");
-            sbKMZ.AppendLine(@"      <LineStyle>");
-            sbKMZ.AppendLine(@"         <color>ff000000</color>");
-            sbKMZ.AppendLine(@"       </LineStyle>");
-            sbKMZ.AppendLine(@"	</Style>");
+            sbHTML.AppendLine(@"	<StyleMap id=""msn_ylw-pushpin"">");
+            sbHTML.AppendLine(@"		<Pair>");
+            sbHTML.AppendLine(@"			<key>normal</key>");
+            sbHTML.AppendLine(@"			<styleUrl>#sn_ylw-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"		</Pair>");
+            sbHTML.AppendLine(@"		<Pair>");
+            sbHTML.AppendLine(@"			<key>highlight</key>");
+            sbHTML.AppendLine(@"			<styleUrl>#sh_ylw-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"		</Pair>");
+            sbHTML.AppendLine(@"	</StyleMap>");
+            sbHTML.AppendLine(@"	<Style id=""sn_ylw-pushpin"">");
+            sbHTML.AppendLine(@"		<IconStyle>");
+            sbHTML.AppendLine(@"			<scale>1.1</scale>");
+            sbHTML.AppendLine(@"			<Icon>");
+            sbHTML.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sbHTML.AppendLine(@"			</Icon>");
+            sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"		</IconStyle>");
+            sbHTML.AppendLine(@"      <LineStyle>");
+            sbHTML.AppendLine(@"         <color>ff000000</color>");
+            sbHTML.AppendLine(@"       </LineStyle>");
+            sbHTML.AppendLine(@"	</Style>");
+            sbHTML.AppendLine(@"	<Style id=""sh_ylw-pushpin"">");
+            sbHTML.AppendLine(@"		<IconStyle>");
+            sbHTML.AppendLine(@"			<scale>1.3</scale>");
+            sbHTML.AppendLine(@"			<Icon>");
+            sbHTML.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sbHTML.AppendLine(@"			</Icon>");
+            sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"		</IconStyle>");
+            sbHTML.AppendLine(@"      <LineStyle>");
+            sbHTML.AppendLine(@"         <color>ff000000</color>");
+            sbHTML.AppendLine(@"       </LineStyle>");
+            sbHTML.AppendLine(@"	</Style>");
 
-            sbKMZ.AppendLine(@"	<StyleMap id=""msn_grn-pushpin"">");
-            sbKMZ.AppendLine(@"		<Pair>");
-            sbKMZ.AppendLine(@"			<key>normal</key>");
-            sbKMZ.AppendLine(@"			<styleUrl>#sn_grn-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"		</Pair>");
-            sbKMZ.AppendLine(@"		<Pair>");
-            sbKMZ.AppendLine(@"			<key>highlight</key>");
-            sbKMZ.AppendLine(@"			<styleUrl>#sh_grn-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"		</Pair>");
-            sbKMZ.AppendLine(@"	</StyleMap>");
-            sbKMZ.AppendLine(@"	<Style id=""sn_grn-pushpin"">");
-            sbKMZ.AppendLine(@"		<IconStyle>");
-            sbKMZ.AppendLine(@"			<scale>1.1</scale>");
-            sbKMZ.AppendLine(@"			<Icon>");
-            sbKMZ.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbKMZ.AppendLine(@"			</Icon>");
-            sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"		</IconStyle>");
-            sbKMZ.AppendLine(@"      <LineStyle>");
-            sbKMZ.AppendLine(@"         <color>ff000000</color>");
-            sbKMZ.AppendLine(@"       </LineStyle>");
-            sbKMZ.AppendLine(@"	</Style>");
-            sbKMZ.AppendLine(@"	<Style id=""sh_grn-pushpin"">");
-            sbKMZ.AppendLine(@"		<IconStyle>");
-            sbKMZ.AppendLine(@"			<scale>1.3</scale>");
-            sbKMZ.AppendLine(@"			<Icon>");
-            sbKMZ.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbKMZ.AppendLine(@"			</Icon>");
-            sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"		</IconStyle>");
-            sbKMZ.AppendLine(@"      <LineStyle>");
-            sbKMZ.AppendLine(@"         <color>ff000000</color>");
-            sbKMZ.AppendLine(@"       </LineStyle>");
-            sbKMZ.AppendLine(@"	</Style>");
+            sbHTML.AppendLine(@"	<StyleMap id=""msn_grn-pushpin"">");
+            sbHTML.AppendLine(@"		<Pair>");
+            sbHTML.AppendLine(@"			<key>normal</key>");
+            sbHTML.AppendLine(@"			<styleUrl>#sn_grn-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"		</Pair>");
+            sbHTML.AppendLine(@"		<Pair>");
+            sbHTML.AppendLine(@"			<key>highlight</key>");
+            sbHTML.AppendLine(@"			<styleUrl>#sh_grn-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"		</Pair>");
+            sbHTML.AppendLine(@"	</StyleMap>");
+            sbHTML.AppendLine(@"	<Style id=""sn_grn-pushpin"">");
+            sbHTML.AppendLine(@"		<IconStyle>");
+            sbHTML.AppendLine(@"			<scale>1.1</scale>");
+            sbHTML.AppendLine(@"			<Icon>");
+            sbHTML.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+            sbHTML.AppendLine(@"			</Icon>");
+            sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"		</IconStyle>");
+            sbHTML.AppendLine(@"      <LineStyle>");
+            sbHTML.AppendLine(@"         <color>ff000000</color>");
+            sbHTML.AppendLine(@"       </LineStyle>");
+            sbHTML.AppendLine(@"	</Style>");
+            sbHTML.AppendLine(@"	<Style id=""sh_grn-pushpin"">");
+            sbHTML.AppendLine(@"		<IconStyle>");
+            sbHTML.AppendLine(@"			<scale>1.3</scale>");
+            sbHTML.AppendLine(@"			<Icon>");
+            sbHTML.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+            sbHTML.AppendLine(@"			</Icon>");
+            sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"		</IconStyle>");
+            sbHTML.AppendLine(@"      <LineStyle>");
+            sbHTML.AppendLine(@"         <color>ff000000</color>");
+            sbHTML.AppendLine(@"       </LineStyle>");
+            sbHTML.AppendLine(@"	</Style>");
 
-            sbKMZ.AppendLine(@"	<StyleMap id=""msn_blue-pushpin"">");
-            sbKMZ.AppendLine(@"		<Pair>");
-            sbKMZ.AppendLine(@"			<key>normal</key>");
-            sbKMZ.AppendLine(@"			<styleUrl>#sn_blue-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"		</Pair>");
-            sbKMZ.AppendLine(@"		<Pair>");
-            sbKMZ.AppendLine(@"			<key>highlight</key>");
-            sbKMZ.AppendLine(@"			<styleUrl>#sh_blue-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"		</Pair>");
-            sbKMZ.AppendLine(@"	</StyleMap>");
-            sbKMZ.AppendLine(@"	<Style id=""sn_blue-pushpin"">");
-            sbKMZ.AppendLine(@"		<IconStyle>");
-            sbKMZ.AppendLine(@"			<scale>1.1</scale>");
-            sbKMZ.AppendLine(@"			<Icon>");
-            sbKMZ.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbKMZ.AppendLine(@"			</Icon>");
-            sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"		</IconStyle>");
-            sbKMZ.AppendLine(@"      <LineStyle>");
-            sbKMZ.AppendLine(@"         <color>ff000000</color>");
-            sbKMZ.AppendLine(@"       </LineStyle>");
-            sbKMZ.AppendLine(@"	</Style>");
-            sbKMZ.AppendLine(@"	<Style id=""sh_blue-pushpin"">");
-            sbKMZ.AppendLine(@"		<IconStyle>");
-            sbKMZ.AppendLine(@"			<scale>1.3</scale>");
-            sbKMZ.AppendLine(@"			<Icon>");
-            sbKMZ.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbKMZ.AppendLine(@"			</Icon>");
-            sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"		</IconStyle>");
-            sbKMZ.AppendLine(@"      <LineStyle>");
-            sbKMZ.AppendLine(@"         <color>ff000000</color>");
-            sbKMZ.AppendLine(@"       </LineStyle>");
-            sbKMZ.AppendLine(@"	</Style>");
+            sbHTML.AppendLine(@"	<StyleMap id=""msn_blue-pushpin"">");
+            sbHTML.AppendLine(@"		<Pair>");
+            sbHTML.AppendLine(@"			<key>normal</key>");
+            sbHTML.AppendLine(@"			<styleUrl>#sn_blue-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"		</Pair>");
+            sbHTML.AppendLine(@"		<Pair>");
+            sbHTML.AppendLine(@"			<key>highlight</key>");
+            sbHTML.AppendLine(@"			<styleUrl>#sh_blue-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"		</Pair>");
+            sbHTML.AppendLine(@"	</StyleMap>");
+            sbHTML.AppendLine(@"	<Style id=""sn_blue-pushpin"">");
+            sbHTML.AppendLine(@"		<IconStyle>");
+            sbHTML.AppendLine(@"			<scale>1.1</scale>");
+            sbHTML.AppendLine(@"			<Icon>");
+            sbHTML.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+            sbHTML.AppendLine(@"			</Icon>");
+            sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"		</IconStyle>");
+            sbHTML.AppendLine(@"      <LineStyle>");
+            sbHTML.AppendLine(@"         <color>ff000000</color>");
+            sbHTML.AppendLine(@"       </LineStyle>");
+            sbHTML.AppendLine(@"	</Style>");
+            sbHTML.AppendLine(@"	<Style id=""sh_blue-pushpin"">");
+            sbHTML.AppendLine(@"		<IconStyle>");
+            sbHTML.AppendLine(@"			<scale>1.3</scale>");
+            sbHTML.AppendLine(@"			<Icon>");
+            sbHTML.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+            sbHTML.AppendLine(@"			</Icon>");
+            sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"		</IconStyle>");
+            sbHTML.AppendLine(@"      <LineStyle>");
+            sbHTML.AppendLine(@"         <color>ff000000</color>");
+            sbHTML.AppendLine(@"       </LineStyle>");
+            sbHTML.AppendLine(@"	</Style>");
 
-            sbKMZ.AppendLine(@"<Style id=""fc_LT14"">");
-            sbKMZ.AppendLine(@"<LineStyle>");
-            sbKMZ.AppendLine(@"<color>ff000000</color>");
-            sbKMZ.AppendLine(@"</LineStyle>");
-            sbKMZ.AppendLine(@"<PolyStyle>");
-            sbKMZ.AppendLine(@"<color>6600ff00</color>");
-            sbKMZ.AppendLine(@"<outline>1</outline>");
-            sbKMZ.AppendLine(@"</PolyStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""fc_LT14"">");
+            sbHTML.AppendLine(@"<LineStyle>");
+            sbHTML.AppendLine(@"<color>ff000000</color>");
+            sbHTML.AppendLine(@"</LineStyle>");
+            sbHTML.AppendLine(@"<PolyStyle>");
+            sbHTML.AppendLine(@"<color>6600ff00</color>");
+            sbHTML.AppendLine(@"<outline>1</outline>");
+            sbHTML.AppendLine(@"</PolyStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<Style id=""fc_14"">");
-            sbKMZ.AppendLine(@"<LineStyle>");
-            sbKMZ.AppendLine(@"<color>ff000000</color>");
-            sbKMZ.AppendLine(@"</LineStyle>");
-            sbKMZ.AppendLine(@"<PolyStyle>");
-            sbKMZ.AppendLine(@"<color>66ff0000</color>");
-            sbKMZ.AppendLine(@"<outline>1</outline>");
-            sbKMZ.AppendLine(@"</PolyStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""fc_14"">");
+            sbHTML.AppendLine(@"<LineStyle>");
+            sbHTML.AppendLine(@"<color>ff000000</color>");
+            sbHTML.AppendLine(@"</LineStyle>");
+            sbHTML.AppendLine(@"<PolyStyle>");
+            sbHTML.AppendLine(@"<color>66ff0000</color>");
+            sbHTML.AppendLine(@"<outline>1</outline>");
+            sbHTML.AppendLine(@"</PolyStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<Style id=""fc_88"">");
-            sbKMZ.AppendLine(@"<LineStyle>");
-            sbKMZ.AppendLine(@"<color>ff000000</color>");
-            sbKMZ.AppendLine(@"</LineStyle>");
-            sbKMZ.AppendLine(@"<PolyStyle>");
-            sbKMZ.AppendLine(@"<color>660000ff</color>");
-            sbKMZ.AppendLine(@"<outline>1</outline>");
-            sbKMZ.AppendLine(@"</PolyStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""fc_88"">");
+            sbHTML.AppendLine(@"<LineStyle>");
+            sbHTML.AppendLine(@"<color>ff000000</color>");
+            sbHTML.AppendLine(@"</LineStyle>");
+            sbHTML.AppendLine(@"<PolyStyle>");
+            sbHTML.AppendLine(@"<color>660000ff</color>");
+            sbHTML.AppendLine(@"<outline>1</outline>");
+            sbHTML.AppendLine(@"</PolyStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
             return true;
         }
@@ -2342,51 +2342,51 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return "";
         }
-        private bool WriteKMLBottom(StringBuilder sbKMZ)
+        private bool WriteKMLBottom(StringBuilder sbHTML)
         {
-            sbKMZ.AppendLine(@"</Document>");
-            sbKMZ.AppendLine(@"</kml>");
+            sbHTML.AppendLine(@"</Document>");
+            sbHTML.AppendLine(@"</kml>");
 
             return true;
         }
-        private bool WriteKMLBoundaryConditionNode(StringBuilder sbKMZ)
+        private bool WriteKMLBoundaryConditionNode(StringBuilder sbHTML)
         {
             string[] Colors = { "ylw", "grn", "blue", "ltblu", "pink", "red" };
 
             foreach (string color in Colors)
             {
-                sbKMZ.AppendLine(string.Format(@"	<Style id=""sn_{0}-pushpin"">", color));
-                sbKMZ.AppendLine(@"		<IconStyle>");
-                sbKMZ.AppendLine(@"			<scale>1.1</scale>");
-                sbKMZ.AppendLine(@"			<Icon>");
-                sbKMZ.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
-                sbKMZ.AppendLine(@"			</Icon>");
-                sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-                sbKMZ.AppendLine(@"		</IconStyle>");
-                sbKMZ.AppendLine(@"		<ListStyle>");
-                sbKMZ.AppendLine(@"		</ListStyle>");
-                sbKMZ.AppendLine(@"	</Style>");
-                sbKMZ.AppendLine(string.Format(@"	<StyleMap id=""msn_{0}-pushpin"">", color));
-                sbKMZ.AppendLine(@"		<Pair>");
-                sbKMZ.AppendLine(@"			<key>normal</key>");
-                sbKMZ.AppendLine(string.Format(@"			<styleUrl>#sn_{0}-pushpin</styleUrl>", color));
-                sbKMZ.AppendLine(@"		</Pair>");
-                sbKMZ.AppendLine(@"		<Pair>");
-                sbKMZ.AppendLine(@"			<key>highlight</key>");
-                sbKMZ.AppendLine(string.Format(@"			<styleUrl>#sh_{0}-pushpin</styleUrl>", color));
-                sbKMZ.AppendLine(@"		</Pair>");
-                sbKMZ.AppendLine(@"	</StyleMap>");
-                sbKMZ.AppendLine(string.Format(@"	<Style id=""sh_{0}-pushpin"">", color));
-                sbKMZ.AppendLine(@"		<IconStyle>");
-                sbKMZ.AppendLine(@"			<scale>1.3</scale>");
-                sbKMZ.AppendLine(@"			<Icon>");
-                sbKMZ.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
-                sbKMZ.AppendLine(@"			</Icon>");
-                sbKMZ.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-                sbKMZ.AppendLine(@"		</IconStyle>");
-                sbKMZ.AppendLine(@"		<ListStyle>");
-                sbKMZ.AppendLine(@"		</ListStyle>");
-                sbKMZ.AppendLine(@"	</Style>");
+                sbHTML.AppendLine(string.Format(@"	<Style id=""sn_{0}-pushpin"">", color));
+                sbHTML.AppendLine(@"		<IconStyle>");
+                sbHTML.AppendLine(@"			<scale>1.1</scale>");
+                sbHTML.AppendLine(@"			<Icon>");
+                sbHTML.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
+                sbHTML.AppendLine(@"			</Icon>");
+                sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+                sbHTML.AppendLine(@"		</IconStyle>");
+                sbHTML.AppendLine(@"		<ListStyle>");
+                sbHTML.AppendLine(@"		</ListStyle>");
+                sbHTML.AppendLine(@"	</Style>");
+                sbHTML.AppendLine(string.Format(@"	<StyleMap id=""msn_{0}-pushpin"">", color));
+                sbHTML.AppendLine(@"		<Pair>");
+                sbHTML.AppendLine(@"			<key>normal</key>");
+                sbHTML.AppendLine(string.Format(@"			<styleUrl>#sn_{0}-pushpin</styleUrl>", color));
+                sbHTML.AppendLine(@"		</Pair>");
+                sbHTML.AppendLine(@"		<Pair>");
+                sbHTML.AppendLine(@"			<key>highlight</key>");
+                sbHTML.AppendLine(string.Format(@"			<styleUrl>#sh_{0}-pushpin</styleUrl>", color));
+                sbHTML.AppendLine(@"		</Pair>");
+                sbHTML.AppendLine(@"	</StyleMap>");
+                sbHTML.AppendLine(string.Format(@"	<Style id=""sh_{0}-pushpin"">", color));
+                sbHTML.AppendLine(@"		<IconStyle>");
+                sbHTML.AppendLine(@"			<scale>1.3</scale>");
+                sbHTML.AppendLine(@"			<Icon>");
+                sbHTML.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
+                sbHTML.AppendLine(@"			</Icon>");
+                sbHTML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+                sbHTML.AppendLine(@"		</IconStyle>");
+                sbHTML.AppendLine(@"		<ListStyle>");
+                sbHTML.AppendLine(@"		</ListStyle>");
+                sbHTML.AppendLine(@"	</Style>");
             }
 
             //UpdateTask(AppTaskID, "30 %");
@@ -2394,12 +2394,12 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
             {
-                sbKMZ.AppendLine(@"<Folder>");
-                sbKMZ.AppendLine(@"    <name>" + TaskRunnerServiceRes.Error + "</name>");
-                sbKMZ.AppendLine(@"    <description><![CDATA[");
-                sbKMZ.AppendLine(@"    <h4>" + tvItemModelMikeScenario.Error + "</h4");
-                sbKMZ.AppendLine(@"    ]]></description>");
-                sbKMZ.AppendLine(@"</Folder>");
+                sbHTML.AppendLine(@"<Folder>");
+                sbHTML.AppendLine(@"    <name>" + TaskRunnerServiceRes.Error + "</name>");
+                sbHTML.AppendLine(@"    <description><![CDATA[");
+                sbHTML.AppendLine(@"    <h4>" + tvItemModelMikeScenario.Error + "</h4");
+                sbHTML.AppendLine(@"    ]]></description>");
+                sbHTML.AppendLine(@"</Folder>");
                 return true;
             }
 
@@ -2408,30 +2408,30 @@ namespace CSSPWebToolsTaskRunner.Services
             int countColor = 0;
             foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
             {
-                sbKMZ.AppendLine(@"<Folder>");
-                sbKMZ.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + " (" + mbcm.MikeBoundaryConditionCode + ") length [" + mbcm.MikeBoundaryConditionLength_m.ToString("F0") + "] </name>");
-                sbKMZ.AppendLine(@"<visibility>1</visibility>");
-                sbKMZ.AppendLine(@"<description><![CDATA[");
-                sbKMZ.AppendLine(@"<p>(" + mbcm.MikeBoundaryConditionFormat + ") " + mbcm.MikeBoundaryConditionLevelOrVelocity + " " + mbcm.WebTideDataSet.ToString() + " " + mbcm.NumberOfWebTideNodes + " " + TaskRunnerServiceRes.Nodes + "</p>");
-                sbKMZ.AppendLine(@"]]></description>");
+                sbHTML.AppendLine(@"<Folder>");
+                sbHTML.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + " (" + mbcm.MikeBoundaryConditionCode + ") length [" + mbcm.MikeBoundaryConditionLength_m.ToString("F0") + "] </name>");
+                sbHTML.AppendLine(@"<visibility>1</visibility>");
+                sbHTML.AppendLine(@"<description><![CDATA[");
+                sbHTML.AppendLine(@"<p>(" + mbcm.MikeBoundaryConditionFormat + ") " + mbcm.MikeBoundaryConditionLevelOrVelocity + " " + mbcm.WebTideDataSet.ToString() + " " + mbcm.NumberOfWebTideNodes + " " + TaskRunnerServiceRes.Nodes + "</p>");
+                sbHTML.AppendLine(@"]]></description>");
 
                 // drawing Boundary Nodes
                 List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionMesh, MapInfoDrawTypeEnum.Polyline);
 
-                sbKMZ.AppendLine(@"    <Folder>");
-                sbKMZ.AppendLine(@"    <name>" + TaskRunnerServiceRes.ElementNodes + @"</name>");
-                sbKMZ.AppendLine(@"    <open>1</open>");
+                sbHTML.AppendLine(@"    <Folder>");
+                sbHTML.AppendLine(@"    <name>" + TaskRunnerServiceRes.ElementNodes + @"</name>");
+                sbHTML.AppendLine(@"    <open>1</open>");
                 foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
                 {
-                    sbKMZ.AppendLine(@"    <Placemark>");
-                    sbKMZ.AppendLine(@"    <name>Node " + mapInfoPointModel.Ordinal + "</name>");
-                    sbKMZ.AppendLine(string.Format(@"    <styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
-                    sbKMZ.AppendLine(@"    <Point>");
-                    sbKMZ.AppendLine(@"    <coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
-                    sbKMZ.AppendLine(@"    </Point>");
-                    sbKMZ.AppendLine(@"    </Placemark>");
+                    sbHTML.AppendLine(@"    <Placemark>");
+                    sbHTML.AppendLine(@"    <name>Node " + mapInfoPointModel.Ordinal + "</name>");
+                    sbHTML.AppendLine(string.Format(@"    <styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
+                    sbHTML.AppendLine(@"    <Point>");
+                    sbHTML.AppendLine(@"    <coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
+                    sbHTML.AppendLine(@"    </Point>");
+                    sbHTML.AppendLine(@"    </Placemark>");
                 }
-                sbKMZ.AppendLine(@"    </Folder>");
+                sbHTML.AppendLine(@"    </Folder>");
 
 
                 countColor += 1;
@@ -2439,22 +2439,22 @@ namespace CSSPWebToolsTaskRunner.Services
                 MikeBoundaryConditionModel mbcModel2 = _MikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionWebTide).Where(c => c.MikeBoundaryConditionName == mbcm.MikeBoundaryConditionName).FirstOrDefault();
                 List<MapInfoPointModel> mapInfoPointModelList2 = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcModel2.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionWebTide, MapInfoDrawTypeEnum.Polyline);
 
-                sbKMZ.AppendLine(@"    <Folder>");
-                sbKMZ.AppendLine(@"    <name>" + TaskRunnerServiceRes.WebTideNodes + @"</name>");
-                sbKMZ.AppendLine(@"    <open>1</open>");
+                sbHTML.AppendLine(@"    <Folder>");
+                sbHTML.AppendLine(@"    <name>" + TaskRunnerServiceRes.WebTideNodes + @"</name>");
+                sbHTML.AppendLine(@"    <open>1</open>");
                 foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList2)
                 {
-                    sbKMZ.AppendLine(@"    <Placemark>");
-                    sbKMZ.AppendLine(@"    <name>Node " + mapInfoPointModel.Ordinal + "</name>");
-                    sbKMZ.AppendLine(string.Format(@"    <styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
-                    sbKMZ.AppendLine(@"    <Point>");
-                    sbKMZ.AppendLine(@"    <coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
-                    sbKMZ.AppendLine(@"    </Point>");
-                    sbKMZ.AppendLine(@"    </Placemark>");
+                    sbHTML.AppendLine(@"    <Placemark>");
+                    sbHTML.AppendLine(@"    <name>Node " + mapInfoPointModel.Ordinal + "</name>");
+                    sbHTML.AppendLine(string.Format(@"    <styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
+                    sbHTML.AppendLine(@"    <Point>");
+                    sbHTML.AppendLine(@"    <coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
+                    sbHTML.AppendLine(@"    </Point>");
+                    sbHTML.AppendLine(@"    </Placemark>");
                 }
-                sbKMZ.AppendLine(@"    </Folder>");
+                sbHTML.AppendLine(@"    </Folder>");
 
-                sbKMZ.AppendLine(@"</Folder>");
+                sbHTML.AppendLine(@"</Folder>");
 
                 countColor += 1;
                 if (countColor > 5) countColor = 0;
@@ -2462,7 +2462,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLFecalColiformContourLine(DfsuFile dfsuFile, StringBuilder sbNewFileText, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList)
+        private bool WriteKMLFecalColiformContourLine(DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList)
         {
             string NotUsed = "";
             int PercentCompleted = 3;
@@ -2493,9 +2493,9 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             //            int pcount = 0;
-            sbNewFileText.AppendLine(@"<Folder>");
-            sbNewFileText.AppendLine(@"  <name>" + TaskRunnerServiceRes.PollutionAnimation + "</name>");
-            sbNewFileText.AppendLine(@"  <visibility>0</visibility>");
+            sb.AppendLine(@"<Folder>");
+            sb.AppendLine(@"  <name>" + TaskRunnerServiceRes.PollutionAnimation + "</name>");
+            sb.AppendLine(@"  <visibility>0</visibility>");
 
             int CountAt = 0;
             int CountLayer = (dfsuFile.NumberOfSigmaLayers == 0 ? 1 : dfsuFile.NumberOfSigmaLayers);
@@ -2513,18 +2513,18 @@ namespace CSSPWebToolsTaskRunner.Services
                 #region Top of Layer
                 if (Layer == 1)
                 {
-                    sbNewFileText.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
+                    sb.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
                 }
                 else
                 {
-                    sbNewFileText.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
+                    sb.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
                 }
-                sbNewFileText.AppendLine(@"<visibility>0</visibility>");
+                sb.AppendLine(@"<visibility>0</visibility>");
                 int CountContourValue = 1;
                 foreach (float ContourValue in ContourValueList)
                 {
-                    sbNewFileText.AppendLine(string.Format(@"  <Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
-                    sbNewFileText.AppendLine(@"  <visibility>0</visibility>");
+                    sb.AppendLine(string.Format(@"  <Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
+                    sb.AppendLine(@"  <visibility>0</visibility>");
 
                     int vcount = 0;
                     CurrentContourValue += 1;
@@ -2964,14 +2964,14 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
 
                         }
-                        DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount, sbNewFileText);
+                        DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount);
 
                         vcount += 1;
                     }
-                    sbNewFileText.AppendLine(@"  </Folder>");
+                    sb.AppendLine(@"  </Folder>");
                     CountContourValue += 1;
                 }
-                sbNewFileText.AppendLine(@"  </Folder>");
+                sb.AppendLine(@"  </Folder>");
                 #endregion Top of Layer
 
                 #region Bottom of Layer
@@ -3347,27 +3347,27 @@ namespace CSSPWebToolsTaskRunner.Services
                 //}
                 #endregion Bottom of Layer
             }
-            sbNewFileText.AppendLine(@"</Folder>");
+            sb.AppendLine(@"</Folder>");
 
             string retStr2 = UpdateAppTaskPercentCompleted(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 100);
 
             return true;
         }
-        private bool WriteKMLMesh(StringBuilder sbKMZ, List<ElementLayer> ElementLayerList)
+        private bool WriteKMLMesh(StringBuilder sbHTML, List<ElementLayer> ElementLayerList)
         {
             List<Node> nodeList = new List<Node>();
 
-            sbKMZ.AppendLine(@"<Style id=""_line"">");
-            sbKMZ.AppendLine("<LineStyle>");
-            sbKMZ.AppendLine(@"<color>ff99ff99</color>");
-            sbKMZ.AppendLine(@"<width>1</width>");
-            sbKMZ.AppendLine("</LineStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""_line"">");
+            sbHTML.AppendLine("<LineStyle>");
+            sbHTML.AppendLine(@"<color>ff99ff99</color>");
+            sbHTML.AppendLine(@"<width>1</width>");
+            sbHTML.AppendLine("</LineStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
 
-            sbKMZ.AppendLine(@"<Folder>");
-            sbKMZ.AppendLine(@"<visibility>0</visibility>");
-            sbKMZ.AppendLine(@"<name>" + TaskRunnerServiceRes.MIKEMesh + "</name>");
+            sbHTML.AppendLine(@"<Folder>");
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
+            sbHTML.AppendLine(@"<name>" + TaskRunnerServiceRes.MIKEMesh + "</name>");
 
             int CountRefresh = 0;
             int CountAt = 0;
@@ -3403,19 +3403,19 @@ namespace CSSPWebToolsTaskRunner.Services
                 string PolyName = ElemLayer.Element.ID.ToString();
 
                 // Inserting the Placemark
-                sbKMZ.AppendLine(@"<Placemark>");
-                sbKMZ.AppendLine(@"<visibility>0</visibility>");
-                sbKMZ.AppendLine(string.Format(@"<name>{0}</name>", PolyName));
-                sbKMZ.AppendLine(@"<styleUrl>#_line</styleUrl>");
-                sbKMZ.AppendLine(@"<LineString>");
-                sbKMZ.AppendLine(@"<coordinates>");
-                sbKMZ.AppendLine(sbCoord.ToString());
-                sbKMZ.AppendLine(@"</coordinates>");
-                sbKMZ.AppendLine(@"</LineString>");
-                sbKMZ.AppendLine(@"</Placemark>");
+                sbHTML.AppendLine(@"<Placemark>");
+                sbHTML.AppendLine(@"<visibility>0</visibility>");
+                sbHTML.AppendLine(string.Format(@"<name>{0}</name>", PolyName));
+                sbHTML.AppendLine(@"<styleUrl>#_line</styleUrl>");
+                sbHTML.AppendLine(@"<LineString>");
+                sbHTML.AppendLine(@"<coordinates>");
+                sbHTML.AppendLine(sbCoord.ToString());
+                sbHTML.AppendLine(@"</coordinates>");
+                sbHTML.AppendLine(@"</LineString>");
+                sbHTML.AppendLine(@"</Placemark>");
             }
 
-            sbKMZ.AppendLine(@"</Folder>");
+            sbHTML.AppendLine(@"</Folder>");
 
             //List<Node> uniqueNode = (from n in nodeList
             //                         select n).Distinct().ToList();
@@ -3436,7 +3436,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLModelInput(StringBuilder sbKMZ, List<float> ContourValueList)
+        private bool WriteKMLModelInput(StringBuilder sbHTML, List<float> ContourValueList)
         {
             string NotUsed = "";
 
@@ -3496,56 +3496,56 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
 
-            sbKMZ.Append("  <Folder><name>" + TaskRunnerServiceRes.ModelInput + "</name>");
-            sbKMZ.AppendLine(@"  <visibility>0</visibility>");
+            sbHTML.Append("  <Folder><name>" + TaskRunnerServiceRes.ModelInput + "</name>");
+            sbHTML.AppendLine(@"  <visibility>0</visibility>");
 
             #region Source Description
-            sbKMZ.AppendLine(@"<description><![CDATA[");
-            sbKMZ.AppendLine(string.Format(@"<h2>{0}</h2>", TaskRunnerServiceRes.ModelParameters));
-            sbKMZ.AppendLine(@"<ul>");
-            sbKMZ.AppendLine(string.Format(@"<li><b>{0}:</b> {1:yyyy/MM/dd HH:mm:ss tt}</li>", TaskRunnerServiceRes.ScenarioStartTime, mikeScenarioModel.MikeScenarioStartDateTime_Local));
-            sbKMZ.AppendLine(string.Format(@"<li><b>{0}:</b> {1:yyyy/MM/dd HH:mm:ss tt}</li>", TaskRunnerServiceRes.ScenarioEndTime, mikeScenarioModel.MikeScenarioEndDateTime_Local));
+            sbHTML.AppendLine(@"<description><![CDATA[");
+            sbHTML.AppendLine(string.Format(@"<h2>{0}</h2>", TaskRunnerServiceRes.ModelParameters));
+            sbHTML.AppendLine(@"<ul>");
+            sbHTML.AppendLine(string.Format(@"<li><b>{0}:</b> {1:yyyy/MM/dd HH:mm:ss tt}</li>", TaskRunnerServiceRes.ScenarioStartTime, mikeScenarioModel.MikeScenarioStartDateTime_Local));
+            sbHTML.AppendLine(string.Format(@"<li><b>{0}:</b> {1:yyyy/MM/dd HH:mm:ss tt}</li>", TaskRunnerServiceRes.ScenarioEndTime, mikeScenarioModel.MikeScenarioEndDateTime_Local));
 
             foreach (float cv in ContourValueList)
             {
                 if (cv >= 14 && cv < 88)
                 {
-                    sbKMZ.AppendLine(string.Format(@"<li><span style=""background-color:Blue; color:White"">{0} = {1:F0}</span</li>", TaskRunnerServiceRes.FCMPNPollutionContour, cv));
+                    sbHTML.AppendLine(string.Format(@"<li><span style=""background-color:Blue; color:White"">{0} = {1:F0}</span</li>", TaskRunnerServiceRes.FCMPNPollutionContour, cv));
                 }
                 else if (cv >= 88)
                 {
-                    sbKMZ.AppendLine(string.Format(@"<li><span style=""background-color:Red; color:White"">{0} = {1:F0}</span></li>", TaskRunnerServiceRes.FCMPNPollutionContour, cv));
+                    sbHTML.AppendLine(string.Format(@"<li><span style=""background-color:Red; color:White"">{0} = {1:F0}</span></li>", TaskRunnerServiceRes.FCMPNPollutionContour, cv));
                 }
                 else
                 {
-                    sbKMZ.AppendLine(string.Format(@"<li><span style=""background-color:Green; color:White"">{0} = {1:F0}</span></li>", TaskRunnerServiceRes.FCMPNPollutionContour, cv));
+                    sbHTML.AppendLine(string.Format(@"<li><span style=""background-color:Green; color:White"">{0} = {1:F0}</span></li>", TaskRunnerServiceRes.FCMPNPollutionContour, cv));
                 }
 
             }
-            sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.AverageDecayFactor + @":</b> " + mikeScenarioModel.DecayFactor_per_day.ToString("F6").Replace(",", ".") + @" /" + TaskRunnerServiceRes.DayLowerCase + @"</li>");
+            sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.AverageDecayFactor + @":</b> " + mikeScenarioModel.DecayFactor_per_day.ToString("F6").Replace(",", ".") + @" /" + TaskRunnerServiceRes.DayLowerCase + @"</li>");
             if (mikeScenarioModel.DecayIsConstant)
             {
-                sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.DecayIsConstant + @"</b></li>");
+                sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.DecayIsConstant + @"</b></li>");
             }
             else
             {
-                sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.DecayIsVariable + @"</b></li>");
-                sbKMZ.AppendLine(@"<ul><li><b>" + TaskRunnerServiceRes.Amplitude + @":</b> " + ((double)mikeScenarioModel.DecayFactorAmplitude).ToString("F6").Replace(",", ".") + @"</li></ul>");
+                sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.DecayIsVariable + @"</b></li>");
+                sbHTML.AppendLine(@"<ul><li><b>" + TaskRunnerServiceRes.Amplitude + @":</b> " + ((double)mikeScenarioModel.DecayFactorAmplitude).ToString("F6").Replace(",", ".") + @"</li></ul>");
             }
             if (mikeScenarioModel.WindSpeed_km_h > 0)
             {
-                sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Wind + @":</b> " + mikeScenarioModel.WindSpeed_km_h.ToString("F1").Replace(",", ".") + @" (km/h)   " + (mikeScenarioModel.WindSpeed_km_h / 3.6).ToString("F1").Replace(",", ".") + @" (m/s)</li>");
-                sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.WindDirection + @":</b> " + mikeScenarioModel.WindDirection_deg.ToString("F1").Replace(",", ".") + @" " + TaskRunnerServiceRes.DegreeLowerCase + " (0 = " + TaskRunnerServiceRes.NorthClockwiseLowerCase + @")</li>");
+                sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Wind + @":</b> " + mikeScenarioModel.WindSpeed_km_h.ToString("F1").Replace(",", ".") + @" (km/h)   " + (mikeScenarioModel.WindSpeed_km_h / 3.6).ToString("F1").Replace(",", ".") + @" (m/s)</li>");
+                sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.WindDirection + @":</b> " + mikeScenarioModel.WindDirection_deg.ToString("F1").Replace(",", ".") + @" " + TaskRunnerServiceRes.DegreeLowerCase + " (0 = " + TaskRunnerServiceRes.NorthClockwiseLowerCase + @")</li>");
             }
             else
             {
-                sbKMZ.AppendLine("<li><b>" + TaskRunnerServiceRes.NoWind + @"</b></li>");
+                sbHTML.AppendLine("<li><b>" + TaskRunnerServiceRes.NoWind + @"</b></li>");
             }
-            sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Temperature + @":</b> " + mikeScenarioModel.AmbientTemperature_C.ToString("F1").Replace(",", ".") + " " + TaskRunnerServiceRes.Celcius + @"</li>");
-            sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Salinity + @":</b> " + mikeScenarioModel.AmbientSalinity_PSU.ToString("F1").Replace(",", ".") + " " + TaskRunnerServiceRes.PSU + @"</li>");
-            sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.ManningNumber + @":</b> " + mikeScenarioModel.ManningNumber.ToString().Replace(",", ".") + @"</li>");
-            sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.ResultFrequency + @":</b> {0:F0} {1}</li>", mikeScenarioModel.ResultFrequency_min, TaskRunnerServiceRes.MinutesLowerCase));
-            sbKMZ.AppendLine(@"</ul>");
+            sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Temperature + @":</b> " + mikeScenarioModel.AmbientTemperature_C.ToString("F1").Replace(",", ".") + " " + TaskRunnerServiceRes.Celcius + @"</li>");
+            sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Salinity + @":</b> " + mikeScenarioModel.AmbientSalinity_PSU.ToString("F1").Replace(",", ".") + " " + TaskRunnerServiceRes.PSU + @"</li>");
+            sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.ManningNumber + @":</b> " + mikeScenarioModel.ManningNumber.ToString().Replace(",", ".") + @"</li>");
+            sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.ResultFrequency + @":</b> {0:F0} {1}</li>", mikeScenarioModel.ResultFrequency_min, TaskRunnerServiceRes.MinutesLowerCase));
+            sbHTML.AppendLine(@"</ul>");
 
             List<MikeSourceModel> mikeSourceModelListAll = mikeSourceModelList.Where(c => c.Include == true && c.IsRiver == false).Concat(mikeSourceModelList.Where(c => c.Include == false && c.IsRiver == false).Concat(mikeSourceModelList.Where(c => c.IsRiver == true))).ToList();
 
@@ -3564,62 +3564,62 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     if (mikeSourceModel.IsRiver)
                     {
-                        sbKMZ.AppendLine(string.Format(@"<h2 style='Color: Blue'>{0} ({1})</h2>", mikeSourceModel.MikeSourceTVText, TaskRunnerServiceRes.IncludedLowerCase));
+                        sbHTML.AppendLine(string.Format(@"<h2 style='Color: Blue'>{0} ({1})</h2>", mikeSourceModel.MikeSourceTVText, TaskRunnerServiceRes.IncludedLowerCase));
                     }
                     else
                     {
-                        sbKMZ.AppendLine(string.Format(@"<h2 style='Color: Green'>{0} ({1})</h2>", mikeSourceModel.MikeSourceTVText, TaskRunnerServiceRes.IncludedLowerCase));
+                        sbHTML.AppendLine(string.Format(@"<h2 style='Color: Green'>{0} ({1})</h2>", mikeSourceModel.MikeSourceTVText, TaskRunnerServiceRes.IncludedLowerCase));
                     }
                 }
                 else
                 {
-                    sbKMZ.AppendLine(string.Format(@"<h2 style='Color: Red'>{0} ({1})</h2>", mikeSourceModel.MikeSourceTVText, TaskRunnerServiceRes.NotIncludedLowerCase));
+                    sbHTML.AppendLine(string.Format(@"<h2 style='Color: Red'>{0} ({1})</h2>", mikeSourceModel.MikeSourceTVText, TaskRunnerServiceRes.NotIncludedLowerCase));
                 }
-                sbKMZ.AppendLine(@"<h3>" + TaskRunnerServiceRes.Effluent + @"</h3>");
-                sbKMZ.AppendLine(@"<ul>");
-                sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Coordinates + @"</b> " + string.Format(@"&nbsp;&nbsp;&nbsp; {0:F5} &nbsp; {1:F5}</li>", mikeSourceModel.Lat, mikeSourceModel.Lng).Replace(",", "."));
+                sbHTML.AppendLine(@"<h3>" + TaskRunnerServiceRes.Effluent + @"</h3>");
+                sbHTML.AppendLine(@"<ul>");
+                sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Coordinates + @"</b> " + string.Format(@"&nbsp;&nbsp;&nbsp; {0:F5} &nbsp; {1:F5}</li>", mikeSourceModel.Lat, mikeSourceModel.Lng).Replace(",", "."));
 
                 if ((bool)mikeSourceModel.IsContinuous)
                 {
-                    sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsContinuous + @"</b></li>");
-                    sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Flow + @":</b> " + (mikeSourceStartEndModelListLocal[0].SourceFlowStart_m3_day / 24 / 3600).ToString("F6").Replace(",", ".") + " (m3/s)  " + mikeSourceStartEndModelListLocal[0].SourceFlowStart_m3_day.ToString("F1").Replace(",", ".") + @" (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>");
-                    sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100ML + @":</b> " + mikeSourceStartEndModelListLocal[0].SourcePollutionStart_MPN_100ml.ToString("F0").Replace(",", ".") + @"</li>");
-                    sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Temperature + @":</b> " + mikeSourceStartEndModelListLocal[0].SourceTemperatureStart_C.ToString("F1").Replace(",", ".") + @" " + TaskRunnerServiceRes.Celcius + @"</li>");
-                    sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Salinity + @":</b> " + mikeSourceStartEndModelListLocal[0].SourceSalinityStart_PSU.ToString("F1").Replace(",", ".") + @" " + TaskRunnerServiceRes.PSU + @"</li>");
+                    sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsContinuous + @"</b></li>");
+                    sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Flow + @":</b> " + (mikeSourceStartEndModelListLocal[0].SourceFlowStart_m3_day / 24 / 3600).ToString("F6").Replace(",", ".") + " (m3/s)  " + mikeSourceStartEndModelListLocal[0].SourceFlowStart_m3_day.ToString("F1").Replace(",", ".") + @" (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>");
+                    sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100ML + @":</b> " + mikeSourceStartEndModelListLocal[0].SourcePollutionStart_MPN_100ml.ToString("F0").Replace(",", ".") + @"</li>");
+                    sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Temperature + @":</b> " + mikeSourceStartEndModelListLocal[0].SourceTemperatureStart_C.ToString("F1").Replace(",", ".") + @" " + TaskRunnerServiceRes.Celcius + @"</li>");
+                    sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Salinity + @":</b> " + mikeSourceStartEndModelListLocal[0].SourceSalinityStart_PSU.ToString("F1").Replace(",", ".") + @" " + TaskRunnerServiceRes.PSU + @"</li>");
                 }
                 else
                 {
-                    sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsNotContinuous + @"</b></li>");
+                    sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsNotContinuous + @"</b></li>");
 
                     int CountMikeSourceStartEnd = 0;
                     foreach (MikeSourceStartEndModel mssem in mikeSourceStartEndModelListLocal)
                     {
                         CountMikeSourceStartEnd += 1;
-                        sbKMZ.AppendLine(@"<br /><b>" + TaskRunnerServiceRes.Spill + @": " + CountMikeSourceStartEnd + "</b><br />");
-                        sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillStartTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt} (UTC)</li>", mssem.StartDateAndTime_Local));
-                        sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillEndTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt} (UTC)</li>", mssem.EndDateAndTime_Local));
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FlowStart + @":</b> " + ((double)mssem.SourceFlowStart_m3_day / 24 / 3600).ToString("F6").Replace(",", ".") + @" (m3/s)  " + ((double)mssem.SourceFlowStart_m3_day).ToString("F0").Replace(",", ".") + @" (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>");
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FlowEnd + @":</b> " + ((double)mssem.SourceFlowEnd_m3_day / 24 / 3600).ToString("F6").Replace(",", ".") + @" (m3/s)  " + ((double)mssem.SourceFlowEnd_m3_day).ToString("F0").Replace(",", ".") + @" (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>");
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLStart + @":</b> " + ((double)mssem.SourcePollutionStart_MPN_100ml).ToString("F0").Replace(",", ".") + @"</li>");
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLEnd + @":</b> " + ((double)mssem.SourcePollutionEnd_MPN_100ml).ToString("F0").Replace(",", ".") + @"</li>");
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.TemperatureStart + @":</b> " + ((double)mssem.SourceTemperatureStart_C).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.Celcius + @"</li>");
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.TemperatureEnd + @":</b> " + ((double)mssem.SourceTemperatureEnd_C).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.Celcius + @"</li>");
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.SalinityStart + @":</b> " + ((double)mssem.SourceSalinityStart_PSU).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.PSU + @"</li>");
-                        sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.SalinityEnd + @":</b> " + ((double)mssem.SourceSalinityEnd_PSU).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.PSU + @"</li>");
+                        sbHTML.AppendLine(@"<br /><b>" + TaskRunnerServiceRes.Spill + @": " + CountMikeSourceStartEnd + "</b><br />");
+                        sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillStartTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt} (UTC)</li>", mssem.StartDateAndTime_Local));
+                        sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillEndTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt} (UTC)</li>", mssem.EndDateAndTime_Local));
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FlowStart + @":</b> " + ((double)mssem.SourceFlowStart_m3_day / 24 / 3600).ToString("F6").Replace(",", ".") + @" (m3/s)  " + ((double)mssem.SourceFlowStart_m3_day).ToString("F0").Replace(",", ".") + @" (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>");
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FlowEnd + @":</b> " + ((double)mssem.SourceFlowEnd_m3_day / 24 / 3600).ToString("F6").Replace(",", ".") + @" (m3/s)  " + ((double)mssem.SourceFlowEnd_m3_day).ToString("F0").Replace(",", ".") + @" (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>");
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLStart + @":</b> " + ((double)mssem.SourcePollutionStart_MPN_100ml).ToString("F0").Replace(",", ".") + @"</li>");
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLEnd + @":</b> " + ((double)mssem.SourcePollutionEnd_MPN_100ml).ToString("F0").Replace(",", ".") + @"</li>");
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.TemperatureStart + @":</b> " + ((double)mssem.SourceTemperatureStart_C).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.Celcius + @"</li>");
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.TemperatureEnd + @":</b> " + ((double)mssem.SourceTemperatureEnd_C).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.Celcius + @"</li>");
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.SalinityStart + @":</b> " + ((double)mssem.SourceSalinityStart_PSU).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.PSU + @"</li>");
+                        sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.SalinityEnd + @":</b> " + ((double)mssem.SourceSalinityEnd_PSU).ToString("F0").Replace(",", ".") + @" " + TaskRunnerServiceRes.PSU + @"</li>");
                     }
                 }
-                sbKMZ.AppendLine(@"</ul>");
+                sbHTML.AppendLine(@"</ul>");
             }
 
 
-            sbKMZ.AppendLine(@"<iframe src=""about:"" width=""600"" height=""1"" />");
-            sbKMZ.AppendLine(@"]]></description>");
+            sbHTML.AppendLine(@"<iframe src=""about:"" width=""600"" height=""1"" />");
+            sbHTML.AppendLine(@"]]></description>");
 
             #endregion Source Description
 
-            sbKMZ.Append(" <Folder>");
-            sbKMZ.Append("    <name>" + TaskRunnerServiceRes.SourceIncluded + @"</name>");
-            sbKMZ.AppendLine(@"    <visibility>0</visibility>");
+            sbHTML.Append(" <Folder>");
+            sbHTML.Append("    <name>" + TaskRunnerServiceRes.SourceIncluded + @"</name>");
+            sbHTML.AppendLine(@"    <visibility>0</visibility>");
 
             for (int i = 1; i < 1000; i++)
             {
@@ -3651,7 +3651,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         return false;
                     }
 
-                    if (!WriteKMLSourcePlacemark(sbKMZ, pfsFile, pfsSectionSource, i, mikeSourceModelLocal))
+                    if (!WriteKMLSourcePlacemark(sbHTML, pfsFile, pfsSectionSource, i, mikeSourceModelLocal))
                     {
                         pfsFile.Close();
                         return false;
@@ -3660,10 +3660,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             }
 
-            sbKMZ.Append("</Folder>");
+            sbHTML.Append("</Folder>");
 
-            sbKMZ.Append("<Folder><name>" + TaskRunnerServiceRes.SourceNotIncluded + @"</name>");
-            sbKMZ.AppendLine(@"<visibility>0</visibility>");
+            sbHTML.Append("<Folder><name>" + TaskRunnerServiceRes.SourceNotIncluded + @"</name>");
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
 
             // showing not used sources 
             for (int i = 1; i < 1000; i++)
@@ -3696,7 +3696,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         return false;
                     }
 
-                    if (!WriteKMLSourcePlacemark(sbKMZ, pfsFile, pfsSectionSource, i, mikeSourceModelLocal))
+                    if (!WriteKMLSourcePlacemark(sbHTML, pfsFile, pfsSectionSource, i, mikeSourceModelLocal))
                     {
                         pfsFile.Close();
                         return false;
@@ -3705,13 +3705,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
             }
 
-            sbKMZ.Append("</Folder>");
+            sbHTML.Append("</Folder>");
 
-            sbKMZ.Append("</Folder>");
+            sbHTML.Append("</Folder>");
 
             return true;
         }
-        private bool WriteKMLPollutionLimitsContourLine(DfsuFile dfsuFile, StringBuilder sbKMZ, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList)
+        private bool WriteKMLPollutionLimitsContourLine(DfsuFile dfsuFile, StringBuilder sbHTML, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList)
         {
             string NotUsed = "";
 
@@ -4615,24 +4615,24 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             // Geneating Pollution Limits
-            sbKMZ.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.PollutionLimits + @"</name>");
-            sbKMZ.AppendLine(@"<visibility>0</visibility>");
+            sbHTML.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.PollutionLimits + @"</name>");
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
 
             // Generating Polygons 
-            sbKMZ.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.Polygons + @"</name>");
-            sbKMZ.AppendLine(@"<visibility>0</visibility>");
+            sbHTML.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.Polygons + @"</name>");
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
 
             foreach (int Layer in LayerList)
             {
                 if (Layer == 1)
                 {
-                    sbKMZ.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
+                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
                 }
                 else
                 {
-                    sbKMZ.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
+                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
                 }
-                sbKMZ.AppendLine(@"<visibility>0</visibility>");
+                sbHTML.AppendLine(@"<visibility>0</visibility>");
 
                 foreach (List<ContourPolygon> contourPolygonList in ContourPolygonListList)
                 {
@@ -4644,66 +4644,66 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 if (contourPolygon.ContourValue == contourValue)
                                 {
-                                    sbKMZ.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", contourValue));
+                                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", contourValue));
 
-                                    sbKMZ.AppendLine(@"<Folder>");
-                                    sbKMZ.AppendLine(@"<visibility>0</visibility>");
-                                    sbKMZ.AppendLine(@"<Placemark>");
-                                    sbKMZ.AppendLine(@"<visibility>0</visibility>");
+                                    sbHTML.AppendLine(@"<Folder>");
+                                    sbHTML.AppendLine(@"<visibility>0</visibility>");
+                                    sbHTML.AppendLine(@"<Placemark>");
+                                    sbHTML.AppendLine(@"<visibility>0</visibility>");
                                     if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
                                     {
-                                        sbKMZ.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
+                                        sbHTML.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
                                     }
                                     else if (contourPolygon.ContourValue >= 88)
                                     {
-                                        sbKMZ.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
+                                        sbHTML.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
                                     }
                                     else
                                     {
-                                        sbKMZ.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
+                                        sbHTML.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
                                     }
-                                    sbKMZ.AppendLine(@"<Polygon>");
-                                    sbKMZ.AppendLine(@"<outerBoundaryIs>");
-                                    sbKMZ.AppendLine(@"<LinearRing>");
-                                    sbKMZ.AppendLine(@"<coordinates>");
+                                    sbHTML.AppendLine(@"<Polygon>");
+                                    sbHTML.AppendLine(@"<outerBoundaryIs>");
+                                    sbHTML.AppendLine(@"<LinearRing>");
+                                    sbHTML.AppendLine(@"<coordinates>");
                                     foreach (Node node in contourPolygon.ContourNodeList)
                                     {
-                                        sbKMZ.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
+                                        sbHTML.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
                                     }
-                                    sbKMZ.AppendLine(@"</coordinates>");
-                                    sbKMZ.AppendLine(@"</LinearRing>");
-                                    sbKMZ.AppendLine(@"</outerBoundaryIs>");
-                                    sbKMZ.AppendLine(@"</Polygon>");
-                                    sbKMZ.AppendLine(@"</Placemark>");
-                                    sbKMZ.AppendLine(@"</Folder>");
+                                    sbHTML.AppendLine(@"</coordinates>");
+                                    sbHTML.AppendLine(@"</LinearRing>");
+                                    sbHTML.AppendLine(@"</outerBoundaryIs>");
+                                    sbHTML.AppendLine(@"</Polygon>");
+                                    sbHTML.AppendLine(@"</Placemark>");
+                                    sbHTML.AppendLine(@"</Folder>");
 
-                                    sbKMZ.AppendLine(@"</Folder>");
+                                    sbHTML.AppendLine(@"</Folder>");
                                 }
 
                             }
                         }
                     }
                 }
-                sbKMZ.AppendLine(@"</Folder>");
+                sbHTML.AppendLine(@"</Folder>");
             }
-            sbKMZ.AppendLine(@"</Folder>");
+            sbHTML.AppendLine(@"</Folder>");
 
 
             // Generating Depths 
-            sbKMZ.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.Depths + @"</name>");
-            sbKMZ.AppendLine(@"<visibility>0</visibility>");
+            sbHTML.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.Depths + @"</name>");
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
 
             foreach (int Layer in LayerList)
             {
                 if (Layer == 1)
                 {
-                    sbKMZ.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
+                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
                 }
                 else
                 {
-                    sbKMZ.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
+                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
                 }
-                sbKMZ.AppendLine(@"<visibility>0</visibility>");
+                sbHTML.AppendLine(@"<visibility>0</visibility>");
 
                 foreach (List<ContourPolygon> contourPolygonList in ContourPolygonListList)
                 {
@@ -4715,54 +4715,54 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 if (contourPolygon.ContourValue == contourValue)
                                 {
-                                    sbKMZ.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", contourValue));
+                                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", contourValue));
 
-                                    sbKMZ.AppendLine(@"<Folder>");
-                                    sbKMZ.AppendLine(@"<visibility>0</visibility>");
-                                    sbKMZ.AppendLine(@"<name>Depths</name>");
+                                    sbHTML.AppendLine(@"<Folder>");
+                                    sbHTML.AppendLine(@"<visibility>0</visibility>");
+                                    sbHTML.AppendLine(@"<name>Depths</name>");
                                     foreach (Node node in contourPolygon.ContourNodeList)
                                     {
-                                        sbKMZ.AppendLine(@"<Placemark>");
-                                        sbKMZ.AppendLine(@"<visibility>0</visibility>");
-                                        sbKMZ.AppendLine(@"<name>" + node.Z.ToString("F1").Replace(",", ".") + "(m)</name>");
+                                        sbHTML.AppendLine(@"<Placemark>");
+                                        sbHTML.AppendLine(@"<visibility>0</visibility>");
+                                        sbHTML.AppendLine(@"<name>" + node.Z.ToString("F1").Replace(",", ".") + "(m)</name>");
                                         if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
                                         {
-                                            sbKMZ.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
+                                            sbHTML.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
                                         }
                                         else if (contourPolygon.ContourValue >= 88)
                                         {
-                                            sbKMZ.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
+                                            sbHTML.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
                                         }
                                         else
                                         {
-                                            sbKMZ.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
+                                            sbHTML.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
                                         }
-                                        sbKMZ.AppendLine(@"<Point>");
-                                        sbKMZ.AppendLine(@"<coordinates>");
-                                        sbKMZ.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
-                                        sbKMZ.AppendLine(@"</coordinates>");
-                                        sbKMZ.AppendLine(@"</Point>");
-                                        sbKMZ.AppendLine(@"</Placemark>");
+                                        sbHTML.AppendLine(@"<Point>");
+                                        sbHTML.AppendLine(@"<coordinates>");
+                                        sbHTML.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
+                                        sbHTML.AppendLine(@"</coordinates>");
+                                        sbHTML.AppendLine(@"</Point>");
+                                        sbHTML.AppendLine(@"</Placemark>");
                                     }
-                                    sbKMZ.AppendLine(@"</Folder>");
+                                    sbHTML.AppendLine(@"</Folder>");
 
-                                    sbKMZ.AppendLine(@"</Folder>");
+                                    sbHTML.AppendLine(@"</Folder>");
                                 }
                             }
                         }
                     }
                 }
-                sbKMZ.AppendLine(@"</Folder>");
+                sbHTML.AppendLine(@"</Folder>");
             }
-            sbKMZ.AppendLine(@"</Folder>");
+            sbHTML.AppendLine(@"</Folder>");
 
-            sbKMZ.AppendLine(@"</Folder>");
+            sbHTML.AppendLine(@"</Folder>");
 
             string retStr2 = UpdateAppTaskPercentCompleted(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 100);
 
             return true;
         }
-        private bool WriteKMLSourcePlacemark(StringBuilder sbKMZ, PFSFile pfsFile, PFSSection pfsSectionSource, int SourceNumber, MikeSourceModel mikeSourceModel)
+        private bool WriteKMLSourcePlacemark(StringBuilder sbHTML, PFSFile pfsFile, PFSSection pfsSectionSource, int SourceNumber, MikeSourceModel mikeSourceModel)
         {
             string NotUsed = "";
             string SourceName = GetSourceName(pfsSectionSource);
@@ -4842,91 +4842,91 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
 
-            sbKMZ.Append("<Placemark>");
+            sbHTML.Append("<Placemark>");
 
             if (SourceIncluded == 1)
             {
                 if (mikeSourceModel.IsRiver)
                 {
-                    sbKMZ.AppendLine(string.Format(@"<name>{0} (" + TaskRunnerServiceRes.UsedLowerCase + @")</name>", SourceName));
-                    sbKMZ.AppendLine(@"<styleUrl>#msn_blue-pushpin</styleUrl>");
+                    sbHTML.AppendLine(string.Format(@"<name>{0} (" + TaskRunnerServiceRes.UsedLowerCase + @")</name>", SourceName));
+                    sbHTML.AppendLine(@"<styleUrl>#msn_blue-pushpin</styleUrl>");
                 }
                 else
                 {
-                    sbKMZ.AppendLine(string.Format(@"<name>{0} (" + TaskRunnerServiceRes.UsedLowerCase + @")</name>", SourceName));
-                    sbKMZ.AppendLine(@"<styleUrl>#msn_grn-pushpin</styleUrl>");
+                    sbHTML.AppendLine(string.Format(@"<name>{0} (" + TaskRunnerServiceRes.UsedLowerCase + @")</name>", SourceName));
+                    sbHTML.AppendLine(@"<styleUrl>#msn_grn-pushpin</styleUrl>");
                 }
             }
             else
             {
-                sbKMZ.AppendLine(string.Format(@"<name>{0} (" + TaskRunnerServiceRes.NotUsedLowerCase + @")</name>", SourceName));
-                sbKMZ.AppendLine(@"<styleUrl>#msn_red-pushpin</styleUrl>");
+                sbHTML.AppendLine(string.Format(@"<name>{0} (" + TaskRunnerServiceRes.NotUsedLowerCase + @")</name>", SourceName));
+                sbHTML.AppendLine(@"<styleUrl>#msn_red-pushpin</styleUrl>");
             }
-            sbKMZ.AppendLine(@"<visibility>0</visibility>");
-            sbKMZ.AppendLine(@"<description><![CDATA[");
-            sbKMZ.AppendLine(string.Format(@"<h2>{0}</h2>", SourceName));
-            sbKMZ.AppendLine(@"<h3>" + TaskRunnerServiceRes.Effluent + @"</h3>");
-            sbKMZ.AppendLine(@"<ul>");
-            sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Coordinates + @"</b>");
-            sbKMZ.AppendLine(string.Format(@"&nbsp;&nbsp;&nbsp; {0:F5} &nbsp; {1:F5}</li>", SourceCoord.Lat, SourceCoord.Lng).Replace(",", "."));
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
+            sbHTML.AppendLine(@"<description><![CDATA[");
+            sbHTML.AppendLine(string.Format(@"<h2>{0}</h2>", SourceName));
+            sbHTML.AppendLine(@"<h3>" + TaskRunnerServiceRes.Effluent + @"</h3>");
+            sbHTML.AppendLine(@"<ul>");
+            sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.Coordinates + @"</b>");
+            sbHTML.AppendLine(string.Format(@"&nbsp;&nbsp;&nbsp; {0:F5} &nbsp; {1:F5}</li>", SourceCoord.Lat, SourceCoord.Lng).Replace(",", "."));
 
             List<MikeSourceStartEndModel> mikeSourceStartEndModelList = _MikeSourceStartEndService.GetMikeSourceStartEndModelListWithMikeSourceIDDB(mikeSourceModel.MikeSourceID);
             if ((bool)mikeSourceModel.IsContinuous)
             {
                 if (mikeSourceStartEndModelList.Count > 0)
                 {
-                    sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsContinuous + "</b></li>");
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.Flow + @":</b> {0:F6} (m3/s)  {1:F0} (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>", mikeSourceStartEndModelList[0].SourceFlowStart_m3_day / 24 / 3600, mikeSourceStartEndModelList[0].SourceFlowStart_m3_day).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100ML + @":</b> {0:F0}</li>", mikeSourceStartEndModelList[0].SourcePollutionStart_MPN_100ml).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.Temperature + @":</b> {0:F0} " + TaskRunnerServiceRes.Celcius + @"</li>", mikeSourceStartEndModelList[0].SourceTemperatureStart_C).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.Salinity + @":</b> {0:F0} " + TaskRunnerServiceRes.PSU + @"</li>", mikeSourceStartEndModelList[0].SourceSalinityStart_PSU).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsContinuous + "</b></li>");
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.Flow + @":</b> {0:F6} (m3/s)  {1:F0} (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>", mikeSourceStartEndModelList[0].SourceFlowStart_m3_day / 24 / 3600, mikeSourceStartEndModelList[0].SourceFlowStart_m3_day).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100ML + @":</b> {0:F0}</li>", mikeSourceStartEndModelList[0].SourcePollutionStart_MPN_100ml).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.Temperature + @":</b> {0:F0} " + TaskRunnerServiceRes.Celcius + @"</li>", mikeSourceStartEndModelList[0].SourceTemperatureStart_C).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.Salinity + @":</b> {0:F0} " + TaskRunnerServiceRes.PSU + @"</li>", mikeSourceStartEndModelList[0].SourceSalinityStart_PSU).ToString().Replace(",", "."));
                 }
             }
             else
             {
-                sbKMZ.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsNotContinuous + @"</b></li>");
+                sbHTML.AppendLine(@"<li><b>" + TaskRunnerServiceRes.IsNotContinuous + @"</b></li>");
 
                 mikeSourceStartEndModelList = _MikeSourceStartEndService.GetMikeSourceStartEndModelListWithMikeSourceIDDB(mikeSourceModel.MikeSourceID);
                 int CountMikeSourceStartEnd = 0;
                 foreach (MikeSourceStartEndModel mssem in mikeSourceStartEndModelList)
                 {
                     CountMikeSourceStartEnd += 1;
-                    sbKMZ.AppendLine(@"<ul>");
-                    sbKMZ.AppendLine("<b>" + TaskRunnerServiceRes.Spill + @" " + CountMikeSourceStartEnd + "</b>");
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillStartTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt}</li>", mssem.StartDateAndTime_Local));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillEndTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt}</li>", mssem.EndDateAndTime_Local));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FlowStart + @":</b> {0:F6} (m3/s)  {1:F0} (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>", mssem.SourceFlowStart_m3_day / 24 / 3600, mssem.SourceFlowStart_m3_day).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FlowEnd + @":</b> {0:F6} (m3/s)  {1:F0} (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>", mssem.SourceFlowEnd_m3_day / 24 / 3600, mssem.SourceFlowEnd_m3_day).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLStart + @":</b> {0:F0}</li>", mssem.SourcePollutionStart_MPN_100ml).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLEnd + @":</b> {0:F0}</li>", mssem.SourcePollutionEnd_MPN_100ml).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.TemperatureStart + @":</b> {0:F0} " + TaskRunnerServiceRes.Celcius + @"</li>", mssem.SourceTemperatureStart_C).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.TemperatureEnd + @":</b> {0:F0} " + TaskRunnerServiceRes.Celcius + @"</li>", mssem.SourceTemperatureEnd_C).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SalinityStart + @":</b> {0:F0} " + TaskRunnerServiceRes.PSU + @"</li>", mssem.SourceSalinityStart_PSU).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SalinityEnd + @":</b> {0:F0} " + TaskRunnerServiceRes.PSU + @"</li>", mssem.SourceSalinityEnd_PSU).ToString().Replace(",", "."));
-                    sbKMZ.AppendLine(@"</ul>");
+                    sbHTML.AppendLine(@"<ul>");
+                    sbHTML.AppendLine("<b>" + TaskRunnerServiceRes.Spill + @" " + CountMikeSourceStartEnd + "</b>");
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillStartTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt}</li>", mssem.StartDateAndTime_Local));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SpillEndTime + @":</b> {0:yyyy/MM/dd HH:mm:ss tt}</li>", mssem.EndDateAndTime_Local));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FlowStart + @":</b> {0:F6} (m3/s)  {1:F0} (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>", mssem.SourceFlowStart_m3_day / 24 / 3600, mssem.SourceFlowStart_m3_day).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FlowEnd + @":</b> {0:F6} (m3/s)  {1:F0} (m3/" + TaskRunnerServiceRes.DayLowerCase + @")</li>", mssem.SourceFlowEnd_m3_day / 24 / 3600, mssem.SourceFlowEnd_m3_day).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLStart + @":</b> {0:F0}</li>", mssem.SourcePollutionStart_MPN_100ml).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.FCMPNPer100MLEnd + @":</b> {0:F0}</li>", mssem.SourcePollutionEnd_MPN_100ml).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.TemperatureStart + @":</b> {0:F0} " + TaskRunnerServiceRes.Celcius + @"</li>", mssem.SourceTemperatureStart_C).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.TemperatureEnd + @":</b> {0:F0} " + TaskRunnerServiceRes.Celcius + @"</li>", mssem.SourceTemperatureEnd_C).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SalinityStart + @":</b> {0:F0} " + TaskRunnerServiceRes.PSU + @"</li>", mssem.SourceSalinityStart_PSU).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(string.Format(@"<li><b>" + TaskRunnerServiceRes.SalinityEnd + @":</b> {0:F0} " + TaskRunnerServiceRes.PSU + @"</li>", mssem.SourceSalinityEnd_PSU).ToString().Replace(",", "."));
+                    sbHTML.AppendLine(@"</ul>");
                 }
             }
-            sbKMZ.AppendLine(@"</ul>");
-            sbKMZ.AppendLine(@"<iframe src=""about:"" width=""500"" height=""1"" />");
-            sbKMZ.AppendLine(@"]]></description>");
+            sbHTML.AppendLine(@"</ul>");
+            sbHTML.AppendLine(@"<iframe src=""about:"" width=""500"" height=""1"" />");
+            sbHTML.AppendLine(@"]]></description>");
 
-            sbKMZ.AppendLine(@"<Point>");
-            sbKMZ.AppendLine(@"<coordinates>");
-            sbKMZ.AppendLine(SourceCoord.Lng.ToString().Replace(",", ".") + @"," + SourceCoord.Lat.ToString().Replace(",", ".") + ",0 ");
-            sbKMZ.AppendLine(@"</coordinates>");
-            sbKMZ.AppendLine(@"</Point>");
-            sbKMZ.AppendLine(@"</Placemark>");
+            sbHTML.AppendLine(@"<Point>");
+            sbHTML.AppendLine(@"<coordinates>");
+            sbHTML.AppendLine(SourceCoord.Lng.ToString().Replace(",", ".") + @"," + SourceCoord.Lat.ToString().Replace(",", ".") + ",0 ");
+            sbHTML.AppendLine(@"</coordinates>");
+            sbHTML.AppendLine(@"</Point>");
+            sbHTML.AppendLine(@"</Placemark>");
 
             return true;
         }
-        private bool WriteKMLStudyAreaLine(StringBuilder sbKMZ, List<ElementLayer> elementLayerList, List<Node> nodeList)
+        private bool WriteKMLStudyAreaLine(StringBuilder sbHTML, List<ElementLayer> elementLayerList, List<Node> nodeList)
         {
-            sbKMZ.AppendLine(@"  <Style id=""StudyArea"">");
-            sbKMZ.AppendLine(@"  <LineStyle>");
-            sbKMZ.AppendLine(@"  <color>ffffff00</color>");
-            sbKMZ.AppendLine(@"  <width>2</width>");
-            sbKMZ.AppendLine(@"  </LineStyle>");
-            sbKMZ.AppendLine(@"  </Style>");
+            sbHTML.AppendLine(@"  <Style id=""StudyArea"">");
+            sbHTML.AppendLine(@"  <LineStyle>");
+            sbHTML.AppendLine(@"  <color>ffffff00</color>");
+            sbHTML.AppendLine(@"  <width>2</width>");
+            sbHTML.AppendLine(@"  </LineStyle>");
+            sbHTML.AppendLine(@"  </Style>");
 
             float MaxDepth = Math.Abs(nodeList.Min(n => n.Z));
 
@@ -5185,145 +5185,145 @@ namespace CSSPWebToolsTaskRunner.Services
 
             }
 
-            sbKMZ.AppendLine(@"  <Folder>");
-            sbKMZ.AppendLine(@"    <name>" + TaskRunnerServiceRes.MIKEStudyArea + @"</name>");
-            sbKMZ.AppendLine(@"    <visibility>0</visibility>");
+            sbHTML.AppendLine(@"  <Folder>");
+            sbHTML.AppendLine(@"    <name>" + TaskRunnerServiceRes.MIKEStudyArea + @"</name>");
+            sbHTML.AppendLine(@"    <visibility>0</visibility>");
             foreach (ContourPolygon contourPolygon in ContourPolygonList)
             {
-                sbKMZ.AppendLine(@"    <Folder>");
-                sbKMZ.AppendLine(@"      <visibility>0</visibility>");
-                sbKMZ.AppendLine(@"      <Placemark>");
-                sbKMZ.AppendLine(@"        <visibility>0</visibility>");
-                sbKMZ.AppendLine(@"        <styleUrl>#StudyArea</styleUrl>");
-                sbKMZ.AppendLine(@"        <LineString>");
-                sbKMZ.AppendLine(@"        <coordinates>");
+                sbHTML.AppendLine(@"    <Folder>");
+                sbHTML.AppendLine(@"      <visibility>0</visibility>");
+                sbHTML.AppendLine(@"      <Placemark>");
+                sbHTML.AppendLine(@"        <visibility>0</visibility>");
+                sbHTML.AppendLine(@"        <styleUrl>#StudyArea</styleUrl>");
+                sbHTML.AppendLine(@"        <LineString>");
+                sbHTML.AppendLine(@"        <coordinates>");
                 foreach (Node node in contourPolygon.ContourNodeList)
                 {
-                    sbKMZ.Append("        " + node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+                    sbHTML.Append("        " + node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
                 }
-                sbKMZ.AppendLine(@"        </coordinates>");
-                sbKMZ.AppendLine(@"        </LineString>");
-                sbKMZ.AppendLine(@"      </Placemark>");
-                sbKMZ.AppendLine(@"    </Folder>");
+                sbHTML.AppendLine(@"        </coordinates>");
+                sbHTML.AppendLine(@"        </LineString>");
+                sbHTML.AppendLine(@"      </Placemark>");
+                sbHTML.AppendLine(@"    </Folder>");
             }
-            sbKMZ.AppendLine(@"  </Folder>");
+            sbHTML.AppendLine(@"  </Folder>");
 
             return true;
         }
-        private bool WriteKMLStyleModelInput(StringBuilder sbKMZ)
+        private bool WriteKMLStyleModelInput(StringBuilder sbHTML)
         {
-            sbKMZ.AppendLine(@"<Style id=""sn_grn-pushpin"">");
-            sbKMZ.AppendLine(@"<IconStyle>");
-            sbKMZ.AppendLine(@"<scale>1.1</scale>");
-            sbKMZ.AppendLine(@"<Icon>");
-            sbKMZ.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbKMZ.AppendLine(@"</Icon>");
-            sbKMZ.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"</IconStyle>");
-            sbKMZ.AppendLine(@"<ListStyle>");
-            sbKMZ.AppendLine(@"</ListStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""sn_grn-pushpin"">");
+            sbHTML.AppendLine(@"<IconStyle>");
+            sbHTML.AppendLine(@"<scale>1.1</scale>");
+            sbHTML.AppendLine(@"<Icon>");
+            sbHTML.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+            sbHTML.AppendLine(@"</Icon>");
+            sbHTML.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"</IconStyle>");
+            sbHTML.AppendLine(@"<ListStyle>");
+            sbHTML.AppendLine(@"</ListStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<Style id=""sh_grn-pushpin"">");
-            sbKMZ.AppendLine(@"<IconStyle>");
-            sbKMZ.AppendLine(@"<scale>1.3</scale>");
-            sbKMZ.AppendLine(@"<Icon>");
-            sbKMZ.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbKMZ.AppendLine(@"</Icon>");
-            sbKMZ.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"</IconStyle>");
-            sbKMZ.AppendLine(@"<ListStyle>");
-            sbKMZ.AppendLine(@"</ListStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""sh_grn-pushpin"">");
+            sbHTML.AppendLine(@"<IconStyle>");
+            sbHTML.AppendLine(@"<scale>1.3</scale>");
+            sbHTML.AppendLine(@"<Icon>");
+            sbHTML.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+            sbHTML.AppendLine(@"</Icon>");
+            sbHTML.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"</IconStyle>");
+            sbHTML.AppendLine(@"<ListStyle>");
+            sbHTML.AppendLine(@"</ListStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<StyleMap id=""msn_grn-pushpin"">");
-            sbKMZ.AppendLine(@"<Pair>");
-            sbKMZ.AppendLine(@"<key>normal</key>");
-            sbKMZ.AppendLine(@"<styleUrl>#sn_grn-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"</Pair>");
-            sbKMZ.AppendLine(@"<Pair>");
-            sbKMZ.AppendLine(@"<key>highlight</key>");
-            sbKMZ.AppendLine(@"<styleUrl>#sh_grn-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"</Pair>");
-            sbKMZ.AppendLine(@"</StyleMap>");
+            sbHTML.AppendLine(@"<StyleMap id=""msn_grn-pushpin"">");
+            sbHTML.AppendLine(@"<Pair>");
+            sbHTML.AppendLine(@"<key>normal</key>");
+            sbHTML.AppendLine(@"<styleUrl>#sn_grn-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"</Pair>");
+            sbHTML.AppendLine(@"<Pair>");
+            sbHTML.AppendLine(@"<key>highlight</key>");
+            sbHTML.AppendLine(@"<styleUrl>#sh_grn-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"</Pair>");
+            sbHTML.AppendLine(@"</StyleMap>");
 
-            sbKMZ.AppendLine(@"<Style id=""sn_red-pushpin"">");
-            sbKMZ.AppendLine(@"<IconStyle>");
-            sbKMZ.AppendLine(@"<scale>1.1</scale>");
-            sbKMZ.AppendLine(@"<Icon>");
-            sbKMZ.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
-            sbKMZ.AppendLine(@"</Icon>");
-            sbKMZ.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"</IconStyle>");
-            sbKMZ.AppendLine(@"<ListStyle>");
-            sbKMZ.AppendLine(@"</ListStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""sn_red-pushpin"">");
+            sbHTML.AppendLine(@"<IconStyle>");
+            sbHTML.AppendLine(@"<scale>1.1</scale>");
+            sbHTML.AppendLine(@"<Icon>");
+            sbHTML.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
+            sbHTML.AppendLine(@"</Icon>");
+            sbHTML.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"</IconStyle>");
+            sbHTML.AppendLine(@"<ListStyle>");
+            sbHTML.AppendLine(@"</ListStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<Style id=""sh_red-pushpin"">");
-            sbKMZ.AppendLine(@"<IconStyle>");
-            sbKMZ.AppendLine(@"<scale>1.3</scale>");
-            sbKMZ.AppendLine(@"<Icon>");
-            sbKMZ.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
-            sbKMZ.AppendLine(@"</Icon>");
-            sbKMZ.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"</IconStyle>");
-            sbKMZ.AppendLine(@"<ListStyle>");
-            sbKMZ.AppendLine(@"</ListStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""sh_red-pushpin"">");
+            sbHTML.AppendLine(@"<IconStyle>");
+            sbHTML.AppendLine(@"<scale>1.3</scale>");
+            sbHTML.AppendLine(@"<Icon>");
+            sbHTML.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
+            sbHTML.AppendLine(@"</Icon>");
+            sbHTML.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"</IconStyle>");
+            sbHTML.AppendLine(@"<ListStyle>");
+            sbHTML.AppendLine(@"</ListStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<StyleMap id=""msn_red-pushpin"">");
-            sbKMZ.AppendLine(@"<Pair>");
-            sbKMZ.AppendLine(@"<key>normal</key>");
-            sbKMZ.AppendLine(@"<styleUrl>#sn_red-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"</Pair>");
-            sbKMZ.AppendLine(@"<Pair>");
-            sbKMZ.AppendLine(@"<key>highlight</key>");
-            sbKMZ.AppendLine(@"<styleUrl>#sh_red-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"</Pair>");
-            sbKMZ.AppendLine(@"</StyleMap>");
+            sbHTML.AppendLine(@"<StyleMap id=""msn_red-pushpin"">");
+            sbHTML.AppendLine(@"<Pair>");
+            sbHTML.AppendLine(@"<key>normal</key>");
+            sbHTML.AppendLine(@"<styleUrl>#sn_red-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"</Pair>");
+            sbHTML.AppendLine(@"<Pair>");
+            sbHTML.AppendLine(@"<key>highlight</key>");
+            sbHTML.AppendLine(@"<styleUrl>#sh_red-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"</Pair>");
+            sbHTML.AppendLine(@"</StyleMap>");
 
-            sbKMZ.AppendLine(@"<Style id=""sn_blue-pushpin"">");
-            sbKMZ.AppendLine(@"<IconStyle>");
-            sbKMZ.AppendLine(@"<scale>1.1</scale>");
-            sbKMZ.AppendLine(@"<Icon>");
-            sbKMZ.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbKMZ.AppendLine(@"</Icon>");
-            sbKMZ.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"</IconStyle>");
-            sbKMZ.AppendLine(@"<ListStyle>");
-            sbKMZ.AppendLine(@"</ListStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""sn_blue-pushpin"">");
+            sbHTML.AppendLine(@"<IconStyle>");
+            sbHTML.AppendLine(@"<scale>1.1</scale>");
+            sbHTML.AppendLine(@"<Icon>");
+            sbHTML.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+            sbHTML.AppendLine(@"</Icon>");
+            sbHTML.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"</IconStyle>");
+            sbHTML.AppendLine(@"<ListStyle>");
+            sbHTML.AppendLine(@"</ListStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<Style id=""sh_blue-pushpin"">");
-            sbKMZ.AppendLine(@"<IconStyle>");
-            sbKMZ.AppendLine(@"<scale>1.3</scale>");
-            sbKMZ.AppendLine(@"<Icon>");
-            sbKMZ.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbKMZ.AppendLine(@"</Icon>");
-            sbKMZ.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbKMZ.AppendLine(@"</IconStyle>");
-            sbKMZ.AppendLine(@"<ListStyle>");
-            sbKMZ.AppendLine(@"</ListStyle>");
-            sbKMZ.AppendLine(@"</Style>");
+            sbHTML.AppendLine(@"<Style id=""sh_blue-pushpin"">");
+            sbHTML.AppendLine(@"<IconStyle>");
+            sbHTML.AppendLine(@"<scale>1.3</scale>");
+            sbHTML.AppendLine(@"<Icon>");
+            sbHTML.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+            sbHTML.AppendLine(@"</Icon>");
+            sbHTML.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sbHTML.AppendLine(@"</IconStyle>");
+            sbHTML.AppendLine(@"<ListStyle>");
+            sbHTML.AppendLine(@"</ListStyle>");
+            sbHTML.AppendLine(@"</Style>");
 
-            sbKMZ.AppendLine(@"<StyleMap id=""msn_blue-pushpin"">");
-            sbKMZ.AppendLine(@"<Pair>");
-            sbKMZ.AppendLine(@"<key>normal</key>");
-            sbKMZ.AppendLine(@"<styleUrl>#sn_blue-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"</Pair>");
-            sbKMZ.AppendLine(@"<Pair>");
-            sbKMZ.AppendLine(@"<key>highlight</key>");
-            sbKMZ.AppendLine(@"<styleUrl>#sh_blue-pushpin</styleUrl>");
-            sbKMZ.AppendLine(@"</Pair>");
-            sbKMZ.AppendLine(@"</StyleMap>");
+            sbHTML.AppendLine(@"<StyleMap id=""msn_blue-pushpin"">");
+            sbHTML.AppendLine(@"<Pair>");
+            sbHTML.AppendLine(@"<key>normal</key>");
+            sbHTML.AppendLine(@"<styleUrl>#sn_blue-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"</Pair>");
+            sbHTML.AppendLine(@"<Pair>");
+            sbHTML.AppendLine(@"<key>highlight</key>");
+            sbHTML.AppendLine(@"<styleUrl>#sh_blue-pushpin</styleUrl>");
+            sbHTML.AppendLine(@"</Pair>");
+            sbHTML.AppendLine(@"</StyleMap>");
 
             return true;
         }
-        private bool WriteKMLTop(StringBuilder sbNewFileText)
+        private bool WriteKMLTop(StringBuilder sbHTML)
         {
-            sbNewFileText.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
-            sbNewFileText.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
-            sbNewFileText.AppendLine(@"<Document>");
+            sbHTML.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+            sbHTML.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+            sbHTML.AppendLine(@"<Document>");
 
             return true;
         }

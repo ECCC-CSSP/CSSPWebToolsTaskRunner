@@ -17,13 +17,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTML(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTML()
         {
             switch (reportTypeModel.TVType)
             {
                 case TVTypeEnum.Root:
                     {
-                        if (!GenerateHTMLRoot(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLRoot())
                         {
                             return false;
                         }
@@ -31,7 +31,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.Area:
                     {
-                        if (!GenerateHTMLArea(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLArea())
                         {
                             return false;
                         }
@@ -39,7 +39,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.Country:
                     {
-                        if (!GenerateHTMLCountry(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLCountry())
                         {
                             return false;
                         }
@@ -47,7 +47,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.Infrastructure:
                     {
-                        if (!GenerateHTMLInfrastructure(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLInfrastructure())
                         {
                             return false;
                         }
@@ -55,7 +55,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.MikeScenario:
                     {
-                        if (!GenerateHTMLMikeScenario(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMikeScenario())
                         {
                             return false;
                         }
@@ -63,7 +63,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.MikeSource:
                     {
-                        if (!GenerateHTMLMikeSource(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMikeSource())
                         {
                             return false;
                         }
@@ -71,7 +71,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.Municipality:
                     {
-                        if (!GenerateHTMLMunicipality(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMunicipality())
                         {
                             return false;
                         }
@@ -79,7 +79,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.MWQMSite:
                     {
-                        if (!GenerateHTMLMWQMSite(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLMWQMSite())
                         {
                             return false;
                         }
@@ -87,7 +87,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.PolSourceSite:
                     {
-                        if (!GenerateHTMLPolSourceSite(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLPolSourceSite())
                         {
                             return false;
                         }
@@ -95,7 +95,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.Province:
                     {
-                        if (!GenerateHTMLProvince(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLProvince())
                         {
                             return false;
                         }
@@ -103,7 +103,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.Sector:
                     {
-                        if (!GenerateHTMLSector(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSector())
                         {
                             return false;
                         }
@@ -111,7 +111,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.Subsector:
                     {
-                        if (!GenerateHTMLSubsector(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsector())
                         {
                             return false;
                         }
@@ -119,7 +119,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.BoxModel:
                     {
-                        if (!GenerateHTMLBoxModel(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLBoxModel())
                         {
                             return false;
                         }
@@ -127,7 +127,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case TVTypeEnum.VisualPlumesScenario:
                     {
-                        if (!GenerateHTMLVisualPlumesScenario(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLVisualPlumesScenario())
                         {
                             return false;
                         }
@@ -135,7 +135,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 default:
                     {
-                        if (!GenerateHTMLNotImplemented(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLNotImplemented())
                         {
                             return false;
                         }
@@ -145,190 +145,298 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool GenerateHTMLNotImplemented(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLNotImplemented()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>" + reportTypeModel.TVType.ToString() + " Not Implemented Yet</h2>");
+            sb.AppendLine(@"<h2>" + reportTypeModel.TVType.ToString() + " Not Implemented Yet</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GetBottomHTML(StringBuilder sbHTML, FileInfo fi, string parameters)
+        private bool GetBottomHTML()
         {
-            sbHTML.AppendLine(@"    <br />");
-            sbHTML.AppendLine(@"    <div class=""small"">");
+            sb.AppendLine(@"    <br />");
+            sb.AppendLine(@"    <div class=""small"">");
             if (fi.Extension.ToLower() == ".html")
             {
-                sbHTML.AppendLine(@"        <b>File name:</b> " + fi.FullName.Replace(".html", ".docx") + @"");
+                sb.AppendLine(@"        <b>File name:</b> " + fi.FullName.Replace(".html", ".docx") + @"");
             }
             else
             {
-                sbHTML.AppendLine(@"        <b>File name:</b> " + fi.FullName + @"");
+                sb.AppendLine(@"        <b>File name:</b> " + fi.FullName + @"");
             }
-            sbHTML.AppendLine(@"    </div>");
-            sbHTML.AppendLine(@"</body>");
-            sbHTML.AppendLine(@"</html>");
+            sb.AppendLine(@"    </div>");
+            sb.AppendLine(@"</body>");
+            sb.AppendLine(@"</html>");
 
             return true;
         }
-        private bool GetTopHTML(StringBuilder sbHTML)
+        private bool GenerateObjects()
         {
-            sbHTML.AppendLine(@"<html>");
-            sbHTML.AppendLine(@"<head>");
-            sbHTML.AppendLine(@"    <meta charset=""utf-8"" />");
-            sbHTML.AppendLine(@"    <title>This is the title of the html document</title>");
-            sbHTML.AppendLine(@"    <style>");
-            sbHTML.AppendLine(@"body {");
-            sbHTML.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@"h5.ECCCCoverPage {");
-            sbHTML.AppendLine(@"    font-size: 8px");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@"table.ParentFCStatTableClass {");
-            sbHTML.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
-            sbHTML.AppendLine(@"    text-align: center;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@"table.FCStatTableClass {");
-            sbHTML.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
-            sbHTML.AppendLine(@"    border: 1px solid black;");
-            sbHTML.AppendLine(@"    text-align: center;");
-            sbHTML.AppendLine(@"    width: 100%;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@"table.FCSalTempDataTableClass {");
-            sbHTML.AppendLine(@"    font: normal 8px arial, helvetica, sans-serif;");
-            sbHTML.AppendLine(@"    border: 1px solid black;");
-            sbHTML.AppendLine(@"    text-align: center;");
-            sbHTML.AppendLine(@"    width: 100%;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreenfBottomBorder {");
-            sbHTML.AppendLine(@"    text-align: left;");
-            sbHTML.AppendLine(@"    background-color: #ccffcc;");
-            sbHTML.AppendLine(@"    border-bottom: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreenfLeftBorder {");
-            sbHTML.AppendLine(@"    text-align: left;");
-            sbHTML.AppendLine(@"    background-color: #ccffcc;");
-            sbHTML.AppendLine(@"    border-left: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreenfLeftAndBottomBorder {");
-            sbHTML.AppendLine(@"    text-align: left;");
-            sbHTML.AppendLine(@"    background-color: #ccffcc;");
-            sbHTML.AppendLine(@"    border-left: 1px solid black;");
-            sbHTML.AppendLine(@"    border-bottom: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".leftAndBottomBorder {");
-            sbHTML.AppendLine(@"    text-align: left;");
-            sbHTML.AppendLine(@"    border-left: 1px solid black;");
-            sbHTML.AppendLine(@"    border-bottom: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".textAlignLeftAndLeftBorder {");
-            sbHTML.AppendLine(@"    text-align: left;");
-            sbHTML.AppendLine(@"    border-left: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".textAlignLeft {");
-            sbHTML.AppendLine(@"    text-align: left;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".textAlignCenter {");
-            sbHTML.AppendLine(@"    text-align: center;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".textAlignRight {");
-            sbHTML.AppendLine(@"    text-align: right;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".leftBorder {");
-            sbHTML.AppendLine(@"    border-left: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".rightBorder {");
-            sbHTML.AppendLine(@"    border-right: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".rightBottomBorder {");
-            sbHTML.AppendLine(@"    border-right: 1px solid black;");
-            sbHTML.AppendLine(@"    border-bottom: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bottomBorder {");
-            sbHTML.AppendLine(@"    border-bottom: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".topBorder {");
-            sbHTML.AppendLine(@"    border-top: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".topRightBorder {");
-            sbHTML.AppendLine(@"    border-top: 1px solid black;");
-            sbHTML.AppendLine(@"    border-right: 1px solid black;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bglightblue {");
-            sbHTML.AppendLine(@"    background-color: lightblue;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgyellow {");
-            sbHTML.AppendLine(@"    background-color: yellow;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreena {");
-            sbHTML.AppendLine(@"    background-color: #009900;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreenb {");
-            sbHTML.AppendLine(@"    background-color: #00bb00;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreenc {");
-            sbHTML.AppendLine(@"    background-color: #11ff11;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreend {");
-            sbHTML.AppendLine(@"    background-color: #44ff44;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreene {");
-            sbHTML.AppendLine(@"    background-color: #99ff99;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bggreenf {");
-            sbHTML.AppendLine(@"    background-color: #ccffcc;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgreda {");
-            sbHTML.AppendLine(@"    background-color: #ffcccc;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgredb {");
-            sbHTML.AppendLine(@"    background-color: #ff9999;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgredc {");
-            sbHTML.AppendLine(@"    background-color: #ff4444;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgredd {");
-            sbHTML.AppendLine(@"    background-color: #ff1111;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgrede {");
-            sbHTML.AppendLine(@"    background-color: #cc0000;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgredf {");
-            sbHTML.AppendLine(@"    background-color: #aa0000;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgbluea {");
-            sbHTML.AppendLine(@"    background-color: #ddddff;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgblueb {");
-            sbHTML.AppendLine(@"    background-color: #ccccff;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgbluec {");
-            sbHTML.AppendLine(@"    background-color: #bbbbff;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgblued {");
-            sbHTML.AppendLine(@"    background-color: #aaaaff;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgbluee {");
-            sbHTML.AppendLine(@"    background-color: #9999ff;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgbluef {");
-            sbHTML.AppendLine(@"    background-color: #8888ff;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@".bgblack {");
-            sbHTML.AppendLine(@"    background-color: #000000;");
-            sbHTML.AppendLine(@"    color: #ffffff;");
-            sbHTML.AppendLine(@"}");
-            sbHTML.AppendLine(@"    </style>");
-            sbHTML.AppendLine(@"</head>");
-            sbHTML.AppendLine(@"<body>");
+
+            // need to search the whole document for some keywords Ex: |||COVERPAGE|||
+            List<ReportGenerateObjectsKeywordEnum> KeywordList = new List<ReportGenerateObjectsKeywordEnum>();
+
+            for(int i = 1, count = Enum.GetNames(typeof(ReportGenerateObjectsKeywordEnum)).Length; i < count; i++)
+            {
+                KeywordList.Add((ReportGenerateObjectsKeywordEnum)i);
+            };
+
+            foreach (ReportGenerateObjectsKeywordEnum keyword in KeywordList)
+            {
+                bool Found = true;
+                int StartPos = 0;
+                int EndPos = 0;
+                while (Found)
+                {
+                    string sbText = sb.ToString();
+
+                    StartPos = sbText.IndexOf("|||" + keyword.ToString() + "|||");
+                    EndPos = StartPos + ("|||" + keyword + "|||").ToString().Length;
+
+                    StringBuilder sbTemp = new StringBuilder();
+                    if (StartPos > 0)
+                    {
+                        switch (keyword)
+                        {
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FULL_REPORT_COVER_PAGE:
+                                {
+                                    GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_ALL:
+                                {
+                                    GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_WET:
+                                {
+                                    GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_DRY:
+                                {
+                                    GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MAP_ACTIVE_MWQM_SITES:
+                                {
+                                    GenerateHTMLSUBSECTOR_MAP_ACTIVE_MWQM_SITES(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MAP_ACTIVE_POL_SOURCE_SITES:
+                                {
+                                    GenerateHTMLSUBSECTOR_MAP_ACTIVE_POL_SOURCE_SITES(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES:
+                                {
+                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            default:
+                                {
+                                    sb.Insert(EndPos, "Tag not recognised");
+                                }
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Found = false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        private bool GetTopHTML()
+        {
+            sb.AppendLine(@"<html>");
+            sb.AppendLine(@"<head>");
+            sb.AppendLine(@"    <meta charset=""utf-8"" />");
+            sb.AppendLine(@"    <title>This is the title of the html document</title>");
+            sb.AppendLine(@"    <style>");
+            sb.AppendLine(@"body {");
+            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"h5.ECCCCoverPage {");
+            sb.AppendLine(@"    font-size: 8px");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"table.ParentFCStatTableClass {");
+            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"    text-align: center;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"table.FCStatTableClass {");
+            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"    border: 1px solid black;");
+            sb.AppendLine(@"    text-align: center;");
+            sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"table.FCSalTempDataTableClass {");
+            sb.AppendLine(@"    font: normal 8px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"    border: 1px solid black;");
+            sb.AppendLine(@"    text-align: center;");
+            sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreenfBottomBorder {");
+            sb.AppendLine(@"    text-align: left;");
+            sb.AppendLine(@"    background-color: #ccffcc;");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreenfLeftBorder {");
+            sb.AppendLine(@"    text-align: left;");
+            sb.AppendLine(@"    background-color: #ccffcc;");
+            sb.AppendLine(@"    border-left: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreenfLeftAndBottomBorder {");
+            sb.AppendLine(@"    text-align: left;");
+            sb.AppendLine(@"    background-color: #ccffcc;");
+            sb.AppendLine(@"    border-left: 1px solid black;");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".leftAndBottomBorder {");
+            sb.AppendLine(@"    text-align: left;");
+            sb.AppendLine(@"    border-left: 1px solid black;");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".textAlignLeftAndLeftBorder {");
+            sb.AppendLine(@"    text-align: left;");
+            sb.AppendLine(@"    border-left: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".textAlignLeft {");
+            sb.AppendLine(@"    text-align: left;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".textAlignCenter {");
+            sb.AppendLine(@"    text-align: center;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".textAlignRight {");
+            sb.AppendLine(@"    text-align: right;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".leftBorder {");
+            sb.AppendLine(@"    border-left: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".rightBorder {");
+            sb.AppendLine(@"    border-right: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".rightBottomBorder {");
+            sb.AppendLine(@"    border-right: 1px solid black;");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bottomBorder {");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".topBorder {");
+            sb.AppendLine(@"    border-top: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".topRightBorder {");
+            sb.AppendLine(@"    border-top: 1px solid black;");
+            sb.AppendLine(@"    border-right: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bglightblue {");
+            sb.AppendLine(@"    background-color: lightblue;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgyellow {");
+            sb.AppendLine(@"    background-color: yellow;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreena {");
+            sb.AppendLine(@"    background-color: #009900;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreenb {");
+            sb.AppendLine(@"    background-color: #00bb00;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreenc {");
+            sb.AppendLine(@"    background-color: #11ff11;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreend {");
+            sb.AppendLine(@"    background-color: #44ff44;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreene {");
+            sb.AppendLine(@"    background-color: #99ff99;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bggreenf {");
+            sb.AppendLine(@"    background-color: #ccffcc;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgreda {");
+            sb.AppendLine(@"    background-color: #ffcccc;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgredb {");
+            sb.AppendLine(@"    background-color: #ff9999;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgredc {");
+            sb.AppendLine(@"    background-color: #ff4444;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgredd {");
+            sb.AppendLine(@"    background-color: #ff1111;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgrede {");
+            sb.AppendLine(@"    background-color: #cc0000;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgredf {");
+            sb.AppendLine(@"    background-color: #aa0000;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgbluea {");
+            sb.AppendLine(@"    background-color: #ddddff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgblueb {");
+            sb.AppendLine(@"    background-color: #ccccff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgbluec {");
+            sb.AppendLine(@"    background-color: #bbbbff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgblued {");
+            sb.AppendLine(@"    background-color: #aaaaff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgbluee {");
+            sb.AppendLine(@"    background-color: #9999ff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgbluef {");
+            sb.AppendLine(@"    background-color: #8888ff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bgblack {");
+            sb.AppendLine(@"    background-color: #000000;");
+            sb.AppendLine(@"    color: #ffffff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"    </style>");
+            sb.AppendLine(@"</head>");
+            sb.AppendLine(@"<body>");
 
             return true;
         }

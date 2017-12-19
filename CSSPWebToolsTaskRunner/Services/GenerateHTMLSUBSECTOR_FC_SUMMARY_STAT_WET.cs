@@ -19,90 +19,30 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSubsectorFCSummaryStatDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET(StringBuilder sbTemp)
         {
             string NotUsed = "";
-            int TVItemID = 0;
-            int Year = 0;
-            string HideAllAllAll = "";
             string HideWetAllAll = "";
-            string HideDryAllAll = "";
             string HideMaxFCColumn = "";
 
-            Random random = new Random();
-            string FileNameExtra = "";
-            for (int i = 0; i < 10; i++)
-            {
-                FileNameExtra = FileNameExtra + (char)random.Next(97, 122);
-            }
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_WET.ToString()));
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (!GetTopHTML(sbHTML))
-            {
-                return false;
-            }
+            // TVItemID and Year already loaded
 
-            List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            if (!int.TryParse(GetParameters("TVItemID", ParamValueList), out TVItemID))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                return false;
-            }
-
-            if (!int.TryParse(GetParameters("Year", ParamValueList), out Year))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.Year);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.Year);
-                return false;
-            }
-
-            HideAllAllAll = GetParameters("HideAllAllAll", ParamValueList);
             HideWetAllAll = GetParameters("HideWetAllAll", ParamValueList);
-            HideDryAllAll = GetParameters("HideDryAllAll", ParamValueList);
             HideMaxFCColumn = GetParameters("HideMaxFCColumn", ParamValueList);
 
             bool MissingRainData = _MWQMRunService.IsRainDataMissingWithSubsectorTVItemID(TVItemID);
 
-            List<MWQMAnalysisReportParameterModel> mwqmAnalysisReportParameterModelList = _MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterModelListWithSubsectorTVItemIDDB(TVItemID).Where(c => c.AnalysisReportYear == Year).ToList();
+            List<MWQMAnalysisReportParameterModel> mwqmAnalysisReportParameterModelList = 
+                _MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterModelListWithSubsectorTVItemIDDB(TVItemID)
+                .Where(c => c.AnalysisReportYear == Year 
+                && c.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll).ToList();
 
-            if (!mwqmAnalysisReportParameterModelList.Where(c => c.AnalysisReportYear == Year && c.AnalysisCalculationType == AnalysisCalculationTypeEnum.AllAllAll).Any())
-            {
-                MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel = new MWQMAnalysisReportParameterModel()
-                {
-                    AnalysisCalculationType = AnalysisCalculationTypeEnum.AllAllAll,
-                    AnalysisName = "",
-                    AnalysisReportYear = Year,
-                    Command = AnalysisReportExportCommandEnum.Report,
-                    DryLimit24h = 4,
-                    DryLimit48h = 8,
-                    DryLimit72h = 12,
-                    DryLimit96h = 16,
-                    EndDate = new DateTime(1900, 1, 1),
-                    ExcelTVFileTVItemID = null,
-                    FullYear = true,
-                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
-                    LastUpdateDate_UTC = DateTime.Now,
-                    MidRangeNumberOfDays = -6,
-                    MWQMAnalysisReportParameterID = 0,
-                    NumberOfRuns = 30,
-                    RunsToOmit = ",",
-                    SalinityHighlightDeviationFromAverage = 8,
-                    ShortRangeNumberOfDays = -3,
-                    ShowDataTypes = ExcelExportShowDataTypeEnum.FecalColiform.ToString() + ",",
-                    SubsectorTVItemID = TVItemID,
-                    StartDate = new DateTime(1900, 1, 1),
-                    WetLimit24h = 12,
-                    WetLimit48h = 25,
-                    WetLimit72h = 37,
-                    WetLimit96h = 50,
-                };
-
-                mwqmAnalysisReportParameterModelList.Add(mwqmAnalysisReportParameterModel);
-            }
-            if (!mwqmAnalysisReportParameterModelList.Where(c => c.AnalysisReportYear == Year && c.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll).Any())
+            if (mwqmAnalysisReportParameterModelList.Count == 0)
             {
                 MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel = new MWQMAnalysisReportParameterModel()
                 {
@@ -136,45 +76,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 mwqmAnalysisReportParameterModelList.Add(mwqmAnalysisReportParameterModel);
             }
-            if (!mwqmAnalysisReportParameterModelList.Where(c => c.AnalysisReportYear == Year && c.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll).Any())
-            {
-                MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel = new MWQMAnalysisReportParameterModel()
-                {
-                    AnalysisCalculationType = AnalysisCalculationTypeEnum.DryAllAll,
-                    AnalysisName = "",
-                    AnalysisReportYear = Year,
-                    Command = AnalysisReportExportCommandEnum.Report,
-                    DryLimit24h = 4,
-                    DryLimit48h = 8,
-                    DryLimit72h = 12,
-                    DryLimit96h = 16,
-                    EndDate = new DateTime(1900, 1, 1),
-                    ExcelTVFileTVItemID = null,
-                    FullYear = false,
-                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
-                    LastUpdateDate_UTC = DateTime.Now,
-                    MidRangeNumberOfDays = -6,
-                    MWQMAnalysisReportParameterID = 0,
-                    NumberOfRuns = 30,
-                    RunsToOmit = ",",
-                    SalinityHighlightDeviationFromAverage = 8,
-                    ShortRangeNumberOfDays = -3,
-                    ShowDataTypes = ExcelExportShowDataTypeEnum.FecalColiform.ToString() + ",",
-                    SubsectorTVItemID = TVItemID,
-                    StartDate = new DateTime(1900, 1, 1),
-                    WetLimit24h = 12,
-                    WetLimit48h = 25,
-                    WetLimit72h = 37,
-                    WetLimit96h = 50,
-                };
-
-                mwqmAnalysisReportParameterModelList.Add(mwqmAnalysisReportParameterModel);
-            }
 
             string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
-
-            sbHTML.AppendLine($@"<h2>{ SubsectorTVText }</h2>");
-            sbHTML.AppendLine($@"<br />");
 
             MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID);
 
@@ -222,29 +125,19 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 List<MWQMSiteAnalysisModel> mwqmSiteAnalysisModelList = mwqmSubsectorAnalysisModel.MWQMSiteAnalysisModelList.Where(c => c.IsActive == true).OrderBy(c => c.MWQMSiteTVText).ToList();
 
-                if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.AllAllAll && !string.IsNullOrWhiteSpace(HideAllAllAll))
-                {
-                    sbHTML.AppendLine($@"<h4>{ TaskRunnerServiceRes.All } { TaskRunnerServiceRes.NotShown }</h4>");
-                    continue;
-                }
                 if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll && !string.IsNullOrWhiteSpace(HideWetAllAll))
                 {
-                    sbHTML.AppendLine($@"<h4>{ TaskRunnerServiceRes.Wet } { TaskRunnerServiceRes.NotShown }</h4>");
-                    continue;
-                }
-                if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll && !string.IsNullOrWhiteSpace(HideDryAllAll))
-                {
-                    sbHTML.AppendLine($@"<h4>{ TaskRunnerServiceRes.Dry } { TaskRunnerServiceRes.NotShown }</h4>");
+                    sbTemp.AppendLine($@"<h4>{ TaskRunnerServiceRes.Wet } { TaskRunnerServiceRes.NotShown }</h4>");
                     continue;
                 }
                 if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll && MissingRainData)
                 {
-                    sbHTML.AppendLine($@"<h4>{ TaskRunnerServiceRes.Wet } { TaskRunnerServiceRes.NotShown } { TaskRunnerServiceRes.BecauseOfMissingRainData }</h4>");
+                    sbTemp.AppendLine($@"<h4>{ TaskRunnerServiceRes.Wet } { TaskRunnerServiceRes.NotShown } { TaskRunnerServiceRes.BecauseOfMissingRainData }</h4>");
                     continue;
                 }
                 if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll && MissingRainData)
                 {
-                    sbHTML.AppendLine($@"<h4>{ TaskRunnerServiceRes.Dry } { TaskRunnerServiceRes.NotShown } { TaskRunnerServiceRes.BecauseOfMissingRainData }</h4>");
+                    sbTemp.AppendLine($@"<h4>{ TaskRunnerServiceRes.Dry } { TaskRunnerServiceRes.NotShown } { TaskRunnerServiceRes.BecauseOfMissingRainData }</h4>");
                     continue;
                 }
 
@@ -258,34 +151,34 @@ namespace CSSPWebToolsTaskRunner.Services
                     AllWetDry = TaskRunnerServiceRes.Dry;
                 }
 
-                sbHTML.Append($@"<h4>{ TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL) ");
-                sbHTML.Append($@" --- { AllWetDry } ---");
-                sbHTML.Append($@" ({ Year })");
-                sbHTML.AppendLine(@"</h4>");
-                sbHTML.AppendLine(@"<table class=""textAlignCenter"">");
-                sbHTML.AppendLine(@"        <tr>");
-                sbHTML.AppendLine(@"        <td>");
-                sbHTML.AppendLine(@"<table class=""FCStatTableClass"">");
-                sbHTML.AppendLine(@"    <thead>");
-                sbHTML.AppendLine(@"        <tr>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Site }&nbsp;&nbsp;</th>");
-                sbHTML.AppendLine($@"            <th></th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Samples }&nbsp;&nbsp;</th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Period }&nbsp;&nbsp;</th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.MinFC }&nbsp;&nbsp;</th>");
+                sbTemp.Append($@"<h4>{ TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL) ");
+                sbTemp.Append($@" --- { AllWetDry } ---");
+                sbTemp.Append($@" ({ Year })");
+                sbTemp.AppendLine(@"</h4>");
+                sbTemp.AppendLine(@"<table class=""textAlignCenter"">");
+                sbTemp.AppendLine(@"        <tr>");
+                sbTemp.AppendLine(@"        <td>");
+                sbTemp.AppendLine(@"<table class=""FCStatTableClass"">");
+                sbTemp.AppendLine(@"    <thead>");
+                sbTemp.AppendLine(@"        <tr>");
+                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Site }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th></th>");
+                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Samples }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Period }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.MinFC }&nbsp;&nbsp;</th>");
                 if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                 {
-                    sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.MaxFC }&nbsp;&nbsp;</th>");
+                    sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.MaxFC }&nbsp;&nbsp;</th>");
                 }
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.GMean }&nbsp;&nbsp;</th>");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.Median }&nbsp;&nbsp;</th> ");
-                sbHTML.AppendLine($@"            <th>{ TaskRunnerServiceRes.P90 }&nbsp;&nbsp;</th>");
-                sbHTML.AppendLine($@"            <th>% &gt; 43&nbsp;&nbsp;</th>");
-                sbHTML.AppendLine($@"            <th>% &gt; 260&nbsp;&nbsp;</th>");
-                sbHTML.AppendLine($@"            <th></th>");
-                sbHTML.AppendLine(@"        </tr>");
-                sbHTML.AppendLine(@"    </thead>");
-                sbHTML.AppendLine(@"    <tbody>");
+                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.GMean }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Median }&nbsp;&nbsp;</th> ");
+                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.P90 }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th>% &gt; 43&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th>% &gt; 260&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th></th>");
+                sbTemp.AppendLine(@"        </tr>");
+                sbTemp.AppendLine(@"    </thead>");
+                sbTemp.AppendLine(@"    <tbody>");
 
                 int CountSite = 0;
                 int CountSiteTotal = mwqmSiteAnalysisModelList.Count();
@@ -522,23 +415,23 @@ namespace CSSPWebToolsTaskRunner.Services
                     if (mwqmSampleAnalysisForSiteModelToUseList.Count < 10)
                     {
                         Letter = mwqmSampleAnalysisForSiteModelToUseList.Count.ToString();
-                        sbHTML.AppendLine(@"        <tr>");
-                        sbHTML.AppendLine($@"            <td>{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
-                        sbHTML.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
-                        sbHTML.AppendLine(@"            <td>--</td>");
-                        sbHTML.AppendLine(@"            <td>--</td>");
-                        sbHTML.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine(@"        <tr>");
+                        sbTemp.AppendLine($@"            <td>{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
                         if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                         {
-                            sbHTML.AppendLine(@"            <td>--</td>");
+                            sbTemp.AppendLine(@"            <td>--</td>");
                         }
-                        sbHTML.AppendLine(@"            <td>--</td>");
-                        sbHTML.AppendLine(@"            <td>--</td>");
-                        sbHTML.AppendLine(@"            <td>--</td>");
-                        sbHTML.AppendLine(@"            <td>--</td>");
-                        sbHTML.AppendLine(@"            <td>--</td>");
-                        sbHTML.AppendLine($@"            <td class=""bglightblue"">{ Letter }</td>");
-                        sbHTML.AppendLine(@"        </tr>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine(@"            <td>--</td>");
+                        sbTemp.AppendLine($@"            <td class=""bglightblue"">{ Letter }</td>");
+                        sbTemp.AppendLine(@"        </tr>");
                     }
                     if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 10)
                     {
@@ -595,36 +488,6 @@ namespace CSSPWebToolsTaskRunner.Services
                                 Coloring = "bgbluea";
                                 Letter = "A";
                             }
-                            //if ((GeoMeanInt > 181.33) || (MedianInt > 181.33) || (P90Int > 460.0) || (PercOver260Int > 18.33))
-                            //{
-                            //    Coloring = "bgbluef";
-                            //    Letter = "F";
-                            //}
-                            //else if ((GeoMeanInt > 162.67) || (MedianInt > 162.67) || (P90Int > 420.0) || (PercOver260Int > 16.67))
-                            //{
-                            //    Coloring = "bgbluee";
-                            //    Letter = "E";
-                            //}
-                            //else if ((GeoMeanInt > 144.0) || (MedianInt > 144.0) || (P90Int > 380.0) || (PercOver260Int > 15.0))
-                            //{
-                            //    Coloring = "bgblued";
-                            //    Letter = "D";
-                            //}
-                            //else if ((GeoMeanInt > 125.33) || (MedianInt > 125.33) || (P90Int > 340.0) || (PercOver260Int > 13.33))
-                            //{
-                            //    Coloring = "bgbluec";
-                            //    Letter = "C";
-                            //}
-                            //else if ((GeoMeanInt > 106.67) || (MedianInt > 106.67) || (P90Int > 300.0) || (PercOver260Int > 11.67))
-                            //{
-                            //    Coloring = "bgblueb";
-                            //    Letter = "B";
-                            //}
-                            //else
-                            //{
-                            //    Coloring = "bgbluea";
-                            //    Letter = "A";
-                            //}
                         }
                         else if ((GeoMeanInt > 14) || (MedianInt > 14) || (P90Int > 43) || (PercOver43Int > 10))
                         {
@@ -658,36 +521,6 @@ namespace CSSPWebToolsTaskRunner.Services
                                 Coloring = "bgreda";
                                 Letter = "A";
                             }
-                            //if ((GeoMeanInt > 75.67) || (MedianInt > 75.67) || (P90Int > 223.83) || (PercOver43Int > 26.67))
-                            //{
-                            //    Coloring = "bgredf";
-                            //    Letter = "F";
-                            //}
-                            //else if ((GeoMeanInt > 63.33) || (MedianInt > 63.33) || (P90Int > 187.67) || (PercOver43Int > 23.33))
-                            //{
-                            //    Coloring = "bgrede";
-                            //    Letter = "E";
-                            //}
-                            //else if ((GeoMeanInt > 51.0) || (MedianInt > 51.0) || (P90Int > 151.5) || (PercOver43Int > 20.0))
-                            //{
-                            //    Coloring = "bgredd";
-                            //    Letter = "D";
-                            //}
-                            //else if ((GeoMeanInt > 38.67) || (MedianInt > 38.67) || (P90Int > 115.33) || (PercOver43Int > 16.67))
-                            //{
-                            //    Coloring = "bgredc";
-                            //    Letter = "C";
-                            //}
-                            //else if ((GeoMeanInt > 26.33) || (MedianInt > 26.33) || (P90Int > 79.17) || (PercOver43Int > 13.33))
-                            //{
-                            //    Coloring = "bgredb";
-                            //    Letter = "B";
-                            //}
-                            //else
-                            //{
-                            //    Coloring = "bgreda";
-                            //    Letter = "A";
-                            //}
                         }
                         else
                         {
@@ -721,74 +554,44 @@ namespace CSSPWebToolsTaskRunner.Services
                                 Coloring = "bggreena";
                                 Letter = "A";
                             }
-                            //if ((GeoMeanInt > 11.67) || (MedianInt > 11.67) || (P90Int > 35.83) || (PercOver43Int > 8.33))
-                            //{
-                            //    Coloring = "bggreenf";
-                            //    Letter = "F";
-                            //}
-                            //else if ((GeoMeanInt > 9.33) || (MedianInt > 9.33) || (P90Int > 28.67) || (PercOver43Int > 6.67))
-                            //{
-                            //    Coloring = "bggreene";
-                            //    Letter = "E";
-                            //}
-                            //else if ((GeoMeanInt > 7.0) || (MedianInt > 7.0) || (P90Int > 21.5) || (PercOver43Int > 5.0))
-                            //{
-                            //    Coloring = "bggreend";
-                            //    Letter = "D";
-                            //}
-                            //else if ((GeoMeanInt > 4.67) || (MedianInt > 4.67) || (P90Int > 14.33) || (PercOver43Int > 3.33))
-                            //{
-                            //    Coloring = "bggreenc";
-                            //    Letter = "C";
-                            //}
-                            //else if ((GeoMeanInt > 2.33) || (MedianInt > 2.33) || (P90Int > 7.17) || (PercOver43Int > 1.67))
-                            //{
-                            //    Coloring = "bggreenb";
-                            //    Letter = "B";
-                            //}
-                            //else
-                            //{
-                            //    Coloring = "bggreena";
-                            //    Letter = "A";
-                            //}
                         }
 
-                        sbHTML.AppendLine(@"        <tr>");
-                        sbHTML.AppendLine($@"            <td>{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
-                        sbHTML.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
-                        sbHTML.AppendLine($@"            <td>{ MWQMSampleCount.ToString() }</td>");
-                        sbHTML.AppendLine($@"            <td>{ (MaxYear != null ? (MaxYear.ToString() + "-" + MinYear.ToString()) : "--") }</td>");
-                        sbHTML.AppendLine($@"            <td>{ (MinFC != null ? (MinFC < 2 ? "< 2" : (MinFC.ToString())) : "--") }</td>");
+                        sbTemp.AppendLine(@"        <tr>");
+                        sbTemp.AppendLine($@"            <td>{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
+                        sbTemp.AppendLine($@"            <td>{ MWQMSampleCount.ToString() }</td>");
+                        sbTemp.AppendLine($@"            <td>{ (MaxYear != null ? (MaxYear.ToString() + "-" + MinYear.ToString()) : "--") }</td>");
+                        sbTemp.AppendLine($@"            <td>{ (MinFC != null ? (MinFC < 2 ? "< 2" : (MinFC.ToString())) : "--") }</td>");
                         if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                         {
-                            sbHTML.AppendLine($@"            <td>{ (MaxFC != null ? (MaxFC < 2 ? "< 2" : (MaxFC.ToString())) : "--") }</td>");
+                            sbTemp.AppendLine($@"            <td>{ (MaxFC != null ? (MaxFC < 2 ? "< 2" : (MaxFC.ToString())) : "--") }</td>");
                         }
                         string bgClass = GeoMean != null && GeoMean > 14 ? "bgyellow" : "";
-                        sbHTML.AppendLine($@"            <td class=""{ bgClass }"">{ (GeoMean != null ? ((double)GeoMean < 2.0D ? "< 2" : ((double)GeoMean).ToString("F0")) : "--") }</td>");
+                        sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (GeoMean != null ? ((double)GeoMean < 2.0D ? "< 2" : ((double)GeoMean).ToString("F0")) : "--") }</td>");
                         bgClass = Median != null && Median > 14 ? "bgyellow" : "";
-                        sbHTML.AppendLine($@"            <td class=""{ bgClass }"">{ (Median != null ? ((double)Median < 2.0D ? "< 2" : ((double)Median).ToString("F0")) : "--") }</td>");
+                        sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (Median != null ? ((double)Median < 2.0D ? "< 2" : ((double)Median).ToString("F0")) : "--") }</td>");
                         bgClass = P90 != null && P90 > 43 ? "bgyellow" : "";
-                        sbHTML.AppendLine($@"            <td class=""{ bgClass }"">{ (P90 != null ? ((double)P90 < 2.0D ? "< 2" : ((double)P90).ToString("F0")) : "--") }</td>");
+                        sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (P90 != null ? ((double)P90 < 2.0D ? "< 2" : ((double)P90).ToString("F0")) : "--") }</td>");
                         bgClass = PercOver43 != null && PercOver43 > 10 ? "bgyellow" : "";
-                        sbHTML.AppendLine($@"            <td class=""{ bgClass }"">{ (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--") }</td>");
+                        sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--") }</td>");
                         bgClass = PercOver260 != null && PercOver260 > 10 ? "bgyellow" : "";
-                        sbHTML.AppendLine($@"            <td class=""{ bgClass }"">{ (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--") }</td>");
-                        sbHTML.AppendLine($@"            <td class=""{ Coloring }"">{ Letter }</td>");
-                        sbHTML.AppendLine(@"        </tr>");
+                        sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--") }</td>");
+                        sbTemp.AppendLine($@"            <td class=""{ Coloring }"">{ Letter }</td>");
+                        sbTemp.AppendLine(@"        </tr>");
 
                     }
 
                     DateTimeList = DateTimeList.Concat(mwqmSampleAnalysisForSiteModelToUseList.Select(c => c.SampleDateTime_Local)).Distinct().ToList();
                 }
-                sbHTML.AppendLine(@"    </tbody>");
-                sbHTML.AppendLine(@"    <tfoot>");
-                sbHTML.AppendLine(@"        <tr>");
+                sbTemp.AppendLine(@"    </tbody>");
+                sbTemp.AppendLine(@"    <tfoot>");
+                sbTemp.AppendLine(@"        <tr>");
 
-                sbHTML.AppendLine(@"        </tr>");
-                sbHTML.AppendLine(@"    </tfoot>");
-                sbHTML.AppendLine(@"</table>");
-                sbHTML.AppendLine(@"</td>");
-                sbHTML.AppendLine(@"</tr>");
+                sbTemp.AppendLine(@"        </tr>");
+                sbTemp.AppendLine(@"    </tfoot>");
+                sbTemp.AppendLine(@"</table>");
+                sbTemp.AppendLine(@"</td>");
+                sbTemp.AppendLine(@"</tr>");
 
                 List<int> YearList = new List<int>();
                 for (int year = 1980, maxYear = Math.Min(Year, DateTime.Now.Year) + 1; year < maxYear; year++)
@@ -862,85 +665,80 @@ namespace CSSPWebToolsTaskRunner.Services
                     xlApp.Quit();
                 }
 
-                sbHTML.AppendLine(@"        <tr>");
-                sbHTML.AppendLine($@"            <td class=""textAlignLeft"">");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.NOTE }</b> : { TaskRunnerServiceRes.Shaded } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.GMean } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.Median } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.P90 } &gt; 43 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (% &gt; 43) &gt; 10");
-                sbHTML.AppendLine($@"            </td>");
-                sbHTML.AppendLine(@"        </tr>");
-                sbHTML.AppendLine(@"        <tr>");
-                sbHTML.AppendLine($@"            <td class=""textAlignCenter"">");
-                sbHTML.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,70|||");
-                sbHTML.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
-                sbHTML.AppendLine(@"            </td>");
-                sbHTML.AppendLine(@"        </tr>");
-                sbHTML.AppendLine(@"        <tr>");
-                sbHTML.AppendLine($@"            <td class=""textAlignLeft"">");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.ReportYear }</b> : { mwqmAnalysisReportParameterModel.AnalysisReportYear }&nbsp;&nbsp;&nbsp;");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.StartDate }</b> : { mwqmAnalysisReportParameterModel.StartDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.EndDate }</b> : { mwqmAnalysisReportParameterModel.EndDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.NumberOfRuns }</b> : { mwqmAnalysisReportParameterModel.NumberOfRuns }&nbsp;&nbsp;&nbsp;");
-                sbHTML.Append($@"<b>{ TaskRunnerServiceRes.FullYear }</b> : { (mwqmAnalysisReportParameterModel.FullYear ? TaskRunnerServiceRes.Yes : TaskRunnerServiceRes.No) }&nbsp;&nbsp;&nbsp;");
+                sbTemp.AppendLine(@"        <tr>");
+                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NOTE }</b> : { TaskRunnerServiceRes.Shaded } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.GMean } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.Median } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.P90 } &gt; 43 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (% &gt; 43) &gt; 10");
+                sbTemp.AppendLine($@"            </td>");
+                sbTemp.AppendLine(@"        </tr>");
+                sbTemp.AppendLine(@"        <tr>");
+                sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
+                sbTemp.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,70|||");
+                sbTemp.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
+                sbTemp.AppendLine(@"            </td>");
+                sbTemp.AppendLine(@"        </tr>");
+                sbTemp.AppendLine(@"        <tr>");
+                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ReportYear }</b> : { mwqmAnalysisReportParameterModel.AnalysisReportYear }&nbsp;&nbsp;&nbsp;");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.StartDate }</b> : { mwqmAnalysisReportParameterModel.StartDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.EndDate }</b> : { mwqmAnalysisReportParameterModel.EndDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NumberOfRuns }</b> : { mwqmAnalysisReportParameterModel.NumberOfRuns }&nbsp;&nbsp;&nbsp;");
+                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.FullYear }</b> : { (mwqmAnalysisReportParameterModel.FullYear ? TaskRunnerServiceRes.Yes : TaskRunnerServiceRes.No) }&nbsp;&nbsp;&nbsp;");
 
                 if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll)
                 {
-                    sbHTML.Append($@" <b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Dry24h }</b> : { mwqmAnalysisReportParameterModel.DryLimit24h } mm &nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Dry48h }</b> : { mwqmAnalysisReportParameterModel.DryLimit48h } mm &nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Dry72h }</b> : { mwqmAnalysisReportParameterModel.DryLimit72h } mm &nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Dry96h }</b> : { mwqmAnalysisReportParameterModel.DryLimit96h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@" <b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry24h }</b> : { mwqmAnalysisReportParameterModel.DryLimit24h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry48h }</b> : { mwqmAnalysisReportParameterModel.DryLimit48h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry72h }</b> : { mwqmAnalysisReportParameterModel.DryLimit72h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry96h }</b> : { mwqmAnalysisReportParameterModel.DryLimit96h } mm &nbsp;&nbsp;&nbsp;");
                 }
                 if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll)
                 {
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Wet24h }</b> : { mwqmAnalysisReportParameterModel.WetLimit24h } mm &nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Wet48h }</b> : { mwqmAnalysisReportParameterModel.WetLimit48h } mm &nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Wet72h }</b> : { mwqmAnalysisReportParameterModel.WetLimit72h } mm &nbsp;&nbsp;&nbsp;");
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.Wet96h }</b> : { mwqmAnalysisReportParameterModel.WetLimit96h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet24h }</b> : { mwqmAnalysisReportParameterModel.WetLimit24h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet48h }</b> : { mwqmAnalysisReportParameterModel.WetLimit48h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet72h }</b> : { mwqmAnalysisReportParameterModel.WetLimit72h } mm &nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet96h }</b> : { mwqmAnalysisReportParameterModel.WetLimit96h } mm &nbsp;&nbsp;&nbsp;");
                 }
                 List<int> MWQMRunTVItemIDList = mwqmAnalysisReportParameterModel.RunsToOmit.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
                 if (MWQMRunTVItemIDList.Count > 0)
                 {
-                    sbHTML.Append($@"<b>{ TaskRunnerServiceRes.RunsOmitted }</b> : ");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.RunsOmitted }</b> : ");
 
                     foreach (int mwqmRunTVItemID in MWQMRunTVItemIDList)
                     {
                         MWQMRunModel mwqmRunModel = _MWQMRunService.GetMWQMRunModelWithMWQMRunTVItemIDDB(mwqmRunTVItemID);
                         if (!string.IsNullOrEmpty(mwqmRunModel.Error))
                         {
-                            sbHTML.Append($@" [err - { mwqmRunTVItemID }]");
+                            sbTemp.Append($@" [err - { mwqmRunTVItemID }]");
                         }
                         else
                         {
-                            sbHTML.Append($@" [{ mwqmRunModel.DateTime_Local.ToString("yyyy MMM dd") }]");
+                            sbTemp.Append($@" [{ mwqmRunModel.DateTime_Local.ToString("yyyy MMM dd") }]");
                         }
                     }
                 }
-                sbHTML.AppendLine($@"");
-                sbHTML.AppendLine(@"            </td>");
+                sbTemp.AppendLine($@"");
+                sbTemp.AppendLine(@"            </td>");
 
-                sbHTML.AppendLine(@"</table>");
+                sbTemp.AppendLine(@"</table>");
 
-                sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
-            }
-
-            if (!GetBottomHTML(sbHTML, fi, parameters))
-            {
-                return false;
+                sbTemp.AppendLine(@"<span>|||PAGE_BREAK|||</span>");
             }
 
             return true;
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSubsectorFCSummaryStatDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        public bool PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLSubsectorFCSummaryStatDocx(fi, sbHTML, parameters, reportTypeModel);
+            bool retBool = GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET(sbTemp);
 
             StreamWriter sw = fi.CreateText();
-            sw.Write(sbHTML.ToString());
+            sw.Write(sbTemp.ToString());
             sw.Flush();
             sw.Close();
 

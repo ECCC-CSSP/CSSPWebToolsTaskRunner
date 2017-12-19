@@ -18,13 +18,21 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSubsector(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSubsector()
         {
             switch (reportTypeModel.UniqueCode)
             {
+                case "TestObjectsOfFullReportDocx":
+                    {
+                        if (!GenerateHTMLSubsectorTestObjectsOfFullReportDocx())
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "FCSummaryStatDocx":
                     {
-                        if (!GenerateHTMLSubsectorFCSummaryStatDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsectorFCSummaryStatDocx())
                         {
                             return false;
                         }
@@ -32,7 +40,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MapActivePolSourceSitesDocx":
                     {
-                        if (!GenerateHTMLSubsectorMapActivePolSourceSitesDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsectorMapActivePolSourceSitesDocx())
                         {
                             return false;
                         }
@@ -40,39 +48,39 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "MapActiveMWQMSitesDocx":
                     {
-                        if (!GenerateHTMLSubsectorMapMWQMSitesDocx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsectorMapMWQMSitesDocx())
                         {
                             return false;
                         }
                     }
                     break;
-                case "FullReportCoverPage":
+                case "FullReportCoverPageDocx":
                     {
-                        if (!GenerateHTMLSubsectorFullReportCoverPage(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsectorFullReportCoverPageDocx())
                         {
                             return false;
                         }
                     }
                     break;
-                case "PollutionSourceSites":
+                case "PollutionSourceSitesDocx":
                     {
-                        if (!GenerateHTMLSubsectorPollutionSourceSites(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsectorPollutionSourceSitesDocx())
                         {
                             return false;
                         }
                     }
                     break;
-                case "MWQMSites":
+                case "MWQMSitesDocx":
                     {
-                        if (!GenerateHTMLSubsectorMWQMSites(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsectorMWQMSitesDocx())
                         {
                             return false;
                         }
                     }
                     break;
-                case "FullReport":
+                case "FullReportDocx":
                     {
-                        if (!GenerateHTMLSubsectorFullReport(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsectorFullReportDocx())
                         {
                             return false;
                         }
@@ -80,7 +88,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 case "FCSummaryStatXlsx":
                     {
-                        if (!GenerateHTMLSubsector_SubsectorTestXlsx(fi, sbHTML, parameters, reportTypeModel))
+                        if (!GenerateHTMLSubsector_SubsectorTestXlsx())
                         {
                             return false;
                         }
@@ -91,7 +99,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     break;
                 default:
-                    if (!GenerateHTMLSubsector_NotImplemented(fi, sbHTML, parameters, reportTypeModel))
+                    if (!GenerateHTMLSubsector_NotImplemented())
                     {
                         return false;
                     }
@@ -99,32 +107,32 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateHTMLSubsector_SubsectorTestXlsx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSubsector_SubsectorTestXlsx()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>This will contain the Summary statistics FC densities (MPN/100mL)</h2>");
+            sb.AppendLine(@"<h2>This will contain the Summary statistics FC densities (MPN/100mL)</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
 
             return true;
         }
-        private bool GenerateHTMLSubsector_NotImplemented(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSubsector_NotImplemented()
         {
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
 
-            sbHTML.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
+            sb.AppendLine(@"<h2>UniqueCode [" + reportTypeModel.UniqueCode + " is not implemented.</h2>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }

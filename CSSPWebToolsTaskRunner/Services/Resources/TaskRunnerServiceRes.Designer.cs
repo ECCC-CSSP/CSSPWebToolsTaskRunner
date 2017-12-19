@@ -952,6 +952,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating [{0}].
+        /// </summary>
+        public static string Creating_ {
+            get {
+                return ResourceManager.GetString("Creating_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating all input files.
         /// </summary>
         public static string CreatingAllInputFiles {

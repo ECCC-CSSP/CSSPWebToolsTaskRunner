@@ -17,13 +17,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateKMZRoot(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateKMZRoot()
         {
             switch (reportTypeModel.UniqueCode)
             {
                 case "RootTestKMZ":
                     {
-                        if (!GenerateKMZRoot_RootTestKMZ(fi, sbKMZ, parameters, reportTypeModel))
+                        if (!GenerateKMZRoot_RootTestKMZ())
                         {
                             return false;
                         }
@@ -38,37 +38,37 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateKMZRoot_RootTestKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateKMZRoot_RootTestKMZ()
         {
-            sbKMZ.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
-            sbKMZ.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
-            sbKMZ.AppendLine(@"<Document>");
-            sbKMZ.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
-            sbKMZ.AppendLine(@"	<Placemark>");
-            sbKMZ.AppendLine(@"		<name>My Parents Home</name> ");
-            sbKMZ.AppendLine(@"		<Point>");
-            sbKMZ.AppendLine(@"			<coordinates>-64.69002452357093,46.48465663502946,0</coordinates>");
-            sbKMZ.AppendLine(@"		</Point> ");
-            sbKMZ.AppendLine(@"	</Placemark>");
-            sbKMZ.AppendLine(@"</Document> ");
-            sbKMZ.AppendLine(@"</kml>");
+            sb.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+            sb.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+            sb.AppendLine(@"<Document>");
+            sb.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
+            sb.AppendLine(@"	<Placemark>");
+            sb.AppendLine(@"		<name>My Parents Home</name> ");
+            sb.AppendLine(@"		<Point>");
+            sb.AppendLine(@"			<coordinates>-64.69002452357093,46.48465663502946,0</coordinates>");
+            sb.AppendLine(@"		</Point> ");
+            sb.AppendLine(@"	</Placemark>");
+            sb.AppendLine(@"</Document> ");
+            sb.AppendLine(@"</kml>");
 
             return true;
         }
-        private bool GenerateKMZRoot_NotImplementedKMZ(FileInfo fi, StringBuilder sbKMZ, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateKMZRoot_NotImplementedKMZ()
         {
-            sbKMZ.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
-            sbKMZ.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
-            sbKMZ.AppendLine(@"<Document>");
-            sbKMZ.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
-            sbKMZ.AppendLine(@"	<Placemark>");
-            sbKMZ.AppendLine(@"		<name>Not Implemented</name> ");
-            sbKMZ.AppendLine(@"		<Point>");
-            sbKMZ.AppendLine(@"			<coordinates>-90,50,0</coordinates>");
-            sbKMZ.AppendLine(@"		</Point> ");
-            sbKMZ.AppendLine(@"	</Placemark>");
-            sbKMZ.AppendLine(@"</Document> ");
-            sbKMZ.AppendLine(@"</kml>");
+            sb.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+            sb.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+            sb.AppendLine(@"<Document>");
+            sb.AppendLine(@"	<name>" + fi.FullName.Replace(".kml", ".kmz") + "</name>");
+            sb.AppendLine(@"	<Placemark>");
+            sb.AppendLine(@"		<name>Not Implemented</name> ");
+            sb.AppendLine(@"		<Point>");
+            sb.AppendLine(@"			<coordinates>-90,50,0</coordinates>");
+            sb.AppendLine(@"		</Point> ");
+            sb.AppendLine(@"	</Placemark>");
+            sb.AppendLine(@"</Document> ");
+            sb.AppendLine(@"</kml>");
 
             return true;
         }

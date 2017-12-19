@@ -18,10 +18,9 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSubsectorMapMWQMSitesDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        private bool GenerateHTMLSUBSECTOR_MAP_ACTIVE_MWQM_SITES(StringBuilder sbTemp)
         {
             string NotUsed = "";
-            int TVItemID = 0;
             string HideVerticalScale = "";
             string HideHorizontalScale = "";
             string HideNorthArrow = "";
@@ -29,18 +28,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
 
-            if (!GetTopHTML(sbHTML))
+            if (!GetTopHTML())
             {
                 return false;
             }
-            List<string> ParamValueList = parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (!int.TryParse(GetParameters("TVItemID", ParamValueList), out TVItemID))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.TVItemID);
-                return false;
-            }
+            // TVItemID and Year alrady loaded
 
             HideVerticalScale = GetParameters("HideVerticalScale", ParamValueList);
             HideHorizontalScale = GetParameters("HideHorizontalScale", ParamValueList);
@@ -49,8 +43,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
 
-            sbHTML.AppendLine($@"<h1>{ SubsectorTVText }</h1>");
-            sbHTML.AppendLine($@"<br />");
+            sbTemp.AppendLine($@"<h1>{ SubsectorTVText }</h1>");
+            sbTemp.AppendLine($@"<br />");
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
@@ -76,16 +70,16 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 string Error = _TaskRunnerBaseService._BWObj.TextLanguageList[(_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? 1 : 0)].Text;
 
-                sbHTML.AppendLine($@"<h1>{ Error }</h1>");
+                sbTemp.AppendLine($@"<h1>{ Error }</h1>");
             }
 
-            sbHTML.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
+            sbTemp.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
 
-            sbHTML.AppendLine($@"|||FileNameExtra|Random,{ googleMapToPNG.FileNameExtra }|||");
+            sbTemp.AppendLine($@"|||FileNameExtra|Random,{ googleMapToPNG.FileNameExtra }|||");
 
-            sbHTML.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
-            if (!GetBottomHTML(sbHTML, fi, parameters))
+            if (!GetBottomHTML())
             {
                 return false;
             }
@@ -94,12 +88,12 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSubsectorMapMWQMSitesDocx(FileInfo fi, StringBuilder sbHTML, string parameters, ReportTypeModel reportTypeModel)
+        public bool PublicGenerateHTMLSUBSECTOR_MAP_ACTIVE_MWQM_SITES(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLSubsectorMapMWQMSitesDocx(fi, sbHTML, parameters, reportTypeModel);
+            bool retBool = GenerateHTMLSUBSECTOR_MAP_ACTIVE_MWQM_SITES(sbTemp);
 
             StreamWriter sw = fi.CreateText();
-            sw.Write(sbHTML.ToString());
+            sw.Write(sbTemp.ToString());
             sw.Flush();
             sw.Close();
 

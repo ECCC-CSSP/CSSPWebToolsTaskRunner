@@ -29,6 +29,7 @@ namespace CSSPWebToolsTaskRunner.Services
         private TVFileService _TVFileService { get; set; }
         private TVItemService _TVItemService { get; set; }
         private ReportTypeService _ReportTypeService { get; set; }
+        private ReportSectionService _ReportSectionService { get; set; }
         private MWQMSubsectorService _MWQMSubsectorService { get; set; }
         private MWQMAnalysisReportParameterService _MWQMAnalysisReportParameterService { get; set; }
         private MapInfoService _MapInfoService { get; set; }
@@ -43,15 +44,37 @@ namespace CSSPWebToolsTaskRunner.Services
         private MWQMSiteService _MWQMSiteService { get; set; }
         private MWQMSampleService _MWQMSampleService { get; set; }
         private BaseEnumService _BaseEnumService { get; set; }
+        public FileInfo fi { get; set; }
+        public ReportTypeModel reportTypeModel { get; set; }
+        public int TVItemID { get; set; }
+        public int Year { get; set; }
+        public string Parameters { get; set; }
+        public StringBuilder sb { get; set; }
+        public string FileNameExtra { get; set; }
         #endregion Properties
 
         #region Constructors
         public ParametersService(TaskRunnerBaseService taskRunnerBaseService)
         {
+            reportTypeModel = new ReportTypeModel();
+            TVItemID = 0;
+            Year = 0;
+            Parameters = "";
+            fi = new FileInfo(@"C:\DoesNotExist.txt");
+            sb = new StringBuilder();
+            FileNameExtra = "";
+
+            Random random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                FileNameExtra = FileNameExtra + (char)random.Next(97, 122);
+            }
+
             _TaskRunnerBaseService = taskRunnerBaseService;
             _TVFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _TVItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _ReportTypeService = new ReportTypeService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _ReportSectionService = new ReportSectionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMSubsectorService = new MWQMSubsectorService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMAnalysisReportParameterService = new MWQMAnalysisReportParameterService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -76,14 +99,15 @@ namespace CSSPWebToolsTaskRunner.Services
             string ReportTypeIDText = "";
             int ReportTypeID = 0;
             string TVItemIDText = "";
-            int TVItemID = 0;
+            string YearText = "";
+            int TempInt = 0;
 
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
             string ServerFilePath = _TVFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
-            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
+            Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
@@ -92,6 +116,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
             }
 
+            // doing ReportTypeID
             ReportTypeIDText = GetParameters("ReportTypeID", ParamValueList);
             if (string.IsNullOrWhiteSpace(ReportTypeIDText))
             {
@@ -107,7 +132,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
+            reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
             if (!string.IsNullOrWhiteSpace(reportTypeModel.Error))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.ReportTypeID, TaskRunnerServiceRes.ReportTypeID, ReportTypeID.ToString());
@@ -115,6 +140,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
+            // doing TVItemID
             TVItemIDText = GetParameters("TVItemID", ParamValueList);
 
             if (string.IsNullOrWhiteSpace(TVItemIDText))
@@ -124,49 +150,75 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            if (!int.TryParse(TVItemIDText, out TVItemID))
+            if (!int.TryParse(TVItemIDText, out TempInt))
             {
                 NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
                 return;
             }
 
-            if (reportTypeModel.FileType == FileTypeEnum.DOCX || reportTypeModel.FileType == FileTypeEnum.XLSX)
+            TVItemID = TempInt;
+
+            if (reportTypeModel.FileType != FileTypeEnum.KMZ)
             {
-                StringBuilder sbHTML = new StringBuilder();
+                // doing Year
+                YearText = GetParameters("Year", ParamValueList);
 
-                DateTime CD = DateTime.Now;
-                string Language = "_" + _TaskRunnerBaseService._BWObj.appTaskModel.Language;
-
-                string DateText = "_" + CD.Year.ToString() +
-                    "_" + (CD.Month > 9 ? CD.Month.ToString() : "0" + CD.Month.ToString()) +
-                    "_" + (CD.Day > 9 ? CD.Day.ToString() : "0" + CD.Day.ToString()) +
-                    "_" + (CD.Hour > 9 ? CD.Hour.ToString() : "0" + CD.Hour.ToString()) +
-                    "_" + (CD.Minute > 9 ? CD.Minute.ToString() : "0" + CD.Minute.ToString());
-
-                if (!RenameStartOfFileName(reportTypeModel, TVItemID, TVItemIDText, ParamValueList))
+                if (string.IsNullOrWhiteSpace(YearText))
                 {
+                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
                     return;
                 }
 
-                FileInfo fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".html");
-
-                if (fi.Exists)
+                if (!int.TryParse(YearText, out TempInt))
                 {
-                    try
-                    {
-                        fi.Delete();
-                        fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".html");
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return;
-                    }
+                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+                    return;
                 }
 
-                if (!GenerateHTML(fi, sbHTML, Parameters, reportTypeModel))
+                Year = TempInt;
+            }
+            else
+            {
+                Year = DateTime.Now.Year;
+            }
+
+            DateTime CD = DateTime.Now;
+            string Language = "_" + _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+
+            string DateText = "_" + CD.Year.ToString() +
+                "_" + (CD.Month > 9 ? CD.Month.ToString() : "0" + CD.Month.ToString()) +
+                "_" + (CD.Day > 9 ? CD.Day.ToString() : "0" + CD.Day.ToString()) +
+                "_" + (CD.Hour > 9 ? CD.Hour.ToString() : "0" + CD.Hour.ToString()) +
+                "_" + (CD.Minute > 9 ? CD.Minute.ToString() : "0" + CD.Minute.ToString());
+
+            if (!RenameStartOfFileName(reportTypeModel, TVItemID, TVItemIDText, ParamValueList))
+            {
+                return;
+            }
+
+            fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".html");
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                    fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".html");
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            if (reportTypeModel.FileType == FileTypeEnum.DOCX || reportTypeModel.FileType == FileTypeEnum.XLSX)
+            {
+                if (!GenerateHTML())
                 {
                     return;
                 }
@@ -188,21 +240,21 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
 
                 StreamWriter sw = fi.CreateText();
-                sw.Write(sbHTML.ToString());
+                sw.Write(sb.ToString());
                 sw.Close();
 
                 if (reportTypeModel.FileType == FileTypeEnum.XLSX)
                 {
-                    CreateXlsxWithHTML(fi, Parameters, reportTypeModel);
+                    CreateXlsxWithHTML();
                 }
                 else
                 {
-                    CreateDocxWithHTML(fi, Parameters, reportTypeModel);
+                    CreateDocxWithHTML();
                 }
             }
             else if (reportTypeModel.FileType == FileTypeEnum.KMZ)
             {
-                if (!GenerateKMZ(ServerFilePath, Parameters, reportTypeModel))
+                if (!GenerateKMZ())
                 {
                     return;
                 }
@@ -218,7 +270,7 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Functions public
 
         #region Functions private
-        private bool CreateDocxWithHTML(FileInfo fi, string Parameters, ReportTypeModel reportTypeModel)
+        private bool CreateDocxWithHTML()
         {
             string FileNameRandom = "";
             string NotUsed = "";
@@ -237,7 +289,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             // turn all |||PageBreak||| into word page break
-            string SearchMarker = "|||PageBreak|||";
+            string SearchMarker = "|||PAGE_BREAK|||";
             bool Found = true;
             while (Found)
             {
@@ -418,7 +470,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool CreateXlsxWithHTML(FileInfo fi, string Parameters, ReportTypeModel reportTypeModel)
+        private bool CreateXlsxWithHTML()
         {
             string NotUsed = "";
 
@@ -543,6 +595,55 @@ namespace CSSPWebToolsTaskRunner.Services
                                 }
                                 reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", Year.ToString());
                             }
+                        }
+                    }
+                    break;
+                case TVTypeEnum.MikeScenario:
+                    {
+                        string TVItemIDStr = "";
+                        string ContourValues = "";
+
+                        TVItemIDStr = GetParameters("TVItemID", ParamValueList);
+                        if (string.IsNullOrWhiteSpace(TVItemIDStr))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
+                        }
+
+                        int.TryParse(TVItemIDStr, out TVItemID);
+                        if (TVItemID == 0)
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
+                        }
+
+                        ContourValues = GetParameters("ContourValues", ParamValueList);
+                        ContourValues = ContourValues.Trim().Replace(" ", "_");
+
+                        TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+                        if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                            return false;
+                        }
+                        string MikeScenarioName = tvItemModelMikeScenario.TVText;
+                        int pos = MikeScenarioName.IndexOf(" ");
+                        if (pos > 0)
+                        {
+                            MikeScenarioName = MikeScenarioName.Trim();
+                        }
+                        reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{MikeScenarioName}", MikeScenarioName);
+
+
+                        // it is possible that ContourValues parameter does not exist or is empty
+                        ContourValues = GetParameters("ContourValues", ParamValueList);
+                        ContourValues = ContourValues.Trim().Replace(" ", "_");
+
+                        if (!string.IsNullOrWhiteSpace(ContourValues))
+                        {
+
+                            reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{ContourValues}", ContourValues);
                         }
                     }
                     break;

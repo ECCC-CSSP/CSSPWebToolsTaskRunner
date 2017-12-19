@@ -5,12 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using CSSPWebToolsTaskRunner.Services;
 using System.Linq;
-using CSSPWebToolsDB.Models;
 using System.ComponentModel;
 using System.Transactions;
-using CSSPWebToolsTaskRunner.Services.Fakes;
 using Microsoft.QualityTools.Testing.Fakes;
-using CSSPWebToolsDB.Services;
 using System.IO;
 using System.Web.Mvc;
 using CSSPWebToolsDBDLL.Services;
@@ -145,7 +142,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
             chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.YearsWithSamplesUsed;
 
-            chartPage.Export(@"C:\Users\charles\Desktop\test.png", "PNG", false);
+            chartPage.Export(@"C:\Users\leblancc\Desktop\TestHTML\test.png", "PNG", false);
 
             if (workbook != null)
             {
@@ -157,17 +154,84 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             }
         }
         [TestMethod]
-        public void GenerateHTMLSubsector_With_UniqueCode_FCSummaryStatDocx_Test()
+        public void PublicGenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE_Test()
         {
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
                 SetupTest(LanguageRequest);
 
-                int SubsectorTVItemID = 1142;
+                int SubsectorTVItemID = 635;
+                int ReportTypeID = 32;
+                int Year = 2017;
+
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE_" + LanguageRequest.ToString() + ".html");
+                StringBuilder sbHTML = new StringBuilder();
+                string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
+                ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 10000,
+                    TVItemID = SubsectorTVItemID,
+                    TVItemID2 = SubsectorTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+                ParametersService parameterService = new ParametersService(taskRunnerBaseService);
+                parameterService.fi = fi;
+                parameterService.sb = sbHTML;
+                parameterService.Parameters = Parameters;
+                parameterService.reportTypeModel = reportTypeModel;
+                parameterService.TVItemID = SubsectorTVItemID;
+                parameterService.Year = Year;
+                StringBuilder sbTemp = new StringBuilder();
+                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(sbTemp);
+                Assert.AreEqual(true, retBool);
+
+                StreamWriter sw = fi.CreateText();
+                sw.Write(sbTemp.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+        }
+        [TestMethod]
+        public void PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL_Test()
+        {
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                int SubsectorTVItemID = 635;
                 int ReportTypeID = 23;
                 int Year = 2017;
 
-                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\TestGenerateHTMLSubsector_FCSummaryStatDocx_" + LanguageRequest.ToString() + ".html");
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL_" + LanguageRequest.ToString() + ".html");
                 StringBuilder sbHTML = new StringBuilder();
                 string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
                 ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
@@ -207,27 +271,34 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
                 taskRunnerBaseService._BWObj = bwObj;
                 ParametersService parameterService = new ParametersService(taskRunnerBaseService);
-                bool retBool = parameterService.PublicGenerateHTMLSubsectorFCSummaryStatDocx(fi, sbHTML, Parameters, reportTypeModel);
+                parameterService.fi = fi;
+                parameterService.sb = sbHTML;
+                parameterService.Parameters = Parameters;
+                parameterService.reportTypeModel = reportTypeModel;
+                parameterService.TVItemID = SubsectorTVItemID;
+                parameterService.Year = Year;
+                StringBuilder sbTemp = new StringBuilder();
+                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL(sbTemp);
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();
-                sw.Write(sbHTML.ToString());
+                sw.Write(sbTemp.ToString());
                 sw.Flush();
                 sw.Close();
             }
         }
         [TestMethod]
-        public void PublicGenerateHTMLSubsectorFullReportCoverPage_Test()
+        public void PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY_Test()
         {
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
                 SetupTest(LanguageRequest);
 
-                int SubsectorTVItemID = 785;
-                int ReportTypeID = 32;
+                int SubsectorTVItemID = 635;
+                int ReportTypeID = 23;
                 int Year = 2017;
 
-                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\TestGenerateHTMLSubsector_FCSummaryStatDocx_" + LanguageRequest.ToString() + ".html");
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY_" + LanguageRequest.ToString() + ".html");
                 StringBuilder sbHTML = new StringBuilder();
                 string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
                 ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
@@ -267,27 +338,34 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
                 taskRunnerBaseService._BWObj = bwObj;
                 ParametersService parameterService = new ParametersService(taskRunnerBaseService);
-                bool retBool = parameterService.PublicGenerateHTMLSubsectorFullReportCoverPage(fi, sbHTML, Parameters, reportTypeModel);
+                parameterService.fi = fi;
+                parameterService.sb = sbHTML;
+                parameterService.Parameters = Parameters;
+                parameterService.reportTypeModel = reportTypeModel;
+                parameterService.TVItemID = SubsectorTVItemID;
+                parameterService.Year = Year;
+                StringBuilder sbTemp = new StringBuilder();
+                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY(sbTemp);
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();
-                sw.Write(sbHTML.ToString());
+                sw.Write(sbTemp.ToString());
                 sw.Flush();
                 sw.Close();
             }
         }
         [TestMethod]
-        public void PublicGenerateHTMLSubsectorFullReport_Test()
+        public void PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET_Test()
         {
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
                 SetupTest(LanguageRequest);
 
-                int SubsectorTVItemID = 785;
-                int ReportTypeID = 32;
+                int SubsectorTVItemID = 635;
+                int ReportTypeID = 23;
                 int Year = 2017;
 
-                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\TestGenerateHTMLSubsector_FullReportDocx_" + LanguageRequest.ToString() + ".html");
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET_" + LanguageRequest.ToString() + ".html");
                 StringBuilder sbHTML = new StringBuilder();
                 string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
                 ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
@@ -327,7 +405,80 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
                 taskRunnerBaseService._BWObj = bwObj;
                 ParametersService parameterService = new ParametersService(taskRunnerBaseService);
-                bool retBool = parameterService.PublicGenerateHTMLSubsectorFullReport(fi, sbHTML, Parameters, reportTypeModel);
+                parameterService.fi = fi;
+                parameterService.sb = sbHTML;
+                parameterService.Parameters = Parameters;
+                parameterService.reportTypeModel = reportTypeModel;
+                parameterService.TVItemID = SubsectorTVItemID;
+                parameterService.Year = Year;
+                StringBuilder sbTemp = new StringBuilder();
+                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET(sbTemp);
+                Assert.AreEqual(true, retBool);
+
+                StreamWriter sw = fi.CreateText();
+                sw.Write(sbTemp.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+        }
+        [TestMethod]
+        public void PublicGenerateHTMLSubsectorTestObjectsOfFullReport_Test()
+        {
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                int SubsectorTVItemID = 635;
+                int ReportTypeID = 36;
+                int Year = 1999;
+
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\PublicGenerateHTMLSubsectorTestObjectsOfFullReport_" + LanguageRequest.ToString() + ".html");
+                StringBuilder sbHTML = new StringBuilder();
+                string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
+                ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 10000,
+                    TVItemID = SubsectorTVItemID,
+                    TVItemID2 = SubsectorTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+                ParametersService parameterService = new ParametersService(taskRunnerBaseService);
+                parameterService.fi = fi;
+                parameterService.sb = sbHTML;
+                parameterService.Parameters = Parameters;
+                parameterService.reportTypeModel = reportTypeModel;
+                parameterService.TVItemID = SubsectorTVItemID;
+                parameterService.Year = Year;
+                bool retBool = parameterService.PublicGenerateHTMLSubsectorTestObjectsOfFullReportDocx();
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();
