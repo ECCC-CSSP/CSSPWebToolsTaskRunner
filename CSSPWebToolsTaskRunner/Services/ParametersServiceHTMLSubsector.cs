@@ -176,9 +176,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 case MWQMSiteLatestClassificationEnum.Approved:
                     return (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? "A" : "A");
                 case MWQMSiteLatestClassificationEnum.ConditionallyApproved:
-                    return (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? "CA" : "AC");
+                    return (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? "AC" : "CA");
                 case MWQMSiteLatestClassificationEnum.ConditionallyRestricted:
-                    return (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? "CR" : "RC");
+                    return (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? "RC" : "CR");
                 case MWQMSiteLatestClassificationEnum.Prohibited:
                     return (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? "P" : "P");
                 case MWQMSiteLatestClassificationEnum.Restricted:
