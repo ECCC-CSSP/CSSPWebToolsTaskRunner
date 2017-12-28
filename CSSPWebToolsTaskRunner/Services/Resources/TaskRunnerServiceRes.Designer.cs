@@ -3562,6 +3562,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Table of Contents.
+        /// </summary>
+        public static string TableOfContents {
+            get {
+                return ResourceManager.GetString("TableOfContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temperature.
         /// </summary>
         public static string Temperature {

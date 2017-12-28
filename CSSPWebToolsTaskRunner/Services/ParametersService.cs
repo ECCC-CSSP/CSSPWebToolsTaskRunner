@@ -13,6 +13,7 @@ using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Services;
+using Microsoft.Office.Interop.Word;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -288,109 +289,22 @@ namespace CSSPWebToolsTaskRunner.Services
                 _Document.ActiveWindow.View.Type = Microsoft.Office.Interop.Word.WdViewType.wdPrintView;
             }
 
-            // turn all |||PageBreak||| into word page break
-            string SearchMarker = "|||PAGE_BREAK|||";
-            bool Found = true;
-            while (Found)
-            {
-                appWord.Selection.Find.ClearFormatting();
-                appWord.Selection.Find.Replacement.ClearFormatting();
-                if (appWord.Selection.Find.Execute(SearchMarker))
-                {
-                    appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
-                }
-                else
-                {
-                    Found = false;
-                }
-            }
-
+            CreateDocxWithHTMLDoPAGE_BREAKTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-            // importing images/graphics where we find |||Image|||
-            Found = true;
-            while (Found)
-            {
-                appWord.Selection.Find.ClearFormatting();
-                appWord.Selection.Find.Replacement.ClearFormatting();
-                appWord.Selection.Find.MatchWildcards = true;
-                appWord.Selection.Find.Text = "|||*|||";
-                if (appWord.Selection.Find.Execute())
-                {
-                    if (appWord.Selection.Find.Found)
-                    {
-                        string textFound = appWord.Selection.Text;
+            CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-                        appWord.Selection.Text = "";
+            CreateDocxWithHTMLDoImageTag(appWord, _Document, FileNameRandom);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-                        // --------------------------------------------------
-                        //           |||Image|
-                        // --------------------------------------------------
-                        if (textFound.StartsWith("|||Image|"))
-                        {
-                            string FileName = "";
-                            float width = 0;
-                            float height = 0;
-                            textFound = textFound.Substring("|||Image|".Length).Replace("|||", "");
 
-                            List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                            foreach (string s in ImageParamList)
-                            {
-                                List<string> ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                                if (ParamValue.Count() == 2)
-                                {
-                                    if (ParamValue[0] == "FileName")
-                                    {
-                                        FileName = ParamValue[1];
-                                    }
-                                    else if (ParamValue[0] == "width")
-                                    {
-                                        width = float.Parse(ParamValue[1]);
-                                    }
-                                    else if (ParamValue[0] == "height")
-                                    {
-                                        height = float.Parse(ParamValue[1]);
-                                    }
-                                }
-                            }
-                            Microsoft.Office.Interop.Word.InlineShape shape = appWord.Selection.InlineShapes.AddPicture(FileName, false, true);
-                            shape.Width = width;
-                            shape.Height = height;
-                        }
-
-                        // --------------------------------------------------
-                        //           |||FileNameExtra|
-                        // --------------------------------------------------
-                        if (textFound.StartsWith("|||FileNameExtra|"))
-                        {
-                            textFound = textFound.Substring("|||FileNameExtra|".Length).Replace("|||", "");
-
-                            List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                            foreach (string s in ImageParamList)
-                            {
-                                List<string> ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                                if (ParamValue.Count() == 2)
-                                {
-                                    if (ParamValue[0] == "Random")
-                                    {
-                                        FileNameRandom = ParamValue[1];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Found = false;
-                }
-            }
 
             string NewDocxFileName = fi.FullName.Replace(".html", ".docx");
             _Document.SaveAs2(NewDocxFileName, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument);
@@ -470,6 +384,156 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
+
+        private void CreateDocxWithHTMLDoPAGE_BREAKTag(Application appWord, Document document)
+        {
+            // turn all |||PageBreak||| into word page break
+            string SearchMarker = "|||PAGE_BREAK|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
+
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(Application appWord, Document document)
+        {
+            // turn all |||PageBreak||| into word page break
+            string SearchMarker = "|||TABLE_OF_CONTENTS|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = TaskRunnerServiceRes.TableOfContents;
+                    appWord.Selection.Start = appWord.Selection.End;
+                    appWord.Selection.InsertParagraph();
+
+                    document.TablesOfContents.Add(appWord.Selection.Range, true, 1, 6, true, "", true, true, null, true, true, true);
+
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoImageTag(Application appWord, Document document, string FileNameRandom)
+        {
+            // importing images/graphics where we find |||Image|||
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                appWord.Selection.Find.MatchWildcards = true;
+                appWord.Selection.Find.Text = "|||*|||";
+                if (appWord.Selection.Find.Execute())
+                {
+                    if (appWord.Selection.Find.Found)
+                    {
+                        string textFound = appWord.Selection.Text;
+
+                        // --------------------------------------------------
+                        //           |||Image|
+                        // --------------------------------------------------
+                        if (textFound.StartsWith("|||Image|"))
+                        {
+
+                            appWord.Selection.Text = "";
+
+                            string FileName = "";
+                            float width = 0;
+                            float height = 0;
+                            textFound = textFound.Substring("|||Image|".Length).Replace("|||", "");
+
+                            List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                            foreach (string s in ImageParamList)
+                            {
+                                List<string> ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                                if (ParamValue.Count() == 2)
+                                {
+                                    if (ParamValue[0] == "FileName")
+                                    {
+                                        FileName = ParamValue[1];
+                                    }
+                                    else if (ParamValue[0] == "width")
+                                    {
+                                        width = float.Parse(ParamValue[1]);
+                                    }
+                                    else if (ParamValue[0] == "height")
+                                    {
+                                        height = float.Parse(ParamValue[1]);
+                                    }
+                                }
+                            }
+                            Microsoft.Office.Interop.Word.InlineShape shape = appWord.Selection.InlineShapes.AddPicture(FileName, false, true);
+                            shape.Width = width;
+                            shape.Height = height;
+                        }
+
+                        // --------------------------------------------------
+                        //           |||FileNameExtra|
+                        // --------------------------------------------------
+                        if (textFound.StartsWith("|||FileNameExtra|"))
+                        {
+                            textFound = textFound.Substring("|||FileNameExtra|".Length).Replace("|||", "");
+
+                            List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                            foreach (string s in ImageParamList)
+                            {
+                                List<string> ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                                if (ParamValue.Count() == 2)
+                                {
+                                    if (ParamValue[0] == "Random")
+                                    {
+                                        FileNameRandom = ParamValue[1];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+            }
+        }
+
         private bool CreateXlsxWithHTML()
         {
             string NotUsed = "";

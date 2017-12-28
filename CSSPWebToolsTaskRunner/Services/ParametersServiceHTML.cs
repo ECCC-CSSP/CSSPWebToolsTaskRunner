@@ -163,17 +163,17 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private bool GetBottomHTML()
         {
-            sb.AppendLine(@"    <br />");
-            sb.AppendLine(@"    <div class=""small"">");
-            if (fi.Extension.ToLower() == ".html")
-            {
-                sb.AppendLine(@"        <b>File name:</b> " + fi.FullName.Replace(".html", ".docx") + @"");
-            }
-            else
-            {
-                sb.AppendLine(@"        <b>File name:</b> " + fi.FullName + @"");
-            }
-            sb.AppendLine(@"    </div>");
+            //sb.AppendLine(@"    <br />");
+            //sb.AppendLine(@"    <div class=""small"">");
+            //if (fi.Extension.ToLower() == ".html")
+            //{
+            //    sb.AppendLine(@"        <b>File name:</b> " + fi.FullName.Replace(".html", ".docx") + @"");
+            //}
+            //else
+            //{
+            //    sb.AppendLine(@"        <b>File name:</b> " + fi.FullName + @"");
+            //}
+            //sb.AppendLine(@"    </div>");
             sb.AppendLine(@"</body>");
             sb.AppendLine(@"</html>");
 
@@ -295,14 +295,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    <title>This is the title of the html document</title>");
             sb.AppendLine(@"    <style>");
             sb.AppendLine(@"body {");
-            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
-            sb.AppendLine(@"}");
-            sb.AppendLine(@"h5.ECCCCoverPage {");
-            sb.AppendLine(@"    font-size: 8px");
-            sb.AppendLine(@"}");
-            sb.AppendLine(@"table.ParentFCStatTableClass {");
-            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
-            sb.AppendLine(@"    text-align: center;");
+            sb.AppendLine(@"    font: normal 12px arial, helvetica, sans-serif;");
             sb.AppendLine(@"}");
             sb.AppendLine(@"table.FCStatTableClass {");
             sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");

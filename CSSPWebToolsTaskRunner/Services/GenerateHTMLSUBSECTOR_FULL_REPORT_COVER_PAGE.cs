@@ -129,9 +129,9 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"    <tr> ");
             sbTemp.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,45|height,20|||</td> ");
             sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environment and <br />Climate Change Canada</h5></td>");
+            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><p style=""font-size: 0.8em"">Environment and <br />Climate Change Canada</p></td>");
             sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><h5 class=""ECCCCoverPage"">Environnement et <br />Changement climatique Canada</h5></td>");
+            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><p style=""font-size: 0.8em"">Environnement et <br />Changement climatique Canada</p></td>");
             sbTemp.AppendLine($@"    </tr>");
             sbTemp.AppendLine($@" </table>");
             sbTemp.AppendLine($@" <div class=""textAlignLeft"">");
@@ -142,28 +142,24 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"   <br />");
             sbTemp.AppendLine($@"   <blockquote>");
             sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ TaskRunnerServiceRes.MarineWaterQualityReEvaluationReport }</h5>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.MarineWaterQualityReEvaluationReport }</strong></p>");
             sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ tvItemModelProvince.TVText } { TaskRunnerServiceRes.ShellfishGrowingArea}</h5>");
-            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ SubsectorShort }</h5>");
-            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ SubsectorEndPart }</h5>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ tvItemModelProvince.TVText } { TaskRunnerServiceRes.ShellfishGrowingArea}</strong></p>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ SubsectorShort }</strong></p>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ SubsectorEndPart }</strong></p>");
             sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <h5 class=""textAlignLeft"">{ NamesOfAuthors }</h5>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ NamesOfAuthors }</strong></p>");
             sbTemp.AppendLine($@"       <hr />");
             sbTemp.AppendLine($@"   </blockquote>");
-            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbTemp.AppendLine($@"   <h5>&nbsp;</h5>");
-            sbTemp.AppendLine($@"   <h5 class=""textAlignRight"">{ TaskRunnerServiceRes.AtlanticMarineWaterQualityMonitoring }</h5>");
-            sbTemp.AppendLine($@"   <h5 class=""textAlignRight"">{ TaskRunnerServiceRes.Report } <span>_______________________</span></h5>");
-            sbTemp.AppendLine($@"   <h5 class=""textAlignRight"">{ ReportDateText }</h5>");
+            for (int i = 0; i < 6; i++)
+            {
+                sbTemp.AppendLine($@"   <p>&nbsp;</p>");
+            }
+            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.AtlanticMarineWaterQualityMonitoring }</strong></p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Report } </strong><span>_______________________</span></p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ ReportDateText }</strong></p>");
             sbTemp.AppendLine($@" </div>");
             sbTemp.AppendLine($@" <div class=""textAlignRight"">|||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,22|||</div>");
-
-            sbTemp.AppendLine(@"<span>|||PAGE_BREAK|||</span>");
 
             return true;
         }

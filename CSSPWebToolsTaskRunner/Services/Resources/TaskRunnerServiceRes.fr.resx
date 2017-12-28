@@ -1437,4 +1437,7 @@
   <data name="Creating_" xml:space="preserve">
     <value>Création de [{0}]</value>
   </data>
+  <data name="TableOfContents" xml:space="preserve">
+    <value>Table des matières</value>
+  </data>
 </root>

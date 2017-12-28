@@ -145,11 +145,14 @@ namespace CSSPWebToolsTaskRunner.Services
                                                                                                         select pso).FirstOrDefault()
                                                                                          select psoLast).ToList();
 
+                string enumTextID = "," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",";
+
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
-                             && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-                             select psoi.PolSourceObservationIssueID).Count();
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             && psoi.ObservationInfo.Contains(enumTextID)
+                             select psoi).Count();
 
                 PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
                 CountOfPolSourceType.Add(count);
@@ -231,7 +234,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
                              && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
                              select psoi.PolSourceObservationIssueID).Count();
 
@@ -310,7 +314,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
                              && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
                              select psoi.PolSourceObservationIssueID).Count();
 
@@ -389,7 +394,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
                              && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
                              select psoi.PolSourceObservationIssueID).Count();
 
@@ -468,7 +474,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
                              && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
                              select psoi.PolSourceObservationIssueID).Count();
 
@@ -547,7 +554,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
                              && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
                              select psoi.PolSourceObservationIssueID).Count();
 
@@ -626,7 +634,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
                              && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
                              select psoi.PolSourceObservationIssueID).Count();
 
@@ -705,7 +714,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int count = (from pso in polSourceObservationModelLastOfActive
                              from psoi in polSourceObservationIssueModelList
-                             where pso.PolSourceObservationID == psoi.PolSourceObservationID
+                             where pso != null
+                             && pso.PolSourceObservationID == psoi.PolSourceObservationID
                              && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
                              select psoi.PolSourceObservationIssueID).Count();
 
@@ -917,7 +927,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                                                 CountObsInfo += 1;
                                                                 if (CountObsInfo > 3 && CountObsInfo < obsInfoList.Count - 2)
                                                                 {
-                                                                    sbTemp.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span> | ");
+                                                                    PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault();
+                                                                    string text = polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty;
+                                                                    sbTemp.AppendLine($@"           <span>{ text }</span> | ");
                                                                 }
                                                             }
                                                             sbTemp.AppendLine($@"           <br />");

@@ -726,7 +726,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 sbTemp.AppendLine(@"</table>");
 
-                sbTemp.AppendLine(@"<span>|||PAGE_BREAK|||</span>");
+                sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
             }
 
             return true;
