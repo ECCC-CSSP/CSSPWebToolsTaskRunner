@@ -273,7 +273,6 @@ namespace CSSPWebToolsTaskRunner.Services
         #region Functions private
         private bool CreateDocxWithHTML()
         {
-            string FileNameRandom = "";
             string NotUsed = "";
 
             Microsoft.Office.Interop.Word.Application appWord = new Microsoft.Office.Interop.Word.Application();
@@ -294,15 +293,25 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-            CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(appWord, _Document);
+            CreateDocxWithHTMLDoImageTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-            CreateDocxWithHTMLDoImageTag(appWord, _Document, FileNameRandom);
-            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            //CreateDocxWithHTMLDoLIST_OF_TABLESTag(appWord, _Document);
+            //appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            //appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            //appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            //CreateDocxWithHTMLDoLIST_OF_FIGURESTag(appWord, _Document);
+            //appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            //appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            //appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            //CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(appWord, _Document);
+            //appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            //appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            //appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
 
 
@@ -362,10 +371,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(FileNameRandom))
+            if (!string.IsNullOrWhiteSpace(FileNameExtra))
             {
                 DirectoryInfo di = new DirectoryInfo(fi.Directory + @"\");
-                List<FileInfo> fiList = di.GetFiles().Where(c => c.Name.Contains(FileNameRandom)).ToList();
+                List<FileInfo> fiList = di.GetFiles().Where(c => c.Name.Contains(FileNameExtra)).ToList();
 
                 foreach (FileInfo fiToDelete in fiList)
                 {
@@ -385,6 +394,74 @@ namespace CSSPWebToolsTaskRunner.Services
             return true;
         }
 
+        private void CreateDocxWithHTMLDoLIST_OF_FIGURESTag(Application appWord, Document document)
+        {
+            // turn all |||PageBreak||| into word page break
+            string SearchMarker = "|||LIST_OF_FIGURES|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Font.Size = 14;
+                    appWord.Selection.Text = TaskRunnerServiceRes.ListOfFigures;
+                    appWord.Selection.Start = appWord.Selection.End;
+                    appWord.Selection.InsertParagraph();
+
+                    document.TablesOfFigures.Add(appWord.Selection.Range, "Figure", true, true, false, 1, 3, true, "", true);
+
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoLIST_OF_TABLESTag(Application appWord, Document document)
+        {
+            // turn all |||PageBreak||| into word page break
+            string SearchMarker = "|||LIST_OF_TABLES|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Font.Size = 14;
+                    appWord.Selection.Text = TaskRunnerServiceRes.ListOfTables;
+                    appWord.Selection.Start = appWord.Selection.End;
+                    appWord.Selection.InsertParagraph();
+
+                    document.TablesOfFigures.Add(appWord.Selection.Range, "Table", true, true, false, 1, 3, true, "", true);
+
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
         private void CreateDocxWithHTMLDoPAGE_BREAKTag(Application appWord, Document document)
         {
             // turn all |||PageBreak||| into word page break
@@ -425,6 +502,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
+                    appWord.Selection.Font.Size = 14;
                     appWord.Selection.Text = TaskRunnerServiceRes.TableOfContents;
                     appWord.Selection.Start = appWord.Selection.End;
                     appWord.Selection.InsertParagraph();
@@ -447,7 +525,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             }
         }
-        private void CreateDocxWithHTMLDoImageTag(Application appWord, Document document, string FileNameRandom)
+        private void CreateDocxWithHTMLDoImageTag(Application appWord, Document document)
         {
             // importing images/graphics where we find |||Image|||
             bool Found = true;
@@ -502,28 +580,23 @@ namespace CSSPWebToolsTaskRunner.Services
                             shape.Width = width;
                             shape.Height = height;
                         }
-
-                        // --------------------------------------------------
-                        //           |||FileNameExtra|
-                        // --------------------------------------------------
-                        if (textFound.StartsWith("|||FileNameExtra|"))
+                        else if (textFound.StartsWith("|||TableCaption|"))
                         {
-                            textFound = textFound.Substring("|||FileNameExtra|".Length).Replace("|||", "");
 
-                            List<string> ImageParamList = textFound.Split("|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                            appWord.Selection.Text = "";
 
-                            foreach (string s in ImageParamList)
-                            {
-                                List<string> ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                            textFound = textFound.Substring("|||TableCaption|".Length).Replace("|||", "");
 
-                                if (ParamValue.Count() == 2)
-                                {
-                                    if (ParamValue[0] == "Random")
-                                    {
-                                        FileNameRandom = ParamValue[1];
-                                    }
-                                }
-                            }
+                            appWord.Selection.Range.InsertCaption("Table", textFound);
+                        }
+                        else if (textFound.StartsWith("|||FigureCaption|"))
+                        {
+
+                            appWord.Selection.Text = "";
+
+                            textFound = textFound.Substring("|||FigureCaption|".Length).Replace("|||", "");
+
+                            appWord.Selection.Range.InsertCaption("Figure", textFound);
                         }
                     }
                 }

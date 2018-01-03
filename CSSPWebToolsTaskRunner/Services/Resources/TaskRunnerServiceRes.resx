@@ -1212,9 +1212,6 @@
   <data name="_ShouldNotBe0InFunction_" xml:space="preserve">
     <value>{0} should not be 0 in function {1}</value>
   </data>
-  <data name="YearsWithSamplesUsed" xml:space="preserve">
-    <value>Years with samples used</value>
-  </data>
   <data name="AnalysisName" xml:space="preserve">
     <value>Analysis name</value>
   </data>
@@ -1451,5 +1448,14 @@
   </data>
   <data name="TableOfContents" xml:space="preserve">
     <value>Table of Contents</value>
+  </data>
+  <data name="ListOfFigures" xml:space="preserve">
+    <value>List of Figures</value>
+  </data>
+  <data name="ListOfTables" xml:space="preserve">
+    <value>List of Tables</value>
+  </data>
+  <data name="NumberOfRunsUsedByYear" xml:space="preserve">
+    <value>Number of runs used by year</value>
   </data>
 </root>

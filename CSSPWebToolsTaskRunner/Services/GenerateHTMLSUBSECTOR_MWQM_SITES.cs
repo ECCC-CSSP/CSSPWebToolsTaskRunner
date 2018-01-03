@@ -167,7 +167,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<int> YearList = new List<int>();
             List<int> CountPerYear = new List<int>();
 
-            for (int i = 1980; i < DateTime.Now.Year + 1; i++)
+            for (int i = DateTime.Now.Year; i > 1979; i--)
             {
                 YearList.Add(i);
                 int count = (from s in mwqmSiteModelList
@@ -238,7 +238,7 @@ namespace CSSPWebToolsTaskRunner.Services
             YearList = new List<int>();
             CountPerYear = new List<int>();
 
-            for (int i = 1980; i < DateTime.Now.Year + 1; i++)
+            for (int i = DateTime.Now.Year; i > 1979; i--)
             {
                 YearList.Add(i);
                 int count = (from r in mwqmRunModelList
@@ -303,7 +303,7 @@ namespace CSSPWebToolsTaskRunner.Services
             YearList = new List<int>();
             CountPerYear = new List<int>();
 
-            for (int i = 1980; i < DateTime.Now.Year + 1; i++)
+            for (int i = DateTime.Now.Year; i > 1979; i--)
             {
                 YearList.Add(i);
                 int count = (from samp in mwqmSampleModelList
@@ -674,9 +674,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     HasData = false;
                 }
             }
-
-
-            sbTemp.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
 
             sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 

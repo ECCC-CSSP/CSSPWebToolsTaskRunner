@@ -19,12 +19,12 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(StringBuilder sbTemp)
+        private bool GenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE(StringBuilder sbTemp)
         {
             string NotUsed = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
-            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_FULL_REPORT_COVER_PAGE.ToString()));
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_RE_EVALUATION_COVER_PAGE.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -165,9 +165,9 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(StringBuilder sbTemp)
+        public bool PublicGenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(sbTemp);
+            bool retBool = GenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE(sbTemp);
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sbTemp.ToString());

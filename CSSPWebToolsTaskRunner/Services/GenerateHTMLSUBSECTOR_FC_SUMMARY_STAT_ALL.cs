@@ -151,9 +151,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     AllWetDry = TaskRunnerServiceRes.Dry;
                 }
 
-                sbTemp.Append($@"<h4>{ TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL) ");
-                sbTemp.Append($@" --- { AllWetDry } ---");
-                sbTemp.Append($@" ({ Year })");
+                sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL) --- { AllWetDry } --- ({ Year })|||");
+
                 sbTemp.AppendLine(@"</h4>");
                 sbTemp.AppendLine(@"<table class=""textAlignCenter"">");
                 sbTemp.AppendLine(@"        <tr>");
@@ -594,7 +593,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.AppendLine(@"</tr>");
 
                 List<int> YearList = new List<int>();
-                for (int year = 1980, maxYear = Math.Min(Year, DateTime.Now.Year) + 1; year < maxYear; year++)
+                for (int year = Math.Min(Year, DateTime.Now.Year), maxYear = 1979; year > maxYear; year--)
                 {
                     YearList.Add(year);
                 }
@@ -610,7 +609,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets.get_Item(1);
 
                 Microsoft.Office.Interop.Excel.ChartObjects xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
-                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 700, 80);
+                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 700, 100);
                 Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
                 chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
@@ -632,7 +631,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
                 chartPage.Parent.RoundedCorners = true;
 
-                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.YearsWithSamplesUsed;
+                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfRunsUsedByYear;
 
                 CountAnalysisReportParameterModel += 1;
                 // need to save the file with a unique name under the TVItemID
@@ -671,10 +670,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.AppendLine($@"            </td>");
                 sbTemp.AppendLine(@"        </tr>");
                 sbTemp.AppendLine(@"        <tr>");
-                sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
-                sbTemp.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,70|||");
-                sbTemp.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
-                sbTemp.AppendLine(@"            </td>");
+                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                sbTemp.Append($@"&nbsp;");
+                sbTemp.AppendLine($@"            </td>");
                 sbTemp.AppendLine(@"        </tr>");
                 sbTemp.AppendLine(@"        <tr>");
                 sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
@@ -723,6 +721,17 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 sbTemp.AppendLine($@"");
                 sbTemp.AppendLine(@"            </td>");
+                sbTemp.AppendLine(@"        </tr>");
+                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                sbTemp.Append($@"&nbsp;");
+                sbTemp.AppendLine($@"            </td>");
+                sbTemp.AppendLine(@"        </tr>");
+                sbTemp.AppendLine(@"        <tr>");
+                sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
+                sbTemp.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,90|||");
+                sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.NumberOfRunsUsedByYear } --- { AllWetDry } --- ({ Year })|||");
+                sbTemp.AppendLine(@"            </td>");
+                sbTemp.AppendLine(@"        </tr>");
 
                 sbTemp.AppendLine(@"</table>");
 

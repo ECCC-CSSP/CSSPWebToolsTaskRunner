@@ -76,8 +76,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sbTemp.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
 
-            sbTemp.AppendLine($@"|||FileNameExtra|Random,{ googleMapToPNG.FileNameExtra }|||");
-
             sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
 
             if (!GetBottomHTML())

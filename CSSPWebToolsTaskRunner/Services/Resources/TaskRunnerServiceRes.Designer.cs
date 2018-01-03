@@ -1834,6 +1834,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List of Figures.
+        /// </summary>
+        public static string ListOfFigures {
+            get {
+                return ResourceManager.GetString("ListOfFigures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of Tables.
+        /// </summary>
+        public static string ListOfTables {
+            get {
+                return ResourceManager.GetString("ListOfTables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to local time.
         /// </summary>
         public static string LocalTime {
@@ -2667,6 +2685,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NumberOfRuns {
             get {
                 return ResourceManager.GetString("NumberOfRuns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of runs used by year.
+        /// </summary>
+        public static string NumberOfRunsUsedByYear {
+            get {
+                return ResourceManager.GetString("NumberOfRunsUsedByYear", resourceCulture);
             }
         }
         
@@ -4035,15 +4062,6 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string YearNotCorrect_AtLine_ {
             get {
                 return ResourceManager.GetString("YearNotCorrect_AtLine_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Years with samples used.
-        /// </summary>
-        public static string YearsWithSamplesUsed {
-            get {
-                return ResourceManager.GetString("YearsWithSamplesUsed", resourceCulture);
             }
         }
         

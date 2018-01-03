@@ -140,7 +140,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             chartPage.Legend.Select();
             xlApp.Selection.Delete();
 
-            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.YearsWithSamplesUsed;
+            chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfRunsUsedByYear;
 
             chartPage.Export(@"C:\Users\leblancc\Desktop\TestHTML\test.png", "PNG", false);
 
@@ -211,7 +211,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 parameterService.TVItemID = SubsectorTVItemID;
                 parameterService.Year = Year;
                 StringBuilder sbTemp = new StringBuilder();
-                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(sbTemp);
+                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE(sbTemp);
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();
@@ -478,7 +478,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 parameterService.reportTypeModel = reportTypeModel;
                 parameterService.TVItemID = SubsectorTVItemID;
                 parameterService.Year = Year;
-                bool retBool = parameterService.PublicGenerateHTMLSubsectorTestObjectsOfFullReportDocx();
+                bool retBool = parameterService.PublicGenerateHTMLDocx();
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();

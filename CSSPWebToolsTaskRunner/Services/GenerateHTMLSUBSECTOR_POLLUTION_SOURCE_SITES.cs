@@ -1036,12 +1036,20 @@ namespace CSSPWebToolsTaskRunner.Services
                                                             {
                                                                 if (obsInfoList.Count > 1)
                                                                 {
-                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault().Text }</span>");
+                                                                    PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault();
+                                                                    string text = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { text }</span>");
                                                                 }
                                                                 if (obsInfoList.Count > 2)
                                                                 {
-                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault().Text }</span>");
-                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault().Text }</span>");
+                                                                    PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault();
+                                                                    string text = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
+
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { text }</span>");
+
+                                                                    PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID2 = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault();
+                                                                    string text2 = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
+                                                                    sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { text2 }</span>");
                                                                 }
                                                                 sbTemp.AppendLine($@"           <br />");
                                                             }
@@ -1052,7 +1060,10 @@ namespace CSSPWebToolsTaskRunner.Services
                                                                 CountObsInfo += 1;
                                                                 if (CountObsInfo > 3 && CountObsInfo < obsInfoList.Count - 2)
                                                                 {
-                                                                    sbTemp.AppendLine($@"           <span>{ polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault().Text }</span> | ");
+                                                                    PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault();
+                                                                    string text = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
+
+                                                                    sbTemp.AppendLine($@"           <span>{ text }</span> | ");
                                                                 }
                                                             }
                                                             sbTemp.AppendLine($@"           <br />");
@@ -1073,8 +1084,6 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
-
-            sbTemp.AppendLine($@"|||FileNameExtra|Random,{ FileNameExtra }|||");
 
             if (!GetBottomHTML())
             {

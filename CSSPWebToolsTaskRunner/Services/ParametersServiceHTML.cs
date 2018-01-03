@@ -207,9 +207,9 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         switch (keyword)
                         {
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_FULL_REPORT_COVER_PAGE:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_RE_EVALUATION_COVER_PAGE:
                                 {
-                                    GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE(sbTemp);
+                                    GenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -430,7 +430,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    </style>");
             sb.AppendLine(@"</head>");
             sb.AppendLine(@"<body>");
-
+         
             return true;
         }
     }

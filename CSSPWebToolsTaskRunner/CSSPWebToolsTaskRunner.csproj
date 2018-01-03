@@ -187,11 +187,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GenerateHTMLDocx.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL.cs" />
-    <Compile Include="Services\GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE.cs" />
-    <Compile Include="Services\GenerateHTMLSubsectorTestObjectsOfFullReportDocx.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE.cs" />
+    <Compile Include="Services\GenerateHTMLSubsectorTestObjectsDocx.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES.cs" />
     <Compile Include="Services\GoogleMapToPNG.cs" />

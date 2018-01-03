@@ -22,65 +22,17 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "TestObjectsOfFullReportDocx":
-                    {
-                        if (!GenerateHTMLSubsectorTestObjectsOfFullReportDocx())
-                        {
-                            return false;
-                        }
-                    }
-                    break;
+                case "TestObjectsDocx":
                 case "FCSummaryStatDocx":
-                    {
-                        if (!GenerateHTMLSubsectorFCSummaryStatDocx())
-                        {
-                            return false;
-                        }
-                    }
-                    break;
                 case "MapActivePolSourceSitesDocx":
-                    {
-                        if (!GenerateHTMLSubsectorMapActivePolSourceSitesDocx())
-                        {
-                            return false;
-                        }
-                    }
-                    break;
                 case "MapActiveMWQMSitesDocx":
-                    {
-                        if (!GenerateHTMLSubsectorMapMWQMSitesDocx())
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case "FullReportCoverPageDocx":
-                    {
-                        if (!GenerateHTMLSubsectorFullReportCoverPageDocx())
-                        {
-                            return false;
-                        }
-                    }
-                    break;
+                case "ReEvaluationCoverPageDocx":
                 case "PollutionSourceSitesDocx":
-                    {
-                        if (!GenerateHTMLSubsectorPollutionSourceSitesDocx())
-                        {
-                            return false;
-                        }
-                    }
-                    break;
                 case "MWQMSitesDocx":
+                case "ReEvaluationDocx":
+                case "AnnualReviewDocx":
                     {
-                        if (!GenerateHTMLSubsectorMWQMSitesDocx())
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case "FullReportDocx":
-                    {
-                        if (!GenerateHTMLSubsectorFullReportDocx())
+                        if (!GenerateHTMLDocx())
                         {
                             return false;
                         }
