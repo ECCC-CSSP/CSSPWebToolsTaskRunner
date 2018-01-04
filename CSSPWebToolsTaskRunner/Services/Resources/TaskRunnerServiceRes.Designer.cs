@@ -2473,6 +2473,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MWQM sites approximate location.
+        /// </summary>
+        public static string MWQMSitesApproximateLocation {
+            get {
+                return ResourceManager.GetString("MWQMSitesApproximateLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MWQM sites information.
         /// </summary>
         public static string MWQMSitesInformation {
@@ -2955,6 +2964,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string PollutionVideo {
             get {
                 return ResourceManager.GetString("PollutionVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pollution source sites approximate location.
+        /// </summary>
+        public static string PolSourceSitesApproximateLocation {
+            get {
+                return ResourceManager.GetString("PolSourceSitesApproximateLocation", resourceCulture);
             }
         }
         

@@ -152,7 +152,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             sbTemp.AppendLine($@" </table>");
 
-            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
 
@@ -426,7 +426,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@" </table>");
 
 
-            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 50);
 
@@ -505,7 +505,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sbTemp.AppendLine($@" </table>");
 
-                    sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+                    sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
                     skip += take;
                 }
@@ -585,7 +585,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sbTemp.AppendLine($@" </table>");
 
-                    sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+                    sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
                     skip += take;
                 }
@@ -665,7 +665,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sbTemp.AppendLine($@" </table>");
 
-                    sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+                    sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
                     skip += take;
                 }
@@ -675,7 +675,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
             if (!GetBottomHTML())
             {
@@ -698,39 +698,6 @@ namespace CSSPWebToolsTaskRunner.Services
             sw.Close();
 
             return retBool;
-        }
-
-        private string GetTideInitial(TideTextEnum? tideText)
-        {
-            if (tideText == null)
-            {
-                return "--";
-            }
-
-            switch (tideText)
-            {
-                case TideTextEnum.LowTide:
-                    return "LT";
-                case TideTextEnum.LowTideFalling:
-                    return "LF";
-                case TideTextEnum.LowTideRising:
-                    return "LR";
-                case TideTextEnum.MidTide:
-                    return "MT";
-                case TideTextEnum.MidTideFalling:
-                    return "MF";
-                case TideTextEnum.MidTideRising:
-                    return "MR";
-                case TideTextEnum.HighTide:
-                    return "HT";
-                case TideTextEnum.HighTideFalling:
-                    return "HF";
-                case TideTextEnum.HighTideRising:
-                    return "HR";
-                default:
-                    return "--";
-            }
-        }
-
+        }     
     }
 }

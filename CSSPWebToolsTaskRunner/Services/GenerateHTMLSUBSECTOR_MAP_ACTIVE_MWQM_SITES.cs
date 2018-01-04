@@ -42,10 +42,7 @@ namespace CSSPWebToolsTaskRunner.Services
             HideSubsectorName = GetParameters("HideSubsectorName", ParamValueList);
 
             string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
-
-            sbTemp.AppendLine($@"<h1>{ SubsectorTVText }</h1>");
-            sbTemp.AppendLine($@"<br />");
-
+         
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
             GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService, HideVerticalScale, HideHorizontalScale, HideNorthArrow, HideSubsectorName);
@@ -74,8 +71,9 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             sbTemp.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
+            sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.MWQMSitesApproximateLocation }|||");
 
-            sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
             if (!GetBottomHTML())
             {

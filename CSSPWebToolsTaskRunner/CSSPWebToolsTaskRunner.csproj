@@ -191,6 +191,14 @@
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_SALINITY_TABLE.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_FC_TABLE.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_INFORMATION.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE.cs" />
     <Compile Include="Services\GenerateHTMLSubsectorTestObjectsDocx.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES.cs" />

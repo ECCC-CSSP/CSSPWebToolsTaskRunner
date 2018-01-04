@@ -1458,4 +1458,10 @@
   <data name="NumberOfRunsUsedByYear" xml:space="preserve">
     <value>Number of runs used by year</value>
   </data>
+  <data name="MWQMSitesApproximateLocation" xml:space="preserve">
+    <value>MWQM sites approximate location</value>
+  </data>
+  <data name="PolSourceSitesApproximateLocation" xml:space="preserve">
+    <value>Pollution source sites approximate location</value>
+  </data>
 </root>

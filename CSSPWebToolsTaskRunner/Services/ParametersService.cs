@@ -298,20 +298,20 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-            //CreateDocxWithHTMLDoLIST_OF_TABLESTag(appWord, _Document);
-            //appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-            //appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-            //appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            CreateDocxWithHTMLDoLIST_OF_TABLESTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-            //CreateDocxWithHTMLDoLIST_OF_FIGURESTag(appWord, _Document);
-            //appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-            //appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-            //appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            CreateDocxWithHTMLDoLIST_OF_FIGURESTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-            //CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(appWord, _Document);
-            //appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-            //appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-            //appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
 
 
@@ -410,8 +410,9 @@ namespace CSSPWebToolsTaskRunner.Services
                     appWord.Selection.Start = appWord.Selection.End;
                     appWord.Selection.InsertParagraph();
 
-                    document.TablesOfFigures.Add(appWord.Selection.Range, "Figure", true, true, false, 1, 3, true, "", true);
+                    document.TablesOfFigures.Add(appWord.Selection.Range, "Figure");
 
+                    appWord.Selection.Find.MatchWildcards = false;
                     appWord.Selection.Find.ClearFormatting();
                     if (appWord.Selection.Find.Execute("^p"))
                     {
@@ -444,8 +445,9 @@ namespace CSSPWebToolsTaskRunner.Services
                     appWord.Selection.Start = appWord.Selection.End;
                     appWord.Selection.InsertParagraph();
 
-                    document.TablesOfFigures.Add(appWord.Selection.Range, "Table", true, true, false, 1, 3, true, "", true);
+                    document.TablesOfFigures.Add(appWord.Selection.Range, "Table");
 
+                    appWord.Selection.Find.MatchWildcards = false;
                     appWord.Selection.Find.ClearFormatting();
                     if (appWord.Selection.Find.Execute("^p"))
                     {
@@ -475,6 +477,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
 
+                    appWord.Selection.Find.MatchWildcards = false;
                     appWord.Selection.Find.ClearFormatting();
                     if (appWord.Selection.Find.Execute("^p"))
                     {
@@ -509,6 +512,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     document.TablesOfContents.Add(appWord.Selection.Range, true, 1, 6, true, "", true, true, null, true, true, true);
 
+                    appWord.Selection.Find.MatchWildcards = false;
                     appWord.Selection.Find.ClearFormatting();
                     if (appWord.Selection.Find.Execute("^p"))
                     {
@@ -789,6 +793,37 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             return true;
+        }
+        private string GetTideInitial(TideTextEnum? tideText)
+        {
+            if (tideText == null)
+            {
+                return "--";
+            }
+
+            switch (tideText)
+            {
+                case TideTextEnum.LowTide:
+                    return "LT";
+                case TideTextEnum.LowTideFalling:
+                    return "LF";
+                case TideTextEnum.LowTideRising:
+                    return "LR";
+                case TideTextEnum.MidTide:
+                    return "MT";
+                case TideTextEnum.MidTideFalling:
+                    return "MF";
+                case TideTextEnum.MidTideRising:
+                    return "MR";
+                case TideTextEnum.HighTide:
+                    return "HT";
+                case TideTextEnum.HighTideFalling:
+                    return "HF";
+                case TideTextEnum.HighTideRising:
+                    return "HR";
+                default:
+                    return "--";
+            }
         }
         #endregion Functions private
     }
