@@ -52,11 +52,20 @@ namespace CSSPWebToolsTaskRunner.Services
         public string Parameters { get; set; }
         public StringBuilder sb { get; set; }
         public string FileNameExtra { get; set; }
+        public Microsoft.Office.Interop.Excel._Application xlApp { get; set; }
+        public Microsoft.Office.Interop.Excel.Workbook workbook { get; set; }
+        public Microsoft.Office.Interop.Excel.Worksheet worksheet { get; set; }
+        public Microsoft.Office.Interop.Excel.ChartObjects xlCharts { get; set; }
         #endregion Properties
 
         #region Constructors
         public ParametersService(TaskRunnerBaseService taskRunnerBaseService)
         {
+            xlApp = null;
+            workbook = null;
+            worksheet = null;
+            xlCharts = null;
+
             reportTypeModel = new ReportTypeModel();
             TVItemID = 0;
             Year = 0;
@@ -221,7 +230,25 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 if (!GenerateHTML())
                 {
+                    if (workbook != null)
+                    {
+                        workbook.Close(false);
+                    }
+                    if (xlApp != null)
+                    {
+                        xlApp.Quit();
+                    }
+
                     return;
+                }
+
+                if (workbook != null)
+                {
+                    workbook.Close(false);
+                }
+                if (xlApp != null)
+                {
+                    xlApp.Quit();
                 }
 
                 DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
@@ -615,7 +642,7 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
 
-            Microsoft.Office.Interop.Excel.Application appExcel = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel._Application appExcel = new Microsoft.Office.Interop.Excel.Application();
             appExcel.Visible = false;
             Microsoft.Office.Interop.Excel.Workbook xlWorkbook = appExcel.Workbooks.Open(fi.FullName);
             Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];

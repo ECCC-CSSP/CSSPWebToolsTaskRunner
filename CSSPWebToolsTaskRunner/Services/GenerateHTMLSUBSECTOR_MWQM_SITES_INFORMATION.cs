@@ -22,9 +22,11 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         private bool GenerateHTMLSUBSECTOR_MWQM_SITES_INFORMATION(StringBuilder sbTemp)
         {
+            int Percent = 10;
             string NotUsed = "";
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_INFORMATION.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -93,7 +95,8 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             sbTemp.AppendLine($@" </table>");
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 80);
+            Percent = 80;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             return true;
         }

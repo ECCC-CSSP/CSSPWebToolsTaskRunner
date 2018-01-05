@@ -21,9 +21,10 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         private bool GenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE(StringBuilder sbTemp)
         {
+            int Percent = 10;
             string NotUsed = "";
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_RE_EVALUATION_COVER_PAGE.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -122,7 +123,8 @@ namespace CSSPWebToolsTaskRunner.Services
             string NamesOfAuthors = "Name of authors";
             string ReportDateText = DateTime.Now.ToString("MMMM yyyy");
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
+            Percent = 30;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             sbTemp.AppendLine($@" <p>&nbsp;</p>");
             sbTemp.AppendLine($@" <table>");

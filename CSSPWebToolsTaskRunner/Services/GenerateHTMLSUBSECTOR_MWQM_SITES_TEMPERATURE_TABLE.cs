@@ -22,9 +22,11 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         private bool GenerateHTMLSUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE(StringBuilder sbTemp)
         {
+            int Percent = 10;
             string NotUsed = "";
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -63,6 +65,13 @@ namespace CSSPWebToolsTaskRunner.Services
             int countRun = 0;
             while (HasData)
             {
+                Percent += 10;
+                if (Percent > 100)
+                {
+                    Percent = 100;
+                }
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+
                 countRun += 1;
 
                 if (countRun > 2)

@@ -182,7 +182,7 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool GenerateObjects()
         {
 
-            // need to search the whole document for some keywords Ex: |||COVERPAGE|||
+            // need to search the whole document for some keywords Ex: |||SUBSECTOR_RE_EVALUATION_COVER_PAGE|||
             List<ReportGenerateObjectsKeywordEnum> KeywordList = new List<ReportGenerateObjectsKeywordEnum>();
 
             for(int i = 1, count = Enum.GetNames(typeof(ReportGenerateObjectsKeywordEnum)).Length; i < count; i++)
@@ -255,17 +255,73 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES:
                                 {
-                                    GenerateHTMLSUBSECTOR_MWQM_SITES(sbTemp);
+                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_DATA_AVAILABILITY:
                                 {
-                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(sbTemp);
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_INFORMATION:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_INFORMATION(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_FC_TABLE:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_FC_TABLE(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_SALINITY_TABLE:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_SALINITY_TABLE(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -295,13 +351,21 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    <title>This is the title of the html document</title>");
             sb.AppendLine(@"    <style>");
             sb.AppendLine(@"body {");
-            sb.AppendLine(@"    font: normal 12px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"    font: normal 14px arial, helvetica, sans-serif;");
             sb.AppendLine(@"}");
             sb.AppendLine(@"table.FCStatTableClass {");
             sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
             sb.AppendLine(@"    border: 1px solid black;");
             sb.AppendLine(@"    text-align: center;");
             sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"table.DataAvailabilityTableClass {");
+            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"    border: 1px solid black;");
+            sb.AppendLine(@"    text-align: center;");
+            sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"    cellpadding: -1;");
+            sb.AppendLine(@"    cellspacing: -1;");
             sb.AppendLine(@"}");
             sb.AppendLine(@"table.FCSalTempDataTableClass {");
             sb.AppendLine(@"    font: normal 8px arial, helvetica, sans-serif;");
@@ -330,9 +394,10 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    border-left: 1px solid black;");
             sb.AppendLine(@"    border-bottom: 1px solid black;");
             sb.AppendLine(@"}");
-            sb.AppendLine(@".textAlignLeftAndLeftBorder {");
+            sb.AppendLine(@".textAlignLeftAndLeftAndBottomBorder {");
             sb.AppendLine(@"    text-align: left;");
             sb.AppendLine(@"    border-left: 1px solid black;");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
             sb.AppendLine(@"}");
             sb.AppendLine(@".textAlignLeft {");
             sb.AppendLine(@"    text-align: left;");

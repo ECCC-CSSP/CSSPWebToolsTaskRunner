@@ -22,9 +22,11 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         private bool GenerateHTMLSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY(StringBuilder sbTemp)
         {
+            int Percent = 10;
             string NotUsed = "";
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_DATA_AVAILABILITY.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -47,12 +49,16 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MWQMRunModel> mwqmRunModelList = _MWQMRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(TVItemID);
             List<MWQMSampleModel> mwqmSampleModelList = _MWQMSampleService.GetMWQMSampleModelListWithSubsectorTVItemIDDB(TVItemID);
 
-            sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.MWQMSiteSampleDataAvailability }</h3>");
-            sbTemp.AppendLine($@" <table cellpadding=""5"">");
+            sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.MWQMSiteSampleDataAvailability  }|||");
+
+            sbTemp.AppendLine($@" <table class=""DataAvailabilityTableClass"">");
             sbTemp.AppendLine($@" <tr>");
-            sbTemp.AppendLine($@" <th>{ TaskRunnerServiceRes.Site }</th>");
+            sbTemp.AppendLine($@" <th class=""textAlignLeftAndLeftAndBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
+
+            int MaxYear = Math.Min(DateTime.Now.Year, Year);
+
             bool FirstHit = false;
-            for (int year = DateTime.Now.Year; year > 1975; year--)
+            for (int year = MaxYear; year > 1975; year--)
             {
                 if (year % 5 == 0)
                 {
@@ -62,11 +68,11 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         colSpan = 4;
                     }
-                    sbTemp.AppendLine($@" <th class=""textAlignLeftAndLeftBorder"" colspan=""{ colSpan }"">{ year }</th>");
+                    sbTemp.AppendLine($@" <th class=""textAlignLeftAndLeftAndBottomBorder"" colspan=""{ colSpan }"">{ year }</th>");
                 }
                 if (!FirstHit)
                 {
-                    sbTemp.AppendLine($@" <th>&nbsp;</th>");
+                    sbTemp.AppendLine($@" <th class=""textAlignLeftAndLeftAndBottomBorder"">&nbsp;</th>");
                 }
             }
             sbTemp.AppendLine($@" </tr>");
@@ -86,7 +92,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         sbTemp.AppendLine($@" <tr>");
                         sbTemp.AppendLine($@" <td class=""{ bottomClass }"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
-                        for (int year = DateTime.Now.Year; year > 1979; year--)
+                        for (int year = MaxYear; year > 1979; year--)
                         {
                             string leftClass = year % 5 == 0 ? "leftBorder" : "";
                             bool hasSamples = mwqmSampleModelList.Where(c => c.MWQMSiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID && c.SampleDateTime_Local.Year == year && c.SampleTypesText.Contains(((int)SampleTypeEnum.Routine).ToString())).Any();
@@ -146,6 +152,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
             sbTemp.AppendLine($@" </table>");
+
+            Percent = 80;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             return true;
         }

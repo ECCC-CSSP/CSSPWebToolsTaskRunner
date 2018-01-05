@@ -22,9 +22,11 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         private bool GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR(StringBuilder sbTemp)
         {
+            int Percent = 10;
             string NotUsed = "";
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -68,11 +70,17 @@ namespace CSSPWebToolsTaskRunner.Services
                 CountPerYear.Add(count);
             }
 
-            Microsoft.Office.Interop.Excel._Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel.Workbook workbook = xlApp.Workbooks.Add();
-            Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets.get_Item(1);
+            Percent = 30;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
-            Microsoft.Office.Interop.Excel.ChartObjects xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
+            if (xlApp == null)
+            {
+                xlApp = new Microsoft.Office.Interop.Excel.Application();
+                workbook = xlApp.Workbooks.Add();
+                worksheet = workbook.Worksheets.get_Item(1);
+                xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
+            }
+
             Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 600, 200);
             Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
@@ -122,15 +130,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfSitesByYearStat.FullName }|width,400|height,150|||</div>");
             sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.NumberOfMWQMSitesByYear }|||");
 
-            if (workbook != null)
-            {
-                workbook.Close(false);
-            }
-            if (xlApp != null)
-            {
-                xlApp.Quit();
-            }
-
+            Percent = 80;
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 80);
 
             return true;

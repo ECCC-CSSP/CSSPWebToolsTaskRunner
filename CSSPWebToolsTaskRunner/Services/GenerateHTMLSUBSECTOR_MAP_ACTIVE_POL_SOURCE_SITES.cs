@@ -20,13 +20,15 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         private bool GenerateHTMLSUBSECTOR_MAP_ACTIVE_POL_SOURCE_SITES(StringBuilder sbTemp)
         {
+            int Percent = 10;
             string NotUsed = "";
             string HideVerticalScale = "";
             string HideHorizontalScale = "";
             string HideNorthArrow = "";
             string HideSubsectorName = "";
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MAP_ACTIVE_POL_SOURCE_SITES.ToString()));
 
             if (!GetTopHTML())
             {
@@ -64,6 +66,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
+            Percent = 40;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+
             if (!googleMapToPNG.CreateSubsectorGoogleMapPNGForPolSourceSites(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, "hybrid"))
             {
                 string Error = _TaskRunnerBaseService._BWObj.TextLanguageList[(_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? 1 : 0)].Text;
@@ -74,7 +79,8 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
             sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.PolSourceSitesApproximateLocation }|||");
 
-            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
+            Percent = 70;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             if (!GetBottomHTML())
             {

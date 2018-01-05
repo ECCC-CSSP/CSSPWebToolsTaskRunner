@@ -154,7 +154,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             }
         }
         [TestMethod]
-        public void PublicGenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE_Test()
+        public void PublicGenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE_Test()
         {
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
@@ -164,7 +164,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 int ReportTypeID = 32;
                 int Year = 2017;
 
-                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\GenerateHTMLSUBSECTOR_FULL_REPORT_COVER_PAGE_" + LanguageRequest.ToString() + ".html");
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\GenerateHTMLSUBSECTOR_RE_EVALUATION_COVER_PAGE_" + LanguageRequest.ToString() + ".html");
                 StringBuilder sbHTML = new StringBuilder();
                 string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
                 ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
@@ -422,17 +422,17 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             }
         }
         [TestMethod]
-        public void PublicGenerateHTMLSubsectorTestObjectsOfFullReport_Test()
+        public void PublicGenerateHTMLSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY_Test()
         {
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
                 SetupTest(LanguageRequest);
 
                 int SubsectorTVItemID = 635;
-                int ReportTypeID = 36;
-                int Year = 1999;
+                int ReportTypeID = 23;
+                int Year = 2017;
 
-                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\PublicGenerateHTMLSubsectorTestObjectsOfFullReport_" + LanguageRequest.ToString() + ".html");
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\PublicGenerateHTMLSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY_" + LanguageRequest.ToString() + ".html");
                 StringBuilder sbHTML = new StringBuilder();
                 string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
                 ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
@@ -478,11 +478,13 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 parameterService.reportTypeModel = reportTypeModel;
                 parameterService.TVItemID = SubsectorTVItemID;
                 parameterService.Year = Year;
-                bool retBool = parameterService.PublicGenerateHTMLDocx();
+                StringBuilder sbTemp = new StringBuilder();
+
+                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY(sbTemp);
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();
-                sw.Write(sbHTML.ToString());
+                sw.Write(sbTemp.ToString());
                 sw.Flush();
                 sw.Close();
             }

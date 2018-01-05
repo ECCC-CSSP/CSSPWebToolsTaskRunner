@@ -21,11 +21,12 @@ namespace CSSPWebToolsTaskRunner.Services
     {
         private bool GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL(StringBuilder sbTemp)
         {
+            int Percent = 10;
             string NotUsed = "";
             string HideAllAllAll = "";
             string HideMaxFCColumn = "";
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_ALL.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -99,7 +100,6 @@ namespace CSSPWebToolsTaskRunner.Services
             foreach (MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel in mwqmAnalysisReportParameterModelList)
             {
                 List<DateTime> DateTimeList = new List<DateTime>();
-
 
                 if (mwqmAnalysisReportParameterModel.StartDate.Year == 1900)
                 {
@@ -191,7 +191,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     CountAllSite += 1;
                     if (CountAllSite % 10 == 0)
                     {
-                        int Percent = (int)(10.0D + (90.0D * ((double)CountAllSite / (double)CountAllSiteTotal)));
+                        Percent = (int)(10.0D + (90.0D * ((double)CountAllSite / (double)CountAllSiteTotal)));
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
                     }
 
@@ -604,11 +604,14 @@ namespace CSSPWebToolsTaskRunner.Services
                     CountPerYear.Add(DateTimeList.Where(c => c.Year == year).Count());
                 }
 
-                Microsoft.Office.Interop.Excel._Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-                Microsoft.Office.Interop.Excel.Workbook workbook = xlApp.Workbooks.Add();
-                Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets.get_Item(1);
+                if (xlApp == null)
+                {
+                    xlApp = new Microsoft.Office.Interop.Excel.Application();
+                    workbook = xlApp.Workbooks.Add();
+                    worksheet = workbook.Worksheets.get_Item(1);
+                    xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
+                }
 
-                Microsoft.Office.Interop.Excel.ChartObjects xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
                 Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 700, 100);
                 Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
@@ -654,15 +657,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
 
                 chartPage.Export(fiImage.FullName, "PNG", false);
-
-                if (workbook != null)
-                {
-                    workbook.Close(false);
-                }
-                if (xlApp != null)
-                {
-                    xlApp.Quit();
-                }
 
                 sbTemp.AppendLine(@"        <tr>");
                 sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
