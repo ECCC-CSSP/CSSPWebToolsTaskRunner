@@ -368,7 +368,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    cellspacing: -1;");
             sb.AppendLine(@"}");
             sb.AppendLine(@"table.FCSalTempDataTableClass {");
-            sb.AppendLine(@"    font: normal 8px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
             sb.AppendLine(@"    border: 1px solid black;");
             sb.AppendLine(@"    text-align: center;");
             sb.AppendLine(@"    width: 100%;");

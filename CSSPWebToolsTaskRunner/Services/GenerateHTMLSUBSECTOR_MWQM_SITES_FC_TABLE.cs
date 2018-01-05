@@ -59,7 +59,7 @@ namespace CSSPWebToolsTaskRunner.Services
             int skip = 0;
             int take = 15;
             bool HasData = true;
-            int countRun = 0;
+            //int countRun = 0;
             while (HasData)
             {
                 Percent += 10;
@@ -69,14 +69,14 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
-                countRun += 1;
+                //countRun += 1;
 
-                if (countRun > 2)
-                {
-                    break;
-                }
+                //if (countRun > 2)
+                //{
+                //    break;
+                //}
 
-                List<MWQMRunModel> mwqmRunModelList2 = mwqmRunModelList.Where(c => c.RunSampleType == SampleTypeEnum.Routine).OrderByDescending(c => c.DateTime_Local).Skip(skip).Take(take).ToList();
+                List<MWQMRunModel> mwqmRunModelList2 = mwqmRunModelList.Where(c => c.RunSampleType == SampleTypeEnum.Routine && c.DateTime_Local.Year <= Year).OrderByDescending(c => c.DateTime_Local).Skip(skip).Take(take).ToList();
                 if (mwqmRunModelList2.Count > 0)
                 {
                     sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.FCDensities }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count -1].DateTime_Local.ToString("yyyy MMMM dd") }|||");

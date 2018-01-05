@@ -153,7 +153,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ NamesOfAuthors }</strong></p>");
             sbTemp.AppendLine($@"       <hr />");
             sbTemp.AppendLine($@"   </blockquote>");
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
             {
                 sbTemp.AppendLine($@"   <p>&nbsp;</p>");
             }
