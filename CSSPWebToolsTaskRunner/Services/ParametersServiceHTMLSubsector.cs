@@ -24,13 +24,9 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 case "TestObjectsDocx":
                 case "FCSummaryStatDocx":
-                case "MapActivePolSourceSitesDocx":
-                case "MapActiveMWQMSitesDocx":
-                case "ReEvaluationCoverPageDocx":
-                case "PollutionSourceSitesDocx":
-                case "MWQMSitesDocx":
                 case "ReEvaluationDocx":
                 case "AnnualReviewDocx":
+                //case "SubsectorMunicipalityDocx":
                     {
                         if (!GenerateHTMLDocx())
                         {
