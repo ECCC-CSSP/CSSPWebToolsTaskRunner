@@ -2563,6 +2563,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No municipality within subsector.
+        /// </summary>
+        public static string NoMunicipalityWithinSubsector {
+            get {
+                return ResourceManager.GetString("NoMunicipalityWithinSubsector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No observation for this pollution source site.
         /// </summary>
         public static string NoObservationForThisPollutionSourceSite {

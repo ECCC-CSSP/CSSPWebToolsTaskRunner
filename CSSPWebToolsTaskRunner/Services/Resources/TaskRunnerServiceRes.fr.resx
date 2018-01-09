@@ -1452,4 +1452,7 @@
   <data name="PolSourceSitesApproximateLocation" xml:space="preserve">
     <value>Endroit approximative des sites de source de pollution </value>
   </data>
+  <data name="NoMunicipalityWithinSubsector" xml:space="preserve">
+    <value>Aucune municipalité à l'intérieur du sous-secteur</value>
+  </data>
 </root>

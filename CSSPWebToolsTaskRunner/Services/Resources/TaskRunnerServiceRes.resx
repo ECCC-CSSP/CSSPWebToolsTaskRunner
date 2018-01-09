@@ -1464,4 +1464,7 @@
   <data name="PolSourceSitesApproximateLocation" xml:space="preserve">
     <value>Pollution source sites approximate location</value>
   </data>
+  <data name="NoMunicipalityWithinSubsector" xml:space="preserve">
+    <value>No municipality within subsector</value>
+  </data>
 </root>

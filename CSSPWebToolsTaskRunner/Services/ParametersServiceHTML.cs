@@ -327,6 +327,38 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITIES:
+                                {
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITIES(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.MUNICIPALITY_MAP_INFRASTRUCTURE:
+                                {
+                                    GenerateHTMLMUNICIPALITY_MAP_INFRASTRUCTURE(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.MUNICIPALITY_CONTACTS:
+                                {
+                                    GenerateHTMLMUNICIPALITY_CONTACTS(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.MUNICIPALITY_INFRASTRUCTURE_DETAIL:
+                                {
+                                    GenerateHTMLMUNICIPALITY_INFRASTRUCTURE_DETAIL(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
                             default:
                                 {
                                     sb.Insert(EndPos, "Tag not recognised");
