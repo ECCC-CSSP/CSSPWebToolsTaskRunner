@@ -396,14 +396,15 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    border: 1px solid black;");
             sb.AppendLine(@"    text-align: center;");
             sb.AppendLine(@"    width: 100%;");
-            sb.AppendLine(@"    cellpadding: -1;");
-            sb.AppendLine(@"    cellspacing: -1;");
             sb.AppendLine(@"}");
             sb.AppendLine(@"table.FCSalTempDataTableClass {");
             sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
             sb.AppendLine(@"    border: 1px solid black;");
             sb.AppendLine(@"    text-align: center;");
             sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".textGreen {");
+            sb.AppendLine(@"    color: green;");
             sb.AppendLine(@"}");
             sb.AppendLine(@".bggreenfBottomBorder {");
             sb.AppendLine(@"    text-align: left;");
@@ -448,6 +449,10 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"}");
             sb.AppendLine(@".rightBottomBorder {");
             sb.AppendLine(@"    border-right: 1px solid black;");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".bottomBorderGreenText {");
+            sb.AppendLine(@"    color: green;");
             sb.AppendLine(@"    border-bottom: 1px solid black;");
             sb.AppendLine(@"}");
             sb.AppendLine(@".bottomBorder {");

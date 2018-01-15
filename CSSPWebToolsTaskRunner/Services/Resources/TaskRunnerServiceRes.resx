@@ -1467,4 +1467,7 @@
   <data name="NoMunicipalityWithinSubsector" xml:space="preserve">
     <value>No municipality within subsector</value>
   </data>
+  <data name="Runs" xml:space="preserve">
+    <value>Runs</value>
+  </data>
 </root>

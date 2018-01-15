@@ -3184,6 +3184,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Runs.
+        /// </summary>
+        public static string Runs {
+            get {
+                return ResourceManager.GetString("Runs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Runs omitted.
         /// </summary>
         public static string RunsOmitted {

@@ -56,6 +56,7 @@ namespace CSSPWebToolsTaskRunner.Services
         public Microsoft.Office.Interop.Excel.Workbook workbook { get; set; }
         public Microsoft.Office.Interop.Excel.Worksheet worksheet { get; set; }
         public Microsoft.Office.Interop.Excel.ChartObjects xlCharts { get; set; }
+        public List<RunSiteInfo> RunSiteInfoList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -99,6 +100,8 @@ namespace CSSPWebToolsTaskRunner.Services
             _MWQMSiteService = new MWQMSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMSampleService = new MWQMSampleService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
+
+            RunSiteInfoList = new List<RunSiteInfo>();
         }
         #endregion Constructors
 
@@ -853,5 +856,16 @@ namespace CSSPWebToolsTaskRunner.Services
             }
         }
         #endregion Functions private
+    }
+
+    public class RunSiteInfo
+    {
+        public RunSiteInfo()
+        {
+
+        }
+
+        public int RunTVItemID { get; set; }
+        public int SiteTVItemID { get; set; }
     }
 }

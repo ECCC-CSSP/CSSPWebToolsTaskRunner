@@ -24,7 +24,10 @@ namespace CSSPWebToolsTaskRunner.Services
             int Percent = 10;
             string NotUsed = "";
             string HideDryAllAll = "";
+            string HideClassificationColumn = "";
             string HideMaxFCColumn = "";
+            string HideOver260Column = "";
+            string HideAnalysisColorAndLetterColumn = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_DRY.ToString()));
@@ -34,7 +37,10 @@ namespace CSSPWebToolsTaskRunner.Services
             // TVItemID and Year already loaded
 
             HideDryAllAll = GetParameters("HideDryAllAll", ParamValueList);
+            HideClassificationColumn = GetParameters("HideClassificationColumn", ParamValueList);
             HideMaxFCColumn = GetParameters("HideMaxFCColumn", ParamValueList);
+            HideOver260Column = GetParameters("HideOver260Column", ParamValueList);
+            HideAnalysisColorAndLetterColumn = GetParameters("HideAnalysisColorAndLetterColumn", ParamValueList);
 
             bool MissingRainData = _MWQMRunService.IsRainDataMissingWithSubsectorTVItemID(TVItemID);
 
@@ -152,9 +158,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     AllWetDry = TaskRunnerServiceRes.Dry;
                 }
 
-                sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL) --- { AllWetDry } --- ({ Year })|||");
+                string RunText = TaskRunnerServiceRes.Runs + " (" + mwqmAnalysisReportParameterModel.NumberOfRuns.ToString() + ")";
 
-                sbTemp.AppendLine(@"</h4>");
+                sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL) --- { AllWetDry } --- ({ Year }) --- { RunText }|||");
+
                 sbTemp.AppendLine(@"<table class=""textAlignCenter"">");
                 sbTemp.AppendLine(@"        <tr>");
                 sbTemp.AppendLine(@"        <td>");
@@ -162,7 +169,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.AppendLine(@"    <thead>");
                 sbTemp.AppendLine(@"        <tr>");
                 sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Site }&nbsp;&nbsp;</th>");
-                sbTemp.AppendLine($@"            <th></th>");
+                if (string.IsNullOrWhiteSpace(HideClassificationColumn))
+                {
+                    sbTemp.AppendLine($@"            <th></th>");
+                }
                 sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Samples }&nbsp;&nbsp;</th>");
                 sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Period }&nbsp;&nbsp;</th>");
                 sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.MinFC }&nbsp;&nbsp;</th>");
@@ -174,8 +184,14 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Median }&nbsp;&nbsp;</th> ");
                 sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.P90 }&nbsp;&nbsp;</th>");
                 sbTemp.AppendLine($@"            <th>% &gt; 43&nbsp;&nbsp;</th>");
-                sbTemp.AppendLine($@"            <th>% &gt; 260&nbsp;&nbsp;</th>");
-                sbTemp.AppendLine($@"            <th></th>");
+                if (string.IsNullOrWhiteSpace(HideOver260Column))
+                {
+                    sbTemp.AppendLine($@"            <th>% &gt; 260&nbsp;&nbsp;</th>");
+                }
+                if (string.IsNullOrWhiteSpace(HideAnalysisColorAndLetterColumn))
+                {
+                    sbTemp.AppendLine($@"            <th></th>");
+                }
                 sbTemp.AppendLine(@"        </tr>");
                 sbTemp.AppendLine(@"    </thead>");
                 sbTemp.AppendLine(@"    <tbody>");
@@ -417,7 +433,10 @@ namespace CSSPWebToolsTaskRunner.Services
                         Letter = mwqmSampleAnalysisForSiteModelToUseList.Count.ToString();
                         sbTemp.AppendLine(@"        <tr>");
                         sbTemp.AppendLine($@"            <td>{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
-                        sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
+                        if (string.IsNullOrWhiteSpace(HideClassificationColumn))
+                        {
+                            sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
+                        }
                         sbTemp.AppendLine(@"            <td>--</td>");
                         sbTemp.AppendLine(@"            <td>--</td>");
                         sbTemp.AppendLine(@"            <td>--</td>");
@@ -429,8 +448,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         sbTemp.AppendLine(@"            <td>--</td>");
                         sbTemp.AppendLine(@"            <td>--</td>");
                         sbTemp.AppendLine(@"            <td>--</td>");
-                        sbTemp.AppendLine(@"            <td>--</td>");
-                        sbTemp.AppendLine($@"            <td class=""bglightblue"">{ Letter }</td>");
+                        if (string.IsNullOrWhiteSpace(HideOver260Column))
+                        {
+                            sbTemp.AppendLine(@"            <td>--</td>");
+                        }
+                        if (string.IsNullOrWhiteSpace(HideAnalysisColorAndLetterColumn))
+                        {
+                            sbTemp.AppendLine($@"            <td class=""bglightblue"">{ Letter }</td>");
+                        }
                         sbTemp.AppendLine(@"        </tr>");
                     }
                     if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 10)
@@ -440,6 +465,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         int? MinYear = mwqmSampleAnalysisForSiteModelToUseList[mwqmSampleAnalysisForSiteModelToUseList.Count - 1].SampleDateTime_Local.Year;
                         int? MinFC = (from c in mwqmSampleAnalysisForSiteModelToUseList select c.FecCol_MPN_100ml).Min();
                         int? MaxFC = (from c in mwqmSampleAnalysisForSiteModelToUseList select c.FecCol_MPN_100ml).Max();
+
+                        foreach (MWQMSampleAnalysisModel mwqmSampleAnalysisModel in mwqmSampleAnalysisForSiteModelToUseList)
+                        {
+                            if (!RunSiteInfoList.Where(c => c.RunTVItemID == mwqmSampleAnalysisModel.MWQMRunTVItemID && c.SiteTVItemID == mwqmSampleAnalysisModel.MWQMSiteTVItemID).Any())
+                            {
+                                RunSiteInfoList.Add(new RunSiteInfo() { RunTVItemID = mwqmSampleAnalysisModel.MWQMRunTVItemID, SiteTVItemID = mwqmSampleAnalysisModel.MWQMSiteTVItemID });
+                            }
+                        }
 
                         List<double> SampleList = (from c in mwqmSampleAnalysisForSiteModelToUseList
                                                    select (c.FecCol_MPN_100ml == 1 ? 1.9D : (double)c.FecCol_MPN_100ml)).ToList<double>();
@@ -556,9 +589,25 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
                         }
 
+                        string siteNameWithoutZeros = mwqmSiteAnalysisModel.MWQMSiteTVText.Trim();
+                        while (true)
+                        {
+                            if (siteNameWithoutZeros.StartsWith("0"))
+                            {
+                                siteNameWithoutZeros = siteNameWithoutZeros.Substring(1);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
                         sbTemp.AppendLine(@"        <tr>");
-                        sbTemp.AppendLine($@"            <td>{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
-                        sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
+                        sbTemp.AppendLine($@"            <td>{ siteNameWithoutZeros }</td>");
+                        if (string.IsNullOrWhiteSpace(HideClassificationColumn))
+                        {
+                            sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
+                        }
                         sbTemp.AppendLine($@"            <td>{ MWQMSampleCount.ToString() }</td>");
                         sbTemp.AppendLine($@"            <td>{ (MaxYear != null ? (MaxYear.ToString() + "-" + MinYear.ToString()) : "--") }</td>");
                         sbTemp.AppendLine($@"            <td>{ (MinFC != null ? (MinFC < 2 ? "< 2" : (MinFC.ToString())) : "--") }</td>");
@@ -575,8 +624,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         bgClass = PercOver43 != null && PercOver43 > 10 ? "bgyellow" : "";
                         sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--") }</td>");
                         bgClass = PercOver260 != null && PercOver260 > 10 ? "bgyellow" : "";
-                        sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--") }</td>");
-                        sbTemp.AppendLine($@"            <td class=""{ Coloring }"">{ Letter }</td>");
+                        if (string.IsNullOrWhiteSpace(HideOver260Column))
+                        {
+                            sbTemp.AppendLine($@"            <td class=""{ bgClass }"">{ (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--") }</td>");
+                        }
+                        if (string.IsNullOrWhiteSpace(HideAnalysisColorAndLetterColumn))
+                        {
+                            sbTemp.AppendLine($@"            <td class=""{ Coloring }"">{ Letter }</td>");
+                        }
                         sbTemp.AppendLine(@"        </tr>");
 
                     }
@@ -724,7 +779,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.AppendLine(@"        <tr>");
                 sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
                 sbTemp.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,90|||");
-                sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.NumberOfRunsUsedByYear } --- { AllWetDry } --- ({ Year })|||");
+                sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.NumberOfRunsUsedByYear } --- { AllWetDry } --- ({ Year }) --- { RunText }|||");
                 sbTemp.AppendLine(@"            </td>");
                 sbTemp.AppendLine(@"        </tr>");
 

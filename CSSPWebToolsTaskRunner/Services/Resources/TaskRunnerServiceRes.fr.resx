@@ -1455,4 +1455,7 @@
   <data name="NoMunicipalityWithinSubsector" xml:space="preserve">
     <value>Aucune municipalité à l'intérieur du sous-secteur</value>
   </data>
+  <data name="Runs" xml:space="preserve">
+    <value>Tournées</value>
+  </data>
 </root>

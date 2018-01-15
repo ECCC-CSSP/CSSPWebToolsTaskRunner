@@ -77,7 +77,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 //    break;
                 //}
 
-                List<MWQMRunModel> mwqmRunModelList2 = mwqmRunModelList.Where(c => c.RunSampleType == SampleTypeEnum.Routine && c.DateTime_Local.Year <= Year).OrderByDescending(c => c.DateTime_Local).Skip(skip).Take(take).ToList();
+                List<MWQMRunModel> mwqmRunModelList2 = (from r in mwqmRunModelList
+                                                        from s in mwqmSiteModelList2
+                                                        from sa in mwqmSampleModelList
+                                                        where sa.MWQMRunTVItemID == r.MWQMRunTVItemID
+                                                        && sa.MWQMSiteTVItemID == s.MWQMSiteTVItemID
+                                                        && r.RunSampleType == SampleTypeEnum.Routine
+                                                        && r.DateTime_Local.Year <= Year
+                                                        orderby r.DateTime_Local descending
+                                                        select r).Distinct().Skip(skip).Take(take).ToList();
+
                 if (mwqmRunModelList2.Count > 0)
                 {
                     sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.ActiveMWQMSites }&nbsp;&nbsp;{ TaskRunnerServiceRes.Temperature }&nbsp;&nbsp;&nbsp;({ TaskRunnerServiceRes.Routine })&nbsp;&nbsp;&nbsp;{ mwqmRunModelList2[0].DateTime_Local.ToString("yyyy MMMM dd") } { TaskRunnerServiceRes.To } { mwqmRunModelList2[mwqmRunModelList2.Count - 1].DateTime_Local.ToString("yyyy MMMM dd") }|||");
@@ -87,23 +96,54 @@ namespace CSSPWebToolsTaskRunner.Services
                     sbTemp.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
-                        sbTemp.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
+                        bool showGreenText = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID).Any() ? true : false;
+
+                        if (showGreenText)
+                        {
+                            sbTemp.AppendLine($@" <th class=""bottomBorderGreentext"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
+                        }
+                        else
+                        {
+                            sbTemp.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
+                        }
                     }
                     sbTemp.AppendLine($@" </tr>");
 
                     foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelList2)
                     {
+                        string siteNameWithoutZeros = mwqmSiteModel.MWQMSiteTVText.Trim();
+                        while (true)
+                        {
+                            if (siteNameWithoutZeros.StartsWith("0"))
+                            {
+                                siteNameWithoutZeros = siteNameWithoutZeros.Substring(1);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
                         sbTemp.AppendLine($@" <tr>");
-                        sbTemp.AppendLine($@" <td class=""rightBorder"">{ mwqmSiteModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@" <td class=""rightBorder"">{ siteNameWithoutZeros }</td>");
                         foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                         {
+                            bool showTextGreen = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID && c.SiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID).Any() ? true : false;
+
                             float? value = (float?)(from s in mwqmSampleModelList
                                             where s.MWQMRunTVItemID == mwqmRunModel.MWQMRunTVItemID
                                             && s.MWQMSiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID
                                             select s.WaterTemp_C).FirstOrDefault();
 
-                            string valueStr = value != null ? (value == 1 ? "< 2" : ((float)value).ToString("F0")) : "--";
-                            sbTemp.AppendLine($@" <td>{ valueStr }</td>");
+                            string valueStr = value != null ? (((float)value).ToString("F0")) : "--";
+                            if (showTextGreen)
+                            {
+                                sbTemp.AppendLine($@" <td class=""textGreen"">{ valueStr }</td>");
+                            }
+                            else
+                            {
+                                sbTemp.AppendLine($@" <td>{ valueStr }</td>");
+                            }
                         }
                         sbTemp.AppendLine($@" </tr>");
                     }
