@@ -384,6 +384,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.ServerFileName = fi.Name;
             tvFileModelNew.FilePurpose = FilePurposeEnum.ReportGenerated;
             tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+            tvFileModelNew.Year = DateTime.Now.Year;
             tvFileModelNew.FileDescription = reportTypeModel.Description;
             tvFileModelNew.FileType = _TVFileService.GetFileType(fi.Extension);
             tvFileModelNew.FileSize_kb = (((int)fi.Length / 1024) == 0 ? 1 : (int)fi.Length / 1024);
@@ -688,6 +689,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.ServerFileName = fi.Name;
             tvFileModelNew.FilePurpose = FilePurposeEnum.ReportGenerated;
             tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+            tvFileModelNew.Year = DateTime.Now.Year;
             tvFileModelNew.FileDescription = reportTypeModel.Description;
             tvFileModelNew.FileType = _TVFileService.GetFileType(fi.Extension);
             tvFileModelNew.FileSize_kb = (((int)fi.Length / 1024) == 0 ? 1 : (int)fi.Length / 1024);

@@ -616,6 +616,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         ServerFileName = fi.Name,
                                         ServerFilePath = fi.DirectoryName + "\\",
                                         Language = tvFileModel.Language,
+                                        Year = DateTime.Now.Year,
                                     };
 
                                     TVFile tvFileExist = tvFileService.GetTVFileExistDB(tvFileModelNew);
@@ -724,6 +725,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         ServerFileName = fi.Name,
                                         ServerFilePath = fi.DirectoryName + "\\",
                                         Language = tvFileModel.Language,
+                                        Year = DateTime.Now.Year,
                                     };
 
                                     TVFile tvFileExist = tvFileService.GetTVFileExistDB(tvFileModelNew);
@@ -852,6 +854,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         ServerFileName = fi.Name,
                                         ServerFilePath = fi.DirectoryName + "\\",
                                         Language = tvFileModel.Language,
+                                        Year = DateTime.Now.Year,
                                     };
 
                                     TVFile tvFileExist = tvFileService.GetTVFileExistDB(tvFileModelNew);
@@ -1713,6 +1716,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 tvFileModelNew.ServerFileName = fi.Name;
                 tvFileModelNew.FilePurpose = FilePurpose;
                 tvFileModelNew.Language = _BWObj.appTaskModel.Language;
+                tvFileModelNew.Year = DateTime.Now.Year;
                 tvFileModelNew.FileDescription = Description;
                 tvFileModelNew.FileType = tvFileService.GetFileType(fi.Extension);
                 tvFileModelNew.FileSize_kb = (((int)fi.Length / 1024) == 0 ? 1 : (int)fi.Length / 1024);

@@ -724,6 +724,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
 
                 tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+                tvFileModelNew.Year = DateTime.Now.Year;
                 tvFileModelNew.FileDescription = ""; // nothing for now
                 tvFileModelNew.FileType = tvFileService.GetFileType(fi.Extension);
                 tvFileModelNew.FileSize_kb = 0;
@@ -1658,6 +1659,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         TVFileTVItemID = tvItemFileModel.TVItemID,
                         FilePurpose = FilePurposeEnum.MikeInput,
                         Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
+                        Year = DateTime.Now.Year,
                         FileDescription = "Mike Decay File",
                         FileType = tvFileService.GetFileType(fiDecay.Extension),
                         FileSize_kb = (int)(fiDecay.Length / 1024),
@@ -1963,6 +1965,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         TVFileTVItemID = tvItemFileModel.TVItemID,
                         FilePurpose = FilePurposeEnum.MikeInput,
                         Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
+                        Year = DateTime.Now.Year,
                         FileDescription = "Mike Pollution File",
                         FileType = tvFileService.GetFileType(fi.Extension),
                         FileSize_kb = (int)(fi.Length / 1024),
@@ -2425,6 +2428,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         TVFileTVItemID = tvItemFileModel.TVItemID,
                         FilePurpose = FilePurposeEnum.MikeInputMDF,
                         Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
+                        Year = DateTime.Now.Year,
                         FileDescription = "Mike Scenario File",
                         FileType = tvFileService.GetFileType(fiClient.Extension),
                         FileSize_kb = 0,
@@ -3864,6 +3868,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     FileCreatedDate_UTC = fiLog.CreationTimeUtc,
                     FileSize_kb = 1,
                     Language = LanguageEnum.enAndfr,
+                    Year = DateTime.Now.Year,
                     FromWater = null,
                     FilePurpose = FilePurposeEnum.MikeResultDFSU,
                     FileType = FileTypeEnum.LOG,

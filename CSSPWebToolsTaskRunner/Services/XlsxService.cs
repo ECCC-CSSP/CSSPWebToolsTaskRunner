@@ -267,6 +267,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.FileType = FileTypeEnum.XLSX;
             tvFileModelNew.FileInfo = "File created from analysis Excel export";
             tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+            tvFileModelNew.Year = DateTime.Now.Year;
             tvFileModelNew.ServerFileName = fi.Name;
             tvFileModelNew.ServerFilePath = fi.Directory + @"\";
 

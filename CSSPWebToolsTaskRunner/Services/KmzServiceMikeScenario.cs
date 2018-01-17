@@ -5084,6 +5084,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 tvFileModelNew.TVFileTVItemID = tvItemFileModel.TVItemID;
                 tvFileModelNew.FilePurpose = FilePurposeEnum.MikeResultKMZ;
                 tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+                tvFileModelNew.Year = DateTime.Now.Year;
                 tvFileModelNew.FileDescription = null;
                 tvFileModelNew.FileType = _TVFileService.GetFileType(fi.Extension);
                 tvFileModelNew.FileSize_kb = (int)(fi.Length / 1024);
