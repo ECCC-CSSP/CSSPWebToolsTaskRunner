@@ -28,6 +28,8 @@ namespace CSSPWebToolsTaskRunner.Services
             string HideMaxFCColumn = "";
             string HideOver260Column = "";
             string HideAnalysisColorAndLetterColumn = "";
+            string HideNumberOfRunsUsedByYearGraph = "";
+            string HideQueryText = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_DRY.ToString()));
@@ -41,6 +43,8 @@ namespace CSSPWebToolsTaskRunner.Services
             HideMaxFCColumn = GetParameters("HideMaxFCColumn", ParamValueList);
             HideOver260Column = GetParameters("HideOver260Column", ParamValueList);
             HideAnalysisColorAndLetterColumn = GetParameters("HideAnalysisColorAndLetterColumn", ParamValueList);
+            HideNumberOfRunsUsedByYearGraph = GetParameters("HideNumberOfRunsUsedByYearGraph", ParamValueList);
+            HideQueryText = GetParameters("HideQueryText", ParamValueList);
 
             bool MissingRainData = _MWQMRunService.IsRainDataMissingWithSubsectorTVItemID(TVItemID);
 
@@ -719,69 +723,77 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NOTE }</b> : { TaskRunnerServiceRes.Shaded } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.GMean } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.Median } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.P90 } &gt; 43 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (% &gt; 43) &gt; 10");
                 sbTemp.AppendLine($@"            </td>");
                 sbTemp.AppendLine(@"        </tr>");
-                sbTemp.AppendLine(@"        <tr>");
-                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
-                sbTemp.Append($@"&nbsp;");
-                sbTemp.AppendLine($@"            </td>");
-                sbTemp.AppendLine(@"        </tr>");
-                sbTemp.AppendLine(@"        <tr>");
-                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ReportYear }</b> : { mwqmAnalysisReportParameterModel.AnalysisReportYear }&nbsp;&nbsp;&nbsp;");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.StartDate }</b> : { mwqmAnalysisReportParameterModel.StartDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.EndDate }</b> : { mwqmAnalysisReportParameterModel.EndDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NumberOfRuns }</b> : { mwqmAnalysisReportParameterModel.NumberOfRuns }&nbsp;&nbsp;&nbsp;");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.FullYear }</b> : { (mwqmAnalysisReportParameterModel.FullYear ? TaskRunnerServiceRes.Yes : TaskRunnerServiceRes.No) }&nbsp;&nbsp;&nbsp;");
-
-                if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll)
+                if (string.IsNullOrWhiteSpace(HideQueryText))
                 {
-                    sbTemp.Append($@" <b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry24h }</b> : { mwqmAnalysisReportParameterModel.DryLimit24h } mm &nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry48h }</b> : { mwqmAnalysisReportParameterModel.DryLimit48h } mm &nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry72h }</b> : { mwqmAnalysisReportParameterModel.DryLimit72h } mm &nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry96h }</b> : { mwqmAnalysisReportParameterModel.DryLimit96h } mm &nbsp;&nbsp;&nbsp;");
-                }
-                if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll)
-                {
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet24h }</b> : { mwqmAnalysisReportParameterModel.WetLimit24h } mm &nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet48h }</b> : { mwqmAnalysisReportParameterModel.WetLimit48h } mm &nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet72h }</b> : { mwqmAnalysisReportParameterModel.WetLimit72h } mm &nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet96h }</b> : { mwqmAnalysisReportParameterModel.WetLimit96h } mm &nbsp;&nbsp;&nbsp;");
-                }
-                List<int> MWQMRunTVItemIDList = mwqmAnalysisReportParameterModel.RunsToOmit.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+                    sbTemp.AppendLine(@"        <tr>");
+                    sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                    sbTemp.Append($@"&nbsp;");
+                    sbTemp.AppendLine($@"            </td>");
+                    sbTemp.AppendLine(@"        </tr>");
+                    sbTemp.AppendLine(@"        <tr>");
+                    sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ReportYear }</b> : { mwqmAnalysisReportParameterModel.AnalysisReportYear }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.StartDate }</b> : { mwqmAnalysisReportParameterModel.StartDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.EndDate }</b> : { mwqmAnalysisReportParameterModel.EndDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NumberOfRuns }</b> : { mwqmAnalysisReportParameterModel.NumberOfRuns }&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.FullYear }</b> : { (mwqmAnalysisReportParameterModel.FullYear ? TaskRunnerServiceRes.Yes : TaskRunnerServiceRes.No) }&nbsp;&nbsp;&nbsp;");
 
-                if (MWQMRunTVItemIDList.Count > 0)
-                {
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.RunsOmitted }</b> : ");
-
-                    foreach (int mwqmRunTVItemID in MWQMRunTVItemIDList)
+                    if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll)
                     {
-                        MWQMRunModel mwqmRunModel = _MWQMRunService.GetMWQMRunModelWithMWQMRunTVItemIDDB(mwqmRunTVItemID);
-                        if (!string.IsNullOrEmpty(mwqmRunModel.Error))
+                        sbTemp.Append($@" <b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry24h }</b> : { mwqmAnalysisReportParameterModel.DryLimit24h } mm &nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry48h }</b> : { mwqmAnalysisReportParameterModel.DryLimit48h } mm &nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry72h }</b> : { mwqmAnalysisReportParameterModel.DryLimit72h } mm &nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry96h }</b> : { mwqmAnalysisReportParameterModel.DryLimit96h } mm &nbsp;&nbsp;&nbsp;");
+                    }
+                    if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll)
+                    {
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet24h }</b> : { mwqmAnalysisReportParameterModel.WetLimit24h } mm &nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet48h }</b> : { mwqmAnalysisReportParameterModel.WetLimit48h } mm &nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet72h }</b> : { mwqmAnalysisReportParameterModel.WetLimit72h } mm &nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet96h }</b> : { mwqmAnalysisReportParameterModel.WetLimit96h } mm &nbsp;&nbsp;&nbsp;");
+                    }
+                    List<int> MWQMRunTVItemIDList = mwqmAnalysisReportParameterModel.RunsToOmit.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+                    if (MWQMRunTVItemIDList.Count > 0)
+                    {
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.RunsOmitted }</b> : ");
+
+                        foreach (int mwqmRunTVItemID in MWQMRunTVItemIDList)
                         {
-                            sbTemp.Append($@" [err - { mwqmRunTVItemID }]");
-                        }
-                        else
-                        {
-                            sbTemp.Append($@" [{ mwqmRunModel.DateTime_Local.ToString("yyyy MMM dd") }]");
+                            MWQMRunModel mwqmRunModel = _MWQMRunService.GetMWQMRunModelWithMWQMRunTVItemIDDB(mwqmRunTVItemID);
+                            if (!string.IsNullOrEmpty(mwqmRunModel.Error))
+                            {
+                                sbTemp.Append($@" [err - { mwqmRunTVItemID }]");
+                            }
+                            else
+                            {
+                                sbTemp.Append($@" [{ mwqmRunModel.DateTime_Local.ToString("yyyy MMM dd") }]");
+                            }
                         }
                     }
+                    sbTemp.AppendLine($@"");
+                    sbTemp.AppendLine(@"            </td>");
+                    sbTemp.AppendLine(@"        </tr>");
                 }
-                sbTemp.AppendLine($@"");
-                sbTemp.AppendLine(@"            </td>");
-                sbTemp.AppendLine(@"        </tr>");
-                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
-                sbTemp.Append($@"&nbsp;");
-                sbTemp.AppendLine($@"            </td>");
-                sbTemp.AppendLine(@"        </tr>");
-                sbTemp.AppendLine(@"        <tr>");
-                sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
-                sbTemp.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,90|||");
-                sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.NumberOfRunsUsedByYear } --- { AllWetDry } --- ({ Year }) --- { RunText }|||");
-                sbTemp.AppendLine(@"            </td>");
-                sbTemp.AppendLine(@"        </tr>");
+
+                if (string.IsNullOrWhiteSpace(HideNumberOfRunsUsedByYearGraph))
+                {
+                    sbTemp.AppendLine(@"        <tr>");
+                    sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                    sbTemp.Append($@"&nbsp;");
+                    sbTemp.AppendLine($@"            </td>");
+                    sbTemp.AppendLine(@"        </tr>");
+                    sbTemp.AppendLine(@"        <tr>");
+                    sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
+                    sbTemp.AppendLine($@"|||Image|FileName,{ fiImage.FullName }|width,460|height,90|||");
+                    sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.NumberOfRunsUsedByYear } --- { AllWetDry } --- ({ Year }) --- { RunText }|||");
+                    sbTemp.AppendLine(@"            </td>");
+                    sbTemp.AppendLine(@"        </tr>");
+                }
 
                 sbTemp.AppendLine(@"</table>");
 
