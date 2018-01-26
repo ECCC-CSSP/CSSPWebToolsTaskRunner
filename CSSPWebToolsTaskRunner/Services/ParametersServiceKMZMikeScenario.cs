@@ -644,30 +644,28 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 //reportTag.Error = TaskRunnerServiceRes.MIKE3NotImplementedYet;
 
-                float Depth = 0.0f;
-                List<Element> TempElementList;
 
                 // doing type 32
-                TempElementList = (from el in ElementList
-                                   where el.Type == 32
-                                   && (dfsuFile.Z[el.NodeList[3].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[4].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[5].ID - 1] == Depth)
-                                   select el).ToList<Element>();
+                var coordList = (from el in ElementList
+                                 where el.Type == 32
+                                 orderby el.NodeList[0].Z
+                                 select new { X1 = el.NodeList[0].X, X2 = el.NodeList[1].X, X3 = el.NodeList[2].X }).Distinct().ToList();
 
-                foreach (Element el in TempElementList)
+                foreach (var coord in coordList)
                 {
                     int Layer = 1;
                     List<Element> ColumnElementList = (from el1 in ElementList
                                                        where el1.Type == 32
-                                                       && el1.NodeList[0].X == el.NodeList[0].X
-                                                       && el1.NodeList[1].X == el.NodeList[1].X
-                                                       && el1.NodeList[2].X == el.NodeList[2].X
+                                                       && el1.NodeList[0].X == coord.X1
+                                                       && el1.NodeList[1].X == coord.X2
+                                                       && el1.NodeList[2].X == coord.X3
                                                        orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
                                                        select el1).ToList<Element>();
 
                     for (int j = 0; j < ColumnElementList.Count; j++)
                     {
+                        ColumnElementList[j].Flag = 1;
+
                         ElementLayer elementLayer = new ElementLayer();
                         elementLayer.Layer = Layer;
                         elementLayer.ZMin = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Min();
@@ -715,26 +713,23 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         Layer += 1;
                     }
+
                 }
 
-                // doing type 33
-                TempElementList = (from el in ElementList
-                                   where el.Type == 33
-                                   && (dfsuFile.Z[el.NodeList[4].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[5].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[6].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[7].ID - 1] == Depth)
-                                   select el).ToList<Element>();
+                var coordList2 = (from el in ElementList
+                                  where el.Type == 33
+                                  orderby el.NodeList[0].Z
+                                  select new { X1 = el.NodeList[0].X, X2 = el.NodeList[1].X, X3 = el.NodeList[2].X, X4 = el.NodeList[3].X }).Distinct().ToList();
 
-                foreach (Element el in TempElementList)
+                foreach (var coord in coordList2)
                 {
                     int Layer = 1;
                     List<Element> ColumElementList = (from el1 in ElementList
                                                       where el1.Type == 33
-                                                      && el1.NodeList[0].X == el.NodeList[0].X
-                                                      && el1.NodeList[1].X == el.NodeList[1].X
-                                                      && el1.NodeList[2].X == el.NodeList[2].X
-                                                      && el1.NodeList[3].X == el.NodeList[3].X
+                                                      && el1.NodeList[0].X == coord.X1
+                                                      && el1.NodeList[1].X == coord.X2
+                                                      && el1.NodeList[2].X == coord.X3
+                                                      && el1.NodeList[3].X == coord.X4
                                                       orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
                                                       select el1).ToList<Element>();
 
@@ -800,7 +795,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         Layer += 1;
                     }
+
                 }
+
 
                 List<ElementLayer> TempElementLayerList = (from el in ElementLayerList
                                                            orderby el.Element.ID
@@ -1920,7 +1917,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return FileName;
         }
-        private DfsuFile GetHydrodynamicDfsuFile()
+        public DfsuFile GetHydrodynamicDfsuFile()
         {
             string NotUsed = "";
 

@@ -850,7 +850,14 @@ namespace CSSPWebToolsTaskRunner.Services
 
             ReportTag reportTag = new ReportTag();
 
-            string retStr = reportBaseService.FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList, reportTag);
+            ParametersService parametersService = new ParametersService(_TaskRunnerBaseService);
+
+            //string retStr = parametersService.FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList);
+
+            if (!parametersService.FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            {
+                return;
+            }
 
             dfsuFile.Close();
 
@@ -1036,66 +1043,70 @@ namespace CSSPWebToolsTaskRunner.Services
             bool MoreStudyAreaLine = true;
             while (MoreStudyAreaLine)
             {
-                List<Node> FinalContourNodeList = new List<Node>();
-                Vector LastVector = new Vector();
-                LastVector = ForwardVector.First().Value;
-                FinalContourNodeList.Add(LastVector.StartNode);
-                FinalContourNodeList.Add(LastVector.EndNode);
-                ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                bool PolygonCompleted = false;
-                while (!PolygonCompleted)
+                if (ForwardVector.Count > 0)
                 {
-                    List<string> KeyStrList = (from k in ForwardVector.Keys
-                                               where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                                               && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                                               select k).ToList<string>();
-
-                    if (KeyStrList.Count != 1)
+                    List<Node> FinalContourNodeList = new List<Node>();
+                    Vector LastVector = new Vector();
+                    LastVector = ForwardVector.First().Value;
+                    FinalContourNodeList.Add(LastVector.StartNode);
+                    FinalContourNodeList.Add(LastVector.EndNode);
+                    ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+                    BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+                    bool PolygonCompleted = false;
+                    while (!PolygonCompleted)
                     {
-                        KeyStrList = (from k in BackwardVector.Keys
-                                      where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                                      && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                                      select k).ToList<string>();
+                        List<string> KeyStrList = (from k in ForwardVector.Keys
+                                                   where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+                                                   && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+                                                   select k).ToList<string>();
 
                         if (KeyStrList.Count != 1)
                         {
-                            PolygonCompleted = true;
-                            break;
+                            KeyStrList = (from k in BackwardVector.Keys
+                                          where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+                                          && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+                                          select k).ToList<string>();
+
+                            if (KeyStrList.Count != 1)
+                            {
+                                PolygonCompleted = true;
+                                break;
+                            }
+                            else
+                            {
+                                LastVector = BackwardVector[KeyStrList[0]];
+                                BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+                                ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+                            }
                         }
                         else
                         {
-                            LastVector = BackwardVector[KeyStrList[0]];
-                            BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                            ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+                            LastVector = ForwardVector[KeyStrList[0]];
+                            ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+                            BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+                        }
+                        FinalContourNodeList.Add(LastVector.EndNode);
+                        if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
+                        {
+                            PolygonCompleted = true;
                         }
                     }
-                    else
+
+                    double Area = mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList);
+                    if (Area < 0)
                     {
-                        LastVector = ForwardVector[KeyStrList[0]];
-                        ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                        BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+                        FinalContourNodeList.Reverse();
+                        Area = mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList);
                     }
-                    FinalContourNodeList.Add(LastVector.EndNode);
-                    if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
-                    {
-                        PolygonCompleted = true;
-                    }
+
+                    FinalContourNodeList.Add(FinalContourNodeList[0]);
+
+                    ContourPolygon contourLine = new ContourPolygon() { };
+                    contourLine.ContourNodeList = FinalContourNodeList;
+                    contourLine.ContourValue = 0;
+                    ContourPolygonList.Add(contourLine);
+
                 }
-
-                double Area = mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList);
-                if (Area < 0)
-                {
-                    FinalContourNodeList.Reverse();
-                    Area = mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList);
-                }
-
-                FinalContourNodeList.Add(FinalContourNodeList[0]);
-
-                ContourPolygon contourLine = new ContourPolygon() { };
-                contourLine.ContourNodeList = FinalContourNodeList;
-                contourLine.ContourValue = 0;
-                ContourPolygonList.Add(contourLine);
 
                 MoreStudyAreaLine = false;
             }
