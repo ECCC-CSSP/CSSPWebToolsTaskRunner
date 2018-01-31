@@ -224,17 +224,46 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
+            int Percent = 50;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+
             string FilePath = _TVFileService.GetServerFilePath(SubsectorTVItemID);
+
+            DirectoryInfo di = new DirectoryInfo(FilePath);
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, FilePath, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", FilePath, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
 
             string dateText = DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_") + (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? "fr" : "en");
             FileInfo fi = new FileInfo(FilePath + mwqmAnalysisReportParameterModel.AnalysisName + dateText + ".xlsx");
 
-            TVItemModel tvItemModelTVFile = _TVItemService.PostAddChildTVItemDB(SubsectorTVItemID, mwqmAnalysisReportParameterModel.AnalysisName, TVTypeEnum.File);
+            TVItemModel tvItemModelTVFileExist = _TVItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(SubsectorTVItemID, FilePath + mwqmAnalysisReportParameterModel.AnalysisName + dateText, TVTypeEnum.File);
+            if (string.IsNullOrWhiteSpace(tvItemModelTVFileExist.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._AlreadyExist, FilePath + mwqmAnalysisReportParameterModel.AnalysisName + dateText);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_AlreadyExist", FilePath + mwqmAnalysisReportParameterModel.AnalysisName + dateText);
+                return;
+            }
+
+            TVItemModel tvItemModelTVFile = _TVItemService.PostAddChildTVItemDB(SubsectorTVItemID, FilePath + mwqmAnalysisReportParameterModel.AnalysisName + dateText, TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModelTVFile.Error))
             {
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(tvItemModelTVFile.Error);
                 return;
             }
+
+            Percent = 60;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             try
             {
@@ -247,8 +276,18 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            wb.Close();
-            xlApp.Quit();
+            try
+            {
+                wb.Close();
+                xlApp.Quit();
+            }
+            catch (Exception ex)
+            {
+                // nothing
+            }
+
+            Percent = 70;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             fi = new FileInfo(fi.FullName);
             if (!fi.Exists)
@@ -286,6 +325,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(mwqmAnalysisReportParameterModelRet.Error);
                 return;
             }
+
+            Percent = 80;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+
 
         }
         public void CreateSamplingPlanConfigExcelFile()

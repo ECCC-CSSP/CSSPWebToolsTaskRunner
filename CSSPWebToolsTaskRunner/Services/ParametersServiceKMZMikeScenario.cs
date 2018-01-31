@@ -1086,7 +1086,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
                     BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node2.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node2.ID).First();
                 if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
                 {
                     if (TempInt1 != null)
@@ -1097,7 +1097,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node2.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1120,7 +1120,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node0.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node2 });
                     BackwardVector.Add(Node2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node0 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node1.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1131,7 +1131,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node1.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1149,7 +1149,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node1.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1160,7 +1160,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node2.ID).First();
                 if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
                 {
                     if (TempInt2 != null)
@@ -1183,7 +1183,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
                     BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node0.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1194,7 +1194,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node0.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node0.ID).First();
                 if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
                 {
                     if (TempInt2 != null)
@@ -1212,7 +1212,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node0.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1223,7 +1223,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node2.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1241,7 +1241,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node0.ID).First();
                 if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
                 {
                     if (TempInt1 != null)
@@ -1252,7 +1252,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node1.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1364,7 +1364,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
                     BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node3.ID).First();
                 if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt1 != null)
@@ -1375,7 +1375,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node3.ID).First();
                 if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt2 != null)
@@ -1403,7 +1403,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node0.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node3 });
                     BackwardVector.Add(Node3.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node0 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node2.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt1 != null)
@@ -1414,7 +1414,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node2.ID).First();
                 if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt2 != null)
@@ -1442,7 +1442,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
                     BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node1.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1453,7 +1453,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node1.ID).First();
                 if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1481,7 +1481,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
                     BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node0.ID).First();
                 if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1492,7 +1492,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node0.ID).First();
                 if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt2 != null)
@@ -1515,7 +1515,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
                     BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
                 }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node3.ID).First();
                 if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt1 != null)
@@ -1526,7 +1526,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node2.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1544,7 +1544,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node3.ID).First();
                 if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt1 != null)
@@ -1555,7 +1555,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node1.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt2 != null)
@@ -1571,7 +1571,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
                 }
 
-                Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+                Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node1.ID).First();
                 if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt3 != null)
@@ -1582,7 +1582,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+                Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node3.ID).First();
                 if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt4 != null)
@@ -1601,7 +1601,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node0.ID).First();
                 if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1612,7 +1612,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node3.ID).First();
                 if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt2 != null)
@@ -1631,7 +1631,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node1.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1642,7 +1642,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node2.ID).First();
                 if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt2 != null)
@@ -1661,7 +1661,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node0.ID).First();
                 if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt1 != null)
@@ -1672,7 +1672,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node2.ID).First();
                 if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt2 != null)
@@ -1688,7 +1688,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
                 }
 
-                Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+                Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node0.ID).First();
                 if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt3 != null)
@@ -1699,7 +1699,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+                Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node2.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt4 != null)
@@ -1718,7 +1718,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node0.ID).First();
                 if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt1 != null)
@@ -1729,7 +1729,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node1.ID).First();
                 if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1748,7 +1748,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node1.ID).First();
                 if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1759,7 +1759,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 1000000 + Node3.ID).First();
                 if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt2 != null)
@@ -1778,7 +1778,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node0.ID).First();
                 if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
                 {
                     if (TempInt1 != null)
@@ -1789,7 +1789,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 1000000 + Node2.ID).First();
                 if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt2 != null)
@@ -1808,7 +1808,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node1.ID).First();
                 if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
                 {
                     if (TempInt1 != null)
@@ -1819,7 +1819,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 1000000 + Node3.ID).First();
                 if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt2 != null)
@@ -1838,7 +1838,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
             {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node0.ID).First();
                 if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
                 {
                     if (TempInt1 != null)
@@ -1849,7 +1849,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
                 }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 1000000 + Node2.ID).First();
                 if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
                 {
                     if (TempInt2 != null)
@@ -2309,7 +2309,7 @@ namespace CSSPWebToolsTaskRunner.Services
             point.Z = dfsuFile.Z[NodeSmall.ID - 1] + (dfsuFile.Z[NodeLarge.ID - 1] - dfsuFile.Z[NodeSmall.ID - 1]) * (ContourValue - NodeSmall.Value) / (NodeLarge.Value - NodeSmall.Value);
 
             Node NewNode = new Node();
-            NewNode.ID = 100000 * NodeLarge.ID + NodeSmall.ID;
+            NewNode.ID = 1000000 * NodeLarge.ID + NodeSmall.ID;
             NewNode.X = point.XCoord;
             NewNode.Y = point.YCoord;
             NewNode.Z = point.Z;
@@ -3746,7 +3746,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             int TotalCount = CountLayer * ContourValueList.Count;
 
-            for (int Layer = 1; Layer <= CountLayer; Layer++)
+            for (int Layer = 1; Layer <= 1 /* CountLayer */; Layer++)
             {
                 if (!LayerList.Contains(Layer))
                 {
