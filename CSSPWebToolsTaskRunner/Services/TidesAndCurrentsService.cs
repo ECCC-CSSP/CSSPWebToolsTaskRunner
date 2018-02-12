@@ -1117,6 +1117,22 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("ContourPolygonListCountShouldBe1");
                 return;
             }
+
+            bool Found = true;
+            while (Found)
+            {
+                if (ContourPolygonList[0].ContourNodeList[0].Code != 1)
+                {
+                    Node n = ContourPolygonList[0].ContourNodeList[0];
+                    ContourPolygonList[0].ContourNodeList.RemoveAt(0);
+                    ContourPolygonList[0].ContourNodeList.Add(ContourPolygonList[0].ContourNodeList[0]);
+                }
+                else
+                {
+                    Found = false;
+                }
+            }
+
             List<Node> FinalNodes = new List<Node>();
             FinalNodes = (from c in ContourPolygonList[0].ContourNodeList
                           select c).ToList<Node>();

@@ -143,7 +143,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ParametersServiceHTMLSubsectorTest.cs" />
+    <Compile Include="Services\ParametersServiceKMZMikeScenarioTest.cs" />
+    <Compile Include="Services\TidesAndCurrentsServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">

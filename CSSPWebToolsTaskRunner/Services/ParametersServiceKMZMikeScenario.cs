@@ -5182,6 +5182,24 @@ namespace CSSPWebToolsTaskRunner.Services
 
             }
 
+            foreach (ContourPolygon contourPolygon in ContourPolygonList)
+            {
+                bool Found = true;
+                while (Found)
+                {
+                    if (contourPolygon.ContourNodeList[0].Code != 1)
+                    {
+                        Node n = contourPolygon.ContourNodeList[0];
+                        contourPolygon.ContourNodeList.RemoveAt(0);
+                        contourPolygon.ContourNodeList.Add(contourPolygon.ContourNodeList[0]);
+                    }
+                    else
+                    {
+                        Found = false;
+                    }
+                }
+            }
+
             sbHTML.AppendLine(@"  <Folder>");
             sbHTML.AppendLine(@"    <name>" + TaskRunnerServiceRes.MIKEStudyArea + @"</name>");
             sbHTML.AppendLine(@"    <visibility>0</visibility>");

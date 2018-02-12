@@ -5,14 +5,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using CSSPWebToolsTaskRunner.Services;
 using System.Linq;
-using CSSPWebToolsDB.Models;
+using CSSPModelsDLL.Models;
 using System.ComponentModel;
 using System.Transactions;
-using CSSPWebToolsTaskRunner.Services.Fakes;
 using Microsoft.QualityTools.Testing.Fakes;
-using CSSPWebToolsDB.Services;
+using CSSPWebToolsDBDLL.Services;
 using System.IO;
 using CSSPWebToolsDBDLL.Services;
+using CSSPEnumsDLL.Enums;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -28,7 +28,6 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
         #region Properties
         private CSSPWebToolsTaskRunner csspWebToolsTaskRunner { get; set; }
-        private ShimTaskRunnerBaseService shimTaskRunnerBaseService { get; set; }
         private BWObj bwObj { get; set; }
         private TidesAndCurrentsService tidesAndCurrentsService { get; set; }
         private AppTaskService appTaskService { get; set; }
@@ -78,32 +77,118 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         // public void MyTestCleanup() { }
         //
         #endregion Initialize and Cleanup
+     
+        #region Functions public
+        [TestMethod]
+        public void TidesAndCurrentsService_Constructor_Test()
+        {
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                // Arrange 
+                SetupTest(LanguageRequest);
+                Assert.IsNotNull(csspWebToolsTaskRunner);
 
-        //#region Functions public
-        //[TestMethod]
-        //public void TidesAndCurrentsService_Constructor_Test()
-        //{
-        //    foreach (string LanguageRequest in new List<string>() { "en", "fr" })
-        //    {
-        //        // Arrange 
-        //        SetupTest(LanguageRequest);
-        //        Assert.IsNotNull(csspWebToolsTaskRunner);
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 100000,
+                    TVItemID = 123456,
+                    TVItemID2 = 123456,
+                    AppTaskCommand = AppTaskCommandEnum.SetupWebTide,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = "|||MikeScenarioTVItemID,336888|||WebTideDataSet,11|||",
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
 
-        //        csspWebToolsTaskRunner._RichTextBoxStatus.Text = "";
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
 
-        //        csspWebToolsTaskRunner.StopTimer();
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
 
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            RemoveAllTask();
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
 
-        //            tidesAndCurrentsService = new TidesAndCurrentsService(csspWebToolsTaskRunner._TaskRunnerBaseService);
-        //            Assert.IsNotNull(tidesAndCurrentsService);
-        //            Assert.IsNotNull(tidesAndCurrentsService._TaskRunnerBaseService);
-        //            Assert.AreEqual(bwObj.appTaskModel.AppTaskID, tidesAndCurrentsService._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-        //        }
-        //    }
-        //}
+                taskRunnerBaseService._BWObj = bwObj;
+
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    tidesAndCurrentsService = new TidesAndCurrentsService(taskRunnerBaseService);
+                    Assert.IsNotNull(tidesAndCurrentsService);
+                    Assert.IsNotNull(tidesAndCurrentsService._TaskRunnerBaseService);
+                    Assert.AreEqual(bwObj.appTaskModel.AppTaskID, tidesAndCurrentsService._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                }
+            }
+        }
+        [TestMethod]
+        public void TidesAndCurrentsService_SetWebTide_Test()
+        {
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                int MikeScenarioTVItemID = 336888;
+                string Parameters = "|||MikeScenarioTVItemID,336888|||WebTideDataSet,11|||";
+
+                //AppTaskID	TVItemID	TVItemID2	AppTaskCommand	AppTaskStatus	PercentCompleted	Parameters	Language	StartDateTime_UTC	EndDateTime_UTC	EstimatedLength_second	RemainingTime_second	LastUpdateDate_UTC	LastUpdateContactTVItemID
+                //10346	336888	336888	8	2	10	|||MikeScenarioTVItemID,336888|||WebTideDataSet,11|||	1	2018-02-12 13:16:35.400	NULL NULL    NULL	2018-02-12 13:16:36.477	2
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 100000,
+                    TVItemID = MikeScenarioTVItemID,
+                    TVItemID2 = MikeScenarioTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.SetupWebTide,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+                TidesAndCurrentsService tidesAndCurrentsService = new TidesAndCurrentsService(taskRunnerBaseService);
+
+                tidesAndCurrentsService.SetupWebTide();
+
+                break;
+            }
+
+        }
+
         //[TestMethod]
         //public void TidesAndCurrentsService_CreateHighAndLowTide_Test()
         //{
@@ -184,7 +269,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         //        }
         //    }
         //}
-        //#endregion Functions public
+        #endregion Functions public
 
         #region Functions private
         //private void RemoveAllTask()
@@ -252,6 +337,10 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         //{
         //    shimTaskRunnerBaseService = new ShimTaskRunnerBaseService(csspWebToolsTaskRunner._TaskRunnerBaseService);
         //}
+        public void SetupTest(LanguageEnum LanguageRequest)
+        {
+            csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
+        }
         #endregion Functions private
 
     }
