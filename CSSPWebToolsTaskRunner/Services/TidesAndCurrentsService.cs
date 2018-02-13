@@ -854,7 +854,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             //string retStr = parametersService.FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList);
 
-            if (!parametersService.FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            if (!parametersService.FillRequiredList(dfsuFile, elementList, elementLayerList, nodeList, topNodeLayerList, bottomNodeLayerList))
             {
                 return;
             }

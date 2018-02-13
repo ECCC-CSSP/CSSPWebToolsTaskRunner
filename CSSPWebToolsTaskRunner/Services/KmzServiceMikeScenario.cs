@@ -3225,329 +3225,329 @@ namespace CSSPWebToolsTaskRunner.Services
             sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
             sbStyleCurrentAnim.AppendLine(@"</Style>");
         }
-        public void FillElementLayerList(DfsuFile dfsuFile, List<int> SigmaLayerValueList, List<Element> ElementList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
-        {
-            string NotUsed = "";
-            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-            {
-                foreach (int layer in SigmaLayerValueList)
-                {
-                    if (layer > dfsuFile.NumberOfSigmaLayers)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.MaximumNumberOfSigmaLayers_, dfsuFile.NumberOfSigmaLayers.ToString());
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("MaximumNumberOfSigmaLayers_", dfsuFile.NumberOfSigmaLayers.ToString());
-                        return;
-                    }
-                }
-                float Depth = 0.0f;
-                List<Element> TempElementList;
+        //public void FillElementLayerList(DfsuFile dfsuFile, List<int> SigmaLayerValueList, List<Element> ElementList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
+        //{
+        //    string NotUsed = "";
+        //    if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //    {
+        //        foreach (int layer in SigmaLayerValueList)
+        //        {
+        //            if (layer > dfsuFile.NumberOfSigmaLayers)
+        //            {
+        //                NotUsed = string.Format(TaskRunnerServiceRes.MaximumNumberOfSigmaLayers_, dfsuFile.NumberOfSigmaLayers.ToString());
+        //                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("MaximumNumberOfSigmaLayers_", dfsuFile.NumberOfSigmaLayers.ToString());
+        //                return;
+        //            }
+        //        }
+        //        float Depth = 0.0f;
+        //        List<Element> TempElementList;
 
-                // doing type 32
-                TempElementList = (from el in ElementList
-                                   where el.Type == 32
-                                   && (dfsuFile.Z[el.NodeList[3].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[4].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[5].ID - 1] == Depth)
-                                   select el).ToList<Element>();
+        //        // doing type 32
+        //        TempElementList = (from el in ElementList
+        //                           where el.Type == 32
+        //                           && (dfsuFile.Z[el.NodeList[3].ID - 1] == Depth
+        //                           && dfsuFile.Z[el.NodeList[4].ID - 1] == Depth
+        //                           && dfsuFile.Z[el.NodeList[5].ID - 1] == Depth)
+        //                           select el).ToList<Element>();
 
-                foreach (Element el in TempElementList)
-                {
-                    int Layer = 1;
-                    List<Element> ColumnElementList = (from el1 in ElementList
-                                                      where el1.Type == 32
-                                                      && el1.NodeList[0].X == el.NodeList[0].X
-                                                      && el1.NodeList[1].X == el.NodeList[1].X
-                                                      && el1.NodeList[2].X == el.NodeList[2].X
-                                                      orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
-                                                      select el1).ToList<Element>();
+        //        foreach (Element el in TempElementList)
+        //        {
+        //            int Layer = 1;
+        //            List<Element> ColumnElementList = (from el1 in ElementList
+        //                                              where el1.Type == 32
+        //                                              && el1.NodeList[0].X == el.NodeList[0].X
+        //                                              && el1.NodeList[1].X == el.NodeList[1].X
+        //                                              && el1.NodeList[2].X == el.NodeList[2].X
+        //                                              orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
+        //                                              select el1).ToList<Element>();
 
-                    for (int j = 0; j < ColumnElementList.Count; j++)
-                    {
-                        ElementLayer elementLayer = new ElementLayer();
-                        elementLayer.Layer = Layer;
-                        elementLayer.ZMin = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Min();
-                        elementLayer.ZMax = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Max();
-                        elementLayer.Element = ColumnElementList[j];
-                        ElementLayerList.Add(elementLayer);
+        //            for (int j = 0; j < ColumnElementList.Count; j++)
+        //            {
+        //                ElementLayer elementLayer = new ElementLayer();
+        //                elementLayer.Layer = Layer;
+        //                elementLayer.ZMin = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Min();
+        //                elementLayer.ZMax = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Max();
+        //                elementLayer.Element = ColumnElementList[j];
+        //                ElementLayerList.Add(elementLayer);
 
-                        NodeLayer nl3 = new NodeLayer();
-                        nl3.Layer = Layer;
-                        nl3.Z = dfsuFile.Z[ColumnElementList[j].NodeList[3].ID - 1];
-                        nl3.Node = ColumnElementList[j].NodeList[3];
+        //                NodeLayer nl3 = new NodeLayer();
+        //                nl3.Layer = Layer;
+        //                nl3.Z = dfsuFile.Z[ColumnElementList[j].NodeList[3].ID - 1];
+        //                nl3.Node = ColumnElementList[j].NodeList[3];
 
-                        NodeLayer nl4 = new NodeLayer();
-                        nl4.Layer = Layer;
-                        nl4.Z = dfsuFile.Z[ColumnElementList[j].NodeList[4].ID - 1];
-                        nl4.Node = ColumnElementList[j].NodeList[4];
+        //                NodeLayer nl4 = new NodeLayer();
+        //                nl4.Layer = Layer;
+        //                nl4.Z = dfsuFile.Z[ColumnElementList[j].NodeList[4].ID - 1];
+        //                nl4.Node = ColumnElementList[j].NodeList[4];
 
-                        NodeLayer nl5 = new NodeLayer();
-                        nl5.Layer = Layer;
-                        nl5.Z = dfsuFile.Z[ColumnElementList[j].NodeList[5].ID - 1];
-                        nl5.Node = ColumnElementList[j].NodeList[5];
+        //                NodeLayer nl5 = new NodeLayer();
+        //                nl5.Layer = Layer;
+        //                nl5.Z = dfsuFile.Z[ColumnElementList[j].NodeList[5].ID - 1];
+        //                nl5.Node = ColumnElementList[j].NodeList[5];
 
-                        TopNodeLayerList.Add(nl3);
-                        TopNodeLayerList.Add(nl4);
-                        TopNodeLayerList.Add(nl5);
+        //                TopNodeLayerList.Add(nl3);
+        //                TopNodeLayerList.Add(nl4);
+        //                TopNodeLayerList.Add(nl5);
 
-                        NodeLayer nl0 = new NodeLayer();
-                        nl0.Layer = Layer;
-                        nl0.Z = dfsuFile.Z[ColumnElementList[j].NodeList[0].ID - 1];
-                        nl0.Node = ColumnElementList[j].NodeList[0];
+        //                NodeLayer nl0 = new NodeLayer();
+        //                nl0.Layer = Layer;
+        //                nl0.Z = dfsuFile.Z[ColumnElementList[j].NodeList[0].ID - 1];
+        //                nl0.Node = ColumnElementList[j].NodeList[0];
 
-                        NodeLayer nl1 = new NodeLayer();
-                        nl1.Layer = Layer;
-                        nl1.Z = dfsuFile.Z[ColumnElementList[j].NodeList[1].ID - 1];
-                        nl1.Node = ColumnElementList[j].NodeList[1];
+        //                NodeLayer nl1 = new NodeLayer();
+        //                nl1.Layer = Layer;
+        //                nl1.Z = dfsuFile.Z[ColumnElementList[j].NodeList[1].ID - 1];
+        //                nl1.Node = ColumnElementList[j].NodeList[1];
 
-                        NodeLayer nl2 = new NodeLayer();
-                        nl2.Layer = Layer;
-                        nl2.Z = dfsuFile.Z[ColumnElementList[j].NodeList[2].ID - 1];
-                        nl2.Node = ColumnElementList[j].NodeList[2];
+        //                NodeLayer nl2 = new NodeLayer();
+        //                nl2.Layer = Layer;
+        //                nl2.Z = dfsuFile.Z[ColumnElementList[j].NodeList[2].ID - 1];
+        //                nl2.Node = ColumnElementList[j].NodeList[2];
 
-                        BottomNodeLayerList.Add(nl0);
-                        BottomNodeLayerList.Add(nl1);
-                        BottomNodeLayerList.Add(nl2);
+        //                BottomNodeLayerList.Add(nl0);
+        //                BottomNodeLayerList.Add(nl1);
+        //                BottomNodeLayerList.Add(nl2);
 
-                        Layer += 1;
-                    }
-                }
+        //                Layer += 1;
+        //            }
+        //        }
 
-                // doing type 33
-                TempElementList = (from el in ElementList
-                                   where el.Type == 33
-                                   && (dfsuFile.Z[el.NodeList[4].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[5].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[6].ID - 1] == Depth
-                                   && dfsuFile.Z[el.NodeList[7].ID - 1] == Depth)
-                                   select el).ToList<Element>();
+        //        // doing type 33
+        //        TempElementList = (from el in ElementList
+        //                           where el.Type == 33
+        //                           && (dfsuFile.Z[el.NodeList[4].ID - 1] == Depth
+        //                           && dfsuFile.Z[el.NodeList[5].ID - 1] == Depth
+        //                           && dfsuFile.Z[el.NodeList[6].ID - 1] == Depth
+        //                           && dfsuFile.Z[el.NodeList[7].ID - 1] == Depth)
+        //                           select el).ToList<Element>();
 
-                foreach (Element el in TempElementList)
-                {
-                    int Layer = 1;
-                    List<Element> ColumElementList = (from el1 in ElementList
-                                                      where el1.Type == 33
-                                                      && el1.NodeList[0].X == el.NodeList[0].X
-                                                      && el1.NodeList[1].X == el.NodeList[1].X
-                                                      && el1.NodeList[2].X == el.NodeList[2].X
-                                                      && el1.NodeList[3].X == el.NodeList[3].X
-                                                      orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
-                                                      select el1).ToList<Element>();
+        //        foreach (Element el in TempElementList)
+        //        {
+        //            int Layer = 1;
+        //            List<Element> ColumElementList = (from el1 in ElementList
+        //                                              where el1.Type == 33
+        //                                              && el1.NodeList[0].X == el.NodeList[0].X
+        //                                              && el1.NodeList[1].X == el.NodeList[1].X
+        //                                              && el1.NodeList[2].X == el.NodeList[2].X
+        //                                              && el1.NodeList[3].X == el.NodeList[3].X
+        //                                              orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
+        //                                              select el1).ToList<Element>();
 
-                    for (int j = 0; j < ColumElementList.Count; j++)
-                    {
-                        ElementLayer elementLayer = new ElementLayer();
-                        elementLayer.Layer = Layer;
-                        elementLayer.ZMin = (from nz in ColumElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Min();
-                        elementLayer.ZMax = (from nz in ColumElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Max();
-                        elementLayer.Element = ColumElementList[j];
-                        ElementLayerList.Add(elementLayer);
+        //            for (int j = 0; j < ColumElementList.Count; j++)
+        //            {
+        //                ElementLayer elementLayer = new ElementLayer();
+        //                elementLayer.Layer = Layer;
+        //                elementLayer.ZMin = (from nz in ColumElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Min();
+        //                elementLayer.ZMax = (from nz in ColumElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Max();
+        //                elementLayer.Element = ColumElementList[j];
+        //                ElementLayerList.Add(elementLayer);
 
-                        NodeLayer nl4 = new NodeLayer();
-                        nl4.Layer = Layer;
-                        nl4.Z = 0;
-                        nl4.Node = ColumElementList[j].NodeList[4];
+        //                NodeLayer nl4 = new NodeLayer();
+        //                nl4.Layer = Layer;
+        //                nl4.Z = 0;
+        //                nl4.Node = ColumElementList[j].NodeList[4];
 
-                        NodeLayer nl5 = new NodeLayer();
-                        nl5.Layer = Layer;
-                        nl5.Z = 0;
-                        nl5.Node = ColumElementList[j].NodeList[5];
+        //                NodeLayer nl5 = new NodeLayer();
+        //                nl5.Layer = Layer;
+        //                nl5.Z = 0;
+        //                nl5.Node = ColumElementList[j].NodeList[5];
 
-                        NodeLayer nl6 = new NodeLayer();
-                        nl6.Layer = Layer;
-                        nl6.Z = 0;
-                        nl6.Node = ColumElementList[j].NodeList[6];
+        //                NodeLayer nl6 = new NodeLayer();
+        //                nl6.Layer = Layer;
+        //                nl6.Z = 0;
+        //                nl6.Node = ColumElementList[j].NodeList[6];
 
-                        NodeLayer nl7 = new NodeLayer();
-                        nl7.Layer = Layer;
-                        nl7.Z = 0;
-                        nl7.Node = ColumElementList[j].NodeList[7];
-
-
-                        TopNodeLayerList.Add(nl4);
-                        TopNodeLayerList.Add(nl5);
-                        TopNodeLayerList.Add(nl6);
-                        TopNodeLayerList.Add(nl7);
-
-                        NodeLayer nl0 = new NodeLayer();
-                        nl0.Layer = Layer;
-                        nl0.Z = dfsuFile.Z[ColumElementList[j].NodeList[0].ID - 1];
-                        nl0.Node = ColumElementList[j].NodeList[0];
-
-                        NodeLayer nl1 = new NodeLayer();
-                        nl1.Layer = Layer;
-                        nl1.Z = dfsuFile.Z[ColumElementList[j].NodeList[1].ID - 1];
-                        nl1.Node = ColumElementList[j].NodeList[1];
-
-                        NodeLayer nl2 = new NodeLayer();
-                        nl2.Layer = Layer;
-                        nl2.Z = dfsuFile.Z[ColumElementList[j].NodeList[2].ID - 1];
-                        nl2.Node = ColumElementList[j].NodeList[2];
-
-                        NodeLayer nl3 = new NodeLayer();
-                        nl3.Layer = Layer;
-                        nl3.Z = dfsuFile.Z[ColumElementList[j].NodeList[3].ID - 1];
-                        nl3.Node = ColumElementList[j].NodeList[3];
-
-                        BottomNodeLayerList.Add(nl0);
-                        BottomNodeLayerList.Add(nl1);
-                        BottomNodeLayerList.Add(nl2);
-                        BottomNodeLayerList.Add(nl3);
-
-                        Layer += 1;
-                    }
-                }
-
-                List<ElementLayer> TempElementLayerList = (from el in ElementLayerList
-                                                           orderby el.Element.ID
-                                                           select el).Distinct().ToList();
-
-                //ElementLayerList = new List<ElementLayer>();
-                int OldElemID = 0;
-                foreach (ElementLayer el in TempElementLayerList)
-                {
-                    if (OldElemID == el.Element.ID)
-                    {
-                        ElementLayerList.Remove(el);
-                    }
-                    OldElemID = el.Element.ID;
-                }
-
-                List<NodeLayer> TempNodeLayerList = (from nl in TopNodeLayerList
-                                                     orderby nl.Node.ID
-                                                     select nl).Distinct().ToList();
-
-                TopNodeLayerList = new List<NodeLayer>();
-                int OldID = 0;
-                foreach (NodeLayer nl in TempNodeLayerList)
-                {
-                    if (OldID != nl.Node.ID)
-                    {
-                        TopNodeLayerList.Add(nl);
-                        OldID = nl.Node.ID;
-                    }
-                }
-
-                if (BottomNodeLayerList.Count() > 0)
-                {
-                    TempNodeLayerList = (from nl in BottomNodeLayerList
-                                         orderby nl.Node.ID
-                                         select nl).Distinct().ToList();
-
-                    BottomNodeLayerList = new List<NodeLayer>();
-                    OldID = 0;
-                    foreach (NodeLayer nl in TempNodeLayerList)
-                    {
-                        if (OldID != nl.Node.ID)
-                        {
-                            BottomNodeLayerList.Add(nl);
-                            OldID = nl.Node.ID;
-                        }
-                    }
-                }
-
-            }
-            else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
-            {
-                int Layer = 1;
-                for (int j = 0; j < ElementList.Count; j++)
-                {
-                    ElementLayer elementLayer = new ElementLayer();
-                    elementLayer.Layer = Layer;
-                    elementLayer.ZMin = 0;
-                    elementLayer.ZMax = 0;
-                    elementLayer.Element = ElementList[j];
-                    ElementLayerList.Add(elementLayer);
-
-                    // doing Nodes
-                    if (ElementList[j].Type == 21)
-                    {
-                        NodeLayer nl0 = new NodeLayer();
-                        nl0.Layer = Layer;
-                        nl0.Z = 0;
-                        nl0.Node = ElementList[j].NodeList[0];
-
-                        NodeLayer nl1 = new NodeLayer();
-                        nl1.Layer = Layer;
-                        nl1.Z = 0;
-                        nl1.Node = ElementList[j].NodeList[1];
-
-                        NodeLayer nl2 = new NodeLayer();
-                        nl2.Layer = Layer;
-                        nl2.Z = 0;
-                        nl2.Node = ElementList[j].NodeList[2];
-
-                        TopNodeLayerList.Add(nl0);
-                        TopNodeLayerList.Add(nl1);
-                        TopNodeLayerList.Add(nl2);
-                    }
-                    else if (ElementList[j].Type == 24)
-                    {
-                        NotUsed = TaskRunnerServiceRes.NotImplementedYet;
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("NotImplementedYet");
-                        return;
-                    }
-                    else if (ElementList[j].Type == 25)
-                    {
-                        NodeLayer nl0 = new NodeLayer();
-                        nl0.Layer = Layer;
-                        nl0.Z = 0;
-                        nl0.Node = ElementList[j].NodeList[0];
-
-                        NodeLayer nl1 = new NodeLayer();
-                        nl1.Layer = Layer;
-                        nl1.Z = 0;
-                        nl1.Node = ElementList[j].NodeList[1];
-
-                        NodeLayer nl2 = new NodeLayer();
-                        nl2.Layer = Layer;
-                        nl2.Z = 0;
-                        nl2.Node = ElementList[j].NodeList[2];
-
-                        NodeLayer nl3 = new NodeLayer();
-                        nl3.Layer = Layer;
-                        nl3.Z = 0;
-                        nl3.Node = ElementList[j].NodeList[3];
+        //                NodeLayer nl7 = new NodeLayer();
+        //                nl7.Layer = Layer;
+        //                nl7.Z = 0;
+        //                nl7.Node = ColumElementList[j].NodeList[7];
 
 
-                        TopNodeLayerList.Add(nl0);
-                        TopNodeLayerList.Add(nl1);
-                        TopNodeLayerList.Add(nl2);
-                        TopNodeLayerList.Add(nl3);
-                    }
-                }
+        //                TopNodeLayerList.Add(nl4);
+        //                TopNodeLayerList.Add(nl5);
+        //                TopNodeLayerList.Add(nl6);
+        //                TopNodeLayerList.Add(nl7);
 
-                List<ElementLayer> TempElementLayerList = (from el in ElementLayerList
-                                                           orderby el.Element.ID
-                                                           select el).Distinct().ToList();
+        //                NodeLayer nl0 = new NodeLayer();
+        //                nl0.Layer = Layer;
+        //                nl0.Z = dfsuFile.Z[ColumElementList[j].NodeList[0].ID - 1];
+        //                nl0.Node = ColumElementList[j].NodeList[0];
 
-                ElementLayerList = new List<ElementLayer>();
-                foreach (ElementLayer el in TempElementLayerList)
-                {
-                    ElementLayerList.Add(el);
-                }
+        //                NodeLayer nl1 = new NodeLayer();
+        //                nl1.Layer = Layer;
+        //                nl1.Z = dfsuFile.Z[ColumElementList[j].NodeList[1].ID - 1];
+        //                nl1.Node = ColumElementList[j].NodeList[1];
 
-                List<NodeLayer> TempNodeLayerList = (from nl in TopNodeLayerList
-                                                     orderby nl.Node.ID
-                                                     select nl).Distinct().ToList();
+        //                NodeLayer nl2 = new NodeLayer();
+        //                nl2.Layer = Layer;
+        //                nl2.Z = dfsuFile.Z[ColumElementList[j].NodeList[2].ID - 1];
+        //                nl2.Node = ColumElementList[j].NodeList[2];
 
-                TopNodeLayerList = new List<NodeLayer>();
-                int OldID = 0;
-                foreach (NodeLayer nl in TempNodeLayerList)
-                {
-                    if (OldID != nl.Node.ID)
-                    {
-                        TopNodeLayerList.Add(nl);
-                        OldID = nl.Node.ID;
-                    }
-                }
-            }
-            else
-            {
-                NotUsed = TaskRunnerServiceRes.NotImplementedYet;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("NotImplementedYet");
-                return;
-            }
-        }
+        //                NodeLayer nl3 = new NodeLayer();
+        //                nl3.Layer = Layer;
+        //                nl3.Z = dfsuFile.Z[ColumElementList[j].NodeList[3].ID - 1];
+        //                nl3.Node = ColumElementList[j].NodeList[3];
+
+        //                BottomNodeLayerList.Add(nl0);
+        //                BottomNodeLayerList.Add(nl1);
+        //                BottomNodeLayerList.Add(nl2);
+        //                BottomNodeLayerList.Add(nl3);
+
+        //                Layer += 1;
+        //            }
+        //        }
+
+        //        List<ElementLayer> TempElementLayerList = (from el in ElementLayerList
+        //                                                   orderby el.Element.ID
+        //                                                   select el).Distinct().ToList();
+
+        //        //ElementLayerList = new List<ElementLayer>();
+        //        int OldElemID = 0;
+        //        foreach (ElementLayer el in TempElementLayerList)
+        //        {
+        //            if (OldElemID == el.Element.ID)
+        //            {
+        //                ElementLayerList.Remove(el);
+        //            }
+        //            OldElemID = el.Element.ID;
+        //        }
+
+        //        List<NodeLayer> TempNodeLayerList = (from nl in TopNodeLayerList
+        //                                             orderby nl.Node.ID
+        //                                             select nl).Distinct().ToList();
+
+        //        TopNodeLayerList = new List<NodeLayer>();
+        //        int OldID = 0;
+        //        foreach (NodeLayer nl in TempNodeLayerList)
+        //        {
+        //            if (OldID != nl.Node.ID)
+        //            {
+        //                TopNodeLayerList.Add(nl);
+        //                OldID = nl.Node.ID;
+        //            }
+        //        }
+
+        //        if (BottomNodeLayerList.Count() > 0)
+        //        {
+        //            TempNodeLayerList = (from nl in BottomNodeLayerList
+        //                                 orderby nl.Node.ID
+        //                                 select nl).Distinct().ToList();
+
+        //            BottomNodeLayerList = new List<NodeLayer>();
+        //            OldID = 0;
+        //            foreach (NodeLayer nl in TempNodeLayerList)
+        //            {
+        //                if (OldID != nl.Node.ID)
+        //                {
+        //                    BottomNodeLayerList.Add(nl);
+        //                    OldID = nl.Node.ID;
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //    else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+        //    {
+        //        int Layer = 1;
+        //        for (int j = 0; j < ElementList.Count; j++)
+        //        {
+        //            ElementLayer elementLayer = new ElementLayer();
+        //            elementLayer.Layer = Layer;
+        //            elementLayer.ZMin = 0;
+        //            elementLayer.ZMax = 0;
+        //            elementLayer.Element = ElementList[j];
+        //            ElementLayerList.Add(elementLayer);
+
+        //            // doing Nodes
+        //            if (ElementList[j].Type == 21)
+        //            {
+        //                NodeLayer nl0 = new NodeLayer();
+        //                nl0.Layer = Layer;
+        //                nl0.Z = 0;
+        //                nl0.Node = ElementList[j].NodeList[0];
+
+        //                NodeLayer nl1 = new NodeLayer();
+        //                nl1.Layer = Layer;
+        //                nl1.Z = 0;
+        //                nl1.Node = ElementList[j].NodeList[1];
+
+        //                NodeLayer nl2 = new NodeLayer();
+        //                nl2.Layer = Layer;
+        //                nl2.Z = 0;
+        //                nl2.Node = ElementList[j].NodeList[2];
+
+        //                TopNodeLayerList.Add(nl0);
+        //                TopNodeLayerList.Add(nl1);
+        //                TopNodeLayerList.Add(nl2);
+        //            }
+        //            else if (ElementList[j].Type == 24)
+        //            {
+        //                NotUsed = TaskRunnerServiceRes.NotImplementedYet;
+        //                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("NotImplementedYet");
+        //                return;
+        //            }
+        //            else if (ElementList[j].Type == 25)
+        //            {
+        //                NodeLayer nl0 = new NodeLayer();
+        //                nl0.Layer = Layer;
+        //                nl0.Z = 0;
+        //                nl0.Node = ElementList[j].NodeList[0];
+
+        //                NodeLayer nl1 = new NodeLayer();
+        //                nl1.Layer = Layer;
+        //                nl1.Z = 0;
+        //                nl1.Node = ElementList[j].NodeList[1];
+
+        //                NodeLayer nl2 = new NodeLayer();
+        //                nl2.Layer = Layer;
+        //                nl2.Z = 0;
+        //                nl2.Node = ElementList[j].NodeList[2];
+
+        //                NodeLayer nl3 = new NodeLayer();
+        //                nl3.Layer = Layer;
+        //                nl3.Z = 0;
+        //                nl3.Node = ElementList[j].NodeList[3];
+
+
+        //                TopNodeLayerList.Add(nl0);
+        //                TopNodeLayerList.Add(nl1);
+        //                TopNodeLayerList.Add(nl2);
+        //                TopNodeLayerList.Add(nl3);
+        //            }
+        //        }
+
+        //        List<ElementLayer> TempElementLayerList = (from el in ElementLayerList
+        //                                                   orderby el.Element.ID
+        //                                                   select el).Distinct().ToList();
+
+        //        ElementLayerList = new List<ElementLayer>();
+        //        foreach (ElementLayer el in TempElementLayerList)
+        //        {
+        //            ElementLayerList.Add(el);
+        //        }
+
+        //        List<NodeLayer> TempNodeLayerList = (from nl in TopNodeLayerList
+        //                                             orderby nl.Node.ID
+        //                                             select nl).Distinct().ToList();
+
+        //        TopNodeLayerList = new List<NodeLayer>();
+        //        int OldID = 0;
+        //        foreach (NodeLayer nl in TempNodeLayerList)
+        //        {
+        //            if (OldID != nl.Node.ID)
+        //            {
+        //                TopNodeLayerList.Add(nl);
+        //                OldID = nl.Node.ID;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        NotUsed = TaskRunnerServiceRes.NotImplementedYet;
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("NotImplementedYet");
+        //        return;
+        //    }
+        //}
         public void FillElementListAndNodeList(DfsuFile dfsuFile, List<Element> ElementList, List<Node> NodeList)
         {
             for (int i = 0; i < dfsuFile.NumberOfNodes; i++)
@@ -5444,887 +5444,887 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             sbKMLCurrentAnim.AppendLine(@"</Folder>");
         }
-        private void WriteKMLFeacalColiformContourLine(DfsuFile dfsuFile, string dfsParamItem, StringBuilder sbStyleFeacalColiformContour, StringBuilder sbPlacemarkFeacalColiformContour, List<float> ContourValueList, List<int> SigmaLayerValueList, List<int> ZLayerValueList, List<float> DepthValueList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
-        {
-            string NotUsed = "";
-
-            int ItemNumber = 0;
-            double RefreshEveryXSeconds = double.Parse("5");
-            DateTime RefreshDateTime = DateTime.Now.AddSeconds(RefreshEveryXSeconds);
-
-            // getting the ItemNumber
-            foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
-            {
-                if (dfsDyInfo.Quantity.Item == eumItem.eumIConcentration)
-                {
-                    ItemNumber = dfsDyInfo.ItemNumber;
-                    break;
-                }
-            }
-
-            if (ItemNumber == 0)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, dfsParamItem);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.ParameterType, dfsParamItem);
-                return;
-            }
-
-            DrawKMLContourStyle(sbStyleFeacalColiformContour, sbPlacemarkFeacalColiformContour);
-            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-                return;
-
-            //            int pcount = 0;
-            sbPlacemarkFeacalColiformContour.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.PollutionVideo + "</name>");
-            sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
-
-            int CountAt = 0;
-            int TotalStep = SigmaLayerValueList.Count * ContourValueList.Count * dfsuFile.NumberOfTimeSteps;
-            int CurrentLayer = 0;
-            int CurrentContourValue = 0;
-            int CurrentTimeSteps = 0;
-            foreach (int Layer in SigmaLayerValueList)
-            {
-                CurrentLayer += 1;
-                CurrentContourValue = 1;
-                CurrentTimeSteps = 1;
-
-                #region Top of Layer
-                sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}]</name>", Layer));
-                sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
-                int CountContourValue = 1;
-                foreach (float ContourValue in ContourValueList)
-                {
-                    sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
-                    sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
-
-                    int vcount = 0;
-                    //for (int timeStep = 30; timeStep < 35 /*dfsuFile.NumberOfTimeSteps */; timeStep++)
-                    for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
-                    {
-                        CountAt += 1;
-                        if (DateTime.Now > RefreshDateTime)
-                        {
-                            float Perc = (((float)CurrentLayer * (float)CurrentContourValue * (float)CurrentTimeSteps) * (float)100.0f) / (float)TotalStep;
-
-                            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)Perc);
-                            return;
-                        }
-
-                        float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
-
-                        List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
-
-                        for (int i = 0; i < ElementLayerList.Count; i++)
-                        {
-                            ElementLayerList[i].Element.Value = ValueList[i];
-                        }
-
-                        foreach (NodeLayer nl in TopNodeLayerList)
-                        {
-                            float Total = 0;
-                            foreach (Element element in nl.Node.ElementList)
-                            {
-                                Total += element.Value;
-                            }
-                            nl.Node.Value = Total / nl.Node.ElementList.Count;
-                        }
-
-
-                        List<Node> AllNodeList = new List<Node>();
-
-                        List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
-
-                        AboveNodeLayerList = (from n in TopNodeLayerList
-                                              where (n.Node.Value >= ContourValue)
-                                              && n.Layer == Layer
-                                              select n).ToList<NodeLayer>();
-
-                        foreach (NodeLayer snl in AboveNodeLayerList)
-                        {
-                            List<NodeLayer> EndNodeLayerList = null;
-
-                            List<NodeLayer> NodeLayerConnectedList = (from nll in TopNodeLayerList
-                                                                      from n in snl.Node.ConnectNodeList
-                                                                      where (n.ID == nll.Node.ID)
-                                                                      select nll).ToList<NodeLayer>();
-
-                            EndNodeLayerList = (from nll in NodeLayerConnectedList
-                                                where (nll.Node.ID != snl.Node.ID)
-                                                && (nll.Node.Value < ContourValue)
-                                                && nll.Layer == Layer
-                                                select nll).ToList<NodeLayer>();
-
-                            foreach (NodeLayer en in EndNodeLayerList)
-                            {
-                                AllNodeList.Add(en.Node);
-                            }
-
-                            if (snl.Node.Code != 0)
-                            {
-                                AllNodeList.Add(snl.Node);
-                            }
-
-                        }
-
-                        //if (AllNodeList.Count == 0)
-                        //{
-                        //    //vcount += 1;
-                        //    continue;
-                        //}
-
-                        List<Element> TempUniqueElementList = new List<Element>();
-                        List<Element> UniqueElementList = new List<Element>();
-                        foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
-                        {
-                            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                            {
-                                if (el.Element.Type == 32)
-                                {
-                                    bool NodeBigger = false;
-                                    for (int i = 3; i < 6; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue)
-                                        {
-                                            NodeBigger = true;
-                                            break;
-                                        }
-                                    }
-                                    if (NodeBigger)
-                                    {
-                                        int countTrue = 0;
-                                        for (int i = 3; i < 6; i++)
-                                        {
-                                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                            {
-                                                countTrue += 1;
-                                            }
-                                        }
-                                        if (countTrue != el.Element.NodeList.Count)
-                                        {
-                                            TempUniqueElementList.Add(el.Element);
-                                        }
-                                    }
-                                }
-                                else if (el.Element.Type == 33)
-                                {
-                                    bool NodeBigger = false;
-                                    for (int i = 4; i < 8; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue)
-                                        {
-                                            NodeBigger = true;
-                                            break;
-                                        }
-                                    }
-                                    if (NodeBigger)
-                                    {
-                                        int countTrue = 0;
-                                        for (int i = 4; i < 8; i++)
-                                        {
-                                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                            {
-                                                countTrue += 1;
-                                            }
-                                        }
-                                        if (countTrue != el.Element.NodeList.Count)
-                                        {
-                                            TempUniqueElementList.Add(el.Element);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
-                                    return;
-                                }
-                            }
-                            else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
-                            {
-                                bool NodeBigger = false;
-                                for (int i = 0; i < el.Element.NodeList.Count; i++)
-                                {
-                                    if (el.Element.NodeList[i].Value >= ContourValue)
-                                    {
-                                        NodeBigger = true;
-                                        break;
-                                    }
-                                }
-                                if (NodeBigger)
-                                {
-                                    int countTrue = 0;
-                                    for (int i = 0; i < el.Element.NodeList.Count; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                        {
-                                            countTrue += 1;
-                                        }
-                                    }
-                                    if (countTrue != el.Element.NodeList.Count)
-                                    {
-                                        TempUniqueElementList.Add(el.Element);
-                                    }
-                                }
-                            }
-                        }
-
-                        UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
-
-                        // filling InterpolatedContourNodeList
-                        InterpolatedContourNodeList = new List<Node>();
-
-                        foreach (Element el in UniqueElementList)
-                        {
-                            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                            {
-                                if (el.Type == 32)
-                                {
-                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[4], ContourValue);
-                                    }
-                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[5], ContourValue);
-                                    }
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[3], ContourValue);
-                                    }
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
-                                    }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
-                                    }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[3], ContourValue);
-                                    }
-                                }
-                                else if (el.Type == 33)
-                                {
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
-                                    }
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[7], ContourValue);
-                                    }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
-                                    }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[6], ContourValue);
-                                    }
-                                    if (el.NodeList[6].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[5], ContourValue);
-                                    }
-                                    if (el.NodeList[6].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[7], ContourValue);
-                                    }
-                                    if (el.NodeList[7].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[4], ContourValue);
-                                    }
-                                    if (el.NodeList[7].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[6], ContourValue);
-                                    }
-                                }
-                                else
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
-                                    return;
-                                }
-                            }
-                            else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
-                            {
-                                if (el.Type == 21)
-                                {
-                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
-                                    }
-                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[2], ContourValue);
-                                    }
-                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
-                                    }
-                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
-                                    }
-                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
-                                    }
-                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[0], ContourValue);
-                                    }
-                                }
-                                else if (el.Type == 24)
-                                {
-                                }
-                                else if (el.Type == 25)
-                                {
-                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
-                                    }
-                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[3], ContourValue);
-                                    }
-                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
-                                    }
-                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
-                                    }
-                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
-                                    }
-                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[3], ContourValue);
-                                    }
-                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[0], ContourValue);
-                                    }
-                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                    {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[2], ContourValue);
-                                    }
-                                }
-                                else
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
-                                    return;
-                                }
-                            }
-                        }
-
-                        List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
-
-                        // ------------------------- new code --------------------------
-                        //                     
-
-                        ForwardVector = new Dictionary<string, Vector>();
-                        BackwardVector = new Dictionary<string, Vector>();
-
-                        foreach (Element el in UniqueElementList)
-                        {
-                            if (el.Type == 21)
-                            {
-                                FillVectors21_32(el, UniqueElementList, ContourValue, false, true);
-                            }
-                            else if (el.Type == 24)
-                            {
-                                NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
-                                return;
-                            }
-                            else if (el.Type == 25)
-                            {
-                                FillVectors25_33(el, UniqueElementList, ContourValue, false, true);
-                            }
-                            else if (el.Type == 32)
-                            {
-                                FillVectors21_32(el, UniqueElementList, ContourValue, true, true);
-                            }
-                            else if (el.Type == 33)
-                            {
-                                FillVectors25_33(el, UniqueElementList, ContourValue, true, true);
-                            }
-                            else
-                            {
-                                NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
-                                return;
-                            }
-
-                        }
-
-                        //-------------- new code ------------------------
-
-
-
-                        bool MoreContourLine = true;
-                        MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-                        while (MoreContourLine && ForwardVector.Count > 0)
-                        {
-                            List<Node> FinalContourNodeList = new List<Node>();
-                            Vector LastVector = new Vector();
-                            LastVector = ForwardVector.First().Value;
-                            FinalContourNodeList.Add(LastVector.StartNode);
-                            FinalContourNodeList.Add(LastVector.EndNode);
-                            ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                            BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                            bool PolygonCompleted = false;
-                            while (!PolygonCompleted)
-                            {
-                                List<string> KeyStrList = (from k in ForwardVector.Keys
-                                                           where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                                                           && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                                                           select k).ToList<string>();
-
-                                if (KeyStrList.Count != 1)
-                                {
-                                    KeyStrList = (from k in BackwardVector.Keys
-                                                  where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                                                  && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                                                  select k).ToList<string>();
-
-                                    if (KeyStrList.Count != 1)
-                                    {
-                                        PolygonCompleted = true;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        LastVector = BackwardVector[KeyStrList[0]];
-                                        BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                                        ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                                    }
-                                }
-                                else
-                                {
-                                    LastVector = ForwardVector[KeyStrList[0]];
-                                    ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                                    BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                                }
-                                FinalContourNodeList.Add(LastVector.EndNode);
-                                if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
-                                {
-                                    PolygonCompleted = true;
-                                }
-                            }
-
-                            if (mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList) < 0)
-                            {
-                                FinalContourNodeList.Reverse();
-                            }
-
-                            FinalContourNodeList.Add(FinalContourNodeList[0]);
-                            ContourPolygon contourPolygon = new ContourPolygon() { };
-                            contourPolygon.ContourNodeList = FinalContourNodeList;
-                            contourPolygon.ContourValue = ContourValue;
-                            contourPolygon.Layer = Layer;
-                            ContourPolygonList.Add(contourPolygon);
-
-                            if (ForwardVector.Count == 0)
-                            {
-                                MoreContourLine = false;
-                            }
-
-                        }
-                        DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount, sbStyleFeacalColiformContour, sbPlacemarkFeacalColiformContour);
-                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-                            return;
-
-                        vcount += 1;
-                    }
-                    sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
-                    CountContourValue += 1;
-                }
-                sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
-                #endregion Top of Layer
-
-                #region Bottom of Layer
-                //// doing the bottom layer if the current layer is == NumberOfSigmaLayers
-                //if (Layer == dfsuFile.NumberOfSigmaLayers)
-                //{
-                //    sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>Bottom of Layer [{0}]</name>", Layer));
-                //    sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
-                //    CountContourValue = 1;
-                //    foreach (float ContourValue in ContourValueList)
-                //    {
-                //        sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>Contour Value [{0}]</name>", ContourValue));
-                //        sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
-
-                //        int vcount = 0;
-                //        //for (int timeStep = 30; timeStep < 35 /*dfsuFile.NumberOfTimeSteps */; timeStep++)
-                //        for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
-                //        {
-                //            CountRefresh += 1;
-                //            CountAt += 1;
-                //            if (CountRefresh > UpdateAfter)
-                //            {
-                //                string AppTaskStatus = "";
-                //                if (SigmaLayerValueList.Contains(dfsuFile.NumberOfSigmaLayers))
-                //                {
-                //                    AppTaskStatus = ((int)((CountAt * 100) / (dfsuFile.NumberOfTimeSteps * (SigmaLayerValueList.Count + 1) * ContourValueList.Count))).ToString() + " %";
-                //                }
-                //                else
-                //                {
-                //                    AppTaskStatus = ((int)((CountAt * 100) / (dfsuFile.NumberOfTimeSteps * SigmaLayerValueList.Count * ContourValueList.Count))).ToString() + " %";
-                //                }
-                //                UpdateTask(AppTaskID, AppTaskStatus);
-                //                CountRefresh = 0;
-                //            }
-
-                //            float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
-
-                //            List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
-
-                //            for (int i = 0; i < ElementLayerList.Count; i++)
-                //            {
-                //                ElementLayerList[i].Element.Value = ValueList[i];
-                //            }
-
-                //            foreach (NodeLayer nl in BottomNodeLayerList)
-                //            {
-                //                float Total = 0;
-                //                foreach (Element element in nl.Node.ElementList)
-                //                {
-                //                    Total += element.Value;
-                //                }
-                //                nl.Node.Value = Total / nl.Node.ElementList.Count;
-                //            }
-
-
-                //            List<Node> AllNodeList = new List<Node>();
-
-                //            List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
-
-                //            AboveNodeLayerList = (from n in BottomNodeLayerList
-                //                                  where (n.Node.Value >= ContourValue)
-                //                                  && n.Layer == Layer
-                //                                  select n).ToList<NodeLayer>();
-
-                //            foreach (NodeLayer snl in AboveNodeLayerList)
-                //            {
-                //                List<NodeLayer> EndNodeLayerList = null;
-
-                //                List<NodeLayer> NodeLayerConnectedList = (from nll in BottomNodeLayerList
-                //                                                          from n in snl.Node.ConnectNodeList
-                //                                                          where (n.ID == nll.Node.ID)
-                //                                                          select nll).ToList<NodeLayer>();
-
-                //                EndNodeLayerList = (from nll in NodeLayerConnectedList
-                //                                    where (nll.Node.ID != snl.Node.ID)
-                //                                    && (nll.Node.Value < ContourValue)
-                //                                    && nll.Layer == Layer
-                //                                    select nll).ToList<NodeLayer>();
-
-                //                foreach (NodeLayer en in EndNodeLayerList)
-                //                {
-                //                    AllNodeList.Add(en.Node);
-                //                }
-
-                //                if (snl.Node.Code != 0)
-                //                {
-                //                    AllNodeList.Add(snl.Node);
-                //                }
-
-                //            }
-
-                //            if (AllNodeList.Count == 0)
-                //            {
-                //                //vcount += 1;
-                //                continue;
-                //            }
-
-                //            List<Element> TempUniqueElementList = new List<Element>();
-                //            List<Element> UniqueElementList = new List<Element>();
-                //            foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
-                //            {
-                //                if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                //                {
-                //                    if (el.Element.Type == 32)
-                //                    {
-                //                        bool NodeBigger = false;
-                //                        for (int i = 3; i < 6; i++)
-                //                        {
-                //                            if (el.Element.NodeList[i].Value >= ContourValue)
-                //                            {
-                //                                NodeBigger = true;
-                //                                break;
-                //                            }
-                //                        }
-                //                        if (NodeBigger)
-                //                        {
-                //                            int countTrue = 0;
-                //                            for (int i = 3; i < 6; i++)
-                //                            {
-                //                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                //                                {
-                //                                    countTrue += 1;
-                //                                }
-                //                            }
-                //                            if (countTrue != el.Element.NodeList.Count)
-                //                            {
-                //                                TempUniqueElementList.Add(el.Element);
-                //                            }
-                //                        }
-                //                    }
-                //                    else if (el.Element.Type == 33)
-                //                    {
-                //                        bool NodeBigger = false;
-                //                        for (int i = 4; i < 8; i++)
-                //                        {
-                //                            if (el.Element.NodeList[i].Value >= ContourValue)
-                //                            {
-                //                                NodeBigger = true;
-                //                                break;
-                //                            }
-                //                        }
-                //                        if (NodeBigger)
-                //                        {
-                //                            int countTrue = 0;
-                //                            for (int i = 4; i < 8; i++)
-                //                            {
-                //                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                //                                {
-                //                                    countTrue += 1;
-                //                                }
-                //                            }
-                //                            if (countTrue != el.Element.NodeList.Count)
-                //                            {
-                //                                TempUniqueElementList.Add(el.Element);
-                //                            }
-                //                        }
-                //                    }
-                //                    else
-                //                    {
-                //                        UpdateTask(AppTaskID, "");
-                //                        throw new Exception("Element type is not supported: Element type = [" + el.Element.Type + "]");
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    UpdateTask(AppTaskID, "");
-                //                    throw new Exception("Bottom only exist for Dfsu3DSigma and Dfsu3DSigmaZ.");
-                //                }
-                //            }
-
-                //            UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
-
-                //            // filling InterpolatedContourNodeList
-                //            InterpolatedContourNodeList = new List<Node>();
-
-                //            foreach (Element el in UniqueElementList)
-                //            {
-                //                if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                //                {
-                //                    if (el.Type == 32)
-                //                    {
-                //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
-                //                        }
-                //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[2], ContourValue);
-                //                        }
-                //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
-                //                        }
-                //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
-                //                        }
-                //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
-                //                        }
-                //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[0], ContourValue);
-                //                        }
-                //                    }
-                //                    else if (el.Type == 33)
-                //                    {
-                //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
-                //                        }
-                //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[3], ContourValue);
-                //                        }
-                //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
-                //                        }
-                //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
-                //                        }
-                //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
-                //                        }
-                //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[3], ContourValue);
-                //                        }
-                //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[0], ContourValue);
-                //                        }
-                //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                        {
-                //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[2], ContourValue);
-                //                        }
-                //                    }
-                //                    else
-                //                    {
-                //                        UpdateTask(AppTaskID, "");
-                //                        throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    UpdateTask(AppTaskID, "");
-                //                    throw new Exception("Bottom only exist for Dfsu3DSigma and Dfsu3DSigmaZ.");
-                //                }
-                //            }
-
-                //            List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
-
-                //            // ------------------------- new code --------------------------
-                //            //                     
-
-                //            ForwardVector = new Dictionary<string, Vector>();
-                //            BackwardVector = new Dictionary<string, Vector>();
-
-                //            foreach (Element el in UniqueElementList)
-                //            {
-                //                if (el.Type == 21)
-                //                {
-                //                    FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, false, false);
-                //                }
-                //                else if (el.Type == 24)
-                //                {
-                //                    UpdateTask(AppTaskID, "");
-                //                    throw new Exception("This should never happen. Node0, Node1 nd Node2 all < ContourValue");
-                //                }
-                //                else if (el.Type == 25)
-                //                {
-                //                    FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, false, false);
-                //                }
-                //                else if (el.Type == 32)
-                //                {
-                //                    FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, true, false);
-                //                }
-                //                else if (el.Type == 33)
-                //                {
-                //                    FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, true, false);
-                //                }
-                //                else
-                //                {
-                //                    UpdateTask(AppTaskID, "");
-                //                    throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
-                //                }
-
-                //            }
-
-                //            //-------------- new code ------------------------
-
-
-
-                //            bool MoreContourLine = true;
-                //            while (MoreContourLine)
-                //            {
-                //                List<Node> FinalContourNodeList = new List<Node>();
-                //                Vector LastVector = new Vector();
-                //                LastVector = ForwardVector.First().Value;
-                //                FinalContourNodeList.Add(LastVector.StartNode);
-                //                FinalContourNodeList.Add(LastVector.EndNode);
-                //                ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                //                BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                //                bool PolygonCompleted = false;
-                //                while (!PolygonCompleted)
-                //                {
-                //                    List<string> KeyStrList = (from k in ForwardVector.Keys
-                //                                               where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                //                                               && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                //                                               select k).ToList<string>();
-
-                //                    if (KeyStrList.Count != 1)
-                //                    {
-                //                        KeyStrList = (from k in BackwardVector.Keys
-                //                                      where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                //                                      && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                //                                      select k).ToList<string>();
-
-                //                        if (KeyStrList.Count != 1)
-                //                        {
-                //                            PolygonCompleted = true;
-                //                            break;
-                //                        }
-                //                        else
-                //                        {
-                //                            LastVector = BackwardVector[KeyStrList[0]];
-                //                            BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                //                            ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                //                        }
-                //                    }
-                //                    else
-                //                    {
-                //                        LastVector = ForwardVector[KeyStrList[0]];
-                //                        ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                //                        BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                //                    }
-                //                    FinalContourNodeList.Add(LastVector.EndNode);
-                //                    if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
-                //                    {
-                //                        PolygonCompleted = true;
-                //                    }
-                //                }
-
-                //                if (CalculateAreaOfPolygon(FinalContourNodeList) < 0)
-                //                {
-                //                    FinalContourNodeList.Reverse();
-                //                }
-
-                //                FinalContourNodeList.Add(FinalContourNodeList[0]);
-                //                ContourPolygon contourPolygon = new ContourPolygon() { };
-                //                contourPolygon.ContourNodeList = FinalContourNodeList;
-                //                contourPolygon.ContourValue = ContourValue;
-                //                contourPolygon.Layer = Layer;
-                //                ContourPolygonList.Add(contourPolygon);
-
-                //                if (ForwardVector.Count == 0)
-                //                {
-                //                    MoreContourLine = false;
-                //                }
-
-                //            }
-                //            DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount, sbStyleFeacalColiformContour, sbPlacemarkFeacalColiformContour);
-                //            vcount += 1;
-                //        }
-                //        sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
-                //        CountContourValue += 1;
-                //    }
-                //    sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
-                //}
-                #endregion Bottom of Layer
-            }
-            sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
-
-            return;
-        }
+        //private void WriteKMLFeacalColiformContourLine(DfsuFile dfsuFile, string dfsParamItem, StringBuilder sbStyleFeacalColiformContour, StringBuilder sbPlacemarkFeacalColiformContour, List<float> ContourValueList, List<int> SigmaLayerValueList, List<int> ZLayerValueList, List<float> DepthValueList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
+        //{
+        //    string NotUsed = "";
+
+        //    int ItemNumber = 0;
+        //    double RefreshEveryXSeconds = double.Parse("5");
+        //    DateTime RefreshDateTime = DateTime.Now.AddSeconds(RefreshEveryXSeconds);
+
+        //    // getting the ItemNumber
+        //    foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
+        //    {
+        //        if (dfsDyInfo.Quantity.Item == eumItem.eumIConcentration)
+        //        {
+        //            ItemNumber = dfsDyInfo.ItemNumber;
+        //            break;
+        //        }
+        //    }
+
+        //    if (ItemNumber == 0)
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, dfsParamItem);
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.ParameterType, dfsParamItem);
+        //        return;
+        //    }
+
+        //    DrawKMLContourStyle(sbStyleFeacalColiformContour, sbPlacemarkFeacalColiformContour);
+        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+        //        return;
+
+        //    //            int pcount = 0;
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.PollutionVideo + "</name>");
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
+
+        //    int CountAt = 0;
+        //    int TotalStep = SigmaLayerValueList.Count * ContourValueList.Count * dfsuFile.NumberOfTimeSteps;
+        //    int CurrentLayer = 0;
+        //    int CurrentContourValue = 0;
+        //    int CurrentTimeSteps = 0;
+        //    foreach (int Layer in SigmaLayerValueList)
+        //    {
+        //        CurrentLayer += 1;
+        //        CurrentContourValue = 1;
+        //        CurrentTimeSteps = 1;
+
+        //        #region Top of Layer
+        //        sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}]</name>", Layer));
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
+        //        int CountContourValue = 1;
+        //        foreach (float ContourValue in ContourValueList)
+        //        {
+        //            sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
+        //            sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
+
+        //            int vcount = 0;
+        //            //for (int timeStep = 30; timeStep < 35 /*dfsuFile.NumberOfTimeSteps */; timeStep++)
+        //            for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
+        //            {
+        //                CountAt += 1;
+        //                if (DateTime.Now > RefreshDateTime)
+        //                {
+        //                    float Perc = (((float)CurrentLayer * (float)CurrentContourValue * (float)CurrentTimeSteps) * (float)100.0f) / (float)TotalStep;
+
+        //                    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)Perc);
+        //                    return;
+        //                }
+
+        //                float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
+
+        //                List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
+
+        //                for (int i = 0; i < ElementLayerList.Count; i++)
+        //                {
+        //                    ElementLayerList[i].Element.Value = ValueList[i];
+        //                }
+
+        //                foreach (NodeLayer nl in TopNodeLayerList)
+        //                {
+        //                    float Total = 0;
+        //                    foreach (Element element in nl.Node.ElementList)
+        //                    {
+        //                        Total += element.Value;
+        //                    }
+        //                    nl.Node.Value = Total / nl.Node.ElementList.Count;
+        //                }
+
+
+        //                List<Node> AllNodeList = new List<Node>();
+
+        //                List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
+
+        //                AboveNodeLayerList = (from n in TopNodeLayerList
+        //                                      where (n.Node.Value >= ContourValue)
+        //                                      && n.Layer == Layer
+        //                                      select n).ToList<NodeLayer>();
+
+        //                foreach (NodeLayer snl in AboveNodeLayerList)
+        //                {
+        //                    List<NodeLayer> EndNodeLayerList = null;
+
+        //                    List<NodeLayer> NodeLayerConnectedList = (from nll in TopNodeLayerList
+        //                                                              from n in snl.Node.ConnectNodeList
+        //                                                              where (n.ID == nll.Node.ID)
+        //                                                              select nll).ToList<NodeLayer>();
+
+        //                    EndNodeLayerList = (from nll in NodeLayerConnectedList
+        //                                        where (nll.Node.ID != snl.Node.ID)
+        //                                        && (nll.Node.Value < ContourValue)
+        //                                        && nll.Layer == Layer
+        //                                        select nll).ToList<NodeLayer>();
+
+        //                    foreach (NodeLayer en in EndNodeLayerList)
+        //                    {
+        //                        AllNodeList.Add(en.Node);
+        //                    }
+
+        //                    if (snl.Node.Code != 0)
+        //                    {
+        //                        AllNodeList.Add(snl.Node);
+        //                    }
+
+        //                }
+
+        //                //if (AllNodeList.Count == 0)
+        //                //{
+        //                //    //vcount += 1;
+        //                //    continue;
+        //                //}
+
+        //                List<Element> TempUniqueElementList = new List<Element>();
+        //                List<Element> UniqueElementList = new List<Element>();
+        //                foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
+        //                {
+        //                    if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //                    {
+        //                        if (el.Element.Type == 32)
+        //                        {
+        //                            bool NodeBigger = false;
+        //                            for (int i = 3; i < 6; i++)
+        //                            {
+        //                                if (el.Element.NodeList[i].Value >= ContourValue)
+        //                                {
+        //                                    NodeBigger = true;
+        //                                    break;
+        //                                }
+        //                            }
+        //                            if (NodeBigger)
+        //                            {
+        //                                int countTrue = 0;
+        //                                for (int i = 3; i < 6; i++)
+        //                                {
+        //                                    if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //                                    {
+        //                                        countTrue += 1;
+        //                                    }
+        //                                }
+        //                                if (countTrue != el.Element.NodeList.Count)
+        //                                {
+        //                                    TempUniqueElementList.Add(el.Element);
+        //                                }
+        //                            }
+        //                        }
+        //                        else if (el.Element.Type == 33)
+        //                        {
+        //                            bool NodeBigger = false;
+        //                            for (int i = 4; i < 8; i++)
+        //                            {
+        //                                if (el.Element.NodeList[i].Value >= ContourValue)
+        //                                {
+        //                                    NodeBigger = true;
+        //                                    break;
+        //                                }
+        //                            }
+        //                            if (NodeBigger)
+        //                            {
+        //                                int countTrue = 0;
+        //                                for (int i = 4; i < 8; i++)
+        //                                {
+        //                                    if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //                                    {
+        //                                        countTrue += 1;
+        //                                    }
+        //                                }
+        //                                if (countTrue != el.Element.NodeList.Count)
+        //                                {
+        //                                    TempUniqueElementList.Add(el.Element);
+        //                                }
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
+        //                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
+        //                            return;
+        //                        }
+        //                    }
+        //                    else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+        //                    {
+        //                        bool NodeBigger = false;
+        //                        for (int i = 0; i < el.Element.NodeList.Count; i++)
+        //                        {
+        //                            if (el.Element.NodeList[i].Value >= ContourValue)
+        //                            {
+        //                                NodeBigger = true;
+        //                                break;
+        //                            }
+        //                        }
+        //                        if (NodeBigger)
+        //                        {
+        //                            int countTrue = 0;
+        //                            for (int i = 0; i < el.Element.NodeList.Count; i++)
+        //                            {
+        //                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //                                {
+        //                                    countTrue += 1;
+        //                                }
+        //                            }
+        //                            if (countTrue != el.Element.NodeList.Count)
+        //                            {
+        //                                TempUniqueElementList.Add(el.Element);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+
+        //                UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
+
+        //                // filling InterpolatedContourNodeList
+        //                InterpolatedContourNodeList = new List<Node>();
+
+        //                foreach (Element el in UniqueElementList)
+        //                {
+        //                    if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //                    {
+        //                        if (el.Type == 32)
+        //                        {
+        //                            if (el.NodeList[3].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[4], ContourValue);
+        //                            }
+        //                            if (el.NodeList[3].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[5], ContourValue);
+        //                            }
+        //                            if (el.NodeList[4].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[3], ContourValue);
+        //                            }
+        //                            if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+        //                            }
+        //                            if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+        //                            }
+        //                            if (el.NodeList[5].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[3], ContourValue);
+        //                            }
+        //                        }
+        //                        else if (el.Type == 33)
+        //                        {
+        //                            if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+        //                            }
+        //                            if (el.NodeList[4].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[7], ContourValue);
+        //                            }
+        //                            if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+        //                            }
+        //                            if (el.NodeList[5].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[6], ContourValue);
+        //                            }
+        //                            if (el.NodeList[6].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[5], ContourValue);
+        //                            }
+        //                            if (el.NodeList[6].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[7], ContourValue);
+        //                            }
+        //                            if (el.NodeList[7].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[4], ContourValue);
+        //                            }
+        //                            if (el.NodeList[7].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[6], ContourValue);
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+        //                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
+        //                            return;
+        //                        }
+        //                    }
+        //                    else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+        //                    {
+        //                        if (el.Type == 21)
+        //                        {
+        //                            if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
+        //                            }
+        //                            if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[2], ContourValue);
+        //                            }
+        //                            if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
+        //                            }
+        //                            if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
+        //                            }
+        //                            if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
+        //                            }
+        //                            if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[0], ContourValue);
+        //                            }
+        //                        }
+        //                        else if (el.Type == 24)
+        //                        {
+        //                        }
+        //                        else if (el.Type == 25)
+        //                        {
+        //                            if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
+        //                            }
+        //                            if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[3], ContourValue);
+        //                            }
+        //                            if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
+        //                            }
+        //                            if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
+        //                            }
+        //                            if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
+        //                            }
+        //                            if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[3], ContourValue);
+        //                            }
+        //                            if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[0], ContourValue);
+        //                            }
+        //                            if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                            {
+        //                                InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[2], ContourValue);
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+        //                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
+        //                            return;
+        //                        }
+        //                    }
+        //                }
+
+        //                List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
+
+        //                // ------------------------- new code --------------------------
+        //                //                     
+
+        //                ForwardVector = new Dictionary<string, Vector>();
+        //                BackwardVector = new Dictionary<string, Vector>();
+
+        //                foreach (Element el in UniqueElementList)
+        //                {
+        //                    if (el.Type == 21)
+        //                    {
+        //                        FillVectors21_32(el, UniqueElementList, ContourValue, false, true);
+        //                    }
+        //                    else if (el.Type == 24)
+        //                    {
+        //                        NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
+        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
+        //                        return;
+        //                    }
+        //                    else if (el.Type == 25)
+        //                    {
+        //                        FillVectors25_33(el, UniqueElementList, ContourValue, false, true);
+        //                    }
+        //                    else if (el.Type == 32)
+        //                    {
+        //                        FillVectors21_32(el, UniqueElementList, ContourValue, true, true);
+        //                    }
+        //                    else if (el.Type == 33)
+        //                    {
+        //                        FillVectors25_33(el, UniqueElementList, ContourValue, true, true);
+        //                    }
+        //                    else
+        //                    {
+        //                        NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
+        //                        return;
+        //                    }
+
+        //                }
+
+        //                //-------------- new code ------------------------
+
+
+
+        //                bool MoreContourLine = true;
+        //                MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //                while (MoreContourLine && ForwardVector.Count > 0)
+        //                {
+        //                    List<Node> FinalContourNodeList = new List<Node>();
+        //                    Vector LastVector = new Vector();
+        //                    LastVector = ForwardVector.First().Value;
+        //                    FinalContourNodeList.Add(LastVector.StartNode);
+        //                    FinalContourNodeList.Add(LastVector.EndNode);
+        //                    ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //                    BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //                    bool PolygonCompleted = false;
+        //                    while (!PolygonCompleted)
+        //                    {
+        //                        List<string> KeyStrList = (from k in ForwardVector.Keys
+        //                                                   where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //                                                   && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //                                                   select k).ToList<string>();
+
+        //                        if (KeyStrList.Count != 1)
+        //                        {
+        //                            KeyStrList = (from k in BackwardVector.Keys
+        //                                          where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //                                          && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //                                          select k).ToList<string>();
+
+        //                            if (KeyStrList.Count != 1)
+        //                            {
+        //                                PolygonCompleted = true;
+        //                                break;
+        //                            }
+        //                            else
+        //                            {
+        //                                LastVector = BackwardVector[KeyStrList[0]];
+        //                                BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //                                ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            LastVector = ForwardVector[KeyStrList[0]];
+        //                            ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //                            BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //                        }
+        //                        FinalContourNodeList.Add(LastVector.EndNode);
+        //                        if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
+        //                        {
+        //                            PolygonCompleted = true;
+        //                        }
+        //                    }
+
+        //                    if (mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList) < 0)
+        //                    {
+        //                        FinalContourNodeList.Reverse();
+        //                    }
+
+        //                    FinalContourNodeList.Add(FinalContourNodeList[0]);
+        //                    ContourPolygon contourPolygon = new ContourPolygon() { };
+        //                    contourPolygon.ContourNodeList = FinalContourNodeList;
+        //                    contourPolygon.ContourValue = ContourValue;
+        //                    contourPolygon.Layer = Layer;
+        //                    ContourPolygonList.Add(contourPolygon);
+
+        //                    if (ForwardVector.Count == 0)
+        //                    {
+        //                        MoreContourLine = false;
+        //                    }
+
+        //                }
+        //                DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount, sbStyleFeacalColiformContour, sbPlacemarkFeacalColiformContour);
+        //                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+        //                    return;
+
+        //                vcount += 1;
+        //            }
+        //            sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
+        //            CountContourValue += 1;
+        //        }
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
+        //        #endregion Top of Layer
+
+        //        #region Bottom of Layer
+        //        //// doing the bottom layer if the current layer is == NumberOfSigmaLayers
+        //        //if (Layer == dfsuFile.NumberOfSigmaLayers)
+        //        //{
+        //        //    sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>Bottom of Layer [{0}]</name>", Layer));
+        //        //    sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
+        //        //    CountContourValue = 1;
+        //        //    foreach (float ContourValue in ContourValueList)
+        //        //    {
+        //        //        sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<Folder><name>Contour Value [{0}]</name>", ContourValue));
+        //        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
+
+        //        //        int vcount = 0;
+        //        //        //for (int timeStep = 30; timeStep < 35 /*dfsuFile.NumberOfTimeSteps */; timeStep++)
+        //        //        for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
+        //        //        {
+        //        //            CountRefresh += 1;
+        //        //            CountAt += 1;
+        //        //            if (CountRefresh > UpdateAfter)
+        //        //            {
+        //        //                string AppTaskStatus = "";
+        //        //                if (SigmaLayerValueList.Contains(dfsuFile.NumberOfSigmaLayers))
+        //        //                {
+        //        //                    AppTaskStatus = ((int)((CountAt * 100) / (dfsuFile.NumberOfTimeSteps * (SigmaLayerValueList.Count + 1) * ContourValueList.Count))).ToString() + " %";
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    AppTaskStatus = ((int)((CountAt * 100) / (dfsuFile.NumberOfTimeSteps * SigmaLayerValueList.Count * ContourValueList.Count))).ToString() + " %";
+        //        //                }
+        //        //                UpdateTask(AppTaskID, AppTaskStatus);
+        //        //                CountRefresh = 0;
+        //        //            }
+
+        //        //            float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
+
+        //        //            List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
+
+        //        //            for (int i = 0; i < ElementLayerList.Count; i++)
+        //        //            {
+        //        //                ElementLayerList[i].Element.Value = ValueList[i];
+        //        //            }
+
+        //        //            foreach (NodeLayer nl in BottomNodeLayerList)
+        //        //            {
+        //        //                float Total = 0;
+        //        //                foreach (Element element in nl.Node.ElementList)
+        //        //                {
+        //        //                    Total += element.Value;
+        //        //                }
+        //        //                nl.Node.Value = Total / nl.Node.ElementList.Count;
+        //        //            }
+
+
+        //        //            List<Node> AllNodeList = new List<Node>();
+
+        //        //            List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
+
+        //        //            AboveNodeLayerList = (from n in BottomNodeLayerList
+        //        //                                  where (n.Node.Value >= ContourValue)
+        //        //                                  && n.Layer == Layer
+        //        //                                  select n).ToList<NodeLayer>();
+
+        //        //            foreach (NodeLayer snl in AboveNodeLayerList)
+        //        //            {
+        //        //                List<NodeLayer> EndNodeLayerList = null;
+
+        //        //                List<NodeLayer> NodeLayerConnectedList = (from nll in BottomNodeLayerList
+        //        //                                                          from n in snl.Node.ConnectNodeList
+        //        //                                                          where (n.ID == nll.Node.ID)
+        //        //                                                          select nll).ToList<NodeLayer>();
+
+        //        //                EndNodeLayerList = (from nll in NodeLayerConnectedList
+        //        //                                    where (nll.Node.ID != snl.Node.ID)
+        //        //                                    && (nll.Node.Value < ContourValue)
+        //        //                                    && nll.Layer == Layer
+        //        //                                    select nll).ToList<NodeLayer>();
+
+        //        //                foreach (NodeLayer en in EndNodeLayerList)
+        //        //                {
+        //        //                    AllNodeList.Add(en.Node);
+        //        //                }
+
+        //        //                if (snl.Node.Code != 0)
+        //        //                {
+        //        //                    AllNodeList.Add(snl.Node);
+        //        //                }
+
+        //        //            }
+
+        //        //            if (AllNodeList.Count == 0)
+        //        //            {
+        //        //                //vcount += 1;
+        //        //                continue;
+        //        //            }
+
+        //        //            List<Element> TempUniqueElementList = new List<Element>();
+        //        //            List<Element> UniqueElementList = new List<Element>();
+        //        //            foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
+        //        //            {
+        //        //                if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //        //                {
+        //        //                    if (el.Element.Type == 32)
+        //        //                    {
+        //        //                        bool NodeBigger = false;
+        //        //                        for (int i = 3; i < 6; i++)
+        //        //                        {
+        //        //                            if (el.Element.NodeList[i].Value >= ContourValue)
+        //        //                            {
+        //        //                                NodeBigger = true;
+        //        //                                break;
+        //        //                            }
+        //        //                        }
+        //        //                        if (NodeBigger)
+        //        //                        {
+        //        //                            int countTrue = 0;
+        //        //                            for (int i = 3; i < 6; i++)
+        //        //                            {
+        //        //                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //        //                                {
+        //        //                                    countTrue += 1;
+        //        //                                }
+        //        //                            }
+        //        //                            if (countTrue != el.Element.NodeList.Count)
+        //        //                            {
+        //        //                                TempUniqueElementList.Add(el.Element);
+        //        //                            }
+        //        //                        }
+        //        //                    }
+        //        //                    else if (el.Element.Type == 33)
+        //        //                    {
+        //        //                        bool NodeBigger = false;
+        //        //                        for (int i = 4; i < 8; i++)
+        //        //                        {
+        //        //                            if (el.Element.NodeList[i].Value >= ContourValue)
+        //        //                            {
+        //        //                                NodeBigger = true;
+        //        //                                break;
+        //        //                            }
+        //        //                        }
+        //        //                        if (NodeBigger)
+        //        //                        {
+        //        //                            int countTrue = 0;
+        //        //                            for (int i = 4; i < 8; i++)
+        //        //                            {
+        //        //                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //        //                                {
+        //        //                                    countTrue += 1;
+        //        //                                }
+        //        //                            }
+        //        //                            if (countTrue != el.Element.NodeList.Count)
+        //        //                            {
+        //        //                                TempUniqueElementList.Add(el.Element);
+        //        //                            }
+        //        //                        }
+        //        //                    }
+        //        //                    else
+        //        //                    {
+        //        //                        UpdateTask(AppTaskID, "");
+        //        //                        throw new Exception("Element type is not supported: Element type = [" + el.Element.Type + "]");
+        //        //                    }
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    UpdateTask(AppTaskID, "");
+        //        //                    throw new Exception("Bottom only exist for Dfsu3DSigma and Dfsu3DSigmaZ.");
+        //        //                }
+        //        //            }
+
+        //        //            UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
+
+        //        //            // filling InterpolatedContourNodeList
+        //        //            InterpolatedContourNodeList = new List<Node>();
+
+        //        //            foreach (Element el in UniqueElementList)
+        //        //            {
+        //        //                if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //        //                {
+        //        //                    if (el.Type == 32)
+        //        //                    {
+        //        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[2], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[0], ContourValue);
+        //        //                        }
+        //        //                    }
+        //        //                    else if (el.Type == 33)
+        //        //                    {
+        //        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[3], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[3], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[0], ContourValue);
+        //        //                        }
+        //        //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                        {
+        //        //                            InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[2], ContourValue);
+        //        //                        }
+        //        //                    }
+        //        //                    else
+        //        //                    {
+        //        //                        UpdateTask(AppTaskID, "");
+        //        //                        throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
+        //        //                    }
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    UpdateTask(AppTaskID, "");
+        //        //                    throw new Exception("Bottom only exist for Dfsu3DSigma and Dfsu3DSigmaZ.");
+        //        //                }
+        //        //            }
+
+        //        //            List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
+
+        //        //            // ------------------------- new code --------------------------
+        //        //            //                     
+
+        //        //            ForwardVector = new Dictionary<string, Vector>();
+        //        //            BackwardVector = new Dictionary<string, Vector>();
+
+        //        //            foreach (Element el in UniqueElementList)
+        //        //            {
+        //        //                if (el.Type == 21)
+        //        //                {
+        //        //                    FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, false, false);
+        //        //                }
+        //        //                else if (el.Type == 24)
+        //        //                {
+        //        //                    UpdateTask(AppTaskID, "");
+        //        //                    throw new Exception("This should never happen. Node0, Node1 nd Node2 all < ContourValue");
+        //        //                }
+        //        //                else if (el.Type == 25)
+        //        //                {
+        //        //                    FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, false, false);
+        //        //                }
+        //        //                else if (el.Type == 32)
+        //        //                {
+        //        //                    FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, true, false);
+        //        //                }
+        //        //                else if (el.Type == 33)
+        //        //                {
+        //        //                    FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, true, false);
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    UpdateTask(AppTaskID, "");
+        //        //                    throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
+        //        //                }
+
+        //        //            }
+
+        //        //            //-------------- new code ------------------------
+
+
+
+        //        //            bool MoreContourLine = true;
+        //        //            while (MoreContourLine)
+        //        //            {
+        //        //                List<Node> FinalContourNodeList = new List<Node>();
+        //        //                Vector LastVector = new Vector();
+        //        //                LastVector = ForwardVector.First().Value;
+        //        //                FinalContourNodeList.Add(LastVector.StartNode);
+        //        //                FinalContourNodeList.Add(LastVector.EndNode);
+        //        //                ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //        //                BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //        //                bool PolygonCompleted = false;
+        //        //                while (!PolygonCompleted)
+        //        //                {
+        //        //                    List<string> KeyStrList = (from k in ForwardVector.Keys
+        //        //                                               where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //        //                                               && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //        //                                               select k).ToList<string>();
+
+        //        //                    if (KeyStrList.Count != 1)
+        //        //                    {
+        //        //                        KeyStrList = (from k in BackwardVector.Keys
+        //        //                                      where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //        //                                      && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //        //                                      select k).ToList<string>();
+
+        //        //                        if (KeyStrList.Count != 1)
+        //        //                        {
+        //        //                            PolygonCompleted = true;
+        //        //                            break;
+        //        //                        }
+        //        //                        else
+        //        //                        {
+        //        //                            LastVector = BackwardVector[KeyStrList[0]];
+        //        //                            BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //        //                            ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //        //                        }
+        //        //                    }
+        //        //                    else
+        //        //                    {
+        //        //                        LastVector = ForwardVector[KeyStrList[0]];
+        //        //                        ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //        //                        BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //        //                    }
+        //        //                    FinalContourNodeList.Add(LastVector.EndNode);
+        //        //                    if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
+        //        //                    {
+        //        //                        PolygonCompleted = true;
+        //        //                    }
+        //        //                }
+
+        //        //                if (CalculateAreaOfPolygon(FinalContourNodeList) < 0)
+        //        //                {
+        //        //                    FinalContourNodeList.Reverse();
+        //        //                }
+
+        //        //                FinalContourNodeList.Add(FinalContourNodeList[0]);
+        //        //                ContourPolygon contourPolygon = new ContourPolygon() { };
+        //        //                contourPolygon.ContourNodeList = FinalContourNodeList;
+        //        //                contourPolygon.ContourValue = ContourValue;
+        //        //                contourPolygon.Layer = Layer;
+        //        //                ContourPolygonList.Add(contourPolygon);
+
+        //        //                if (ForwardVector.Count == 0)
+        //        //                {
+        //        //                    MoreContourLine = false;
+        //        //                }
+
+        //        //            }
+        //        //            DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount, sbStyleFeacalColiformContour, sbPlacemarkFeacalColiformContour);
+        //        //            vcount += 1;
+        //        //        }
+        //        //        sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
+        //        //        CountContourValue += 1;
+        //        //    }
+        //        //    sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
+        //        //}
+        //        #endregion Bottom of Layer
+        //    }
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
+
+        //    return;
+        //}
         private void WriteKMLMesh(StringBuilder sbStyleMesh, StringBuilder sbKMLMesh, List<ElementLayer> ElementLayerList)
         {
             List<Node> nodeList = new List<Node>();

@@ -136,7 +136,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 return false;
             }
-            if (!FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            if (!FillRequiredList(dfsuFile, elementList, elementLayerList, nodeList, topNodeLayerList, bottomNodeLayerList))
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
@@ -194,7 +194,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 return false;
             }
-            if (!FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            if (!FillRequiredList(dfsuFile, elementList, elementLayerList, nodeList, topNodeLayerList, bottomNodeLayerList))
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
@@ -230,7 +230,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool GenerateMikeScenarioPollutionAnimationKMZ()
+        public bool GenerateMikeScenarioPollutionAnimationKMZ()
         {
             string NotUsed = "";
             bool ErrorInDoc = false;
@@ -265,7 +265,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 return false;
             }
-            if (!FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            if (!FillRequiredList(dfsuFile, elementList, elementLayerList, nodeList, topNodeLayerList, bottomNodeLayerList))
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
@@ -315,7 +315,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return true;
         }
-        private bool GenerateMikeScenarioPollutionLimitKMZ()
+        public bool GenerateMikeScenarioPollutionLimitKMZ()
         {
             string NotUsed = "";
             bool ErrorInDoc = false;
@@ -350,7 +350,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 return false;
             }
-            if (!FillRequiredList(dfsuFile, elementLayerList, elementList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            if (!FillRequiredList(dfsuFile, elementList, elementLayerList, nodeList, topNodeLayerList, bottomNodeLayerList))
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
@@ -640,15 +640,18 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
 
-            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
             {
-                //reportTag.Error = TaskRunnerServiceRes.MIKE3NotImplementedYet;
+                NotUsed = string.Format(TaskRunnerServiceRes._NotImplemented, "Z Level");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_NotImplemented", "Z Level");
+                return false;
+            }
 
-
+            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma)
+            {
                 // doing type 32
                 var coordList = (from el in ElementList
                                  where el.Type == 32
-                                 orderby el.NodeList[0].Z
                                  select new { X1 = el.NodeList[0].X, X2 = el.NodeList[1].X, X3 = el.NodeList[2].X }).Distinct().ToList();
 
                 foreach (var coord in coordList)
@@ -659,7 +662,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                                        && el1.NodeList[0].X == coord.X1
                                                        && el1.NodeList[1].X == coord.X2
                                                        && el1.NodeList[2].X == coord.X3
-                                                       orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
+                                                       orderby dfsuFile.Z[el1.NodeList[0].ID - 1]
                                                        select el1).ToList<Element>();
 
                     for (int j = 0; j < ColumnElementList.Count; j++)
@@ -672,25 +675,6 @@ namespace CSSPWebToolsTaskRunner.Services
                         elementLayer.ZMax = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Max();
                         elementLayer.Element = ColumnElementList[j];
                         ElementLayerList.Add(elementLayer);
-
-                        NodeLayer nl3 = new NodeLayer();
-                        nl3.Layer = Layer;
-                        nl3.Z = dfsuFile.Z[ColumnElementList[j].NodeList[3].ID - 1];
-                        nl3.Node = ColumnElementList[j].NodeList[3];
-
-                        NodeLayer nl4 = new NodeLayer();
-                        nl4.Layer = Layer;
-                        nl4.Z = dfsuFile.Z[ColumnElementList[j].NodeList[4].ID - 1];
-                        nl4.Node = ColumnElementList[j].NodeList[4];
-
-                        NodeLayer nl5 = new NodeLayer();
-                        nl5.Layer = Layer;
-                        nl5.Z = dfsuFile.Z[ColumnElementList[j].NodeList[5].ID - 1];
-                        nl5.Node = ColumnElementList[j].NodeList[5];
-
-                        topNodeLayerList.Add(nl3);
-                        topNodeLayerList.Add(nl4);
-                        topNodeLayerList.Add(nl5);
 
                         NodeLayer nl0 = new NodeLayer();
                         nl0.Layer = Layer;
@@ -707,9 +691,28 @@ namespace CSSPWebToolsTaskRunner.Services
                         nl2.Z = dfsuFile.Z[ColumnElementList[j].NodeList[2].ID - 1];
                         nl2.Node = ColumnElementList[j].NodeList[2];
 
-                        bottomNodeLayerList.Add(nl0);
-                        bottomNodeLayerList.Add(nl1);
-                        bottomNodeLayerList.Add(nl2);
+                        topNodeLayerList.Add(nl0);
+                        topNodeLayerList.Add(nl1);
+                        topNodeLayerList.Add(nl2);
+
+                        NodeLayer nl3 = new NodeLayer();
+                        nl3.Layer = Layer;
+                        nl3.Z = dfsuFile.Z[ColumnElementList[j].NodeList[3].ID - 1];
+                        nl3.Node = ColumnElementList[j].NodeList[3];
+
+                        NodeLayer nl4 = new NodeLayer();
+                        nl4.Layer = Layer;
+                        nl4.Z = dfsuFile.Z[ColumnElementList[j].NodeList[4].ID - 1];
+                        nl4.Node = ColumnElementList[j].NodeList[4];
+
+                        NodeLayer nl5 = new NodeLayer();
+                        nl5.Layer = Layer;
+                        nl5.Z = dfsuFile.Z[ColumnElementList[j].NodeList[5].ID - 1];
+                        nl5.Node = ColumnElementList[j].NodeList[5];
+
+                        bottomNodeLayerList.Add(nl3);
+                        bottomNodeLayerList.Add(nl4);
+                        bottomNodeLayerList.Add(nl5);
 
                         Layer += 1;
                     }
@@ -718,80 +721,79 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 var coordList2 = (from el in ElementList
                                   where el.Type == 33
-                                  orderby el.NodeList[0].Z
                                   select new { X1 = el.NodeList[0].X, X2 = el.NodeList[1].X, X3 = el.NodeList[2].X, X4 = el.NodeList[3].X }).Distinct().ToList();
 
                 foreach (var coord in coordList2)
                 {
                     int Layer = 1;
-                    List<Element> ColumElementList = (from el1 in ElementList
-                                                      where el1.Type == 33
-                                                      && el1.NodeList[0].X == coord.X1
-                                                      && el1.NodeList[1].X == coord.X2
-                                                      && el1.NodeList[2].X == coord.X3
-                                                      && el1.NodeList[3].X == coord.X4
-                                                      orderby dfsuFile.Z[el1.NodeList[0].ID - 1] descending
-                                                      select el1).ToList<Element>();
+                    List<Element> ColumnElementList = (from el1 in ElementList
+                                                       where el1.Type == 33
+                                                       && el1.NodeList[0].X == coord.X1
+                                                       && el1.NodeList[1].X == coord.X2
+                                                       && el1.NodeList[2].X == coord.X3
+                                                       && el1.NodeList[3].X == coord.X4
+                                                       orderby dfsuFile.Z[el1.NodeList[0].ID - 1]
+                                                       select el1).ToList<Element>();
 
-                    for (int j = 0; j < ColumElementList.Count; j++)
+                    for (int j = 0; j < ColumnElementList.Count; j++)
                     {
                         ElementLayer elementLayer = new ElementLayer();
                         elementLayer.Layer = Layer;
-                        elementLayer.ZMin = (from nz in ColumElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Min();
-                        elementLayer.ZMax = (from nz in ColumElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Max();
-                        elementLayer.Element = ColumElementList[j];
+                        elementLayer.ZMin = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Min();
+                        elementLayer.ZMax = (from nz in ColumnElementList[j].NodeList select dfsuFile.Z[nz.ID - 1]).Max();
+                        elementLayer.Element = ColumnElementList[j];
                         ElementLayerList.Add(elementLayer);
+
+                        NodeLayer nl0 = new NodeLayer();
+                        nl0.Layer = Layer;
+                        nl0.Z = dfsuFile.Z[ColumnElementList[j].NodeList[0].ID - 1];
+                        nl0.Node = ColumnElementList[j].NodeList[0];
+
+                        NodeLayer nl1 = new NodeLayer();
+                        nl1.Layer = Layer;
+                        nl1.Z = dfsuFile.Z[ColumnElementList[j].NodeList[1].ID - 1];
+                        nl1.Node = ColumnElementList[j].NodeList[1];
+
+                        NodeLayer nl2 = new NodeLayer();
+                        nl2.Layer = Layer;
+                        nl2.Z = dfsuFile.Z[ColumnElementList[j].NodeList[2].ID - 1];
+                        nl2.Node = ColumnElementList[j].NodeList[2];
+
+                        NodeLayer nl3 = new NodeLayer();
+                        nl3.Layer = Layer;
+                        nl3.Z = dfsuFile.Z[ColumnElementList[j].NodeList[3].ID - 1];
+                        nl3.Node = ColumnElementList[j].NodeList[3];
+
+                        topNodeLayerList.Add(nl0);
+                        topNodeLayerList.Add(nl1);
+                        topNodeLayerList.Add(nl2);
+                        topNodeLayerList.Add(nl3);
 
                         NodeLayer nl4 = new NodeLayer();
                         nl4.Layer = Layer;
                         nl4.Z = 0;
-                        nl4.Node = ColumElementList[j].NodeList[4];
+                        nl4.Node = ColumnElementList[j].NodeList[4];
 
                         NodeLayer nl5 = new NodeLayer();
                         nl5.Layer = Layer;
                         nl5.Z = 0;
-                        nl5.Node = ColumElementList[j].NodeList[5];
+                        nl5.Node = ColumnElementList[j].NodeList[5];
 
                         NodeLayer nl6 = new NodeLayer();
                         nl6.Layer = Layer;
                         nl6.Z = 0;
-                        nl6.Node = ColumElementList[j].NodeList[6];
+                        nl6.Node = ColumnElementList[j].NodeList[6];
 
                         NodeLayer nl7 = new NodeLayer();
                         nl7.Layer = Layer;
                         nl7.Z = 0;
-                        nl7.Node = ColumElementList[j].NodeList[7];
+                        nl7.Node = ColumnElementList[j].NodeList[7];
 
 
-                        topNodeLayerList.Add(nl4);
-                        topNodeLayerList.Add(nl5);
-                        topNodeLayerList.Add(nl6);
-                        topNodeLayerList.Add(nl7);
-
-                        NodeLayer nl0 = new NodeLayer();
-                        nl0.Layer = Layer;
-                        nl0.Z = dfsuFile.Z[ColumElementList[j].NodeList[0].ID - 1];
-                        nl0.Node = ColumElementList[j].NodeList[0];
-
-                        NodeLayer nl1 = new NodeLayer();
-                        nl1.Layer = Layer;
-                        nl1.Z = dfsuFile.Z[ColumElementList[j].NodeList[1].ID - 1];
-                        nl1.Node = ColumElementList[j].NodeList[1];
-
-                        NodeLayer nl2 = new NodeLayer();
-                        nl2.Layer = Layer;
-                        nl2.Z = dfsuFile.Z[ColumElementList[j].NodeList[2].ID - 1];
-                        nl2.Node = ColumElementList[j].NodeList[2];
-
-                        NodeLayer nl3 = new NodeLayer();
-                        nl3.Layer = Layer;
-                        nl3.Z = dfsuFile.Z[ColumElementList[j].NodeList[3].ID - 1];
-                        nl3.Node = ColumElementList[j].NodeList[3];
-
-                        bottomNodeLayerList.Add(nl0);
-                        bottomNodeLayerList.Add(nl1);
-                        bottomNodeLayerList.Add(nl2);
-                        bottomNodeLayerList.Add(nl3);
+                        bottomNodeLayerList.Add(nl4);
+                        bottomNodeLayerList.Add(nl5);
+                        bottomNodeLayerList.Add(nl6);
+                        bottomNodeLayerList.Add(nl7);
 
                         Layer += 1;
                     }
@@ -799,53 +801,53 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
 
 
-                List<ElementLayer> TempElementLayerList = (from el in ElementLayerList
-                                                           orderby el.Element.ID
-                                                           select el).Distinct().ToList();
+                //List<ElementLayer> TempElementLayerList = (from el in ElementLayerList
+                //                                           orderby el.Element.ID
+                //                                           select el).Distinct().ToList();
 
-                //ElementLayerList = new List<ElementLayer>();
-                int OldElemID = 0;
-                foreach (ElementLayer el in TempElementLayerList)
-                {
-                    if (OldElemID == el.Element.ID)
-                    {
-                        ElementLayerList.Remove(el);
-                    }
-                    OldElemID = el.Element.ID;
-                }
+                ////ElementLayerList = new List<ElementLayer>();
+                //int OldElemID = 0;
+                //foreach (ElementLayer el in TempElementLayerList)
+                //{
+                //    if (OldElemID == el.Element.ID)
+                //    {
+                //        ElementLayerList.Remove(el);
+                //    }
+                //    OldElemID = el.Element.ID;
+                //}
 
-                List<NodeLayer> TempNodeLayerList = (from nl in topNodeLayerList
-                                                     orderby nl.Node.ID
-                                                     select nl).Distinct().ToList();
+                //List<NodeLayer> TempNodeLayerList = (from nl in topNodeLayerList
+                //                                     orderby nl.Node.ID
+                //                                     select nl).Distinct().ToList();
 
-                topNodeLayerList = new List<NodeLayer>();
-                int OldID = 0;
-                foreach (NodeLayer nl in TempNodeLayerList)
-                {
-                    if (OldID != nl.Node.ID)
-                    {
-                        topNodeLayerList.Add(nl);
-                        OldID = nl.Node.ID;
-                    }
-                }
+                //topNodeLayerList = new List<NodeLayer>();
+                //int OldID = 0;
+                //foreach (NodeLayer nl in TempNodeLayerList)
+                //{
+                //    if (OldID != nl.Node.ID)
+                //    {
+                //        topNodeLayerList.Add(nl);
+                //        OldID = nl.Node.ID;
+                //    }
+                //}
 
-                if (bottomNodeLayerList.Count() > 0)
-                {
-                    TempNodeLayerList = (from nl in bottomNodeLayerList
-                                         orderby nl.Node.ID
-                                         select nl).Distinct().ToList();
+                //if (bottomNodeLayerList.Count() > 0)
+                //{
+                //    TempNodeLayerList = (from nl in bottomNodeLayerList
+                //                         orderby nl.Node.ID
+                //                         select nl).Distinct().ToList();
 
-                    bottomNodeLayerList = new List<NodeLayer>();
-                    OldID = 0;
-                    foreach (NodeLayer nl in TempNodeLayerList)
-                    {
-                        if (OldID != nl.Node.ID)
-                        {
-                            bottomNodeLayerList.Add(nl);
-                            OldID = nl.Node.ID;
-                        }
-                    }
-                }
+                //    bottomNodeLayerList = new List<NodeLayer>();
+                //    OldID = 0;
+                //    foreach (NodeLayer nl in TempNodeLayerList)
+                //    {
+                //        if (OldID != nl.Node.ID)
+                //        {
+                //            bottomNodeLayerList.Add(nl);
+                //            OldID = nl.Node.ID;
+                //        }
+                //    }
+                //}
 
             }
             else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
@@ -1010,7 +1012,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        public bool FillRequiredList(DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<Element> elementList, List<Node> nodeList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList)
+        public bool FillRequiredList(DfsuFile dfsuFile, List<Element> elementList, List<ElementLayer> elementLayerList, List<Node> nodeList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList)
         {
             if (!FillElementListAndNodeList(dfsuFile, elementList, nodeList))
             {
@@ -1023,25 +1025,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool FillVectors21_32(Element el, List<Element> UniqueElementList, float ContourValue, bool Is3D, bool IsTop)
+        private bool FillVectors21_32(Element el, List<Element> UniqueElementList, float ContourValue)
         {
             string NotUsed = "";
 
-            Node Node0 = new Node();
-            Node Node1 = new Node();
-            Node Node2 = new Node();
-            if (Is3D && IsTop)
-            {
-                Node0 = el.NodeList[3];
-                Node1 = el.NodeList[4];
-                Node2 = el.NodeList[5];
-            }
-            else
-            {
-                Node0 = el.NodeList[0];
-                Node1 = el.NodeList[1];
-                Node2 = el.NodeList[2];
-            }
+            Node Node0 = el.NodeList[0];
+            Node Node1 = el.NodeList[1];
+            Node Node2 = el.NodeList[2];
 
             int ElemCount01 = (from el1 in UniqueElementList
                                from el2 in Node0.ElementList
@@ -1281,29 +1271,14 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool FillVectors25_33(Element el, List<Element> UniqueElementList, float ContourValue, bool Is3D, bool IsTop)
+        private bool FillVectors25_33(Element el, List<Element> UniqueElementList, float ContourValue)
         {
             string NotUsed = "";
 
-            Node Node0 = new Node();
-            Node Node1 = new Node();
-            Node Node2 = new Node();
-            Node Node3 = new Node();
-
-            if (Is3D && IsTop)
-            {
-                Node0 = el.NodeList[4];
-                Node1 = el.NodeList[5];
-                Node2 = el.NodeList[6];
-                Node3 = el.NodeList[7];
-            }
-            else
-            {
-                Node0 = el.NodeList[0];
-                Node1 = el.NodeList[1];
-                Node2 = el.NodeList[2];
-                Node3 = el.NodeList[3];
-            }
+            Node Node0 = el.NodeList[0];
+            Node Node1 = el.NodeList[1];
+            Node Node2 = el.NodeList[2];
+            Node Node3 = el.NodeList[3];
 
             int ElemCount01 = (from el1 in UniqueElementList
                                from el2 in Node0.ElementList
@@ -2248,7 +2223,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return SourceTemperature;
         }
-        private DfsuFile GetTransportDfsuFile()
+        public DfsuFile GetTransportDfsuFile()
         {
             string NotUsed = "";
 
@@ -2497,15 +2472,15 @@ namespace CSSPWebToolsTaskRunner.Services
             int CountAt = 0;
             int CountLayer = (dfsuFile.NumberOfSigmaLayers == 0 ? 1 : dfsuFile.NumberOfSigmaLayers);
             int CurrentContourValue = 0;
-            int CurrentTimeSteps = 0;
+            //int CurrentTimeSteps = 0;
 
             int TotalCount = CountLayer * ContourValueList.Count * dfsuFile.NumberOfTimeSteps;
 
-            for (int Layer = 1; Layer <= CountLayer; Layer++)
+                for (int Layer = 1; Layer <= CountLayer; Layer++)
             {
                 //CurrentLayer += 1;
                 CurrentContourValue = 1;
-                CurrentTimeSteps = 1;
+                //CurrentTimeSteps = 1;
 
                 #region Top of Layer
                 if (Layer == 1)
@@ -2525,7 +2500,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     int vcount = 0;
                     CurrentContourValue += 1;
-                    //for (int timeStep = 30; timeStep < 35 /*dfsuFile.NumberOfTimeSteps */; timeStep++)
                     for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
                     {
                         CountAt += 1;
@@ -2602,94 +2576,35 @@ namespace CSSPWebToolsTaskRunner.Services
                         List<Element> UniqueElementList = new List<Element>();
                         foreach (ElementLayer el in elementLayerListAtLayer)
                         {
-                            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+                            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
                             {
-                                if (el.Element.Type == 32)
+                                NotUsed = string.Format(TaskRunnerServiceRes._NotImplemented, "Z Level");
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_NotImplemented", "Z Level");
+                                return false;
+                            }
+
+                            bool NodeBigger = false;
+                            for (int i = 0; i < el.Element.NodeList.Count; i++)
+                            {
+                                if (el.Element.NodeList[i].Value >= ContourValue)
                                 {
-                                    bool NodeBigger = false;
-                                    for (int i = 3; i < 6; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue)
-                                        {
-                                            NodeBigger = true;
-                                            break;
-                                        }
-                                    }
-                                    if (NodeBigger)
-                                    {
-                                        int countTrue = 0;
-                                        for (int i = 3; i < 6; i++)
-                                        {
-                                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                            {
-                                                countTrue += 1;
-                                            }
-                                        }
-                                        if (countTrue != el.Element.NodeList.Count)
-                                        {
-                                            TempUniqueElementList.Add(el.Element);
-                                        }
-                                    }
-                                }
-                                else if (el.Element.Type == 33)
-                                {
-                                    bool NodeBigger = false;
-                                    for (int i = 4; i < 8; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue)
-                                        {
-                                            NodeBigger = true;
-                                            break;
-                                        }
-                                    }
-                                    if (NodeBigger)
-                                    {
-                                        int countTrue = 0;
-                                        for (int i = 4; i < 8; i++)
-                                        {
-                                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                            {
-                                                countTrue += 1;
-                                            }
-                                        }
-                                        if (countTrue != el.Element.NodeList.Count)
-                                        {
-                                            TempUniqueElementList.Add(el.Element);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
-                                    return false;
+                                    NodeBigger = true;
+                                    break;
                                 }
                             }
-                            else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+                            if (NodeBigger)
                             {
-                                bool NodeBigger = false;
+                                int countTrue = 0;
                                 for (int i = 0; i < el.Element.NodeList.Count; i++)
                                 {
-                                    if (el.Element.NodeList[i].Value >= ContourValue)
+                                    if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
                                     {
-                                        NodeBigger = true;
-                                        break;
+                                        countTrue += 1;
                                     }
                                 }
-                                if (NodeBigger)
+                                if (countTrue != el.Element.NodeList.Count)
                                 {
-                                    int countTrue = 0;
-                                    for (int i = 0; i < el.Element.NodeList.Count; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                        {
-                                            countTrue += 1;
-                                        }
-                                    }
-                                    if (countTrue != el.Element.NodeList.Count)
-                                    {
-                                        TempUniqueElementList.Add(el.Element);
-                                    }
+                                    TempUniqueElementList.Add(el.Element);
                                 }
                             }
                         }
@@ -2701,68 +2616,75 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         foreach (Element el in UniqueElementList)
                         {
-                            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+                            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+                            {
+                                NotUsed = string.Format(TaskRunnerServiceRes._NotImplemented, "Z Level");
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_NotImplemented", "Z Level");
+                                return false;
+                            }
+
+                            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma)
                             {
                                 if (el.Type == 32)
                                 {
-                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[4], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
                                     }
-                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[5], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[2], ContourValue);
                                     }
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[3], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
                                     }
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
                                     }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
                                     }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[3], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[0], ContourValue);
                                     }
                                 }
                                 else if (el.Type == 33)
                                 {
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
                                     }
-                                    if (el.NodeList[4].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+                                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[7], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[3], ContourValue);
                                     }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
                                     }
-                                    if (el.NodeList[5].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+                                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[6], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
                                     }
-                                    if (el.NodeList[6].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[5], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
                                     }
-                                    if (el.NodeList[6].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+                                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[7], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[3], ContourValue);
                                     }
-                                    if (el.NodeList[7].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[4], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[0], ContourValue);
                                     }
-                                    if (el.NodeList[7].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+                                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                     {
-                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[6], ContourValue);
+                                        InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[2], ContourValue);
                                     }
                                 }
                                 else
@@ -2860,7 +2782,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             if (el.Type == 21)
                             {
-                                FillVectors21_32(el, UniqueElementList, ContourValue, false, true);
+                                FillVectors21_32(el, UniqueElementList, ContourValue);
                             }
                             else if (el.Type == 24)
                             {
@@ -2870,15 +2792,15 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
                             else if (el.Type == 25)
                             {
-                                FillVectors25_33(el, UniqueElementList, ContourValue, false, true);
+                                FillVectors25_33(el, UniqueElementList, ContourValue);
                             }
                             else if (el.Type == 32)
                             {
-                                FillVectors21_32(el, UniqueElementList, ContourValue, true, true);
+                                FillVectors21_32(el, UniqueElementList, ContourValue);
                             }
                             else if (el.Type == 33)
                             {
-                                FillVectors25_33(el, UniqueElementList, ContourValue, true, true);
+                                FillVectors25_33(el, UniqueElementList, ContourValue);
                             }
                             else
                             {
@@ -3746,7 +3668,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             int TotalCount = CountLayer * ContourValueList.Count;
 
-            for (int Layer = 1; Layer <= 1 /* CountLayer */; Layer++)
+            for (int Layer = 1; Layer <= CountLayer; Layer++)
             {
                 if (!LayerList.Contains(Layer))
                 {
@@ -3832,94 +3754,35 @@ namespace CSSPWebToolsTaskRunner.Services
                     List<Element> UniqueElementList = new List<Element>();
                     foreach (ElementLayer el in elementLayerListAtLayer)
                     {
-                        if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+                        if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
                         {
-                            if (el.Element.Type == 32)
+                            NotUsed = string.Format(TaskRunnerServiceRes._NotImplemented, "Z Level");
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_NotImplemented", "Z Level");
+                            return false;
+                        }
+
+                        bool NodeBigger = false;
+                        for (int i = 0; i < el.Element.NodeList.Count; i++)
+                        {
+                            if (el.Element.NodeList[i].Value >= ContourValue)
                             {
-                                bool NodeBigger = false;
-                                for (int i = 3; i < 6; i++)
-                                {
-                                    if (el.Element.NodeList[i].Value >= ContourValue)
-                                    {
-                                        NodeBigger = true;
-                                        break;
-                                    }
-                                }
-                                if (NodeBigger)
-                                {
-                                    int countTrue = 0;
-                                    for (int i = 3; i < 6; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                        {
-                                            countTrue += 1;
-                                        }
-                                    }
-                                    if (countTrue != el.Element.NodeList.Count)
-                                    {
-                                        TempUniqueElementList.Add(el.Element);
-                                    }
-                                }
-                            }
-                            else if (el.Element.Type == 33)
-                            {
-                                bool NodeBigger = false;
-                                for (int i = 4; i < 8; i++)
-                                {
-                                    if (el.Element.NodeList[i].Value >= ContourValue)
-                                    {
-                                        NodeBigger = true;
-                                        break;
-                                    }
-                                }
-                                if (NodeBigger)
-                                {
-                                    int countTrue = 0;
-                                    for (int i = 4; i < 8; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                        {
-                                            countTrue += 1;
-                                        }
-                                    }
-                                    if (countTrue != el.Element.NodeList.Count)
-                                    {
-                                        TempUniqueElementList.Add(el.Element);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
-                                return false;
+                                NodeBigger = true;
+                                break;
                             }
                         }
-                        else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+                        if (NodeBigger)
                         {
-                            bool NodeBigger = false;
+                            int countTrue = 0;
                             for (int i = 0; i < el.Element.NodeList.Count; i++)
                             {
-                                if (el.Element.NodeList[i].Value >= ContourValue)
+                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
                                 {
-                                    NodeBigger = true;
-                                    break;
+                                    countTrue += 1;
                                 }
                             }
-                            if (NodeBigger)
+                            if (countTrue != el.Element.NodeList.Count)
                             {
-                                int countTrue = 0;
-                                for (int i = 0; i < el.Element.NodeList.Count; i++)
-                                {
-                                    if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                    {
-                                        countTrue += 1;
-                                    }
-                                }
-                                if (countTrue != el.Element.NodeList.Count)
-                                {
-                                    TempUniqueElementList.Add(el.Element);
-                                }
+                                TempUniqueElementList.Add(el.Element);
                             }
                         }
                     }
@@ -3932,69 +3795,76 @@ namespace CSSPWebToolsTaskRunner.Services
                     int count = 0;
                     foreach (Element el in UniqueElementList)
                     {
+                        if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes._NotImplemented, "Z Level");
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_NotImplemented", "Z Level");
+                            return false;
+                        }
+
                         count += 1;
-                        if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+                        if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma)
                         {
                             if (el.Type == 32)
                             {
-                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[4], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
                                 }
-                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[5], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[2], ContourValue);
                                 }
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[3], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
                                 }
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
                                 }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
                                 }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[3], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[0], ContourValue);
                                 }
                             }
                             else if (el.Type == 33)
                             {
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
                                 }
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[7], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[3], ContourValue);
                                 }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
                                 }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[6], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
                                 }
-                                if (el.NodeList[6].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[5], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
                                 }
-                                if (el.NodeList[6].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[7], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[3], ContourValue);
                                 }
-                                if (el.NodeList[7].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[4], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[0], ContourValue);
                                 }
-                                if (el.NodeList[7].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
                                 {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[6], ContourValue);
+                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[2], ContourValue);
                                 }
                             }
                             else
@@ -4091,7 +3961,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         if (el.Type == 21)
                         {
-                            FillVectors21_32(el, UniqueElementList, ContourValue, false, true);
+                            FillVectors21_32(el, UniqueElementList, ContourValue);
                         }
                         else if (el.Type == 24)
                         {
@@ -4101,15 +3971,15 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         else if (el.Type == 25)
                         {
-                            FillVectors25_33(el, UniqueElementList, ContourValue, false, true);
+                            FillVectors25_33(el, UniqueElementList, ContourValue);
                         }
                         else if (el.Type == 32)
                         {
-                            FillVectors21_32(el, UniqueElementList, ContourValue, true, true);
+                            FillVectors21_32(el, UniqueElementList, ContourValue);
                         }
                         else if (el.Type == 33)
                         {
-                            FillVectors25_33(el, UniqueElementList, ContourValue, true, true);
+                            FillVectors25_33(el, UniqueElementList, ContourValue);
                         }
                         else
                         {
