@@ -115,22 +115,27 @@ namespace CSSPWebToolsTaskRunner.Services
                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MWQMSubsector, TaskRunnerServiceRes.SubsectorTVItemID, SamplingPlanSubsectorModel.SubsectorTVItemID.ToString());
                     _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MWQMSubsector, TaskRunnerServiceRes.SubsectorTVItemID, SamplingPlanSubsectorModel.SubsectorTVItemID.ToString());
                 }
-                
-                sb.AppendLine("Subsector\t" + SamplingPlanSubsectorModel.SubsectorTVText + "\t" + SamplingPlanSubsectorModel.SubsectorTVItemID + "\t" + mwqmSubsectorModel.TideLocationSIDText);
 
                 List<SamplingPlanSubsectorSiteModel> SamplingPlanSubsectorSiteModelList = _SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteModelListWithSamplingPlanSubsectorIDDB(SamplingPlanSubsectorModel.SamplingPlanSubsectorID);
 
-                sb.Append("MWQM Sites\t");
-                foreach (SamplingPlanSubsectorSiteModel SamplingPlanSubsectorSiteModel in SamplingPlanSubsectorSiteModelList)
+                if (SamplingPlanSubsectorSiteModelList.Count > 0)
                 {
-                    sb.Append(SamplingPlanSubsectorSiteModel.MWQMSiteText + ",");
+                    sb.AppendLine("Subsector\t" + SamplingPlanSubsectorModel.SubsectorTVText + "\t" + SamplingPlanSubsectorModel.SubsectorTVItemID + "\t" + mwqmSubsectorModel.TideLocationSIDText);
+
+
+                    sb.Append("MWQM Sites\t");
+                    foreach (SamplingPlanSubsectorSiteModel SamplingPlanSubsectorSiteModel in SamplingPlanSubsectorSiteModelList)
+                    {
+                        sb.Append(SamplingPlanSubsectorSiteModel.MWQMSiteText + ",");
+                    }
+                    sb.Append("\t");
+                    foreach (SamplingPlanSubsectorSiteModel SamplingPlanSubsectorSiteModel in SamplingPlanSubsectorSiteModelList)
+                    {
+                        sb.Append(SamplingPlanSubsectorSiteModel.MWQMSiteTVItemID + ",");
+                    }
+                    sb.AppendLine("");
                 }
-                sb.Append("\t");
-                foreach (SamplingPlanSubsectorSiteModel SamplingPlanSubsectorSiteModel in SamplingPlanSubsectorSiteModelList)
-                {
-                    sb.Append(SamplingPlanSubsectorSiteModel.MWQMSiteTVItemID + ",");
-                }
-                sb.AppendLine("");
+
                 if (SamplingPlanSubsectorSiteModelList.Where(c => c.IsDuplicate == true).Count() > 0)
                 {
                     sb.Append("Daily Duplicate\t");
@@ -150,6 +155,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine("App\t" + CreateCode(SamplingPlanModel.AccessCode) + "\t" + CreateCode(SamplingPlanModel.Year.ToString()));
             sb.AppendLine("Precision Criteria\t" + CreateCode(SamplingPlanModel.DailyDuplicatePrecisionCriteria.ToString()) + "\t" + CreateCode(SamplingPlanModel.IntertechDuplicatePrecisionCriteria.ToString()));
             sb.AppendLine("Include Laboratory QA/QC\t" + SamplingPlanModel.IncludeLaboratoryQAQC.ToString() + "\t" + CreateCode(SamplingPlanModel.ApprovalCode));
+            sb.AppendLine("Backup Directory\t" + SamplingPlanModel.BackupDirectory);
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sb.ToString());
