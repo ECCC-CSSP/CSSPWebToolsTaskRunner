@@ -5,15 +5,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using CSSPWebToolsTaskRunner.Services;
 using System.Linq;
-using CSSPWebToolsDB.Models;
+using CSSPModelsDLL.Models;
 using System.ComponentModel;
 using System.Transactions;
-using CSSPWebToolsTaskRunner.Services.Fakes;
-using Microsoft.QualityTools.Testing.Fakes;
-using CSSPWebToolsDB.Services;
+using CSSPModelsDLL.Services;
 using System.IO;
-using CSSPWebToolsDB;
 using CSSPWebToolsDBDLL.Services;
+using CSSPEnumsDLL.Enums;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -29,13 +27,11 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
         #region Properties
         private CSSPWebToolsTaskRunner csspWebToolsTaskRunner { get; set; }
-        private ShimTaskRunnerBaseService shimTaskRunnerBaseService { get; set; }
-        private MikeScenarioService mikeScenarioService { get; set; }
-        private MikeScenarioFileService mikeScenarioFileService { get; set; }
-        private AppTaskService appTaskService { get; set; }
-        private TVItemService tvItemService { get; set; }
-        private TVFileService tvFileService { get; set; }
-        private List<string> mikeScenarioCommandList { get; set; }
+        private TVItemService _TVItemService { get; set; }
+        private AppTaskService _AppTaskService { get; set; }
+        private TVFileService _TVFileService { get; set; }
+        private MapInfoService _MapInfoService { get; set; }
+        private ReportTypeService _ReportTypeService { get; set; }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -615,52 +611,73 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         //        }
         //    }
         //}
-        //[TestMethod]
-        //public void MikeScenarioFileService_MikeScenarioAskToRun_Test()
-        //{
-        //    // Generated files will be located
-        //    foreach (string LanguageRequest in new List<string>() { "en", "fr" })
-        //    {
-        //        // Arrange 
-        //        SetupTest(LanguageRequest);
-        //        Assert.IsNotNull(csspWebToolsTaskRunner);
+        [TestMethod]
+        public void MikeScenarioFileService_MikeScenarioAskToRun_Test()
+        {
+            // AppTaskID	TVItemID	TVItemID2	AppTaskCommand	AppTaskStatus	PercentCompleted	Parameters	Language	StartDateTime_UTC	EndDateTime_UTC	EstimatedLength_second	RemainingTime_second	LastUpdateDate_UTC	LastUpdateContactTVItemID
+            // 12643   344316  344316  2   1   1 ||| MikeScenarioTVItemID,344316 ||| 1   2018 - 03 - 20 14:49:58.440 NULL NULL    NULL    2018 - 03 - 20 14:49:58.443 2
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
 
-        //        csspWebToolsTaskRunner._RichTextBoxStatus.Text = "";
-        //        csspWebToolsTaskRunner.StopTimer();
+                int MikeScenarioTVItemID = 344316;
 
-        //        TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelForLocationDB();
-        //        Assert.AreEqual("", tvItemModelRoot.Error);
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\TestingMikeScenario344316.m21fm");
+                StringBuilder sbKML = new StringBuilder();
+                string Parameters = $"|||MikeScenarioTVItemID,{ MikeScenarioTVItemID }|||";
 
-        //        TVItemModel tvItemModelAcadianVillage = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID, (LanguageRequest == "en" ? "Acadian Village" : "Village Acadien"), TVTypeEnum.Municipality);
-        //        Assert.AreEqual("", tvItemModelAcadianVillage.Error);
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 100000,
+                    TVItemID = MikeScenarioTVItemID,
+                    TVItemID2 = MikeScenarioTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.MikeScenarioAskToRun,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
 
-        //        List<TVItemModel> tvItemModelMikeScenarioList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelAcadianVillage.TVItemID, TVTypeEnum.MikeScenario);
-        //        Assert.IsTrue(tvItemModelMikeScenarioList.Count > 0);
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
 
-        //        TVItemModel tvItemModelMikeScenario = tvItemModelMikeScenarioList[0];
-        //        Assert.IsTrue(tvItemModelMikeScenario.TVItemID > 0);
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
 
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            RemoveAllTask();
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
 
-        //            SetupBWObj(tvItemModelMikeScenario, AppTaskCommandEnum.MikeScenarioAskToRun, LanguageRequest);
+                taskRunnerBaseService._BWObj = bwObj;
 
-        //            int countAppTask = appTaskService.GetAppTaskModelCountDB();
-        //            Assert.AreEqual(1, countAppTask);
+                MikeScenarioFileService mikeScenarioFileService = new MikeScenarioFileService(taskRunnerBaseService);
+                mikeScenarioFileService.MikeScenarioAskToRun();
+                if (taskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    //appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                }
+                else
+                {
+                    Assert.IsFalse(true);
+                    //SendErrorTextToDB(taskRunnerBaseService._BWObj.TextLanguageList);
+                }
 
-        //            mikeScenarioFileService = new MikeScenarioFileService(csspWebToolsTaskRunner._TaskRunnerBaseService);
+                break;
+            }
 
-        //            Assert.IsNotNull(mikeScenarioFileService);
-        //            Assert.AreEqual(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, mikeScenarioFileService._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-
-        //            mikeScenarioFileService.MikeScenarioAskToRun();
-        //            Assert.AreEqual(0, mikeScenarioFileService._TaskRunnerBaseService._BWObj.TextLanguageList.Count);
-        //        }
-
-        //        break; // just doing en for now
-        //    }
-        //}
+        }
         //#endregion Functions public
 
         #region Functions private
@@ -716,26 +733,15 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         //    }
 
         //}
-        //public void SetupTest(string LanguageRequest)
-        //{
-        //    csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
-        //    mikeScenarioCommandList = new List<string>()
-        //    {
-        //        "MikeScenarioImport",
-        //        "MikeScenarioOtherFileImport",
-        //        "MikeScenarioAskToRun",
-        //        "MikeScenarioWaitingToRun",
-        //        "MikeScenarioToCancel",
-        //    };
-        //    appTaskService = new AppTaskService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //    tvItemService = new TVItemService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //    tvFileService = new TVFileService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //    mikeScenarioService = new MikeScenarioService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //}
-        //private void SetupShim()
-        //{
-        //    shimTaskRunnerBaseService = new ShimTaskRunnerBaseService(csspWebToolsTaskRunner._TaskRunnerBaseService);
-        //}
+        public void SetupTest(LanguageEnum LanguageRequest)
+        {
+            csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
+            _TVItemService = new TVItemService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            _AppTaskService = new AppTaskService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            _TVFileService = new TVFileService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            _MapInfoService = new MapInfoService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            _ReportTypeService = new ReportTypeService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+        }
         #endregion Functions private
     }
 }
