@@ -529,6 +529,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add new source {0}.
+        /// </summary>
+        public static string CouldNotAddNewSource_ {
+            get {
+                return ResourceManager.GetString("CouldNotAddNewSource_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could Not Copy File {0} To {1} Error {2}.
         /// </summary>
         public static string CouldNotCopyFile_To_Error_ {

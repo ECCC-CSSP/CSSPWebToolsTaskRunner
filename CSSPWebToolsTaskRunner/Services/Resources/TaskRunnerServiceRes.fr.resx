@@ -1458,4 +1458,7 @@
   <data name="Runs" xml:space="preserve">
     <value>Tournées</value>
   </data>
+  <data name="CouldNotAddNewSource_" xml:space="preserve">
+    <value>Could not add new source {0} (fr)</value>
+  </data>
 </root>

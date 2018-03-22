@@ -966,6 +966,248 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Functions public
 
         #region Functions private
+        private string AddSourceKeywordAndParameter(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev, string keyword, int position, int index, 
+            string type /* possible values 'string', 'bool', 'int', 'double', 'filename' */)
+        {
+            PFSKeyword pfsKeywordOld = null;
+            PFSKeyword pfsKeywordNew = null;
+            PFSParameter pfsParameterOld = null;
+            PFSParameter pfsParameter = null;
+
+            try
+            {
+                pfsKeywordOld = pfsSectionSourcePrev.GetKeyword(keyword);
+            }
+            catch (Exception ex)
+            {
+                return string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            }
+
+            try
+            {
+                pfsKeywordNew = pfsSectionNew.InsertNewKeyword(keyword, position);
+            }
+            catch (Exception ex)
+            {
+                return string.Format(TaskRunnerServiceRes.PFS_Error_, "InsertNewKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            }
+
+            try
+            {
+                pfsParameterOld = pfsKeywordOld.GetParameter(index);
+            }
+            catch (Exception ex)
+            {
+                return string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            }
+
+            try
+            {
+                switch (type)
+                {
+                    case "string":
+                        {
+                            pfsParameter = pfsKeywordNew.InsertNewParameterString(pfsParameterOld.ToStringValue(), index);
+                        }
+                        break;
+                    case "bool":
+                        {
+                            pfsParameter = pfsKeywordNew.InsertNewParameterBool(pfsParameterOld.ToBoolean(), index);
+                        }
+                        break;
+                    case "int":
+                        {
+                            pfsParameter = pfsKeywordNew.InsertNewParameterInt(pfsParameterOld.ToInt(), index);
+                        }
+                        break;
+                    case "double":
+                        {
+                            pfsParameter = pfsKeywordNew.InsertNewParameterDouble(pfsParameterOld.ToDouble(), index);
+                        }
+                        break;
+                    case "filename":
+                        {
+                            pfsParameter = pfsKeywordNew.InsertNewParameterFileName(pfsParameterOld.ToFileName(), index);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                return string.Format(TaskRunnerServiceRes.PFS_Error_, "InsertNewParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            }
+
+            return "";
+        }
+        private string AddHydroSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
+        {
+            string ret = "";
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "Name", 1,  1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "include", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "interpolation_type", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "coordinate_type", 4, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "zone", 5, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "coordinates", 6, 1, "double");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "coordinates", 6, 2, "double");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "coordinates", 6, 3, "double");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "layer", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "distribution_type", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "connected_source", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "type", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "format", 11, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "file_name", 12, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "constant_value", 13, 1, "double");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "item_number", 14, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "item_name", 15, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "type_of_soft_start", 16, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "soft_time_interval", 17, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "reference_value", 18, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "type_of_time_interpolation", 19, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "diameter", 20, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "sigma", 21, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "theta", 22, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "maximum_distance", 23, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "upstream", 24, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "distance_upstream", 25, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
+
+            return "";
+        }
+        private string AddHydroTempSalSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
+        {
+
+            return "";
+        }
+        private string AddHydroTurbSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
+        {
+
+            return "";
+        }
+        private string AddTransSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
+        {
+
+            return "";
+        }
+        private string AddEcolabSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
+        {
+
+            return "";
+        }
+        private string AddMudTransSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
+        {
+
+            return "";
+        }
+        private string AddSandTransSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
+        {
+
+            return "";
+        }
+        private string AddNewSourceInPFS(PFSFile pfsFile, string NewSource)
+        {
+            int SourceInt = int.Parse(NewSource.Substring("SOURCE_".Length));
+
+            List<string> pathList = new List<string>()
+            {
+                "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/",
+                "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/",
+                "FemEngineHD/HYDRODYNAMIC_MODULE/TURBULENCE_MODULE/SOURCES/",
+                "FemEngineHD/TRANSPORT_MODULE/SOURCES/",
+                "FemEngineHD/ECOLAB_MODULE/SOURCES/",
+                "FemEngineHD/MUD_TRANSPORT_MODULE/SOURCES/",
+                "FemEngineHD/SAND_TRANSPORT_MODULE/SOURCES/",
+            };
+
+            foreach (string path in pathList)
+            {
+                PFSSection pfsSectionSources = pfsFile.GetSectionFromHandle(path);
+                if (pfsSectionSources == null)
+                {
+                    return string.Format(TaskRunnerServiceRes.CouldNotFind_, path);
+                }
+
+                PFSSection pfsSectionNew = pfsSectionSources.InsertNewSection(NewSource, SourceInt);
+                if (pfsSectionNew == null)
+                {
+                    return string.Format(TaskRunnerServiceRes.CouldNotAddNewSource_, path + NewSource);
+                }
+
+                PFSSection pfsSectionSourcePrev = pfsFile.GetSectionFromHandle(path + "SOURCE_" + (SourceInt - 1).ToString());
+
+                switch (path)
+                {
+                    case "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/":
+                        {
+                            AddHydroSourceKeyAndParam(pfsSectionNew, pfsSectionSourcePrev);
+                        }
+                        break;
+                    case "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/":
+                        {
+                            AddHydroTempSalSourceKeyAndParam(pfsSectionNew, pfsSectionSourcePrev);
+                        }
+                        break;
+                    case "FemEngineHD/HYDRODYNAMIC_MODULE/TURBULENCE_MODULE/SOURCES/":
+                        {
+                            AddHydroTurbSourceKeyAndParam(pfsSectionNew, pfsSectionSourcePrev);
+                        }
+                        break;
+                    case "FemEngineHD/TRANSPORT_MODULE/SOURCES/":
+                        {
+                            AddTransSourceKeyAndParam(pfsSectionNew, pfsSectionSourcePrev);
+                        }
+                        break;
+                    case "FemEngineHD/ECOLAB_MODULE/SOURCES/":
+                        {
+                            AddEcolabSourceKeyAndParam(pfsSectionNew, pfsSectionSourcePrev);
+                        }
+                        break;
+                    case "FemEngineHD/MUD_TRANSPORT_MODULE/SOURCES/":
+                        {
+                            AddMudTransSourceKeyAndParam(pfsSectionNew, pfsSectionSourcePrev);
+                        }
+                        break;
+                    case "FemEngineHD/SAND_TRANSPORT_MODULE/SOURCES/":
+                        {
+                            AddSandTransSourceKeyAndParam(pfsSectionNew, pfsSectionSourcePrev);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return "";
+        }
         private void AddFileToFileNameList(string ServerPath, string FullClientFileName, List<OtherFileInfo> FileNameList, bool IsOutput)
         {
             if (!string.IsNullOrWhiteSpace(ServerPath))
@@ -1255,7 +1497,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             TaskRunnerServiceRes.LocalTime + ")");
                         sb.AppendLine("");
                         sb.Append(TaskRunnerServiceRes.DateAndTime + "\t");
-                        for(int i = 0; i < NodeCount; i++)
+                        for (int i = 0; i < NodeCount; i++)
                         {
                             sb.Append("\t" + TaskRunnerServiceRes.Node + i.ToString());
                         }
@@ -1729,6 +1971,22 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
+            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString);
+            if (pfsSectionSource == null)
+            {
+                string ret = AddNewSourceInPFS(pfsFile, msm.SourceNumberString);
+                if (!string.IsNullOrWhiteSpace(ret))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAddNewSource_, ret);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotAddNewSource_", ret);
+                    return;
+                }
+
+                bool a = true;
+                if (a) return;
+
+            }
+
             if (!SetTransport_ModuleSourceName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText))
             {
                 return;
@@ -2015,7 +2273,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
         }
-        private void DoSources(PFSFile pfsFile, FileInfo fiM21_M3, MikeScenarioModel mikeScenarioModel, int TVItemID, TVFileModel tvFileModelM21_3FM)
+        public void DoSources(PFSFile pfsFile, FileInfo fiM21_M3, MikeScenarioModel mikeScenarioModel, int TVItemID, TVFileModel tvFileModelM21_3FM)
         {
             string NotUsed = "";
 
@@ -2049,7 +2307,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MikeSourceModel> mikeSourceModelList = mikeSourceService.GetMikeSourceModelListWithMikeScenarioTVItemIDDB(mikeScenarioModel.MikeScenarioTVItemID);
 
             int SourceCount = 0;
-            foreach (MikeSourceModel msm in mikeSourceModelList)
+            foreach (MikeSourceModel msm in mikeSourceModelList.OrderBy(c => c.SourceNumberString))
             {
                 SourceCount += 1;
 
@@ -2060,7 +2318,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
         }
-        private void FixPFSFileSystemPart(string FullFileName)
+        public void FixPFSFileSystemPart(string FullFileName)
         {
             StreamReader sr = new StreamReader(FullFileName, Encoding.GetEncoding("iso-8859-1"));
 
@@ -3498,7 +3756,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiM21_M3.FullName);
                 return;
             }
-
 
             PFSFile pfsFile = new PFSFile(fiM21_M3.FullName);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)

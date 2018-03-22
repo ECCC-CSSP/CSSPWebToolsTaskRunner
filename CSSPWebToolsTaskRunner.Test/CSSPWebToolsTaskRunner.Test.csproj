@@ -52,17 +52,25 @@
     <Reference Include="CSSPWebToolsDBDLL">
       <HintPath>..\..\CSSPWebToolsDBDLL\CSSPWebToolsDBDLL\bin\Debug\CSSPWebToolsDBDLL.dll</HintPath>
     </Reference>
-    <Reference Include="DHI.Generic.MikeZero, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+    <Reference Include="DHI.DHIfl, Version=15.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Program Files (x86)\DHI\2011\bin\DHI.Generic.MikeZero.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\DHI\2016\MIKE SDK\bin\DHI.DHIfl.dll</HintPath>
     </Reference>
-    <Reference Include="DHI.Generic.MikeZero.DFS, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+    <Reference Include="DHI.Generic.MikeZero.DFS, Version=15.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Program Files (x86)\DHI\2011\bin\DHI.Generic.MikeZero.DFS.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\DHI\2016\MIKE SDK\bin\DHI.Generic.MikeZero.DFS.dll</HintPath>
     </Reference>
-    <Reference Include="DHI.Generic.MikeZero.EUM, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+    <Reference Include="DHI.Generic.MikeZero.EUM, Version=15.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Program Files (x86)\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\DHI\2016\MIKE SDK\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
+    </Reference>
+    <Reference Include="DHI.PFS, Version=15.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\DHI\2016\MIKE SDK\bin\DHI.PFS.dll</HintPath>
+    </Reference>
+    <Reference Include="DHI.Projections, Version=15.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\DHI\2016\MIKE SDK\bin\DHI.Projections.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

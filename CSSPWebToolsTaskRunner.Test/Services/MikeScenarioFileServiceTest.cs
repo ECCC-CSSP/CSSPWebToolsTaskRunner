@@ -12,6 +12,7 @@ using CSSPModelsDLL.Services;
 using System.IO;
 using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
+using DHI.PFS;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -32,6 +33,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         private TVFileService _TVFileService { get; set; }
         private MapInfoService _MapInfoService { get; set; }
         private ReportTypeService _ReportTypeService { get; set; }
+        private MikeScenarioService _MikeScenarioService { get; set; }
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -662,17 +664,37 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
                 taskRunnerBaseService._BWObj = bwObj;
 
-                MikeScenarioFileService mikeScenarioFileService = new MikeScenarioFileService(taskRunnerBaseService);
-                mikeScenarioFileService.MikeScenarioAskToRun();
-                if (taskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                MikeScenarioFileService _MikeScenarioFileService = new MikeScenarioFileService(taskRunnerBaseService);
+                MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(MikeScenarioTVItemID);
+
+
+                TVFileModel tvFileModelM21_3FM = _TVFileService.GetTVFileModelWithTVItemIDAndTVFileTypeM21FMOrM3FMDB(MikeScenarioTVItemID);
+                Assert.AreEqual("", tvFileModelM21_3FM.Error);
+
+                string ServerPath = _TVFileService.GetServerFilePath(MikeScenarioTVItemID);
+                Assert.IsFalse(string.IsNullOrWhiteSpace(ServerPath));
+
+                FileInfo fiM21_M3 = new FileInfo(ServerPath + tvFileModelM21_3FM.ServerFileName);
+                Assert.IsTrue(fiM21_M3.Exists);
+
+                PFSFile pfsFile = new PFSFile(fiM21_M3.FullName);
+                Assert.IsNotNull(pfsFile);
+
+                _MikeScenarioFileService.DoSources(pfsFile, fiM21_M3, mikeScenarioModel, MikeScenarioTVItemID, tvFileModelM21_3FM);
+                Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+
+                try
                 {
-                    //appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                    pfsFile.Write(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
                 }
-                else
+                catch (Exception ex)
                 {
-                    Assert.IsFalse(true);
-                    //SendErrorTextToDB(taskRunnerBaseService._BWObj.TextLanguageList);
+                    int seilfj = 345;
+                    // nothing
                 }
+
+                pfsFile.Close();
+                _MikeScenarioFileService.FixPFSFileSystemPart(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
 
                 break;
             }
@@ -741,6 +763,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             _TVFileService = new TVFileService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
             _MapInfoService = new MapInfoService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
             _ReportTypeService = new ReportTypeService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            _MikeScenarioService = new MikeScenarioService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
         }
         #endregion Functions private
     }

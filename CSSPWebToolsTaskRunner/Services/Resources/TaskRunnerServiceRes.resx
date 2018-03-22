@@ -1470,4 +1470,7 @@
   <data name="Runs" xml:space="preserve">
     <value>Runs</value>
   </data>
+  <data name="CouldNotAddNewSource_" xml:space="preserve">
+    <value>Could not add new source {0}</value>
+  </data>
 </root>
