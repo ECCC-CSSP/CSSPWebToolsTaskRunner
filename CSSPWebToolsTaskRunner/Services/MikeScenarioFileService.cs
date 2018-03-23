@@ -985,7 +985,14 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                pfsKeywordNew = pfsSectionNew.InsertNewKeyword(keyword, position);
+                if (index == 1)
+                {
+                    pfsKeywordNew = pfsSectionNew.InsertNewKeyword(keyword, position);
+                }
+                else
+                {
+                    pfsKeywordNew = pfsSectionNew.GetKeyword(keyword);
+                }
             }
             catch (Exception ex)
             {
@@ -1105,31 +1112,312 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private string AddHydroTempSalSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
         {
+            string ret = "";
+
+            // doing SALINITY
+            PFSSection pfsSectionNew3 = pfsSectionNew.InsertNewSection("SALINITY", 1);
+            if (pfsSectionNew3 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, "SALINITY");
+            }
+
+            PFSSection pfsSectionSourcePrev3 = pfsSectionSourcePrev.GetSection("SALINITY", 1);
+            if (pfsSectionSourcePrev3 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotGetSection_, "SALINITY");
+            }
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "type", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "format", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "constant_value", 4, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "file_name", 5, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "item_name", 6, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "type_of_soft_start", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "soft_time_interval", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "reference_value", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "type_of_time_interpolation", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
+            // doing TEMPERATURE
+            PFSSection pfsSectionNew2 = pfsSectionNew.InsertNewSection("TEMPERATURE", 1);
+            if (pfsSectionNew2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, "TEMPERATURE");
+            }
+
+            PFSSection pfsSectionSourcePrev2 = pfsSectionSourcePrev.GetSection("TEMPERATURE", 1);
+            if (pfsSectionSourcePrev2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotGetSection_, "TEMPERATURE");
+            }
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "format", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "constant_value", 4, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "file_name", 5, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "item_name", 6, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_soft_start", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "soft_time_interval", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "reference_value", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_time_interpolation", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "type_of_salinity", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "type_of_temperature", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "name", 1, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
 
             return "";
         }
         private string AddHydroTurbSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
         {
+            string ret = "";
+
+            // doing DISSIPATION_OF_KINETIC_ENERGY
+            PFSSection pfsSectionNew2 = pfsSectionNew.InsertNewSection("DISSIPATION_OF_KINETIC_ENERGY", 1);
+            if (pfsSectionNew2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, "DISSIPATION_OF_KINETIC_ENERGY");
+            }
+
+            PFSSection pfsSectionSourcePrev2 = pfsSectionSourcePrev.GetSection("DISSIPATION_OF_KINETIC_ENERGY", 1);
+            if (pfsSectionSourcePrev2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotGetSection_, "DISSIPATION_OF_KINETIC_ENERGY");
+            }
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "format", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "constant_value", 4, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "file_name", 5, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "item_name", 6, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_soft_start", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "soft_time_interval", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "reference_value", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_time_interpolation", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
+            // doing KINETIC_ENERGY
+            PFSSection pfsSectionNew3 = pfsSectionNew.InsertNewSection("KINETIC_ENERGY", 1);
+            if (pfsSectionNew3 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, "KINETIC_ENERGY");
+            }
+
+            PFSSection pfsSectionSourcePrev3 = pfsSectionSourcePrev.GetSection("KINETIC_ENERGY", 1);
+            if (pfsSectionSourcePrev3 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotGetSection_, "KINETIC_ENERGY");
+            }
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "type", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "format", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "constant_value", 4, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "file_name", 5, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "item_name", 6, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "type_of_soft_start", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "soft_time_interval", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "reference_value", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew3, pfsSectionSourcePrev3, "type_of_time_interpolation", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
 
             return "";
         }
         private string AddTransSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
         {
+            string ret = "";
+
+            // doing COMPONENT_1
+            PFSSection pfsSectionNew2 = pfsSectionNew.InsertNewSection("COMPONENT_1", 1);
+            if (pfsSectionNew2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, "COMPONENT_1");
+            }
+
+            PFSSection pfsSectionSourcePrev2 = pfsSectionSourcePrev.GetSection("COMPONENT_1", 1);
+            if (pfsSectionSourcePrev2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotGetSection_, "COMPONENT_1");
+            }
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_component", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "format", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "constant_value", 4, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "file_name", 5, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "item_name", 6, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_soft_start", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "soft_time_interval", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "reference_value", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_time_interpolation", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "name", 1, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "MzSEPfsListItemCount", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
 
             return "";
         }
         private string AddEcolabSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
         {
+            string ret = "";
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "name", 1, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "MzSEPfsListItemCount", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
 
             return "";
         }
         private string AddMudTransSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
         {
 
+            string ret = "";
+
+            // doing SSC_FRACTION_1
+            PFSSection pfsSectionNew2 = pfsSectionNew.InsertNewSection("SSC_FRACTION_1", 1);
+            if (pfsSectionNew2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, "SSC_FRACTION_1");
+            }
+
+            PFSSection pfsSectionSourcePrev2 = pfsSectionSourcePrev.GetSection("SSC_FRACTION_1", 1);
+            if (pfsSectionSourcePrev2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotGetSection_, "SSC_FRACTION_1");
+            }
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_component", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "format", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "constant_value", 4, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "file_name", 5, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "item_name", 6, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_soft_start", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "soft_time_interval", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "reference_value", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_time_interpolation", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "name", 1, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "MzSEPfsListItemCount", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
             return "";
         }
         private string AddSandTransSourceKeyAndParam(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev)
         {
+            string ret = "";
+
+            // doing SSC_FRACTION_1
+            PFSSection pfsSectionNew2 = pfsSectionNew.InsertNewSection("SSC_FRACTION_1", 1);
+            if (pfsSectionNew2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, "SSC_FRACTION_1");
+            }
+
+            PFSSection pfsSectionSourcePrev2 = pfsSectionSourcePrev.GetSection("SSC_FRACTION_1", 1);
+            if (pfsSectionSourcePrev2 == null)
+            {
+                return string.Format(TaskRunnerServiceRes.CouldNotGetSection_, "SSC_FRACTION_1");
+            }
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_component", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type", 2, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "format", 3, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "constant_value", 4, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "file_name", 5, 1, "filename");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "item_name", 6, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_soft_start", 7, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "soft_time_interval", 8, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "reference_value", 9, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew2, pfsSectionSourcePrev2, "type_of_time_interpolation", 10, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "name", 1, 1, "string");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "MzSEPfsListItemCount", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "Touched", 1, 1, "int");
+            if (!string.IsNullOrWhiteSpace(ret)) return ret;
 
             return "";
         }
@@ -1159,7 +1447,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 PFSSection pfsSectionNew = pfsSectionSources.InsertNewSection(NewSource, SourceInt);
                 if (pfsSectionNew == null)
                 {
-                    return string.Format(TaskRunnerServiceRes.CouldNotAddNewSource_, path + NewSource);
+                    return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, path + NewSource);
                 }
 
                 PFSSection pfsSectionSourcePrev = pfsFile.GetSectionFromHandle(path + "SOURCE_" + (SourceInt - 1).ToString());
@@ -1977,7 +2265,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 string ret = AddNewSourceInPFS(pfsFile, msm.SourceNumberString);
                 if (!string.IsNullOrWhiteSpace(ret))
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAddNewSource_, ret);
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, ret);
                     _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotAddNewSource_", ret);
                     return;
                 }

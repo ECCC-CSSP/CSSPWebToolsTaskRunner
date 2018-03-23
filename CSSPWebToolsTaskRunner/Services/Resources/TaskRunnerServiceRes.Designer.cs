@@ -529,11 +529,11 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add new source {0}.
+        ///   Looks up a localized string similar to Could not add new section {0}.
         /// </summary>
-        public static string CouldNotAddNewSource_ {
+        public static string CouldNotAddNewSection_ {
             get {
-                return ResourceManager.GetString("CouldNotAddNewSource_", resourceCulture);
+                return ResourceManager.GetString("CouldNotAddNewSection_", resourceCulture);
             }
         }
         
@@ -795,6 +795,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotGetContourPolygonListWithin_ {
             get {
                 return ResourceManager.GetString("CouldNotGetContourPolygonListWithin_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not get section {0}.
+        /// </summary>
+        public static string CouldNotGetSection_ {
+            get {
+                return ResourceManager.GetString("CouldNotGetSection_", resourceCulture);
             }
         }
         
