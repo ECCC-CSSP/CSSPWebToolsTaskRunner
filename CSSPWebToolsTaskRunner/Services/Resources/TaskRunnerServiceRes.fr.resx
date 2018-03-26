@@ -1464,4 +1464,7 @@
   <data name="CouldNotGetSection_" xml:space="preserve">
     <value>Could not get section {0} (fr)</value>
   </data>
+  <data name="CouldNotDeleteSection_" xml:space="preserve">
+    <value>Could not delete section {0} (fr)</value>
+  </data>
 </root>

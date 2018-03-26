@@ -966,7 +966,7 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Functions public
 
         #region Functions private
-        private string AddSourceKeywordAndParameter(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev, string keyword, int position, int index, 
+        private string AddSourceKeywordAndParameter(PFSSection pfsSectionNew, PFSSection pfsSectionSourcePrev, string keyword, int position, int index,
             string type /* possible values 'string', 'bool', 'int', 'double', 'filename' */)
         {
             PFSKeyword pfsKeywordOld = null;
@@ -1052,7 +1052,7 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string ret = "";
 
-            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "Name", 1,  1, "string");
+            ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "Name", 1, 1, "string");
             if (!string.IsNullOrWhiteSpace(ret)) return ret;
             ret = AddSourceKeywordAndParameter(pfsSectionNew, pfsSectionSourcePrev, "include", 2, 1, "int");
             if (!string.IsNullOrWhiteSpace(ret)) return ret;
@@ -1421,7 +1421,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return "";
         }
-        private string AddNewSourceInPFS(PFSFile pfsFile, string NewSource)
+        private string AddNewSourceInPFS(PFSFile pfsFile, string NewSource, int LastSourceIndex)
         {
             int SourceInt = int.Parse(NewSource.Substring("SOURCE_".Length));
 
@@ -1450,7 +1450,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     return string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, path + NewSource);
                 }
 
-                PFSSection pfsSectionSourcePrev = pfsFile.GetSectionFromHandle(path + "SOURCE_" + (SourceInt - 1).ToString());
+                PFSSection pfsSectionSourcePrev = pfsFile.GetSectionFromHandle(path + "SOURCE_" + LastSourceIndex.ToString());
 
                 switch (path)
                 {
@@ -2234,7 +2234,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             //}
         }
-        private void DoSource(PFSFile pfsFile, FileInfo fiM21_M3, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel)
+        private void DoSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, int LastSourceIndex)
         {
             string NotUsed = "";
 
@@ -2259,23 +2259,30 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString);
+            PFSSection pfsSectionSource = null;
+            try
+            {
+                pfsSectionSource = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetSection", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return;
+            }
+
             if (pfsSectionSource == null)
             {
-                string ret = AddNewSourceInPFS(pfsFile, msm.SourceNumberString);
+                string ret = AddNewSourceInPFS(pfsFile, msm.SourceNumberString, LastSourceIndex);
                 if (!string.IsNullOrWhiteSpace(ret))
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAddNewSection_, ret);
                     _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotAddNewSource_", ret);
                     return;
                 }
-
-                bool a = true;
-                if (a) return;
-
             }
 
-            if (!SetTransport_ModuleSourceName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText))
+            if (!SetTransport_ModuleSourceName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText))
             {
                 return;
             }
@@ -2301,7 +2308,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
 
-                if (!SetTransport_ModuleSourceName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString, ""))
+                if (!SetTransport_ModuleSourceName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText))
                 {
                     return;
                 }
@@ -2594,15 +2601,159 @@ namespace CSSPWebToolsTaskRunner.Services
             MikeSourceService mikeSourceService = new MikeSourceService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             List<MikeSourceModel> mikeSourceModelList = mikeSourceService.GetMikeSourceModelListWithMikeScenarioTVItemIDDB(mikeScenarioModel.MikeScenarioTVItemID);
 
+            int LastSourceIndex = 0;
+            for (int i = 1; i < 200; i++)
+            {
+                try
+                {
+                    PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/SOURCE_" + i.ToString());
+                    if (pfsSectionSource != null)
+                    {
+                        LastSourceIndex = i;
+                    }
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+            }
+
             int SourceCount = 0;
             foreach (MikeSourceModel msm in mikeSourceModelList.OrderBy(c => c.SourceNumberString))
             {
                 SourceCount += 1;
 
-                DoSource(pfsFile, fiM21_M3, msm, fiBC, mikeScenarioModel);
+                DoSource(pfsFile, msm, fiBC, mikeScenarioModel, LastSourceIndex);
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 {
                     return;
+                }
+            }
+
+            if (SourceCount < LastSourceIndex)
+            {
+                SourceCount += 1;
+
+                for (int i = SourceCount; i < LastSourceIndex + 1; i++)
+                {
+                    RemoveSource(pfsFile, i);
+                    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            UpdateSourceCount(pfsFile, mikeSourceModelList.Count());
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+            {
+                return;
+            }
+        }
+        private void UpdateSourceCount(PFSFile pfsFile, int SourceCount)
+        {
+            string NotUsed = "";
+
+            List<string> pathList = new List<string>()
+            {
+                "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/",
+                "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/",
+                "FemEngineHD/HYDRODYNAMIC_MODULE/TURBULENCE_MODULE/SOURCES/",
+                "FemEngineHD/TRANSPORT_MODULE/SOURCES/",
+                "FemEngineHD/ECOLAB_MODULE/SOURCES/",
+                "FemEngineHD/MUD_TRANSPORT_MODULE/SOURCES/",
+                "FemEngineHD/SAND_TRANSPORT_MODULE/SOURCES/",
+            };
+
+            foreach (string path in pathList)
+            {
+                PFSSection pfsSectionSources = null;
+                try
+                {
+                    pfsSectionSources = pfsFile.GetSectionFromHandle(path);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetSection", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+
+                PFSKeyword pfsKeywork = null;
+                try
+                {
+                    pfsKeywork = pfsSectionSources.GetKeyword("MzSEPfsListItemCount");
+
+                    pfsKeywork.DeleteParameter(1);
+                    PFSParameter pfsParameter = pfsKeywork.InsertNewParameterInt(SourceCount, 1);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+
+                try
+                {
+                    pfsKeywork.DeleteParameter(1);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "DeleteKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+
+                try
+                {
+                    PFSParameter pfsParameter = pfsKeywork.InsertNewParameterInt(SourceCount, 1);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "InsertKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+
+                if (path == "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/")
+                {
+                    try
+                    {
+                        pfsKeywork = pfsSectionSources.GetKeyword("number_of_sources");
+
+                        pfsKeywork.DeleteParameter(1);
+                        PFSParameter pfsParameter = pfsKeywork.InsertNewParameterInt(SourceCount, 1);
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return;
+                    }
+
+                    try
+                    {
+                        pfsKeywork.DeleteParameter(1);
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "DeleteKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return;
+                    }
+
+                    try
+                    {
+                        PFSParameter pfsParameter = pfsKeywork.InsertNewParameterInt(SourceCount, 1);
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "InsertKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return;
+                    }
+
                 }
             }
         }
@@ -3850,6 +4001,47 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             return true;
+        }
+        private void RemoveSource(PFSFile pfsFile, int SourceIndex)
+        {
+            string NotUsed = "";
+
+            List<string> pathList = new List<string>()
+            {
+                "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/",
+                "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/",
+                "FemEngineHD/HYDRODYNAMIC_MODULE/TURBULENCE_MODULE/SOURCES/",
+                "FemEngineHD/TRANSPORT_MODULE/SOURCES/",
+                "FemEngineHD/ECOLAB_MODULE/SOURCES/",
+                "FemEngineHD/MUD_TRANSPORT_MODULE/SOURCES/",
+                "FemEngineHD/SAND_TRANSPORT_MODULE/SOURCES/",
+            };
+
+            foreach (string path in pathList)
+            {
+                PFSSection pfsSectionSources = null;
+                try
+                {
+                    pfsSectionSources = pfsFile.GetSectionFromHandle(path);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetSection", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+
+                try
+                {
+                    pfsSectionSources.DeleteSection("SOURCE_" + SourceIndex.ToString(), 1);
+                }
+                catch (Exception)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteSection_, path + "SOURCE_" + SourceIndex.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotDeleteSection_", path + "SOURCE_" + SourceIndex.ToString());
+                    return;
+                }
+            }
         }
         private string ReturnStrLimit(string TempStr, int NumbOfChar)
         {

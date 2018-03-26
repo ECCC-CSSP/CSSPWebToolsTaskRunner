@@ -646,6 +646,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not delete section {0}.
+        /// </summary>
+        public static string CouldNotDeleteSection_ {
+            get {
+                return ResourceManager.GetString("CouldNotDeleteSection_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not download web address {0}. Error: {1}.
         /// </summary>
         public static string CouldNotDownloadWebAddress_Error_ {
