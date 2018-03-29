@@ -30,7 +30,7 @@ namespace CSSPWebToolsTaskRunner
         #region Variables
         private int LabSheetLookupDelay = 3; // seconds
         private int TaskStatusOfRunnningLookupDelay = 5; // seconds
-        private List<int> DavidBenoitEmailTimeHourList = new List<int>() { 6, 12, 18 }; // hours to send email every day
+        private List<int> ShawnDonohueEmailTimeHourList = new List<int>() { 6, 12, 18 }; // hours to send email every day
         private int MPNLimitForEmail = 500;
         private bool testing = false;
         private LanguageEnum LanguageRequest { get; set; }
@@ -197,23 +197,23 @@ namespace CSSPWebToolsTaskRunner
 
             // Checking others
             DateTime CurrentDateTime = DateTime.Now;
-            if (DavidBenoitEmailTimeHourList.Contains(CurrentDateTime.Hour) && CurrentDateTime.Minute == 0 && CurrentDateTime.Second == 0)
+            if (ShawnDonohueEmailTimeHourList.Contains(CurrentDateTime.Hour) && CurrentDateTime.Minute == 0 && CurrentDateTime.Second == 0)
             {
                 try
                 {
-                    string DavidBenoitErrorMessage = _TaskRunnerBaseService.RunTaskForDavidBenoit();
-                    if (!string.IsNullOrWhiteSpace(DavidBenoitErrorMessage))
+                    string ShawnDonohueErrorMessage = _TaskRunnerBaseService.RunTaskForShawnDonohue();
+                    if (!string.IsNullOrWhiteSpace(ShawnDonohueErrorMessage))
                     {
-                        _RichTextBoxStatus.AppendText("David Benoit issue: " + DavidBenoitErrorMessage);
+                        _RichTextBoxStatus.AppendText("Shawn Donohue issue: " + ShawnDonohueErrorMessage);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _RichTextBoxStatus.AppendText("David Benoit issue: " + ex.Message + (ex.InnerException == null ? "" : ex.InnerException.Message));
+                    _RichTextBoxStatus.AppendText("Shawn Donohue issue: " + ex.Message + (ex.InnerException == null ? "" : ex.InnerException.Message));
 
                     MailMessage mail = new MailMessage();
 
-                    mail.To.Add("David.Benoit@Canada.ca");
+                    mail.To.Add("Shawn.Donohue@Canada.ca");
                     mail.Bcc.Add("Charles.LeBlanc2@Canada.ca");
 
                     mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
@@ -229,11 +229,11 @@ namespace CSSPWebToolsTaskRunner
                     myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
                     myClient.EnableSsl = true;
 
-                    string subject = "David Benoit Issue from CSSPWebToolsTaskRunner";
+                    string subject = "Shawn Donohue Issue from CSSPWebToolsTaskRunner";
 
                     StringBuilder msg = new StringBuilder();
 
-                    msg.AppendLine("<h2>David Benoit Issue Email</h2>");
+                    msg.AppendLine("<h2>Shawn Donohue Issue Email</h2>");
                     msg.AppendLine("<h4>Date of issue: " + DateTime.Now + "</h4>");
                     msg.AppendLine("<h4>Exception Message: " + ex.Message + "</h4>");
                     msg.AppendLine("<h4>Exception Inner Message: " + (ex.InnerException != null ? ex.InnerException.Message : "empty") + "</h4>");
