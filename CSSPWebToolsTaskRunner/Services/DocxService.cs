@@ -15,6 +15,8 @@ using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPLabSheetParserDLL.Services;
 using CSSPFCFormWriterDLL.Services;
+using System.Threading;
+using System.Globalization;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -26,6 +28,7 @@ namespace CSSPWebToolsTaskRunner.Services
         #region Properties
         public TaskRunnerBaseService _TaskRunnerBaseService { get; private set; }
         public SamplingPlanService _SamplingPlanService { get; private set; }
+        public SamplingPlanEmailService _SamplingPlanEmailService { get; private set; }
         public LabSheetService _LabSheetService { get; private set; }
         public LabSheetDetailService _LabSheetDetailService { get; private set; }
         public LabSheetTubeMPNDetailService _LabSheetTubeMPNDetailService { get; private set; }
@@ -40,6 +43,7 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             _TaskRunnerBaseService = taskRunnerBaseService;
             _SamplingPlanService = new SamplingPlanService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _SamplingPlanEmailService = new SamplingPlanEmailService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _LabSheetService = new LabSheetService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _LabSheetDetailService = new LabSheetDetailService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _LabSheetTubeMPNDetailService = new LabSheetTubeMPNDetailService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -999,48 +1003,112 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            string hrefSubsector = "http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/" + (tvItemModelProvince.TVText + "-" + tvItemModelSubsector.TVText).Replace(" ", "-") + "|||" + tvItemModelSubsector.TVItemID.ToString() + "|||30010000001000000000000000001000";
+            SamplingPlanModel samplingPlanModel = _SamplingPlanService.GetSamplingPlanModelWithSamplingPlanIDDB(labSheetModel.SamplingPlanID);
 
-            List<ContactModel> contactModelList = _ContactService.GetContactModelWithSamplingPlanner_ProvincesTVItemIDDB(tvItemModelProvince.TVItemID);
-
-            MailMessage mail = new MailMessage();
-
-            //mail.To.Add("Test1.User@ssctest.itsso.gc.ca");
-
-            foreach (ContactModel contactModel in contactModelList)
+            if (!samplingPlanModel.IsActive)
             {
-                mail.To.Add(contactModel.LoginEmail.ToLower());
+                return;
             }
 
-            mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
-            mail.IsBodyHtml = true;
+            string hrefSubsector = "http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/" + (tvItemModelProvince.TVText + "-" + tvItemModelSubsector.TVText).Replace(" ", "-") + "|||" + tvItemModelSubsector.TVItemID.ToString() + "|||30010000001000000000000000001000";
 
-            SmtpClient myClient = new System.Net.Mail.SmtpClient();
+            foreach (bool IsContractor in new List<bool> { false, true })
+            {
+                List<string> ToEmailList = new List<string>();
 
-            //myClient.Host = "smtp.ctst.email-courriel.canada.ca";
-            myClient.Host = "smtp.email-courriel.canada.ca";
-            myClient.Port = 587;
-            //myClient.Credentials = new System.Net.NetworkCredential("yourusername", "yourpassword");
-            //myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@ctst.canada.ca", "5y3Q^z+B4a7T$F+nQ@9N+r6uE!E87s");
-            myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
-            myClient.EnableSsl = true;
+                List<SamplingPlanEmailModel> SamplingPlanEmailModelList = _SamplingPlanEmailService.GetSamplingPlanEmailModelListWithSamplingPlanIDDB(samplingPlanModel.SamplingPlanID);
 
-            DateTime RunDate = new DateTime(labSheetModel.Year, labSheetModel.Month, labSheetModel.Day);
+                foreach (SamplingPlanEmailModel samplingPlanEmailModel in SamplingPlanEmailModelList.Where(c => c.IsContractor == IsContractor && c.LabSheetAccepted == true))
+                {
+                    ToEmailList.Add(samplingPlanEmailModel.Email);
+                }
 
-            string subject = "ACCEPTED: Lab sheet dated " + RunDate.ToString("yyyy MMMM dd") + " for subsector " + tvItemModelSubsector.TVText;
+                MailMessage mail = new MailMessage();
 
-            StringBuilder msg = new StringBuilder();
-            msg.AppendLine(@"<h2>" + tvItemModelProvince.TVText + "</h2>");
-            msg.AppendLine(@"<h4>Subsector: <a href=""" + hrefSubsector + @""">" + tvItemModelSubsector.TVText + "</a></h4>");
-            msg.AppendLine(@"<p><b>Date of run:</b> " + RunDate.ToString("yyyy MMMM dd") + "</p>");
-            msg.AppendLine(@"<p><b>Accepted by:</b> " + labSheetModel.AcceptedOrRejectedByContactTVText + "</p>");
-            msg.AppendLine(@"<p>The FC form was also automatically created.</p>");
-            msg.AppendLine(@"<p></p>");
-            msg.AppendLine(@"Auto email from CSSPWebTools.");
+                //mail.To.Add("Test1.User@ssctest.itsso.gc.ca");
 
-            mail.Subject = subject;
-            mail.Body = msg.ToString();
-            myClient.Send(mail);
+                foreach (string  email  in ToEmailList)
+                {
+                    mail.To.Add(email.ToLower());
+                }
+
+                if (mail.To.Count == 0)
+                {
+                    continue;
+                }
+
+                mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                mail.IsBodyHtml = true;
+
+                SmtpClient myClient = new System.Net.Mail.SmtpClient();
+
+                myClient.Host = "smtp.email-courriel.canada.ca";
+                myClient.Port = 587;
+                myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                myClient.EnableSsl = true;
+
+                DateTime RunDate = new DateTime(labSheetModel.Year, labSheetModel.Month, labSheetModel.Day);
+
+                int FirstSpace = tvItemModelSubsector.TVText.IndexOf(" ");
+
+                string subject = tvItemModelSubsector.TVText.Substring(0, (FirstSpace > 0 ? FirstSpace : tvItemModelSubsector.TVText.Length))
+                    + " – Lab sheet accepted / Feuille de laboratoire accepté";
+
+                StringBuilder msg = new StringBuilder();
+
+                // ----------------------- English part -------------
+
+                msg.AppendLine(@"<p>(français suit)</p>");
+                msg.AppendLine(@"<h2>Lab Sheet Accepted</h2>");
+
+                if (!IsContractor)
+                {
+                    msg.AppendLine(@"<h4>Subsector: <a href=""" + hrefSubsector + @""">" + tvItemModelSubsector.TVText + "</a></h4>");
+                }
+                else
+                {
+                    msg.AppendLine(@"<h4>Subsector: " + tvItemModelSubsector.TVText + "</h4>");
+                }
+
+
+                msg.AppendLine(@"<p><b>Date of run:</b> " + RunDate.ToString("MMMM dd, yyyy") + "</p>");
+                msg.AppendLine(@"<p><b>Accepted by:</b> " + labSheetModel.AcceptedOrRejectedByContactTVText + "</p>");
+                msg.AppendLine(@"<p></p>");
+                msg.AppendLine(@"Auto email from CSSPWebTools");
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<hr />");
+
+                // ---------------------- French part --------------
+
+                msg.AppendLine(@"<hr />");
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<h2>Feuille de laboratoire accepté</h2>");
+
+                if (!IsContractor)
+                {
+                    msg.AppendLine(@"<h4>Sous-secteur: <a href=""" + hrefSubsector.Replace("en-CA", "fr-CA") + @""">" + tvItemModelSubsector.TVText + "</a></h4>");
+                }
+                else
+                {
+                    msg.AppendLine(@"<h4>Sous-secteur: " + tvItemModelSubsector.TVText + "</h4>");
+                }
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+
+                msg.AppendLine(@"<p><b>Date de la tournée:</b> " + RunDate.ToString("dd MMMM, yyyy") + "</p>");
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+
+                msg.AppendLine(@"<p><b>Accepté par:</b> " + labSheetModel.AcceptedOrRejectedByContactTVText + "</p>");
+                msg.AppendLine(@"<p></p>");
+                msg.AppendLine(@"Courriel automatique provenant de CSSPWebTools");
+
+                mail.Subject = subject;
+                mail.Body = msg.ToString();
+                myClient.Send(mail);
+            }
         }
 
         #endregion Function public

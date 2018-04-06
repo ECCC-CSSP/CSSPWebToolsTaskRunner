@@ -28,7 +28,7 @@ namespace CSSPWebToolsTaskRunner
     public partial class CSSPWebToolsTaskRunner : Form
     {
         #region Variables
-        private int LabSheetLookupDelay = 3; // seconds
+        private int LabSheetLookupDelay = 4; // seconds
         private int TaskStatusOfRunnningLookupDelay = 5; // seconds
         private List<int> ShawnDonohueEmailTimeHourList = new List<int>() { 6, 12, 18 }; // hours to send email every day
         private int MPNLimitForEmail = 500;
@@ -240,6 +240,95 @@ namespace CSSPWebToolsTaskRunner
 
                     msg.AppendLine(@"<br>");
                     msg.AppendLine(@"<p>Auto email from CSSPWebTools.</p>");
+
+                    mail.Subject = subject;
+                    mail.Body = msg.ToString();
+                    myClient.Send(mail);
+                }
+            }
+
+            if (CurrentDateTime.DayOfWeek == DayOfWeek.Friday && CurrentDateTime.Hour == 14 && CurrentDateTime.Minute == 0 && CurrentDateTime.Second == 0)
+            {
+                SamplingPlanService samplingPlanService = new SamplingPlanService(LanguageEnum.en, _User);
+
+                List<SamplingPlanModel> samplingPlanModelList = samplingPlanService.GetAllActiveSamplingPlanModelListDB();
+
+                List<int> ProvinceTVItemIDList = samplingPlanModelList.Select(c => c.ProvinceTVItemID).Distinct().ToList();
+
+                foreach (int provinceTVItemID in ProvinceTVItemIDList)
+                {
+                    TVItemService tvItemService = new TVItemService(LanguageEnum.en, _User);
+                    TVItemModel tvItemModelProv = tvItemService.GetTVItemModelWithTVItemIDDB(provinceTVItemID);
+
+                    List<string> ToEmailList = new List<string>();
+                    int TotalLabSheetTransferred = 0;
+                    foreach (SamplingPlanModel samplingPlanModel in samplingPlanModelList.Where(c => c.ProvinceTVItemID == provinceTVItemID && c.IsActive == true))
+                    {
+                        LabSheetService labSheetService = new LabSheetService(LanguageEnum.en, _User);
+
+                        TotalLabSheetTransferred += labSheetService.GetLabSheetCountWithSamplingPlanIDAndLabSheetStatusDB(samplingPlanModel.SamplingPlanID, LabSheetStatusEnum.Transferred);
+
+                        SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(LanguageEnum.en, _User);
+
+                        List<SamplingPlanEmailModel> SamplingPlanEmailModelList = samplingPlanEmailService.GetSamplingPlanEmailModelListWithSamplingPlanIDDB(samplingPlanModel.SamplingPlanID);
+
+                        foreach (SamplingPlanEmailModel samplingPlanEmailModel in SamplingPlanEmailModelList)
+                        {
+                            if (!samplingPlanEmailModel.IsContractor && samplingPlanEmailModel.FridayReminderAt14h)
+                            {
+                                ToEmailList.Add(samplingPlanEmailModel.Email);
+                            }
+                        }
+                    }
+
+                    MailMessage mail = new MailMessage();
+
+                    foreach (string email in ToEmailList)
+                    {
+                        mail.To.Add(email.ToLower());
+                    }
+
+                    if (mail.To.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                    mail.IsBodyHtml = true;
+
+                    SmtpClient myClient = new System.Net.Mail.SmtpClient();
+
+                    myClient.Host = "smtp.email-courriel.canada.ca";
+                    myClient.Port = 587;
+                    myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                    myClient.EnableSsl = true;
+
+                    mail.Priority = MailPriority.High;
+
+                    string subject = $@"{TotalLabSheetTransferred} lab sheets waiting to be approved / {TotalLabSheetTransferred} de feuilles de laboratoire en attente approuvées";
+
+                    StringBuilder msg = new StringBuilder();
+
+                    // ---------------------- English part --------------
+
+                    string href = "http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/" + tvItemModelProv.TVText + "|||" + tvItemModelProv.TVItemID.ToString() + "|||010003030200000000000000000000";
+
+                    msg.AppendLine(@"<p>(français suit)</p>");
+                    msg.AppendLine($@"<h2>{TotalLabSheetTransferred} lab sheets waiting to be approved</h2>");
+                    msg.AppendLine(@"<a href=""" + href + @""">Open CSSPWebTools</a>");
+                    msg.AppendLine(@"<br>");
+                    msg.AppendLine(@"<p>Auto email from CSSPWebTools</p>");
+                    msg.AppendLine(@"<br>");
+                    msg.AppendLine(@"<hr />");
+
+                    // ---------------------- French part --------------
+
+                    msg.AppendLine(@"<hr />");
+                    msg.AppendLine(@"<br>");
+                    msg.AppendLine($@"<h2>{TotalLabSheetTransferred} feuilles de laboratoire en attente d'approbation</h2>");
+                    msg.AppendLine(@"<a href=""" + href.Replace("en-CA", "fr-CA") + @""">Ouvrir CSSPWebTools</a>");
+                    msg.AppendLine(@"<br>");
+                    msg.AppendLine(@"<p>Courriel automatique provenant de CSSPWebTools</p>");
 
                     mail.Subject = subject;
                     mail.Body = msg.ToString();
@@ -832,123 +921,227 @@ namespace CSSPWebToolsTaskRunner
         }
         private void SendNewLabSheetEmailBigMPN(string href, TVItemModel tvItemModelProvince, TVItemModel tvItemModelSubsector, LabSheetModelAndA1Sheet labSheetModelAndA1Sheet)
         {
-            ContactService contactService = new ContactService(LanguageEnum.en, _User);
+            SamplingPlanService samplingPlanService = new SamplingPlanService(LanguageEnum.en, _User);
 
-            List<ContactModel> contactModelList = contactService.GetContactModelWithSamplingPlanner_ProvincesTVItemIDDB(tvItemModelProvince.TVItemID);
+            SamplingPlanModel samplingPlanModel = samplingPlanService.GetSamplingPlanModelWithSamplingPlanIDDB(labSheetModelAndA1Sheet.LabSheetModel.SamplingPlanID);
 
-            MailMessage mail = new MailMessage();
+            SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(LanguageEnum.en, _User);
 
-            if (!testing)
+            List<SamplingPlanEmailModel> SamplingPlanEmailModelList = samplingPlanEmailService.GetSamplingPlanEmailModelListWithSamplingPlanIDDB(samplingPlanModel.SamplingPlanID);
+
+            if (!samplingPlanModel.IsActive)
             {
-                foreach (ContactModel contactModel in contactModelList)
+                return;
+            }
+
+            // sending email to Non Contractors
+
+            foreach (bool IsContractor in new List<bool> { false, true })
+            {
+                MailMessage mail = new MailMessage();
+
+                foreach (SamplingPlanEmailModel samplingPlanEmailModel in SamplingPlanEmailModelList.Where(c => c.IsContractor == IsContractor && c.LabSheetHasValueOver500 == true))
                 {
-                    mail.To.Add(contactModel.LoginEmail.ToLower());
+                    mail.To.Add(samplingPlanEmailModel.Email.ToLower());
                 }
+
+                if (mail.To.Count == 0)
+                {
+                    continue;
+                }
+
+                mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                mail.IsBodyHtml = true;
+
+                SmtpClient myClient = new System.Net.Mail.SmtpClient();
+
+                myClient.Host = "smtp.email-courriel.canada.ca";
+                myClient.Port = 587;
+                myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                myClient.EnableSsl = true;
+
+                mail.Priority = MailPriority.High;
+
+                int FirstSpace = tvItemModelSubsector.TVText.IndexOf(" ");
+
+                string subject = tvItemModelSubsector.TVText.Substring(0, (FirstSpace > 0 ? FirstSpace : tvItemModelSubsector.TVText.Length))
+                    + " – Lab sheet received – High MPN / Feuille de laboratoire reçu -  NPP élevé";
+
+                DateTime RunDate = new DateTime(int.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.RunYear), int.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth), int.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay));
+
+                StringBuilder msg = new StringBuilder();
+
+                // ---------------------- English part --------------
+
+                msg.AppendLine(@"<p>(français suit)</p>");
+                msg.AppendLine(@"<h2>Lab Sheet received</h2>");
+                msg.AppendLine(@"<h4>Subsector: " + tvItemModelSubsector.TVText + "</h4>");
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+
+                msg.AppendLine(@"<h4>Run Date: " + RunDate.ToString("MMMM dd, yyyy") + "</h4>");
+
+                if (!IsContractor)
+                {
+                    msg.AppendLine(@"<a href=""" + href + @""">Open CSSPWebTools</a>");
+                }
+                msg.AppendLine(@"<br /><br />");
+                msg.AppendLine(@"<p><b>Note: </b> Sites below are over the MPN threshold of 500</p>");
+
+                List<LabSheetA1Measurement> labSheetA1MeasurementList = (from c in labSheetModelAndA1Sheet.LabSheetA1Sheet.LabSheetA1MeasurementList
+                                                                         where c.MPN != null
+                                                                         && c.MPN >= MPNLimitForEmail
+                                                                         select c).ToList();
+
+                msg.AppendLine("<ol>");
+                foreach (LabSheetA1Measurement labSheetA1Measurment in labSheetA1MeasurementList)
+                {
+                    msg.AppendLine("<li>");
+                    msg.AppendLine("<b>Site: </b>" + labSheetA1Measurment.Site + (labSheetA1Measurment.SampleType == SampleTypeEnum.DailyDuplicate ? " Daily duplicate" : "") + " <b>MPN: </b>" + labSheetA1Measurment.MPN);
+                    msg.AppendLine("</li>");
+
+                }
+                msg.AppendLine("</ol>");
+
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<p>Auto email from CSSPWebTools</p>");
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<hr />");
+
+                // ---------------------- French part --------------
+
+                msg.AppendLine(@"<hr />");
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<h2>Feuille de laboratoire reçu</h2>");
+                msg.AppendLine(@"<h4>Sous-secteur: " + tvItemModelSubsector.TVText + "</h4>");
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+
+                msg.AppendLine(@"<h4>Date de la tournée: " + RunDate.ToString("dd MMMM, yyyy") + "</h4>");
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+
+                if (!IsContractor)
+                {
+                    msg.AppendLine(@"<a href=""" + href.Replace("en-CA", "fr-CA") + @""">Open CSSPWebTools</a>");
+                }
+                msg.AppendLine(@"<br /><br />");
+                msg.AppendLine(@"<p><b>Remarque: </b> Les sites ci-dessous ont une valeure de NPP dépassant 500</p>");
+
+                msg.AppendLine("<ol>");
+                foreach (LabSheetA1Measurement labSheetA1Measurment in labSheetA1MeasurementList)
+                {
+                    msg.AppendLine("<li>");
+                    msg.AppendLine("<b>Site: </b>" + labSheetA1Measurment.Site + (labSheetA1Measurment.SampleType == SampleTypeEnum.DailyDuplicate ? " Duplicata journalier" : "") + " <b>NPP: </b>" + labSheetA1Measurment.MPN);
+                    msg.AppendLine("</li>");
+
+                }
+                msg.AppendLine("</ol>");
+
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<p>Courriel automatique provenant de CSSPWebTools</p>");
+
+                mail.Subject = subject;
+                mail.Body = msg.ToString();
+                myClient.Send(mail);
             }
-            else
-            {
-                mail.To.Add("charles.leblanc2@Canada.ca");
-            }
-
-            mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
-            mail.IsBodyHtml = true;
-
-            SmtpClient myClient = new System.Net.Mail.SmtpClient();
-
-            //myClient.Host = "smtp.ctst.email-courriel.canada.ca";
-            myClient.Host = "smtp.email-courriel.canada.ca";
-            myClient.Port = 587;
-            //myClient.Credentials = new System.Net.NetworkCredential("yourusername", "yourpassword");
-            //myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@ctst.canada.ca", "5y3Q^z+B4a7T$F+nQ@9N+r6uE!E87s");
-            myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
-            myClient.EnableSsl = true;
-
-            mail.Priority = MailPriority.High;
-
-            string subject = "High MPN - Lab Sheets Sent --- " + tvItemModelProvince.TVText + " --- " + tvItemModelSubsector.TVText;
-
-            StringBuilder msg = new StringBuilder();
-            msg.AppendLine(@"<h2>New Lab Sheet Sent for " + tvItemModelProvince.TVText + "</h2>");
-            msg.AppendLine(@"<h4>Subsector: " + tvItemModelSubsector.TVText + "</h4>");
-            msg.AppendLine(@"<h4>Run Date: " + labSheetModelAndA1Sheet.LabSheetA1Sheet.RunYear + "-" +
-                (labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth.Length == 1 ? "0" + labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth : labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth) + "-" +
-                (labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay.Length == 1 ? "0" + labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay : labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay) + "</h4>");
-            msg.AppendLine(@"<a href=""" + href + @""">Open CSSPWebTools</a>");
-            msg.AppendLine(@"<br /><br />");
-            msg.AppendLine(@"<b>Note: </b> Sites below are over the MPN threshold of " + MPNLimitForEmail.ToString() + "<br />");
-
-            List<LabSheetA1Measurement> labSheetA1MeasurementList = (from c in labSheetModelAndA1Sheet.LabSheetA1Sheet.LabSheetA1MeasurementList
-                                                                     where c.MPN != null
-                                                                     && c.MPN >= MPNLimitForEmail
-                                                                     select c).ToList();
-
-            msg.AppendLine("<ol>");
-            foreach (LabSheetA1Measurement labSheetA1Measurment in labSheetA1MeasurementList)
-            {
-                msg.AppendLine("<li>");
-                msg.AppendLine("<b>Site: </b>" + labSheetA1Measurment.Site + (labSheetA1Measurment.SampleType == SampleTypeEnum.DailyDuplicate ? " Daily duplicate" : "") + " <b>MPN: </b>" + labSheetA1Measurment.MPN);
-                msg.AppendLine("</li>");
-
-            }
-            msg.AppendLine("</ol>");
-
-            msg.AppendLine(@"<br>");
-            msg.AppendLine(@"<p>Auto email from CSSPWebTools.</p>");
-
-            mail.Subject = subject;
-            mail.Body = msg.ToString();
-            myClient.Send(mail);
         }
         public void SendNewLabSheetEmail(string href, TVItemModel tvItemModelProvince, TVItemModel tvItemModelSubsector, LabSheetModelAndA1Sheet labSheetModelAndA1Sheet)
         {
-            ContactService contactService = new ContactService(LanguageEnum.en, _User);
+            SamplingPlanService samplingPlanService = new SamplingPlanService(LanguageEnum.en, _User);
 
-            List<ContactModel> contactModelList = contactService.GetContactModelWithSamplingPlanner_ProvincesTVItemIDDB(tvItemModelProvince.TVItemID);
+            SamplingPlanModel samplingPlanModel = samplingPlanService.GetSamplingPlanModelWithSamplingPlanIDDB(labSheetModelAndA1Sheet.LabSheetModel.SamplingPlanID);
 
-            MailMessage mail = new MailMessage();
+            SamplingPlanEmailService samplingPlanEmailService = new SamplingPlanEmailService(LanguageEnum.en, _User);
 
-            if (!testing)
+            List<SamplingPlanEmailModel> SamplingPlanEmailModelList = samplingPlanEmailService.GetSamplingPlanEmailModelListWithSamplingPlanIDDB(samplingPlanModel.SamplingPlanID);
+
+            if (!samplingPlanModel.IsActive)
             {
-                foreach (ContactModel contactModel in contactModelList)
+                return;
+            }
+
+            // sending email to Non Contractors
+
+            foreach (bool IsContractor in new List<bool> { false, true })
+            {
+                MailMessage mail = new MailMessage();
+
+                foreach (SamplingPlanEmailModel samplingPlanEmailModel in SamplingPlanEmailModelList.Where(c => c.IsContractor == IsContractor && c.LabSheetReceived == true))
                 {
-                    mail.To.Add(contactModel.LoginEmail.ToLower());
+                    mail.To.Add(samplingPlanEmailModel.Email.ToLower());
                 }
+
+                if (mail.To.Count == 0)
+                {
+                    continue;
+                }
+
+                mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                mail.IsBodyHtml = true;
+
+                SmtpClient myClient = new System.Net.Mail.SmtpClient();
+
+                myClient.Host = "smtp.email-courriel.canada.ca";
+                myClient.Port = 587;
+                myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                myClient.EnableSsl = true;
+
+                int FirstSpace = tvItemModelSubsector.TVText.IndexOf(" ");
+
+                string subject = tvItemModelSubsector.TVText.Substring(0, (FirstSpace > 0 ? FirstSpace : tvItemModelSubsector.TVText.Length))
+                    + " – Lab sheet received / Feuille de laboratoire reçu";
+
+                DateTime RunDate = new DateTime(int.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.RunYear), int.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth), int.Parse(labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay));
+
+                StringBuilder msg = new StringBuilder();
+
+                // ---------------------- English part --------------
+
+                msg.AppendLine(@"<p>(français suit)</p>");
+                msg.AppendLine(@"<h2>Lab Sheet received</h2>");
+                msg.AppendLine(@"<h4>Subsector: " + tvItemModelSubsector.TVText + "</h4>");
+                msg.AppendLine(@"<h4>Run Date: " + RunDate.ToString("MMMM dd, yyyy") + "</h4>");
+                if (!IsContractor)
+                {
+                    msg.AppendLine(@"<a href=""" + href + @""">Open CSSPWebTools</a>");
+                }
+
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<p>Auto email from CSSPWebTools</p>");
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<hr />");
+
+                // ---------------------- French part --------------
+
+                msg.AppendLine(@"<hr />");
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<h2>Feuille de laboratoire reçu</h2>");
+                msg.AppendLine(@"<h4>Sous-secteur: " + tvItemModelSubsector.TVText + "</h4>");
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+
+                msg.AppendLine(@"<h4>Date de la tournée: " + RunDate.ToString("dd MMMM, yyyy") + "</h4>");
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+
+                if (!IsContractor)
+                {
+                    msg.AppendLine(@"<a href=""" + href.Replace("en-CA", "fr-CA") + @""">Open CSSPWebTools</a>");
+                }
+
+                msg.AppendLine(@"<br>");
+                msg.AppendLine(@"<p>Courriel automatique provenant de CSSPWebTools</p>");
+
+                mail.Subject = subject;
+                mail.Body = msg.ToString();
+                myClient.Send(mail);
             }
-            else
-            {
-                mail.To.Add("charles.leblanc2@Canada.ca");
-            }
-
-            mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
-            mail.IsBodyHtml = true;
-
-            SmtpClient myClient = new System.Net.Mail.SmtpClient();
-
-            //myClient.Host = "smtp.ctst.email-courriel.canada.ca";
-            myClient.Host = "smtp.email-courriel.canada.ca";
-            myClient.Port = 587;
-            //myClient.Credentials = new System.Net.NetworkCredential("yourusername", "yourpassword");
-            //myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@ctst.canada.ca", "5y3Q^z+B4a7T$F+nQ@9N+r6uE!E87s");
-            myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
-            myClient.EnableSsl = true;
-
-            string subject = "Lab Sheets Sent --- " + tvItemModelProvince.TVText + " --- " + tvItemModelSubsector.TVText;
-
-            StringBuilder msg = new StringBuilder();
-
-            msg.AppendLine("<h2>New Lab Sheet Sent for " + tvItemModelProvince.TVText + "</h2>");
-            msg.AppendLine("<h4>Subsector: " + tvItemModelSubsector.TVText + "</h4>");
-            msg.AppendLine(@"<h4>Run Date: " + labSheetModelAndA1Sheet.LabSheetA1Sheet.RunYear + "-" +
-                (labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth.Length == 1 ? "0" + labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth : labSheetModelAndA1Sheet.LabSheetA1Sheet.RunMonth) + "-" +
-                (labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay.Length == 1 ? "0" + labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay : labSheetModelAndA1Sheet.LabSheetA1Sheet.RunDay) + "</h4>");
-            msg.AppendLine("<a href=\"" + href + "\">Open CSSPWebTools</a>");
-
-            msg.AppendLine(@"<br>");
-            msg.AppendLine(@"<p>Auto email from CSSPWebTools.</p>");
-
-            mail.Subject = subject;
-            mail.Body = msg.ToString();
-            myClient.Send(mail);
         }
         public void StartTimer()
         {
@@ -979,7 +1172,7 @@ namespace CSSPWebToolsTaskRunner
                 TVItemID2 = 635,
                 AppTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters,
                 AppTaskStatus = AppTaskStatusEnum.Created,
-                PercentCompleted  = 1,
+                PercentCompleted = 1,
                 Parameters = "|||TVItemID,635|||ReportTypeID,23|||Year,2017|||",
                 Language = LanguageEnum.en,
                 StartDateTime_UTC = DateTime.Now,
