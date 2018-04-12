@@ -1771,9 +1771,9 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         if (showDataTypeList.Contains(ExcelExportShowDataTypeEnum.Temperature))
                         {
-                            RowCount += 1;
-                            range = ws.Cells[RowCount, colNumber];
-                            range.Value = (mwqmSampleAnalysisModel.WaterTemp_C != null ? ((double)mwqmSampleAnalysisModel.WaterTemp_C).ToString("F0") : "--");
+                            AddedRows += 1;
+                            range = ws.Cells[RowCount + AddedRows, colNumber];
+                            range.Value = (mwqmSampleAnalysisModel.WaterTemp_C != null ? ((double)mwqmSampleAnalysisModel.WaterTemp_C).ToString("F1") : "--");
                             if (!(rowAndTypeList.Where(c => c.RowNumber == (RowCount + AddedRows)).Any()))
                             {
                                 rowAndTypeList.Add(new RowAndType() { RowNumber = RowCount + AddedRows, ExcelExportShowDataType = ExcelExportShowDataTypeEnum.Temperature });
@@ -1783,7 +1783,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             AddedRows += 1;
                             range = ws.Cells[RowCount + AddedRows, colNumber];
-                            range.Value = (mwqmSampleAnalysisModel.Salinity_PPT != null ? ((double)mwqmSampleAnalysisModel.Salinity_PPT).ToString("F0") : "--");
+                            range.Value = (mwqmSampleAnalysisModel.Salinity_PPT != null ? ((double)mwqmSampleAnalysisModel.Salinity_PPT).ToString("F1") : "--");
 
                             if (mwqmSampleAnalysisModel.Salinity_PPT != null)
                             {
@@ -1807,7 +1807,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             AddedRows += 1;
                             range = ws.Cells[RowCount + AddedRows, colNumber];
 
-                            range.Value = (P90 != null ? ((double)P90).ToString("F0") : "--");
+                            range.Value = (P90 != null ? ((double)P90).ToString("F1") : "--");
                             if (P90 > 43)
                             {
                                 range.Interior.Color = 65535;
@@ -1852,7 +1852,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             AddedRows += 1;
                             range = ws.Cells[RowCount + AddedRows, colNumber];
 
-                            range.Value = (PercOver43 != null ? ((double)PercOver43).ToString("F0") : "--");
+                            range.Value = (PercOver43 != null ? ((double)PercOver43).ToString("F1") : "--");
                             if (PercOver43 > 20)
                             {
                                 range.Interior.Color = 65535;
@@ -1871,7 +1871,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             AddedRows += 1;
                             range = ws.Cells[RowCount + AddedRows, colNumber];
 
-                            range.Value = (PercOver260 != null ? ((double)PercOver260).ToString("F0") : "--");
+                            range.Value = (PercOver260 != null ? ((double)PercOver260).ToString("F1") : "--");
                             if (PercOver260 > 10)
                             {
                                 range.Interior.Color = 65535;
@@ -1886,6 +1886,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             mwqmSampleAnalysisForSiteModelToUseList = mwqmSampleAnalysisForSiteModelToUseList.Skip(1).ToList();
                         }
+
                     }
 
                     RowCount += (1 + AddedRows);
