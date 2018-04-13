@@ -15,6 +15,7 @@ using CSSPWebToolsDBDLL.Services;
 using System.Net;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Enums;
+using CSSPWebToolsDBDLL;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -137,6 +138,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
 
@@ -155,10 +158,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            if (tvItemModelProvince.TVType != TVTypeEnum.Subsector)
+            if (tvItemModelProvince.TVType != TVTypeEnum.Province)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.TVTypeShouldBe_, TVTypeEnum.Subsector.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("TVTypeShouldBe_", TVTypeEnum.Subsector.ToString());
+                NotUsed = string.Format(TaskRunnerServiceRes.TVTypeShouldBe_, TVTypeEnum.Province.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("TVTypeShouldBe_", TVTypeEnum.Province.ToString());
                 return;
             }
 
@@ -193,7 +196,156 @@ namespace CSSPWebToolsTaskRunner.Services
                 NotUsed = string.Format(TaskRunnerServiceRes._NotEqualTo_, "tvItemModelProvince.TVItemID[" + tvItemModelProvince.TVItemID.ToString() + "]", "ProvinceTVItemID[" + ProvinceTVItemID.ToString() + "]");
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_NotEqualTo_", "tvItemModelProvince.TVItemID[" + tvItemModelProvince.TVItemID.ToString() + "]", "ProvinceTVItemID[" + ProvinceTVItemID.ToString() + "]");
                 return;
-            }         
+            }
+
+            List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProvince.TVItemID, TVTypeEnum.Subsector).OrderBy(c => c.TVText).ToList();
+            if (tvItemModelSubsectorList.Count == 0)
+            {
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            int CountSS = 0;
+            foreach (TVItemModel tvItemModel in tvItemModelSubsectorList)
+            {
+                CountSS += 1;
+                if (CountSS % 10 == 0)
+                {
+                    appTaskModel.PercentCompleted = (100 * CountSS) / tvItemModelSubsectorList.Count;
+                    appTaskService.PostUpdateAppTask(appTaskModel);
+                }
+
+                List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(tvItemModel.TVItemID);
+
+                foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList)
+                {
+                    string RainMissing = "";
+                    if (mwqmRunModel.RainDay0_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay0,";
+                    }
+                    if (mwqmRunModel.RainDay1_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay1,";
+                    }
+                    if (mwqmRunModel.RainDay2_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay2,";
+                    }
+                    if (mwqmRunModel.RainDay3_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay3,";
+                    }
+                    if (mwqmRunModel.RainDay4_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay4,";
+                    }
+                    if (mwqmRunModel.RainDay5_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay5,";
+                    }
+                    if (mwqmRunModel.RainDay6_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay6,";
+                    }
+                    if (mwqmRunModel.RainDay7_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay7,";
+                    }
+                    if (mwqmRunModel.RainDay8_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay8,";
+                    }
+                    if (mwqmRunModel.RainDay9_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay9,";
+                    }
+                    if (mwqmRunModel.RainDay10_mm == null)
+                    {
+                        RainMissing = RainMissing + " RainDay10,";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(RainMissing))
+                    {
+                        sb.AppendLine(tvItemModel.TVText.Replace(",", "_") + "," + mwqmRunModel.MWQMRunTVText.Replace(",", "_") + "," + RainMissing);
+                    }
+                }
+            }
+
+            string ServerPath = tvFileService.GetServerFilePath(ProvinceTVItemID);
+            if (!ServerPath.EndsWith(@"\"))
+            {
+                ServerPath = ServerPath + @"\";
+            }
+
+            string DateText = "_" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Hour.ToString() + "_" + DateTime.Now.Minute.ToString();
+
+            FileInfo fi = new FileInfo(ServerPath + $@"MissingPrecip{DateText}.csv");
+
+            DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+
+            if (!di.Exists)
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            StreamWriter sw = fi.CreateText();
+            sw.Write(sb.ToString());
+            sw.Flush();
+            sw.Close();
+
+            fi = new FileInfo(fi.FullName);
+
+            if (!fi.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fi.FullName);
+                return;
+            }
+
+            TVItemModel tvItemModelRet = tvItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
+            if (!string.IsNullOrWhiteSpace(tvItemModelRet.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVItem, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVItem, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                return;
+            }
+
+            TVFileModel tvFileModelNew = new TVFileModel();
+            tvFileModelNew.TVFileTVItemID = tvItemModelRet.TVItemID;
+            tvFileModelNew.TemplateTVType = 0;
+            tvFileModelNew.ReportTypeID = null;
+            tvFileModelNew.Parameters = Parameters;
+            tvFileModelNew.ServerFileName = fi.Name;
+            tvFileModelNew.FilePurpose = FilePurposeEnum.Information;
+            tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+            tvFileModelNew.Year = DateTime.Now.Year;
+            tvFileModelNew.FileDescription = "Missing Pecipitation";
+            tvFileModelNew.FileType = tvFileService.GetFileType(fi.Extension);
+            tvFileModelNew.FileSize_kb = (((int)fi.Length / 1024) == 0 ? 1 : (int)fi.Length / 1024);
+            tvFileModelNew.FileInfo = TaskRunnerServiceRes.FileName + "[" + fi.Name + "]\r\n" + TaskRunnerServiceRes.FileType + "[" + fi.Extension + "]\r\n";
+            tvFileModelNew.FileCreatedDate_UTC = fi.LastWriteTimeUtc;
+            tvFileModelNew.ServerFilePath = (fi.DirectoryName + @"\").Replace(@"C:\", @"E:\");
+            tvFileModelNew.LastUpdateDate_UTC = DateTime.UtcNow;
+            tvFileModelNew.LastUpdateContactTVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.LastUpdateContactTVItemID;
+
+            TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
+            if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                return;
+            }
 
             appTaskModel.PercentCompleted = 100;
             appTaskService.PostUpdateAppTask(appTaskModel);
@@ -204,6 +356,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
 
@@ -273,7 +426,54 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            int CurrentYear = DateTime.Now.Year;
+            List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(ProvinceTVItemID, TVTypeEnum.Subsector).OrderBy(c => c.TVText).ToList();
+            if (tvItemModelSubsectorList.Count == 0)
+            {
+                return;
+            }
+
+            int CountSS = 0;
+            foreach (TVItemModel tvItemModel in tvItemModelSubsectorList)
+            {
+                CountSS += 1;
+                if (CountSS % 2 == 0)
+                {
+                    appTaskModel.PercentCompleted = (100 * CountSS) / tvItemModelSubsectorList.Count;
+                    appTaskService.PostUpdateAppTask(appTaskModel);
+                }
+
+                //List<MWQMRun> mwqmRunList = new List<MWQMRun>();
+                //using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                //{
+                //    mwqmRunList = (from c in db.MWQMRuns
+                //                   where c.SubsectorTVItemID == tvItemModel.TVItemID
+                //                   && (c.RainDay0_mm == null
+                //                   || c.RainDay1_mm == null
+                //                   || c.RainDay2_mm == null
+                //                   || c.RainDay3_mm == null
+                //                   || c.RainDay4_mm == null
+                //                   || c.RainDay5_mm == null
+                //                   || c.RainDay6_mm == null
+                //                   || c.RainDay7_mm == null
+                //                   || c.RainDay8_mm == null
+                //                   || c.RainDay9_mm == null
+                //                   || c.RainDay10_mm == null)
+                //                   select c).ToList();
+                //}
+
+                //if (mwqmRunList.Count == 0)
+                //{
+                //    continue;
+                //}
+
+                MWQMSubsectorModel mwqmSubsectorModelRet = mwqmSubsectorService.ClimateSiteSetDataToUseByAverageOrPriorityDB(tvItemModel.TVItemID, Year, "Priority");
+                if (!string.IsNullOrWhiteSpace(mwqmSubsectorModelRet.Error))
+                {
+                    NotUsed = mwqmSubsectorModelRet.Error;
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(mwqmSubsectorModelRet.Error);
+                    //return;
+                }
+            }
 
             appTaskModel.PercentCompleted = 100;
             appTaskService.PostUpdateAppTask(appTaskModel);
@@ -284,6 +484,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
 
@@ -353,7 +554,64 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            int CurrentYear = DateTime.Now.Year;
+            List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(ProvinceTVItemID, TVTypeEnum.Subsector).OrderBy(c => c.TVText).ToList();
+            if (tvItemModelSubsectorList.Count == 0)
+            {
+                return;
+            }
+
+            int CountSS = 0;
+            foreach (TVItemModel tvItemModel in tvItemModelSubsectorList)
+            {
+                CountSS += 1;
+                if (CountSS % 2 == 0)
+                {
+                    appTaskModel.PercentCompleted = (100 * CountSS) / tvItemModelSubsectorList.Count;
+                    appTaskService.PostUpdateAppTask(appTaskModel);
+                }
+
+                List<MWQMRun> mwqmRunList = new List<MWQMRun>();
+                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                {
+                    mwqmRunList = (from c in db.MWQMRuns
+                                   where c.SubsectorTVItemID == tvItemModel.TVItemID
+                                   && (c.RainDay0_mm == null
+                                   || c.RainDay1_mm == null
+                                   || c.RainDay2_mm == null
+                                   || c.RainDay3_mm == null
+                                   || c.RainDay4_mm == null
+                                   || c.RainDay5_mm == null
+                                   || c.RainDay6_mm == null
+                                   || c.RainDay7_mm == null
+                                   || c.RainDay8_mm == null
+                                   || c.RainDay9_mm == null
+                                   || c.RainDay10_mm == null)
+                                   select c).ToList();
+                }
+
+                if (mwqmRunList.Count == 0)
+                {
+                    continue;
+                }
+
+                AppTaskModel appTaskModelRet = mwqmSubsectorService.ClimateSiteGetDataForRunsOfYearDB(tvItemModel.TVItemID, Year);
+                if (!string.IsNullOrWhiteSpace(appTaskModel.Error))
+                {
+                    return;
+                }
+
+                int AppTaskID = appTaskModel.AppTaskID;
+                bool Working = true;
+                while (Working)
+                {
+                    Thread.Sleep(500);
+                    AppTask appTaskExist = appTaskService.GetAppTaskWithTVItemIDTVItemID2AndCommandDB(tvItemModel.TVItemID, Year, AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear);
+                    if (appTaskExist == null)
+                    {
+                        Working = false;
+                    }
+                }
+            }
 
             appTaskModel.PercentCompleted = 100;
             appTaskService.PostUpdateAppTask(appTaskModel);
@@ -500,12 +758,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         Count += 1;
 
-                        appTaskModel.PercentCompleted = 100*Count/TotalCount;
+                        appTaskModel.PercentCompleted = 100 * Count / TotalCount;
                         appTaskService.PostUpdateAppTask(appTaskModel);
 
                         if (ClimateStartDate <= RunDate && ClimateEndDate >= RunDate)
                         {
-                          
+
                             UpdateDailyValuesForClimateSiteTVItemID(climateSiteModel, httpStrDaily, RunDateMinus10, RunDate, new List<DateTime>() { RunDate });
                             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                             {
