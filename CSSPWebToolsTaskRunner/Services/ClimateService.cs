@@ -432,46 +432,25 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
+            string status = appTaskModel.StatusText;
+
             int CountSS = 0;
             foreach (TVItemModel tvItemModel in tvItemModelSubsectorList)
             {
                 CountSS += 1;
                 if (CountSS % 2 == 0)
                 {
+                    appTaskModel.StatusText = $"{status} --- doing {tvItemModel.TVText} for year {Year}";
                     appTaskModel.PercentCompleted = (100 * CountSS) / tvItemModelSubsectorList.Count;
                     appTaskService.PostUpdateAppTask(appTaskModel);
                 }
 
-                //List<MWQMRun> mwqmRunList = new List<MWQMRun>();
-                //using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
-                //{
-                //    mwqmRunList = (from c in db.MWQMRuns
-                //                   where c.SubsectorTVItemID == tvItemModel.TVItemID
-                //                   && (c.RainDay0_mm == null
-                //                   || c.RainDay1_mm == null
-                //                   || c.RainDay2_mm == null
-                //                   || c.RainDay3_mm == null
-                //                   || c.RainDay4_mm == null
-                //                   || c.RainDay5_mm == null
-                //                   || c.RainDay6_mm == null
-                //                   || c.RainDay7_mm == null
-                //                   || c.RainDay8_mm == null
-                //                   || c.RainDay9_mm == null
-                //                   || c.RainDay10_mm == null)
-                //                   select c).ToList();
-                //}
-
-                //if (mwqmRunList.Count == 0)
-                //{
-                //    continue;
-                //}
-
                 MWQMSubsectorModel mwqmSubsectorModelRet = mwqmSubsectorService.ClimateSiteSetDataToUseByAverageOrPriorityDB(tvItemModel.TVItemID, Year, "Priority");
                 if (!string.IsNullOrWhiteSpace(mwqmSubsectorModelRet.Error))
                 {
-                    NotUsed = mwqmSubsectorModelRet.Error;
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(mwqmSubsectorModelRet.Error);
-                    //return;
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotRun_Error_, "ClimateSiteSetDataToUseByAverageOrPriorityDB", mwqmSubsectorModelRet.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotRun_Error_", "ClimateSiteSetDataToUseByAverageOrPriorityDB", mwqmSubsectorModelRet.Error);
+                    return;
                 }
             }
 
@@ -575,17 +554,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     mwqmRunList = (from c in db.MWQMRuns
                                    where c.SubsectorTVItemID == tvItemModel.TVItemID
-                                   && (c.RainDay0_mm == null
-                                   || c.RainDay1_mm == null
-                                   || c.RainDay2_mm == null
-                                   || c.RainDay3_mm == null
-                                   || c.RainDay4_mm == null
-                                   || c.RainDay5_mm == null
-                                   || c.RainDay6_mm == null
-                                   || c.RainDay7_mm == null
-                                   || c.RainDay8_mm == null
-                                   || c.RainDay9_mm == null
-                                   || c.RainDay10_mm == null)
                                    select c).ToList();
                 }
 
@@ -594,22 +562,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     continue;
                 }
 
-                AppTaskModel appTaskModelRet = mwqmSubsectorService.ClimateSiteGetDataForRunsOfYearDB(tvItemModel.TVItemID, Year);
-                if (!string.IsNullOrWhiteSpace(appTaskModel.Error))
+                GetClimateSitesDataForSubsectorRunsOfYear(tvItemModel.TVItemID, Year);
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 {
                     return;
-                }
-
-                int AppTaskID = appTaskModel.AppTaskID;
-                bool Working = true;
-                while (Working)
-                {
-                    Thread.Sleep(500);
-                    AppTask appTaskExist = appTaskService.GetAppTaskWithTVItemIDTVItemID2AndCommandDB(tvItemModel.TVItemID, Year, AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear);
-                    if (appTaskExist == null)
-                    {
-                        Working = false;
-                    }
                 }
             }
 
@@ -621,10 +577,6 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
 
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            ClimateDataValueService climateDataValueService = new ClimateDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            ClimateSiteService climateSiteService = new ClimateSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            UseOfSiteService useOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
@@ -695,19 +647,40 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_NotEqualTo_", "tvItemModelSubsector.TVItemID[" + tvItemModelSubsector.TVItemID.ToString() + "]", "SubsectorTVItemID[" + SubsectorTVItemID.ToString() + "]");
                 return;
             }
+     
+            GetClimateSitesDataForSubsectorRunsOfYear(SubsectorTVItemID, Year);
 
-            int CurrentYear = DateTime.Now.Year;
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+            {
+                return;
+            }
 
             // should get all the runs for the particular year and subsector
+
+            appTaskModel.PercentCompleted = 100;
+            appTaskService.PostUpdateAppTask(appTaskModel);
+        }
+        public void GetClimateSitesDataForSubsectorRunsOfYear(int SubsectorTVItemID, int Year)
+        {
+            string NotUsed = "";
+            int CurrentYear = DateTime.Now.Year;
+
+            ClimateDataValueService climateDataValueService = new ClimateDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            ClimateSiteService climateSiteService = new ClimateSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            UseOfSiteService useOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+
             List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(SubsectorTVItemID).Where(c => c.DateTime_Local.Year == Year).OrderBy(c => c.DateTime_Local).ToList();
 
-
             // need to get all climate sites for this particular subsector and run
-            List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Climate, tvItemModelSubsector.TVItemID);
+            List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Climate, SubsectorTVItemID);
             List<int> ClimateSiteTVItemID = new List<int>();
 
-            appTaskModel.PercentCompleted = 5;
-            appTaskService.PostUpdateAppTask(appTaskModel);
+            //appTaskModel.PercentCompleted = 5;
+            //appTaskService.PostUpdateAppTask(appTaskModel);
 
             int Count = 0;
             int TotalCount = mwqmRunModelList.Count() * useOfSiteModelList.Count();
@@ -758,8 +731,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         Count += 1;
 
-                        appTaskModel.PercentCompleted = 100 * Count / TotalCount;
-                        appTaskService.PostUpdateAppTask(appTaskModel);
+                        //appTaskModel.PercentCompleted = 100 * Count / TotalCount;
+                        //appTaskService.PostUpdateAppTask(appTaskModel);
 
                         if (ClimateStartDate <= RunDate && ClimateEndDate >= RunDate)
                         {
@@ -806,9 +779,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
             }
-
-            appTaskModel.PercentCompleted = 100;
-            appTaskService.PostUpdateAppTask(appTaskModel);
         }
         public void UpdateClimateSitesInformationForProvinceTVItemID()
         {
