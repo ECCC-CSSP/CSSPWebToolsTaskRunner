@@ -13,12 +13,14 @@ using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Services;
+using CSSPWebToolsDBDLL;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
     public class XlsxService
     {
         #region Variables
+        string BasePathForExportToArcGIS = @"\\int.ec.gc.ca\sys\InGEO\GW\EC1210WQAEH_QESEA\CSSP_NAT\Data\CSSP_Web_Tools_Imports\";
         #endregion Variables
 
         #region Properties
@@ -343,6 +345,263 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
         }
+        public void ExportToArcGIS()
+        {
+            string NotUsed = "";
+
+            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
+            string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string ProvinceTVItemIDText = "";
+            List<int> ProvinceTVItemIDList = new List<int>();
+            bool Active = false;
+            bool Inactive = false;
+            string DocType = "";
+
+            // example: |||ProvinceTVItemIDText,_7_10|||Active,True|||Inactive,True|||DocType,monitoringsites|||
+            foreach (string s in ParamValueList)
+            {
+                string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                if (ParamValue.Length != 2)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
+                    return;
+                }
+
+                if (ParamValue[0] == "ProvinceTVItemIDText")
+                {
+                    ProvinceTVItemIDText = ParamValue[1];
+                }
+                else if (ParamValue[0] == "Active")
+                {
+                    Active = bool.Parse(ParamValue[1]);
+                }
+                else if (ParamValue[0] == "Inactive")
+                {
+                    Inactive = bool.Parse(ParamValue[1]);
+                }
+                else if (ParamValue[0] == "DocType")
+                {
+                    DocType = ParamValue[1];
+                }
+                else
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, ParamValue[0]);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, ParamValue[0].ToString());
+                    return;
+                }
+            }
+
+            ProvinceTVItemIDList = ProvinceTVItemIDText.Split("_".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+            foreach (int ProvinceTVItemID in ProvinceTVItemIDList)
+            {
+                if (Active)
+                {
+                    switch (DocType)
+                    {
+                        case "monitoringsites":
+                            {
+                                CreateActiveMonitoringSitesDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "pollutionsourcesites":
+                            {
+                                CreateActivePollutionSourceSitesDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "municipalities":
+                            {
+                                CreateActiveMunicipalitiesDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "wwtp":
+                            {
+                                CreateActiveWWTPsDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "liftstations":
+                            {
+                                CreateActiveLiftStationsDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (Inactive)
+                {
+                    switch (DocType)
+                    {
+                        case "monitoringsites":
+                            {
+                                CreateInactiveMonitoringSitesDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "pollutionsourcesites":
+                            {
+                                CreateInactivePollutionSourceSitesDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "municipalities":
+                            {
+                                CreateInactiveMunicipalitiesDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "wwtp":
+                            {
+                                CreateInactiveWWTPsDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        case "liftstations":
+                            {
+                                CreateInactiveLiftStationsDocumentForArcGIS(ProvinceTVItemID);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void CreateActiveLiftStationsDocumentForArcGIS(int ProvinceTVItemID)
+        {
+            string NotUsed = "";
+            StringBuilder sb = new StringBuilder();
+
+
+            sb.AppendLine("Muni,LSName,Lat,Lng,PercFlow,OutLat,OutLng,AlarmSysType,CanOverFlow,Address,CSSPUrl,Comment");
+
+            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            {
+                TVItem tvItemProv = (from c in db.TVItems
+                                     where c.TVItemID == ProvinceTVItemID
+                                     select c).FirstOrDefault();
+
+                if (tvItemProv == null)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    return;
+                }
+
+                var tvItemMuniList = (from t in db.TVItems
+                                      from tl in db.TVItemLanguages
+                                      where t.TVItemID == tl.TVItemID
+                                      && tl.Language == (int)LanguageEnum.en
+                                      && t.TVPath.StartsWith(tvItemProv.TVPath + "p")
+                                      && t.TVType == (int)TVTypeEnum.Municipality
+                                      orderby tl.TVText
+                                      select new { t, tl }).ToList();
+
+                var LiftStationList = (from c in db.TVItems
+                                       from cl in db.TVItemLanguages
+                                       let inf = (from a in db.Infrastructures
+                                                  where a.InfrastructureTVItemID == c.TVItemID
+                                                  && a.InfrastructureType == (int)InfrastructureTypeEnum.LiftStation
+                                                  select a).FirstOrDefault()
+                                       let infLang = (from b in db.InfrastructureLanguages
+                                                      where b.InfrastructureID == inf.InfrastructureID
+                                                      && b.Language == (int)LanguageEnum.en
+                                                      select b).FirstOrDefault()
+                                       let latLng = (from mi in db.MapInfos
+                                                     from mip in db.MapInfoPoints
+                                                     where mi.TVItemID == c.TVItemID
+                                                     && mi.MapInfoID == mip.MapInfoID
+                                                     && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                                     && mi.TVType == (int)TVTypeEnum.LiftStation
+                                                     select mip).FirstOrDefault()
+                                       let latLngOut = (from mi in db.MapInfos
+                                                        from mip in db.MapInfoPoints
+                                                        where mi.TVItemID == c.TVItemID
+                                                        && mi.MapInfoID == mip.MapInfoID
+                                                        && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                                        && mi.TVType == (int)TVTypeEnum.Outfall
+                                                        select mip).FirstOrDefault()
+                                       let address = (from a in db.Addresses
+                                                      let muni = (from cl in db.TVItemLanguages where cl.TVItemID == a.MunicipalityTVItemID && cl.Language == (int)LanguageEnum.en select cl.TVText).FirstOrDefault<string>()
+                                                      let add = a.StreetNumber + " " + a.StreetName
+                                                      where a.AddressTVItemID == inf.CivicAddressTVItemID
+                                                      select new { add }).FirstOrDefault()
+                                       where c.TVItemID == cl.TVItemID
+                                       && c.TVPath.StartsWith(tvItemProv.TVPath + "p")
+                                       && c.TVType == (int)TVTypeEnum.Infrastructure
+                                       && cl.Language == (int)LanguageEnum.en
+                                       && inf.InfrastructureType == (int)InfrastructureTypeEnum.LiftStation
+                                       orderby cl.TVText
+                                       select new { c, cl, inf, infLang, latLng, latLngOut, address.add }).ToList();
+
+
+                foreach (var tvItemMuni in tvItemMuniList)
+                {
+                    foreach (var liftStation in LiftStationList.Where(c => c.c.ParentID == tvItemMuni.t.TVItemID))
+                    {
+                        string MN = tvItemMuni.tl.TVText.Replace(",", "_");
+                        string LN = liftStation.cl.TVText.Replace(",", "_");
+                        string Lat = liftStation.latLng.Lat.ToString("F5");
+                        string Lng = liftStation.latLng.Lng.ToString("F5");
+                        string PF = (liftStation.inf.PercFlowOfTotal != null ? ((double)liftStation.inf.PercFlowOfTotal).ToString("F2") : "");
+                        string LatOut = liftStation.latLngOut.Lat.ToString("F5");
+                        string LngOut = liftStation.latLngOut.Lng.ToString("F5");
+                        string AS = (liftStation.inf.AlarmSystemType != null ? (_BaseEnumService.GetEnumText_AlarmSystemTypeEnum((AlarmSystemTypeEnum)liftStation.inf.AlarmSystemType)) : "");
+                        string CO = (liftStation.inf.CanOverflow != null ? ((bool)liftStation.inf.CanOverflow).ToString() : "");
+                        string AD = (!string.IsNullOrWhiteSpace(liftStation.add) ? liftStation.add.Replace(",", "_") : "");
+                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                        string C = (!string.IsNullOrWhiteSpace(liftStation.infLang.Comment) ? liftStation.infLang.Comment.Replace(",", "_") : "");
+                        sb.AppendLine($"{MN},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", ""));
+                    }
+                }
+            }
+
+
+            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"ActiveLiftStations.csv");
+
+            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
+            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
+            sw.Write(sb.ToString());
+            sw.Close();
+
+        }
+        private void CreateActiveMonitoringSitesDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateActiveMunicipalitiesDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateActivePollutionSourceSitesDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateActiveWWTPsDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateInactiveLiftStationsDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateInactiveMonitoringSitesDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateInactiveMunicipalitiesDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateInactivePollutionSourceSitesDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+        private void CreateInactiveWWTPsDocumentForArcGIS(int provinceTVItemID)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ExportEmailDistributionLists()
         {
             string NotUsed = "";
