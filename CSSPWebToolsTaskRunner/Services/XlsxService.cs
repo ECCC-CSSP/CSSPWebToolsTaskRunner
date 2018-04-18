@@ -395,35 +395,40 @@ namespace CSSPWebToolsTaskRunner.Services
 
             ProvinceTVItemIDList = ProvinceTVItemIDText.Split("_".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
+            int count = 0;
             foreach (int ProvinceTVItemID in ProvinceTVItemIDList)
             {
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count + 0.5f)) / (float)ProvinceTVItemIDList.Count));
+
+                count += 1;
+
                 if (Active)
                 {
                     switch (DocType)
                     {
                         case "monitoringsites":
                             {
-                                CreateActiveMonitoringSitesDocumentForArcGIS(ProvinceTVItemID);
+                                CreateMonitoringSitesDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, true);
                             }
                             break;
                         case "pollutionsourcesites":
                             {
-                                CreateActivePollutionSourceSitesDocumentForArcGIS(ProvinceTVItemID);
+                                CreatePollutionSourceSitesDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, true);
                             }
                             break;
                         case "municipalities":
                             {
-                                CreateActiveMunicipalitiesDocumentForArcGIS(ProvinceTVItemID);
+                                CreateMunicipalitiesDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, true);
                             }
                             break;
                         case "wwtp":
                             {
-                                CreateActiveWWTPsDocumentForArcGIS(ProvinceTVItemID);
+                                CreateWWTPsDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, true);
                             }
                             break;
                         case "liftstations":
                             {
-                                CreateActiveLiftStationsDocumentForArcGIS(ProvinceTVItemID);
+                                CreateLiftStationsDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, true);
                             }
                             break;
                         default:
@@ -437,27 +442,27 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         case "monitoringsites":
                             {
-                                CreateInactiveMonitoringSitesDocumentForArcGIS(ProvinceTVItemID);
+                                CreateMonitoringSitesDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, false);
                             }
                             break;
                         case "pollutionsourcesites":
                             {
-                                CreateInactivePollutionSourceSitesDocumentForArcGIS(ProvinceTVItemID);
+                                CreatePollutionSourceSitesDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, false);
                             }
                             break;
                         case "municipalities":
                             {
-                                CreateInactiveMunicipalitiesDocumentForArcGIS(ProvinceTVItemID);
+                                CreateMunicipalitiesDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, false);
                             }
                             break;
                         case "wwtp":
                             {
-                                CreateInactiveWWTPsDocumentForArcGIS(ProvinceTVItemID);
+                                CreateWWTPsDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, false);
                             }
                             break;
                         case "liftstations":
                             {
-                                CreateInactiveLiftStationsDocumentForArcGIS(ProvinceTVItemID);
+                                CreateLiftStationsDocumentForArcGIS(ProvinceTVItemID, count, ProvinceTVItemIDList.Count, false);
                             }
                             break;
                         default:
@@ -467,19 +472,31 @@ namespace CSSPWebToolsTaskRunner.Services
             }
         }
 
-        private void CreateActiveLiftStationsDocumentForArcGIS(int ProvinceTVItemID)
+        private void CreateLiftStationsDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
             string NotUsed = "";
             StringBuilder sb = new StringBuilder();
 
-
-            sb.AppendLine("Muni,LSName,Lat,Lng,PercFlow,OutLat,OutLng,AlarmSysType,CanOverFlow,Address,CSSPUrl,Comment");
+            sb.AppendLine("Muni,LSName,Lat,Lng,PercFlow,OutLat,OutLng,AlarmSystemType,CanOverFlow,Address,CSSPUrl,Comment");
 
             using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
             {
-                TVItem tvItemProv = (from c in db.TVItems
-                                     where c.TVItemID == ProvinceTVItemID
-                                     select c).FirstOrDefault();
+                var tvItemProv = (from c in db.TVItems
+                                  from cl in db.TVItemLanguages
+                                  where c.TVItemID == cl.TVItemID
+                                  && c.TVItemID == ProvinceTVItemID
+                                  && cl.Language == (int)LanguageEnum.en
+                                  && c.TVType == (int)TVTypeEnum.Province
+                                  select new { c, cl }).FirstOrDefault();
 
                 if (tvItemProv == null)
                 {
@@ -488,12 +505,27 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
 
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemProv.cl.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
                 var tvItemMuniList = (from t in db.TVItems
                                       from tl in db.TVItemLanguages
                                       where t.TVItemID == tl.TVItemID
                                       && tl.Language == (int)LanguageEnum.en
-                                      && t.TVPath.StartsWith(tvItemProv.TVPath + "p")
+                                      && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                       && t.TVType == (int)TVTypeEnum.Municipality
+                                      && t.IsActive == Active
                                       orderby tl.TVText
                                       select new { t, tl }).ToList();
 
@@ -527,79 +559,670 @@ namespace CSSPWebToolsTaskRunner.Services
                                                       where a.AddressTVItemID == inf.CivicAddressTVItemID
                                                       select new { add }).FirstOrDefault()
                                        where c.TVItemID == cl.TVItemID
-                                       && c.TVPath.StartsWith(tvItemProv.TVPath + "p")
+                                       && c.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                        && c.TVType == (int)TVTypeEnum.Infrastructure
+                                       && c.IsActive == Active
                                        && cl.Language == (int)LanguageEnum.en
                                        && inf.InfrastructureType == (int)InfrastructureTypeEnum.LiftStation
                                        orderby cl.TVText
                                        select new { c, cl, inf, infLang, latLng, latLngOut, address.add }).ToList();
 
 
+                int TotalCount2 = tvItemMuniList.Count;
+                int Count2 = 0;
                 foreach (var tvItemMuni in tvItemMuniList)
                 {
+                    if (Count2 % 20 == 0)
+                    {
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
+
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+
+                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                    }
+
+                    Count2 += 1;
+
                     foreach (var liftStation in LiftStationList.Where(c => c.c.ParentID == tvItemMuni.t.TVItemID))
                     {
                         string MN = tvItemMuni.tl.TVText.Replace(",", "_");
                         string LN = liftStation.cl.TVText.Replace(",", "_");
-                        string Lat = liftStation.latLng.Lat.ToString("F5");
-                        string Lng = liftStation.latLng.Lng.ToString("F5");
-                        string PF = (liftStation.inf.PercFlowOfTotal != null ? ((double)liftStation.inf.PercFlowOfTotal).ToString("F2") : "");
-                        string LatOut = liftStation.latLngOut.Lat.ToString("F5");
-                        string LngOut = liftStation.latLngOut.Lng.ToString("F5");
-                        string AS = (liftStation.inf.AlarmSystemType != null ? (_BaseEnumService.GetEnumText_AlarmSystemTypeEnum((AlarmSystemTypeEnum)liftStation.inf.AlarmSystemType)) : "");
+                        string Lat = (liftStation.latLng != null ? liftStation.latLng.Lat.ToString("F5") : "");
+                        string Lng = (liftStation.latLng != null ? liftStation.latLng.Lng.ToString("F5") : "");
+                        string PF = (liftStation.inf != null && liftStation.inf.PercFlowOfTotal != null ? ((double)liftStation.inf.PercFlowOfTotal).ToString("F2") : "");
+                        string LatOut = (liftStation.latLngOut != null ? liftStation.latLngOut.Lat.ToString("F5") : "");
+                        string LngOut = (liftStation.latLngOut != null ? liftStation.latLngOut.Lng.ToString("F5") : "");
+                        string AS = (liftStation.inf.AlarmSystemType != null && liftStation.inf.AlarmSystemType > 0 ? (_BaseEnumService.GetEnumText_AlarmSystemTypeEnum((AlarmSystemTypeEnum)liftStation.inf.AlarmSystemType)) : "");
                         string CO = (liftStation.inf.CanOverflow != null ? ((bool)liftStation.inf.CanOverflow).ToString() : "");
-                        string AD = (!string.IsNullOrWhiteSpace(liftStation.add) ? liftStation.add.Replace(",", "_") : "");
+                        string AD = (!string.IsNullOrWhiteSpace(liftStation.add) ? liftStation.add.Replace(",", "_") + " --- " + MN : "");
                         string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
-                        string C = (!string.IsNullOrWhiteSpace(liftStation.infLang.Comment) ? liftStation.infLang.Comment.Replace(",", "_") : "");
-                        sb.AppendLine($"{MN},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", ""));
+                        string C = (liftStation.infLang != null && !string.IsNullOrWhiteSpace(liftStation.infLang.Comment) ? liftStation.infLang.Comment.Replace(",", "_") : "");
+                        sb.AppendLine($"{MN},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
                     }
                 }
             }
 
+            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
-            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"ActiveLiftStations.csv");
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            fi = new FileInfo(BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
             StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
             sw.Write(sb.ToString());
             sw.Close();
+        }
+        private void CreateMonitoringSitesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
+        {
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+            string NotUsed = "";
+            StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine("Subsector,SiteName,Lat,Lng,CurrentClass,Letter,Color,GMean,Median,P90,PercP90Over43,CSSPUrl");
+
+            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            {
+                var tvItemProv = (from c in db.TVItems
+                                  from cl in db.TVItemLanguages
+                                  where c.TVItemID == cl.TVItemID
+                                  && c.TVItemID == ProvinceTVItemID
+                                  && cl.Language == (int)LanguageEnum.en
+                                  && c.TVType == (int)TVTypeEnum.Province
+                                  select new { c, cl }).FirstOrDefault();
+
+                if (tvItemProv == null)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    return;
+                }
+
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemProv.cl.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemSSList = (from t in db.TVItems
+                                    from tl in db.TVItemLanguages
+                                    where t.TVItemID == tl.TVItemID
+                                    && tl.Language == (int)LanguageEnum.en
+                                    && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                    && t.TVType == (int)TVTypeEnum.Subsector
+                                    && t.IsActive == Active
+                                    orderby tl.TVText
+                                    select new { t, tl }).ToList();
+
+                var MonitoringSiteList = (from t in db.TVItems
+                                          from tl in db.TVItemLanguages
+                                          from mi in db.MapInfos
+                                          from mip in db.MapInfoPoints
+                                          from s in db.MWQMSites
+                                          where t.TVItemID == tl.TVItemID
+                                          && mi.TVItemID == t.TVItemID
+                                          && mip.MapInfoID == mi.MapInfoID
+                                          && s.MWQMSiteTVItemID == t.TVItemID
+                                          && tl.Language == (int)LanguageEnum.en
+                                          && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                          && t.TVType == (int)TVTypeEnum.MWQMSite
+                                          && t.IsActive == Active
+                                          && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                          && mi.TVType == (int)TVTypeEnum.MWQMSite
+                                          orderby tl.TVText
+                                          select new { t, tl, mip, s }).ToList();
+
+
+                int TotalCount2 = tvItemSSList.Count;
+                int Count2 = 0;
+                foreach (var tvItemSS in tvItemSSList)
+                {
+                    if (Count2 % 2 == 0)
+                    {
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
+
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+
+                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                    }
+
+                    Count2 += 1;
+
+                    if (tvItemSS.tl.TVText.Contains("Campobel"))
+                    {
+                        int selfj = 34;
+                    }
+
+                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                    {
+                        TVItemMoreInfoMWQMSiteModel tvItemMoreInfoMWQMSiteModel = _TVItemService.GetTVItemMoreInfoMWQMSiteTVItemIDDB(mwqmSite.t.TVItemID, 30);
+
+                        string SS = tvItemSS.tl.TVText.Replace(",", "_");
+                        string MS = mwqmSite.tl.TVText.Replace(",", "_");
+                        string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F5") : "");
+                        string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F5") : "");
+                        string CC = (mwqmSite.s.MWQMSiteLatestClassification != 0 ? _BaseEnumService.GetEnumText_MWQMSiteLatestClassificationEnum((MWQMSiteLatestClassificationEnum)mwqmSite.s.MWQMSiteLatestClassification) : "");
+                        string L = (tvItemMoreInfoMWQMSiteModel != null ? tvItemMoreInfoMWQMSiteModel.Letter : "");
+                        string COL = (tvItemMoreInfoMWQMSiteModel != null ? tvItemMoreInfoMWQMSiteModel.Coloring : "");
+                        string GM = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.GeoMean != null ? ((double)tvItemMoreInfoMWQMSiteModel.GeoMean).ToString("F1") : "");
+                        string MED = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.Median != null ? ((double)tvItemMoreInfoMWQMSiteModel.Median).ToString("F1") : "");
+                        string P90 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.P90 != null ? ((double)tvItemMoreInfoMWQMSiteModel.P90).ToString("F1") : "");
+                        string P90O43 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.PercOver43 != null ? ((double)tvItemMoreInfoMWQMSiteModel.PercOver43).ToString("F1") : "");
+                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + mwqmSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                        sb.AppendLine($"{SS},{MS},{Lat},{Lng},{CC},{L},{COL},{GM},{MED},{P90},{P90O43},{URL}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                    }
+                }
+            }
+
+            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            fi = new FileInfo(BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
+            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
+            sw.Write(sb.ToString());
+            sw.Close();
         }
-        private void CreateActiveMonitoringSitesDocumentForArcGIS(int provinceTVItemID)
+        private void CreateMunicipalitiesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
-            throw new NotImplementedException();
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+            string NotUsed = "";
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Municipality,Lat,Lng,CSSPUrl");
+
+            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            {
+                var tvItemProv = (from c in db.TVItems
+                                  from cl in db.TVItemLanguages
+                                  where c.TVItemID == cl.TVItemID
+                                  && c.TVItemID == ProvinceTVItemID
+                                  && cl.Language == (int)LanguageEnum.en
+                                  && c.TVType == (int)TVTypeEnum.Province
+                                  select new { c, cl }).FirstOrDefault();
+
+                if (tvItemProv == null)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    return;
+                }
+
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemProv.cl.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemMuniList = (from t in db.TVItems
+                                      from tl in db.TVItemLanguages
+                                      from mi in db.MapInfos
+                                      from mip in db.MapInfoPoints
+                                      where t.TVItemID == tl.TVItemID
+                                      && mi.TVItemID == t.TVItemID
+                                      && mip.MapInfoID == mi.MapInfoID
+                                      && tl.Language == (int)LanguageEnum.en
+                                      && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                      && t.TVType == (int)TVTypeEnum.Municipality
+                                      && t.IsActive == Active
+                                      && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                      && mi.TVType == (int)TVTypeEnum.Municipality
+                                      orderby tl.TVText
+                                      select new { t, tl, mip }).ToList();
+
+                int TotalCount2 = tvItemMuniList.Count;
+                int Count2 = 0;
+                foreach (var tvItemMuni in tvItemMuniList)
+                {
+                    if (Count2 % 20 == 0)
+                    {
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
+
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+
+                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                    }
+
+                    Count2 += 1;
+
+                    string MN = tvItemMuni.tl.TVText.Replace(",", "_");
+                    string Lat = (tvItemMuni.mip != null ? tvItemMuni.mip.Lat.ToString("F5") : "");
+                    string Lng = (tvItemMuni.mip != null ? tvItemMuni.mip.Lng.ToString("F5") : "");
+                    string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                    sb.AppendLine($"{MN},{Lat},{Lng},{URL}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                }
+            }
+
+            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            fi = new FileInfo(BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
+            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
+            sw.Write(sb.ToString());
+            sw.Close();
         }
-        private void CreateActiveMunicipalitiesDocumentForArcGIS(int provinceTVItemID)
+        private void CreatePollutionSourceSitesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
-            throw new NotImplementedException();
+            List<string> startWithList = new List<string>() { "101", "143", "910" };
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+            string NotUsed = "";
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Subsector,Site,PSTVText,Lat,Lng,Address,CSSPUrl,Issues");
+
+            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            {
+                var tvItemProv = (from c in db.TVItems
+                                  from cl in db.TVItemLanguages
+                                  where c.TVItemID == cl.TVItemID
+                                  && c.TVItemID == ProvinceTVItemID
+                                  && cl.Language == (int)LanguageEnum.en
+                                  && c.TVType == (int)TVTypeEnum.Province
+                                  select new { c, cl }).FirstOrDefault();
+
+                if (tvItemProv == null)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    return;
+                }
+
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemProv.cl.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemSSList = (from t in db.TVItems
+                                    from tl in db.TVItemLanguages
+                                    where t.TVItemID == tl.TVItemID
+                                    && tl.Language == (int)LanguageEnum.en
+                                    && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                    && t.TVType == (int)TVTypeEnum.Subsector
+                                    && t.IsActive == Active
+                                    orderby tl.TVText
+                                    select new { t, tl }).ToList();
+
+                var PollutionSourceSiteList = (from t in db.TVItems
+                                               from tl in db.TVItemLanguages
+                                               from mi in db.MapInfos
+                                               from mip in db.MapInfoPoints
+                                               from pss in db.PolSourceSites
+                                               let address = (from a in db.Addresses
+                                                              let muni = (from cl in db.TVItemLanguages where cl.TVItemID == a.MunicipalityTVItemID && cl.Language == (int)LanguageEnum.en select cl.TVText).FirstOrDefault<string>()
+                                                              let add = a.StreetNumber + " " + a.StreetName + " --- " + muni
+                                                              where a.AddressTVItemID == t.TVItemID
+                                                              select new { add }).FirstOrDefault()
+                                               let pso = (from pso in db.PolSourceObservations
+                                                          where pso.PolSourceSiteID == pss.PolSourceSiteID
+                                                          orderby pso.ObservationDate_Local descending
+                                                          select new { pso }).FirstOrDefault()
+                                               let psi = (from psi in db.PolSourceObservationIssues
+                                                          where psi.PolSourceObservationID == pso.pso.PolSourceObservationID
+                                                          orderby psi.Ordinal ascending
+                                                          select new { psi }).FirstOrDefault()
+                                               where t.TVItemID == tl.TVItemID
+                                               && mi.TVItemID == t.TVItemID
+                                               && mip.MapInfoID == mi.MapInfoID
+                                               && t.TVItemID == pss.PolSourceSiteTVItemID
+                                               && tl.Language == (int)LanguageEnum.en
+                                               && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                               && t.TVType == (int)TVTypeEnum.PolSourceSite
+                                               && t.IsActive == Active
+                                               && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                               && mi.TVType == (int)TVTypeEnum.PolSourceSite
+                                               orderby tl.TVText
+                                               select new { t, tl, mip, address.add, pss, pso, psi }).ToList();
+
+                int TotalCount2 = tvItemSSList.Count;
+                int Count2 = 0;
+                foreach (var tvItemSS in tvItemSSList)
+                {
+                    if (Count2 % 20 == 0)
+                    {
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
+
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+
+                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                    }
+
+                    Count2 += 1;
+
+                    foreach (var polSourceSite in PollutionSourceSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                    {
+                        string SS = tvItemSS.tl.TVText.Replace(",", "_");
+                        string PSS = (polSourceSite.pss != null && polSourceSite.pss.Site != null ? polSourceSite.pss.Site.ToString().Replace(",", "_") : "");
+                        string PSTVT = polSourceSite.tl.TVText.Replace(",", "_");
+                        string Lat = (polSourceSite.mip != null ? polSourceSite.mip.Lat.ToString("F5") : "");
+                        string Lng = (polSourceSite.mip != null ? polSourceSite.mip.Lng.ToString("F5") : "");
+                        string AD = (!string.IsNullOrWhiteSpace(polSourceSite.add) ? polSourceSite.add.Replace(",", "_") : "");
+                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + polSourceSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+
+                        string TVText = "";
+
+                        if (polSourceSite.psi != null && polSourceSite.psi.psi != null)
+                        {
+                            List<string> ObservationInfoList = (string.IsNullOrWhiteSpace(polSourceSite.psi.psi.ObservationInfo) ? new List<string>() : polSourceSite.psi.psi.ObservationInfo.Trim().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+
+                            for (int i = 0, countObs = ObservationInfoList.Count; i < countObs; i++)
+                            {
+                                string Temp = _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum)int.Parse(ObservationInfoList[i]));
+                                switch (ObservationInfoList[i].Substring(0, 3))
+                                {
+                                    case "101":
+                                        {
+                                            Temp = Temp.Replace("Source", "     Source");
+                                        }
+                                        break;
+                                    case "153":
+                                        {
+                                            Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
+                                        }
+                                        break;
+                                    case "250":
+                                        {
+                                            Temp = Temp.Replace("Pathway", "     Pathway");
+                                        }
+                                        break;
+                                    case "900":
+                                        {
+                                            Temp = Temp.Replace("Status", "     Status");
+                                        }
+                                        break;
+                                    case "910":
+                                        {
+                                            Temp = Temp.Replace("Risk", "     Risk");
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                TVText = TVText + Temp;
+                            }
+                        }
+
+                        string TVT = (polSourceSite.pso != null && polSourceSite.pso.pso.Observation_ToBeDeleted != null ? polSourceSite.pso.pso.Observation_ToBeDeleted : "");
+                        string ISS = (!string.IsNullOrWhiteSpace(TVT) ? TVT.Replace(",", "_") + " ----- " : "") + TVText;
+                        sb.AppendLine($"{SS},{PSS},{PSTVT},{Lat},{Lng},{AD},{URL},{ISS}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                    }
+                }
+            }
+
+            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            fi = new FileInfo(BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
+            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
+            sw.Write(sb.ToString());
+            sw.Close();
         }
-        private void CreateActivePollutionSourceSitesDocumentForArcGIS(int provinceTVItemID)
+        private void CreateWWTPsDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
-            throw new NotImplementedException();
-        }
-        private void CreateActiveWWTPsDocumentForArcGIS(int provinceTVItemID)
-        {
-            throw new NotImplementedException();
-        }
-        private void CreateInactiveLiftStationsDocumentForArcGIS(int provinceTVItemID)
-        {
-            throw new NotImplementedException();
-        }
-        private void CreateInactiveMonitoringSitesDocumentForArcGIS(int provinceTVItemID)
-        {
-            throw new NotImplementedException();
-        }
-        private void CreateInactiveMunicipalitiesDocumentForArcGIS(int provinceTVItemID)
-        {
-            throw new NotImplementedException();
-        }
-        private void CreateInactivePollutionSourceSitesDocumentForArcGIS(int provinceTVItemID)
-        {
-            throw new NotImplementedException();
-        }
-        private void CreateInactiveWWTPsDocumentForArcGIS(int provinceTVItemID)
-        {
-            throw new NotImplementedException();
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+            string NotUsed = "";
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Municipality,WWTPName,Lat,Lng,OutLat,OutLng,CanOverflow,AlarmSystemType,FacilityType,AerationType,DisinfectionType,CollectionSystemType,AverageFlowInM3PerD,PeakFlowInM3PerD,Address,CSSPUrl,Comment");
+
+            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            {
+                var tvItemProv = (from c in db.TVItems
+                                  from cl in db.TVItemLanguages
+                                  where c.TVItemID == cl.TVItemID
+                                  && c.TVItemID == ProvinceTVItemID
+                                  && cl.Language == (int)LanguageEnum.en
+                                  && c.TVType == (int)TVTypeEnum.Province
+                                  select new { c, cl }).FirstOrDefault();
+
+                if (tvItemProv == null)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                    return;
+                }
+
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemProv.cl.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemMuniList = (from t in db.TVItems
+                                      from tl in db.TVItemLanguages
+                                      where t.TVItemID == tl.TVItemID
+                                      && tl.Language == (int)LanguageEnum.en
+                                      && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                      && t.TVType == (int)TVTypeEnum.Municipality
+                                      && t.IsActive == Active
+                                      orderby tl.TVText
+                                      select new { t, tl }).ToList();
+
+                var WWTPList = (from c in db.TVItems
+                                from cl in db.TVItemLanguages
+                                let inf = (from a in db.Infrastructures
+                                           where a.InfrastructureTVItemID == c.TVItemID
+                                           && a.InfrastructureType == (int)InfrastructureTypeEnum.WWTP
+                                           select a).FirstOrDefault()
+                                let infLang = (from b in db.InfrastructureLanguages
+                                               where b.InfrastructureID == inf.InfrastructureID
+                                               && b.Language == (int)LanguageEnum.en
+                                               select b).FirstOrDefault()
+                                let latLng = (from mi in db.MapInfos
+                                              from mip in db.MapInfoPoints
+                                              where mi.TVItemID == c.TVItemID
+                                              && mi.MapInfoID == mip.MapInfoID
+                                              && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                              && mi.TVType == (int)TVTypeEnum.WasteWaterTreatmentPlant
+                                              select mip).FirstOrDefault()
+                                let latLngOut = (from mi in db.MapInfos
+                                                 from mip in db.MapInfoPoints
+                                                 where mi.TVItemID == c.TVItemID
+                                                 && mi.MapInfoID == mip.MapInfoID
+                                                 && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                                 && mi.TVType == (int)TVTypeEnum.Outfall
+                                                 select mip).FirstOrDefault()
+                                let address = (from a in db.Addresses
+                                               let muni = (from cl in db.TVItemLanguages where cl.TVItemID == a.MunicipalityTVItemID && cl.Language == (int)LanguageEnum.en select cl.TVText).FirstOrDefault<string>()
+                                               let add = a.StreetNumber + " " + a.StreetName
+                                               where a.AddressTVItemID == inf.CivicAddressTVItemID
+                                               select new { add }).FirstOrDefault()
+                                where c.TVItemID == cl.TVItemID
+                                && c.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                && c.TVType == (int)TVTypeEnum.Infrastructure
+                                && c.IsActive == Active
+                                && cl.Language == (int)LanguageEnum.en
+                                && inf.InfrastructureType == (int)InfrastructureTypeEnum.WWTP
+                                orderby cl.TVText
+                                select new { c, cl, inf, infLang, latLng, latLngOut, address.add }).ToList();
+
+
+                int TotalCount2 = tvItemMuniList.Count;
+                int Count2 = 0;
+                foreach (var tvItemMuni in tvItemMuniList)
+                {
+                    if (Count2 % 20 == 0)
+                    {
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
+
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+
+                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                    }
+
+                    Count2 += 1;
+
+                    foreach (var wwtp in WWTPList.Where(c => c.c.ParentID == tvItemMuni.t.TVItemID))
+                    {
+                        string MN = tvItemMuni.tl.TVText.Replace(",", "_");
+                        string WN = wwtp.cl.TVText.Replace(",", "_");
+                        string Lat = (wwtp.latLng != null ? wwtp.latLng.Lat.ToString("F5") : "");
+                        string Lng = (wwtp.latLng != null ? wwtp.latLng.Lng.ToString("F5") : "");
+                        string LatOut = (wwtp.latLngOut != null ? wwtp.latLngOut.Lat.ToString("F5") : "");
+                        string LngOut = (wwtp.latLngOut != null ? wwtp.latLngOut.Lng.ToString("F5") : "");
+                        string CO = (wwtp.inf.CanOverflow != null ? ((bool)wwtp.inf.CanOverflow).ToString() : "");
+                        string AS = (wwtp.inf.AlarmSystemType != null && wwtp.inf.AlarmSystemType > 0 ? (_BaseEnumService.GetEnumText_AlarmSystemTypeEnum((AlarmSystemTypeEnum)wwtp.inf.AlarmSystemType)) : "");
+                        string FT = (wwtp.inf.FacilityType != null && wwtp.inf.FacilityType > 0 ? (_BaseEnumService.GetEnumText_FacilityTypeEnum((FacilityTypeEnum)wwtp.inf.FacilityType)) : "");
+                        string AT = (wwtp.inf.AerationType != null && wwtp.inf.AerationType > 0 ? (_BaseEnumService.GetEnumText_AerationTypeEnum((AerationTypeEnum)wwtp.inf.AerationType)) : "");
+                        string DT = (wwtp.inf.DisinfectionType != null && wwtp.inf.DisinfectionType > 0 ? (_BaseEnumService.GetEnumText_DisinfectionTypeEnum((DisinfectionTypeEnum)wwtp.inf.DisinfectionType)) : "");
+                        string CST = (wwtp.inf.CollectionSystemType != null && wwtp.inf.CollectionSystemType > 0 ? (_BaseEnumService.GetEnumText_CollectionSystemTypeEnum((CollectionSystemTypeEnum)wwtp.inf.CollectionSystemType)) : "");
+                        string AF = (wwtp.inf.AverageFlow_m3_day != null ? ((double)wwtp.inf.AverageFlow_m3_day).ToString("F3") : "");
+                        string PF = (wwtp.inf.PeakFlow_m3_day != null ? ((double)wwtp.inf.PeakFlow_m3_day).ToString("F3") : "");
+                        string AD = (!string.IsNullOrWhiteSpace(wwtp.add) ? wwtp.add.Replace(",", "_") + " --- " + MN : "");
+                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                        string C = (wwtp.infLang != null && !string.IsNullOrWhiteSpace(wwtp.infLang.Comment) ? wwtp.infLang.Comment.Replace(",", "_") : "");
+                        sb.AppendLine($"{MN},{WN},{Lat},{Lng},{LatOut},{LngOut},{CO},{AS},{FT},{AT},{DT},{CST},{AF},{PF},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                    }
+                }
+            }
+
+            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ?  " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            fi = new FileInfo(BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+
+            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
+            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
+            sw.Write(sb.ToString());
+            sw.Close();
         }
 
         public void ExportEmailDistributionLists()
