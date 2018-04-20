@@ -1479,4 +1479,31 @@
   <data name="CouldNotDeleteSection_" xml:space="preserve">
     <value>Could not delete section {0}</value>
   </data>
+  <data name="CSVOfMWQMSamples" xml:space="preserve">
+    <value>Comma Separated Values file of MWQM Samples</value>
+  </data>
+  <data name="CSVOfMWQMSites" xml:space="preserve">
+    <value>Comma Separated Values file of MWQM Sites</value>
+  </data>
+  <data name="KMZOfMWQMSites" xml:space="preserve">
+    <value>KMZ file of MWQM Sites</value>
+  </data>
+  <data name="XlsxOfMWQMSamples" xml:space="preserve">
+    <value>Excel file of MWQM Samples</value>
+  </data>
+  <data name="XlsxOfMWQMSites" xml:space="preserve">
+    <value>Excel file of MWQM Sites</value>
+  </data>
+  <data name="GeneralStatAndInfo" xml:space="preserve">
+    <value>General stat and info</value>
+  </data>
+  <data name="Infrastructures" xml:space="preserve">
+    <value>Infrastructures</value>
+  </data>
+  <data name="Municipalities" xml:space="preserve">
+    <value>Municipalities</value>
+  </data>
+  <data name="MWQMSites" xml:space="preserve">
+    <value>MWQM Sites</value>
+  </data>
 </root>

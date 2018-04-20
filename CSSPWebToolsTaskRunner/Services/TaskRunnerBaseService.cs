@@ -89,6 +89,86 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (_BWObj.appTaskModel.AppTaskCommand)
             {
+                case AppTaskCommandEnum.OpenDataCSVOfMWQMSites:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        TxtService txtService = new TxtService(_TaskRunnerBaseService);
+                        txtService.CreateCSVOfMWQMSites();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.OpenDataKMZOfMWQMSites:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        KmzService kmzService = new KmzService(_TaskRunnerBaseService);
+                        kmzService.CreateKMZOfMWQMSites();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.OpenDataCSVOfMWQMSamples:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        TxtService txtService = new TxtService(_TaskRunnerBaseService);
+                        txtService.CreateCSVOfMWQMSamples();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.OpenDataXlsxOfMWQMSamples:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        XlsxService xlsxService = new XlsxService(_TaskRunnerBaseService);
+                        xlsxService.CreateXlsxOfMWQMSamples();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.OpenDataXlsxOfMWQMSites:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        XlsxService xlsxService = new XlsxService(_TaskRunnerBaseService);
+                        xlsxService.CreateXlsxOfMWQMSites();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
                 case AppTaskCommandEnum.CreateWebTideDataWLAtFirstNode:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);

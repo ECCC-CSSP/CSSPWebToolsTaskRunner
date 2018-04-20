@@ -43,6 +43,7 @@ namespace CSSPWebToolsTaskRunner.Services
         private PolSourceObservationService _PolSourceObservationService { get; set; }
         private PolSourceObservationIssueService _PolSourceObservationIssueService { get; set; }
         private MWQMSiteService _MWQMSiteService { get; set; }
+        private InfrastructureService _InfrastructureService { get; set; }
         private MWQMSampleService _MWQMSampleService { get; set; }
         private BaseEnumService _BaseEnumService { get; set; }
         public FileInfo fi { get; set; }
@@ -100,6 +101,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _MWQMSiteService = new MWQMSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMSampleService = new MWQMSampleService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
+            _InfrastructureService = new InfrastructureService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             RunSiteInfoList = new List<RunSiteInfo>();
         }

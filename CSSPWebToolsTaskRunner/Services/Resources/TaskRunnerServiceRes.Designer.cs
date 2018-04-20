@@ -1006,6 +1006,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comma Separated Values file of MWQM Samples.
+        /// </summary>
+        public static string CSVOfMWQMSamples {
+            get {
+                return ResourceManager.GetString("CSVOfMWQMSamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comma Separated Values file of MWQM Sites.
+        /// </summary>
+        public static string CSVOfMWQMSites {
+            get {
+                return ResourceManager.GetString("CSVOfMWQMSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current classification.
         /// </summary>
         public static string CurrentClassification {
@@ -1609,6 +1627,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General stat and info.
+        /// </summary>
+        public static string GeneralStatAndInfo {
+            get {
+                return ResourceManager.GetString("GeneralStatAndInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generate.
         /// </summary>
         public static string Generate {
@@ -1690,6 +1717,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Infrastructures.
+        /// </summary>
+        public static string Infrastructures {
+            get {
+                return ResourceManager.GetString("Infrastructures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input.
         /// </summary>
         public static string Input {
@@ -1749,6 +1785,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string JulianDayThereIsNoYear0 {
             get {
                 return ResourceManager.GetString("JulianDayThereIsNoYear0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to KMZ file of MWQM Sites.
+        /// </summary>
+        public static string KMZOfMWQMSites {
+            get {
+                return ResourceManager.GetString("KMZOfMWQMSites", resourceCulture);
             }
         }
         
@@ -2446,6 +2491,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Municipalities.
+        /// </summary>
+        public static string Municipalities {
+            get {
+                return ResourceManager.GetString("Municipalities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Municipality file auto generate.
         /// </summary>
         public static string MunicipalityFileAutoGenerate {
@@ -2487,6 +2541,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MWQMSite {
             get {
                 return ResourceManager.GetString("MWQMSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM Sites.
+        /// </summary>
+        public static string MWQMSites {
+            get {
+                return ResourceManager.GetString("MWQMSites", resourceCulture);
             }
         }
         
@@ -4107,6 +4170,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WTNodeNumb {
             get {
                 return ResourceManager.GetString("WTNodeNumb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel file of MWQM Samples.
+        /// </summary>
+        public static string XlsxOfMWQMSamples {
+            get {
+                return ResourceManager.GetString("XlsxOfMWQMSamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel file of MWQM Sites.
+        /// </summary>
+        public static string XlsxOfMWQMSites {
+            get {
+                return ResourceManager.GetString("XlsxOfMWQMSites", resourceCulture);
             }
         }
         

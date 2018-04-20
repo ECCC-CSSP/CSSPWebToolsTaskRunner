@@ -120,367 +120,205 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
         }
-        //public void GenerateRootKMZ()
-        //{
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.Root, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceRoot kmzServiceRoot = new KmzServiceRoot(_TaskRunnerBaseService); 
-        //    kmzServiceRoot.Generate(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.RootFileAutoGenerate, FilePurposeEnum.Generated);
-        //}
-        //public void GenerateCountryKMZ()
-        //{
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.Country, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-
-        //    KmzServiceCountry kmzServiceCountry = new KmzServiceCountry(_TaskRunnerBaseService);
-        //    kmzServiceCountry.Generate(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.CountryFileAutoGenerate, FilePurposeEnum.Generated);
-        //}
-        //public void GenerateProvinceKMZ()
-        //{
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.Province, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceProvince kmzServiceProvince = new KmzServiceProvince(_TaskRunnerBaseService);
-        //    kmzServiceProvince.Generate(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.ProvinceFileAutoGenerate, FilePurposeEnum.Generated);
-        //}
-        //public void GenerateAreaKMZ()
-        //{
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.Area, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceArea kmzServiceArea = new KmzServiceArea(_TaskRunnerBaseService);
-        //    kmzServiceArea.Generate(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.AreaFileAutoGenerate, FilePurposeEnum.Generated);
-        //}
-        //public void GenerateSectorKMZ()
-        //{
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.Sector, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceSector kmzServiceSector = new KmzServiceSector(_TaskRunnerBaseService);
-        //    kmzServiceSector.Generate(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.SectorFileAutoGenerate, FilePurposeEnum.Generated);
-        //}
-        //public void GenerateSubsectorKMZ()
-        //{
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.Subsector, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceSubsector kmzServiceSubsector = new KmzServiceSubsector(_TaskRunnerBaseService);
-        //    kmzServiceSubsector.Generate(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.SubsectorFileAutoGenerate, FilePurposeEnum.Generated);
-        //}
-        //public void GenerateMunicipalityKMZ()
-        //{
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.Municipality, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMunicipality kmzServiceMunicipality = new KmzServiceMunicipality(_TaskRunnerBaseService);
-        //    kmzServiceMunicipality.Generate(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MunicipalityFileAutoGenerate, FilePurposeEnum.Generated);
-        //}
-        //public void GenerateMikeScenarioBoundaryConditionsKMZ()
-        //{
-        //    string NotUsed = "";
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.MIKEScenarioBoundaryConditions, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMikeScenario kmzServiceMIKEScenario = new KmzServiceMikeScenario(_TaskRunnerBaseService);
-        //    kmzServiceMIKEScenario.GenerateMikeScenarioBoundaryConditions(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MikeScenarioBoundaryConditionFileAutoGenerate, FilePurposeEnum.Generated);
-
-        //    MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-        //}
-        //public void GenerateMikeScenarioConcentrationAnimationKMZ()
-        //{
-        //    string NotUsed = "";
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.MIKEScenarioConcentrationAnimation, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMikeScenario kmzServiceMIKEScenario = new KmzServiceMikeScenario(_TaskRunnerBaseService);
-        //    kmzServiceMIKEScenario.GenerateMikeScenarioConcentrationAnimation(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MikeScenarioConcentrationAnimation, FilePurposeEnum.Generated);
-
-        //    MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-
-        //}
-        //public void GenerateMikeScenarioConcentrationLimitsKMZ()
-        //{
-        //    string NotUsed = "";
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.MIKEScenarioConcentrationLimits, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMikeScenario kmzServiceMIKEScenario = new KmzServiceMikeScenario(_TaskRunnerBaseService);
-        //    kmzServiceMIKEScenario.GenerateMikeScenarioConcentrationLimits(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MikeScenarioConcentrationLimits, FilePurposeEnum.Generated);
-
-        //    MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-
-        //}
-        //public void GenerateMikeScenarioCurrentAnimationKMZ()
-        //{
-        //    string NotUsed = "";
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.MIKEScenarioCurrentAnimation, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMikeScenario kmzServiceMIKEScenario = new KmzServiceMikeScenario(_TaskRunnerBaseService);
-        //    kmzServiceMIKEScenario.GenerateMikeScenarioCurrentAnimation(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MikeScenarioCurrentAnimation, FilePurposeEnum.Generated);
-
-        //    MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-
-        //}
-        //public void GenerateMikeScenarioCurrentMaximumKMZ()
-        //{
-        //    string NotUsed = "";
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.MIKEScenarioCurrentMaximum, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMikeScenario kmzServiceMIKEScenario = new KmzServiceMikeScenario(_TaskRunnerBaseService);
-        //    kmzServiceMIKEScenario.GenerateMikeScenarioCurrentMaximum(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MikeScenarioCurrentMaximum, FilePurposeEnum.Generated);
-
-        //    MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-
-        //}
-        //public void GenerateMikeScenarioMeshKMZ()
-        //{
-        //    string NotUsed = "";
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.MIKEScenarioMesh, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMikeScenario kmzServiceMIKEScenario = new KmzServiceMikeScenario(_TaskRunnerBaseService);
-        //    kmzServiceMIKEScenario.GenerateMikeScenarioMesh(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MikeScenarioMesh, FilePurposeEnum.Generated);
-
-        //    MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-
-        //}
-        //public void GenerateMikeScenarioStudyAreaKMZ()
-        //{
-        //    string NotUsed = "";
-        //    _TaskRunnerBaseService.generateDocParams = _TaskRunnerBaseService.CheckGenerateModelOK(FileGeneratorEnum.MIKEScenarioStudyArea, FileGeneratorTypeEnum.KMZ);
-
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    FileInfo fi = _TaskRunnerBaseService.GetFileInfo(_TaskRunnerBaseService.generateDocParams);
-
-        //    TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        return;
-
-        //    KmzServiceMikeScenario kmzServiceMIKEScenario = new KmzServiceMikeScenario(_TaskRunnerBaseService);
-        //    kmzServiceMIKEScenario.GenerateMikeScenarioStudyArea(fi);
-
-        //    _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MikeScenarioStudyArea, FilePurposeEnum.Generated);
-
-        //    MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-
-        //}
+        public void CreateKMZOfMWQMSites()
+        {
+            string NotUsed = "";
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+            int TVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID;
+
+            if (TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.Parameter_NotFound, "TVItemID");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Parameter_NotFound", "TVItemID");
+                return;
+            }
+
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotDeleteFile_Error_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                return;
+            }
+
+            for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+            {
+                if (ProvList[i] == tvItemModel.TVText)
+                {
+                    ProvInit = ProvInitList[i];
+                    break;
+                }
+            }
+
+            string ServerFilePath = _TVFileService.GetServerFilePath(TVItemID);
+
+            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"MWQMSites_{ProvInit}.kml");
+
+            TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+
+            // loop through all the MWQMSites etc...
+
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+            sb.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+            sb.AppendLine(@"<Document>");
+            sb.AppendLine(@"	<name>" + fi.Name + "</name>");
+            sb.AppendLine(@"	<Style id=""s_ylw-pushpin_hl"">");
+            sb.AppendLine(@"		<IconStyle>");
+            sb.AppendLine(@"			<scale>1.3</scale>");
+            sb.AppendLine(@"			<Icon>");
+            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sb.AppendLine(@"			</Icon>");
+            sb.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sb.AppendLine(@"		</IconStyle>");
+            sb.AppendLine(@"	</Style>");
+            sb.AppendLine(@"	<StyleMap id=""m_ylw-pushpin"">");
+            sb.AppendLine(@"		<Pair>");
+            sb.AppendLine(@"			<key>normal</key>");
+            sb.AppendLine(@"			<styleUrl>#s_ylw-pushpin</styleUrl>");
+            sb.AppendLine(@"		</Pair>");
+            sb.AppendLine(@"		<Pair>");
+            sb.AppendLine(@"			<key>highlight</key>");
+            sb.AppendLine(@"			<styleUrl>#s_ylw-pushpin_hl</styleUrl>");
+            sb.AppendLine(@"		</Pair>");
+            sb.AppendLine(@"	</StyleMap>");
+            sb.AppendLine(@"	<Style id=""s_ylw-pushpin"">");
+            sb.AppendLine(@"		<IconStyle>");
+            sb.AppendLine(@"			<scale>1.1</scale>");
+            sb.AppendLine(@"			<Icon>");
+            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sb.AppendLine(@"			</Icon>");
+            sb.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+            sb.AppendLine(@"		</IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            {
+                var tvItemProv = (from c in db.TVItems
+                                  from cl in db.TVItemLanguages
+                                  where c.TVItemID == cl.TVItemID
+                                  && c.TVItemID == TVItemID
+                                  && cl.Language == (int)LanguageEnum.en
+                                  && c.TVType == (int)TVTypeEnum.Province
+                                  select new { c, cl }).FirstOrDefault();
+
+                if (tvItemProv == null)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                    return;
+                }
+
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemProv.cl.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name);
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name);
+
+                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemSSList = (from t in db.TVItems
+                                    from tl in db.TVItemLanguages
+                                    where t.TVItemID == tl.TVItemID
+                                    && tl.Language == (int)LanguageEnum.en
+                                    && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                    && t.TVType == (int)TVTypeEnum.Subsector
+                                    orderby tl.TVText
+                                    select new { t, tl }).ToList();
+
+                var MonitoringSiteList = (from t in db.TVItems
+                                          from mi in db.MapInfos
+                                          from mip in db.MapInfoPoints
+                                          let hasSample = (from c in db.MWQMSamples
+                                                           where c.MWQMSiteTVItemID == t.TVItemID
+                                                           && c.UseForOpenData == true
+                                                           select c).Any()
+                                          where mi.TVItemID == t.TVItemID
+                                          && mip.MapInfoID == mi.MapInfoID
+                                          && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                          && t.TVType == (int)TVTypeEnum.MWQMSite
+                                          && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                          && mi.TVType == (int)TVTypeEnum.MWQMSite
+                                          && hasSample == true
+                                          select new { t, mip, hasSample }).ToList();
+
+
+                int TotalCount2 = tvItemSSList.Count;
+                int Count2 = 0;
+                foreach (var tvItemSS in tvItemSSList)
+                {
+                    if (Count2 % 20 == 0)
+                    {
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count2 / (float)TotalCount2)));
+
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+
+                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                    }
+
+                    Count2 += 1;
+
+                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                    {
+                        string MS = mwqmSite.t.TVItemID.ToString();
+                        string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F5") : "");
+                        string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F5") : "");
+                        sb.AppendLine(@"	<Placemark>");
+                        sb.AppendLine($@"		<name>{MS}</name>");
+                        sb.AppendLine(@"		<styleUrl>#m_ylw-pushpin</styleUrl>");
+                        sb.AppendLine(@"		<Point>");
+                        sb.AppendLine($@"			<coordinates>{Lng},{Lat},0</coordinates>");
+                        sb.AppendLine(@"		</Point>");
+                        sb.AppendLine(@"	</Placemark>");
+                    }
+                }
+            }
+
+            sb.AppendLine(@"</Document>");
+            sb.AppendLine(@"</kml>");
+
+
+            StreamWriter sw = fi.CreateText();
+            sw.Write(sb.ToString());
+            sw.Close();
+
+            _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.KMZOfMWQMSites, FilePurposeEnum.OpenData);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+        }
         public string ParseKml(FileInfo fi)
         {
 

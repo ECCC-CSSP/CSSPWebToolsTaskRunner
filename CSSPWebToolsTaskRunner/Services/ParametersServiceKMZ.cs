@@ -92,6 +92,13 @@ namespace CSSPWebToolsTaskRunner.Services
                 case TVTypeEnum.Province:
                 case TVTypeEnum.Sector:
                 case TVTypeEnum.Subsector:
+                    {
+                        if (!GenerateKMZSubsector())
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case TVTypeEnum.BoxModel:
                 case TVTypeEnum.VisualPlumesScenario:
                     if (!GenerateKMZNotImplemented())
