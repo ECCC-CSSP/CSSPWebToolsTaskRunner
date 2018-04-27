@@ -438,7 +438,7 @@ namespace CSSPWebToolsTaskRunner.Services
             foreach (TVItemModel tvItemModel in tvItemModelSubsectorList)
             {
                 CountSS += 1;
-                if (CountSS % 2 == 0)
+                if (CountSS % 1 == 0)
                 {
                     appTaskModel.StatusText = $"{status} --- doing {tvItemModel.TVText} for year {Year}";
                     appTaskModel.PercentCompleted = (100 * CountSS) / tvItemModelSubsectorList.Count;
@@ -540,12 +540,14 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             int CountSS = 0;
+            string Status = appTaskModel.StatusText;
             foreach (TVItemModel tvItemModel in tvItemModelSubsectorList)
             {
                 CountSS += 1;
-                if (CountSS % 2 == 0)
+                if (CountSS % 1 == 0)
                 {
                     appTaskModel.PercentCompleted = (100 * CountSS) / tvItemModelSubsectorList.Count;
+                    appTaskModel.StatusText = Status + " --- " + tvItemModel.TVText;
                     appTaskService.PostUpdateAppTask(appTaskModel);
                 }
 
@@ -736,7 +738,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         if (ClimateStartDate <= RunDate && ClimateEndDate >= RunDate)
                         {
-
                             UpdateDailyValuesForClimateSiteTVItemID(climateSiteModel, httpStrDaily, RunDateMinus10, RunDate, new List<DateTime>() { RunDate });
                             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                             {
@@ -2171,32 +2172,32 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
 
 
-                            float? MaxTemp = -999;
+                            float? MaxTemp = null;
                             if (lineValueArr[5].Length > 0)
                             {
                                 MaxTemp = float.Parse(lineValueArr[5]);
                             }
-                            float? MinTemp = -999;
+                            float? MinTemp = null;
                             if (lineValueArr[7].Length > 0)
                             {
                                 MinTemp = float.Parse(lineValueArr[7]);
                             }
-                            float? MeanTemp = -999;
+                            float? MeanTemp = null;
                             if (lineValueArr[9].Length > 0)
                             {
                                 MeanTemp = float.Parse(lineValueArr[9]);
                             }
-                            float? HeatDegDays = -999;
+                            float? HeatDegDays = null;
                             if (lineValueArr[11].Length > 0)
                             {
                                 HeatDegDays = float.Parse(lineValueArr[11]);
                             }
-                            float? CoolDegDays = -999;
+                            float? CoolDegDays = null;
                             if (lineValueArr[13].Length > 0)
                             {
                                 CoolDegDays = float.Parse(lineValueArr[13]);
                             }
-                            float? TotalRain = -999;
+                            float? TotalRain = null;
                             if (lineValueArr[15].Length > 0)
                             {
                                 if (lineValueArr[15].Trim() == "T")
@@ -2208,7 +2209,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TotalRain = float.Parse(lineValueArr[15]);
                                 }
                             }
-                            float? TotalSnow = -999;
+                            float? TotalSnow = null;
                             if (lineValueArr[17].Length > 0)
                             {
                                 if (lineValueArr[17].Trim() == "T")
@@ -2220,7 +2221,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TotalSnow = float.Parse(lineValueArr[17]);
                                 }
                             }
-                            float? TotalPrecip = -999;
+                            float? TotalPrecip = null;
                             if (lineValueArr[19].Length > 0)
                             {
                                 if (lineValueArr[19].Trim() == "T")
@@ -2232,7 +2233,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TotalPrecip = float.Parse(lineValueArr[19]);
                                 }
                             }
-                            float? SnowOnGround = -999;
+                            float? SnowOnGround = null;
                             if (lineValueArr[21].Length > 0)
                             {
                                 if (lineValueArr[21].Trim() == "T")
@@ -2244,12 +2245,12 @@ namespace CSSPWebToolsTaskRunner.Services
                                     SnowOnGround = float.Parse(lineValueArr[21]);
                                 }
                             }
-                            float? DirMaxGust = -999;
+                            float? DirMaxGust = null;
                             if (lineValueArr[23].Length > 0)
                             {
                                 DirMaxGust = float.Parse(lineValueArr[23]);
                             }
-                            float? SpdMaxGust = -999;
+                            float? SpdMaxGust = null;
                             if (lineValueArr[25].Length > 0)
                             {
                                 if (lineValueArr[25].Substring(0, 1) == "<")
@@ -2265,6 +2266,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             ClimateDataValueModel climateDataValueModelNew = new ClimateDataValueModel()
                             {
                                 ClimateSiteID = climateSiteModel.ClimateSiteID,
+                                HasBeenRead = true,
                                 CoolDegDays_C = CoolDegDays,
                                 DateTime_Local = LineDate,
                                 DirMaxGust_0North = DirMaxGust,
@@ -2274,7 +2276,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 MaxTemp_C = MaxTemp,
                                 MinTemp_C = MinTemp,
                                 Rainfall_mm = TotalRain,
-                                RainfallEntered_mm = -999,
+                                RainfallEntered_mm = null,
                                 Snow_cm = TotalSnow,
                                 SnowOnGround_cm = SnowOnGround,
                                 SpdMaxGust_kmh = SpdMaxGust,
@@ -2295,25 +2297,11 @@ namespace CSSPWebToolsTaskRunner.Services
                             else
                             {
 
-                                if (climateDataValueModelExist.CoolDegDays_C == null
-                                    || climateDataValueModelExist.DirMaxGust_0North == null
-                                    || climateDataValueModelExist.HeatDegDays_C == null
-                                    || climateDataValueModelExist.MaxTemp_C == null
-                                    || climateDataValueModelExist.MinTemp_C == null
-                                    || climateDataValueModelExist.Rainfall_mm == null
-                                    || climateDataValueModelExist.RainfallEntered_mm == null
-                                    || climateDataValueModelExist.Snow_cm == null
-                                    || climateDataValueModelExist.SnowOnGround_cm == null
-                                    || climateDataValueModelExist.SpdMaxGust_kmh == null
-                                    || climateDataValueModelExist.TotalPrecip_mm_cm == null)
+                                if (climateDataValueModelExist.HasBeenRead == false)
                                 {
                                     climateDataValueModelNew.ClimateDataValueID = climateDataValueModelExist.ClimateDataValueID;
-                                    if (climateDataValueModelExist.RainfallEntered_mm == null)
-                                    {
-                                        climateDataValueModelExist.RainfallEntered_mm = -999.0f;
-                                    }
                                     climateDataValueModelNew.RainfallEntered_mm = climateDataValueModelExist.RainfallEntered_mm;
-
+                                    climateDataValueModelNew.HasBeenRead = true;
                                     climateDataValueModelExist = climateDataValueService.PostUpdateClimateDataValueDB(climateDataValueModelNew);
                                     if (!string.IsNullOrWhiteSpace(climateDataValueModelExist.Error))
                                     {
@@ -2334,7 +2322,7 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             bool HasValue = false;
 
-            ClimateDataValueModel climateDataValueModel = new ClimateDataValueModel();
+            //ClimateDataValueModel climateDataValueModel = new ClimateDataValueModel();
             List<string> FullProvList = new List<string>() { "BRITISH COLUMBIA", "NEW BRUNSWICK", "NEWFOUNDLAND", "NOVA SCOTIA", "PRINCE EDWARD ISLAND", "QUEBEC" };
             List<string> ShortProvList = new List<string>() { "BC", "NB", "NL", "NS", "PE", "QC" };
 
