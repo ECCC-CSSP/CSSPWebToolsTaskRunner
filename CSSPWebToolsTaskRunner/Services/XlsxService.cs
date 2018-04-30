@@ -1373,11 +1373,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                             Temp = Temp.Replace("Source", "     Source");
                                         }
                                         break;
-                                    case "153":
-                                        {
-                                            Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
-                                        }
-                                        break;
+                                    //case "153":
+                                    //    {
+                                    //        Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
+                                    //    }
+                                    //    break;
                                     case "250":
                                         {
                                             Temp = Temp.Replace("Pathway", "     Pathway");
@@ -1391,6 +1391,44 @@ namespace CSSPWebToolsTaskRunner.Services
                                     case "910":
                                         {
                                             Temp = Temp.Replace("Risk", "     Risk");
+                                        }
+                                        break;
+                                    case "110":
+                                    case "120":
+                                    case "122":
+                                    case "151":
+                                    case "152":
+                                    case "153":
+                                    case "155":
+                                    case "156":
+                                    case "157":
+                                    case "163":
+                                    case "166":
+                                    case "167":
+                                    case "170":
+                                    case "171":
+                                    case "172":
+                                    case "173":
+                                    case "176":
+                                    case "178":
+                                    case "181":
+                                    case "182":
+                                    case "183":
+                                    case "185":
+                                    case "186":
+                                    case "187":
+                                    case "190":
+                                    case "191":
+                                    case "192":
+                                    case "193":
+                                    case "194":
+                                    case "196":
+                                    case "198":
+                                    case "199":
+                                    case "220":
+                                    case "930":
+                                        {
+                                            Temp = @"<span class=""hidden"">" + Temp + "</span>";
                                         }
                                         break;
                                     default:
