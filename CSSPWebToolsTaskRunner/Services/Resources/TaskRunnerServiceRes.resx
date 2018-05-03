@@ -1506,4 +1506,7 @@
   <data name="MWQMSites" xml:space="preserve">
     <value>MWQM Sites</value>
   </data>
+  <data name="GenerateProvincePollutionSourceSitesForInputTool" xml:space="preserve">
+    <value>Generate Province Pollution Source Sites For Input Tool</value>
+  </data>
 </root>

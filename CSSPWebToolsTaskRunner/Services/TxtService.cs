@@ -33,6 +33,10 @@ namespace CSSPWebToolsTaskRunner.Services
         public AppTaskService _AppTaskService { get; private set; }
         public TVFileService _TVFileService { get; private set; }
         public TVItemService _TVItemService { get; private set; }
+        public PolSourceSiteService _PolSourceSiteService { get; private set; }
+        public AddressService _AddressService { get; private set; }
+        public PolSourceObservationService _PolSourceObservationService { get; private set; }
+        public PolSourceObservationIssueService _PolSourceObservationIssueService { get; private set; }
         #endregion Properties
 
         #region Constructors
@@ -46,6 +50,10 @@ namespace CSSPWebToolsTaskRunner.Services
             _AppTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _TVFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _TVItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _PolSourceSiteService = new PolSourceSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _AddressService = new AddressService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _PolSourceObservationService = new PolSourceObservationService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _PolSourceObservationIssueService = new PolSourceObservationIssueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
         }
         #endregion Constructors
 

@@ -1654,6 +1654,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate Province Pollution Source Sites For Input Tool.
+        /// </summary>
+        public static string GenerateProvincePollutionSourceSitesForInputTool {
+            get {
+                return ResourceManager.GetString("GenerateProvincePollutionSourceSitesForInputTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to G Mean.
         /// </summary>
         public static string GMean {
