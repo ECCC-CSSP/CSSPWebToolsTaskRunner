@@ -1257,7 +1257,7 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Subsector,Site,PSTVText,Lat,Lng,Address,CSSPUrl,Issues");
+            sb.AppendLine("Subsector,Site,PSTVText,Lat,Lng,OBS,Address,CSSPUrl,Issues");
 
             using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
             {
@@ -1317,7 +1317,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                                let psi = (from psi in db.PolSourceObservationIssues
                                                           where psi.PolSourceObservationID == pso.pso.PolSourceObservationID
                                                           orderby psi.Ordinal ascending
-                                                          select new { psi }).FirstOrDefault()
+                                                          select new { psi }).ToList()
                                                where t.TVItemID == tl.TVItemID
                                                && mi.TVItemID == t.TVItemID
                                                && mip.MapInfoID == mi.MapInfoID
@@ -1351,6 +1351,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         string SS = tvItemSS.tl.TVText.Replace(",", "_");
                         string PSS = (polSourceSite.pss != null && polSourceSite.pss.Site != null ? polSourceSite.pss.Site.ToString().Replace(",", "_") : "");
+                        string OBS = (polSourceSite.pso != null && polSourceSite.pso.pso.ObservationDate_Local != null ? polSourceSite.pso.pso.ObservationDate_Local.ToString("yyyy-MM-dd") : "");
                         string PSTVT = polSourceSite.tl.TVText.Replace(",", "_");
                         string Lat = (polSourceSite.mip != null ? polSourceSite.mip.Lat.ToString("F5") : "");
                         string Lng = (polSourceSite.mip != null ? polSourceSite.mip.Lng.ToString("F5") : "");
@@ -1359,88 +1360,98 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         string TVText = "";
 
-                        if (polSourceSite.psi != null && polSourceSite.psi.psi != null)
+                        foreach (var psi in polSourceSite.psi)
                         {
-                            List<string> ObservationInfoList = (string.IsNullOrWhiteSpace(polSourceSite.psi.psi.ObservationInfo) ? new List<string>() : polSourceSite.psi.psi.ObservationInfo.Trim().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
-
-                            for (int i = 0, countObs = ObservationInfoList.Count; i < countObs; i++)
+                            if (psi != null && psi.psi != null)
                             {
-                                string Temp = _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum)int.Parse(ObservationInfoList[i]));
-                                switch (ObservationInfoList[i].Substring(0, 3))
+                                List<string> ObservationInfoList = (string.IsNullOrWhiteSpace(psi.psi.ObservationInfo) ? new List<string>() : psi.psi.ObservationInfo.Trim().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+
+                                for (int i = 0, countObs = ObservationInfoList.Count; i < countObs; i++)
                                 {
-                                    case "101":
-                                        {
-                                            Temp = Temp.Replace("Source", "     Source");
-                                        }
-                                        break;
-                                    //case "153":
-                                    //    {
-                                    //        Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
-                                    //    }
-                                    //    break;
-                                    case "250":
-                                        {
-                                            Temp = Temp.Replace("Pathway", "     Pathway");
-                                        }
-                                        break;
-                                    case "900":
-                                        {
-                                            Temp = Temp.Replace("Status", "     Status");
-                                        }
-                                        break;
-                                    case "910":
-                                        {
-                                            Temp = Temp.Replace("Risk", "     Risk");
-                                        }
-                                        break;
-                                    case "110":
-                                    case "120":
-                                    case "122":
-                                    case "151":
-                                    case "152":
-                                    case "153":
-                                    case "155":
-                                    case "156":
-                                    case "157":
-                                    case "163":
-                                    case "166":
-                                    case "167":
-                                    case "170":
-                                    case "171":
-                                    case "172":
-                                    case "173":
-                                    case "176":
-                                    case "178":
-                                    case "181":
-                                    case "182":
-                                    case "183":
-                                    case "185":
-                                    case "186":
-                                    case "187":
-                                    case "190":
-                                    case "191":
-                                    case "192":
-                                    case "193":
-                                    case "194":
-                                    case "196":
-                                    case "198":
-                                    case "199":
-                                    case "220":
-                                    case "930":
-                                        {
-                                            Temp = @"<span class=""hidden"">" + Temp + "</span>";
-                                        }
-                                        break;
-                                    default:
-                                        break;
+                                    string Temp = _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum)int.Parse(ObservationInfoList[i]));
+                                    switch (ObservationInfoList[i].Substring(0, 3))
+                                    {
+                                        case "101":
+                                            {
+                                                Temp = Temp.Replace("Source", "     Source");
+                                            }
+                                            break;
+                                        //case "153":
+                                        //    {
+                                        //        Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
+                                        //    }
+                                        //    break;
+                                        case "250":
+                                            {
+                                                Temp = Temp.Replace("Pathway", "     Pathway");
+                                            }
+                                            break;
+                                        case "900":
+                                            {
+                                                Temp = Temp.Replace("Status", "     Status");
+                                            }
+                                            break;
+                                        case "910":
+                                            {
+                                                Temp = Temp.Replace("Risk", "     Risk");
+                                            }
+                                            break;
+                                        case "110":
+                                        case "120":
+                                        case "122":
+                                        case "151":
+                                        case "152":
+                                        case "153":
+                                        case "155":
+                                        case "156":
+                                        case "157":
+                                        case "163":
+                                        case "166":
+                                        case "167":
+                                        case "170":
+                                        case "171":
+                                        case "172":
+                                        case "173":
+                                        case "176":
+                                        case "178":
+                                        case "181":
+                                        case "182":
+                                        case "183":
+                                        case "185":
+                                        case "186":
+                                        case "187":
+                                        case "190":
+                                        case "191":
+                                        case "192":
+                                        case "193":
+                                        case "194":
+                                        case "196":
+                                        case "198":
+                                        case "199":
+                                        case "220":
+                                        case "930":
+                                            {
+                                                Temp = @"<span class=""hidden"">" + Temp + "</span>";
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    TVText = TVText + Temp;
                                 }
-                                TVText = TVText + Temp;
                             }
                         }
 
                         string TVT = (polSourceSite.pso != null && polSourceSite.pso.pso.Observation_ToBeDeleted != null ? polSourceSite.pso.pso.Observation_ToBeDeleted : "");
-                        string ISS = (!string.IsNullOrWhiteSpace(TVT) ? TVT.Replace(",", "_") + " ----- " : "") + TVText;
-                        sb.AppendLine($"{SS},{PSS},{PSTVT},{Lat},{Lng},{AD},{URL},{ISS}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+
+                        string TempISS = (!string.IsNullOrWhiteSpace(TVT) ? TVT.Replace(",", "_") + " ----- " : "") + TVText;
+                        if (TempISS.Length > 250)
+                        {
+                            TempISS = TempISS.Substring(0, 250) + " ...";
+                        }
+
+                        string ISS = TempISS;
+                        sb.AppendLine($"{SS},{PSS},{PSTVT},{Lat},{Lng},{OBS},{AD},{URL},{ISS}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", "").Replace("\r", "   ").Replace("\n", ""));
                     }
                 }
             }
@@ -1614,7 +1625,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ?  " InnerException: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
                     _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
                     return;
                 }
