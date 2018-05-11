@@ -2689,9 +2689,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return;
+                    continue;
+                    //NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    //_TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    //return;
                 }
 
                 try
