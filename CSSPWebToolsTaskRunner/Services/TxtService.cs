@@ -122,7 +122,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string ServerFilePath = _TVFileService.GetServerFilePath(TVItemID);
 
-            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"MWQMSites_{ProvInit}.csv");
+            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"Sites_{ProvInit}.csv");
 
             TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -132,7 +132,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("SiteID,Lat,Lng");
+            sb.AppendLine("Site_ID,Lat,Long");
 
             if (fi.Exists)
             {
@@ -224,16 +224,19 @@ namespace CSSPWebToolsTaskRunner.Services
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
                         string MS = mwqmSite.t.TVItemID.ToString();
-                        string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F5") : "");
-                        string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F5") : "");
-                        sb.AppendLine($"{MS},{Lat},{Lng}");
+                        string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
+                        string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
+                        sb.AppendLine($"{MS},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
                     }
                 }
             }
 
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
+            UnicodeEncoding encoding = new UnicodeEncoding();
+
+            FileStream fs = fi.Create();
+            byte[] bytes = encoding.GetBytes(sb.ToString());
+            fs.Write(bytes, 0, bytes.Length);
+            fs.Close();
 
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.CSVOfMWQMSites, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -279,7 +282,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string ServerFilePath = _TVFileService.GetServerFilePath(TVItemID);
 
-            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"MWQMSamples_{ProvInit}.csv");
+            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"Samples_Echantillons_{ProvInit}.csv");
 
             TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -289,7 +292,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("SiteID,Date,FC,Temp,Sal,pH,Depth");
+            sb.AppendLine("Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_0/00,pH"); //,Depth/Profondeur");
 
             if (fi.Exists)
             {
@@ -391,21 +394,24 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 string MS = mwqmSite.t.TVItemID.ToString();
                                 string D = mwqmSample.SampleDateTime_Local.ToString("yyyy-MM-dd");
-                                string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "1.9" : mwqmSample.FecCol_MPN_100ml.ToString());
-                                string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1") : "");
-                                string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1") : "");
-                                string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1") : "");
-                                string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1") : "");
-                                sb.AppendLine($"{MS},{D},{FC},{Temp},{Sal},{pH},{Depth}");
+                                string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",",".")));
+                                string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",",".") : "");
+                                string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",",".") : "");
+                                string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",",".") : "");
+                                string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",",".") : "");
+                                sb.AppendLine($"{MS},{D},{FC},{Temp},{Sal},{pH}"); //,{Depth}");
                             }
                         }
                     }
                 }
             }
 
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
+            UnicodeEncoding encoding = new UnicodeEncoding();
+
+            FileStream fs = fi.Create();
+            byte[] bytes = encoding.GetBytes(sb.ToString());
+            fs.Write(bytes, 0, bytes.Length);
+            fs.Close();
 
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MWQMSamplingPlanAutoGenerate, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)

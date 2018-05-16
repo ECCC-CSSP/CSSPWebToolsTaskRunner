@@ -137,28 +137,12 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case AppTaskCommandEnum.OpenDataXlsxOfMWQMSamples:
+                case AppTaskCommandEnum.OpenDataXlsxOfMWQMSitesAndSamples:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
                         AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
                         XlsxService xlsxService = new XlsxService(_TaskRunnerBaseService);
-                        xlsxService.CreateXlsxOfMWQMSamples();
-                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
-                        {
-                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
-                        }
-                        else
-                        {
-                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
-                        }
-                    }
-                    break;
-                case AppTaskCommandEnum.OpenDataXlsxOfMWQMSites:
-                    {
-                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-                        XlsxService xlsxService = new XlsxService(_TaskRunnerBaseService);
-                        xlsxService.CreateXlsxOfMWQMSites();
+                        xlsxService.CreateXlsxOfMWQMSitesAndSamples();
                         if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                         {
                             appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);

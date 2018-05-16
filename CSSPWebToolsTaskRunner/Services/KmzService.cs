@@ -160,7 +160,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string ServerFilePath = _TVFileService.GetServerFilePath(TVItemID);
 
-            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"MWQMSites_{ProvInit}.kml");
+            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"Sites_{ProvInit}.kml");
 
             TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -294,8 +294,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
                         string MS = mwqmSite.t.TVItemID.ToString();
-                        string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F5") : "");
-                        string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F5") : "");
+                        string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6").Replace(",",".") : "");
+                        string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6").Replace(",",".") : "");
                         sb.AppendLine(@"	<Placemark>");
                         sb.AppendLine($@"		<name>{MS}</name>");
                         sb.AppendLine(@"		<styleUrl>#m_ylw-pushpin</styleUrl>");
@@ -311,9 +311,12 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"</kml>");
 
 
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
+            UnicodeEncoding encoding = new UnicodeEncoding();
+
+            FileStream fs = fi.Create();
+            byte[] bytes = encoding.GetBytes(sb.ToString());
+            fs.Write(bytes, 0, bytes.Length);
+            fs.Close();
 
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.KMZOfMWQMSites, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
