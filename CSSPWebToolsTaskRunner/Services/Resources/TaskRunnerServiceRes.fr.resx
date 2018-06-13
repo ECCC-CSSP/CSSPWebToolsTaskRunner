@@ -1497,4 +1497,7 @@
   <data name="GenerateProvincePollutionSourceSitesForInputTool" xml:space="preserve">
     <value>Generate Province Pollution Source Sites For Input Tool (fr)</value>
   </data>
+  <data name="_WithinDocument_ShouldNotBeEmpty" xml:space="preserve">
+    <value>[{0}] within document [{1}] should not be empty (fr)</value>
+  </data>
 </root>

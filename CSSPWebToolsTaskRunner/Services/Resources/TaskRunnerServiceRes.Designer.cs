@@ -196,6 +196,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [{0}] within document [{1}] should not be empty.
+        /// </summary>
+        public static string _WithinDocument_ShouldNotBeEmpty {
+            get {
+                return ResourceManager.GetString("_WithinDocument_ShouldNotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Abnormal run completion.
         /// </summary>
         public static string AbnormalRunCompletion {
