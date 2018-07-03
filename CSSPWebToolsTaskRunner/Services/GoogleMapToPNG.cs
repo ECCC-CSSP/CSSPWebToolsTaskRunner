@@ -378,7 +378,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     fi.Delete();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //richTextBoxStatus.Text = ex.Message; // + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "";
             }
@@ -1930,7 +1930,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ (CenterLat - deltaLat).ToString("F6") },{ (CenterLng + deltaLng).ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }";
                     client.DownloadFile(url, DirName + FileNameSE);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return new CoordMap();
                 }

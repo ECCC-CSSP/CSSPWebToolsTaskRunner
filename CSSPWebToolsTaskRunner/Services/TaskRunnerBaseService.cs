@@ -302,6 +302,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case AppTaskCommandEnum.GenerateClassificationForCSSPWebToolsVisualization:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        ClassificationGenerateService classificationGenerateService = new ClassificationGenerateService(_TaskRunnerBaseService);
+                        classificationGenerateService.GenerateClassificationForCSSPWebToolsVisualization();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
                 case AppTaskCommandEnum.GetAllPrecipitationForYear:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);

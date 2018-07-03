@@ -283,7 +283,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 wb.Close();
                 xlApp.Quit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // nothing
             }
@@ -1181,11 +1181,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
 
                     Count2 += 1;
-
-                    if (tvItemSS.tl.TVText.Contains("Campobel"))
-                    {
-                        int selfj = 34;
-                    }
 
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {

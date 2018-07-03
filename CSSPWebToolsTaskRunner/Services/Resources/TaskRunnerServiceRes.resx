@@ -1512,4 +1512,10 @@
   <data name="_WithinDocument_ShouldNotBeEmpty" xml:space="preserve">
     <value>[{0}] within document [{1}] should not be empty</value>
   </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Classification</value>
+  </data>
+  <data name="CouldNotDelete_Error_" xml:space="preserve">
+    <value>Could not delete {0}. Error [{1}].</value>
+  </data>
 </root>

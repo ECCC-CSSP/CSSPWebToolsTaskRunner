@@ -14,7 +14,7 @@ using CSSPEnumsDLL.Enums;
 using CSSPEnumsDLL.Services;
 using CSSPModelsDLL.Models;
 using System.Windows.Forms;
-using System.Web.Helpers;
+//using System.Web.Helpers;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -23,7 +23,7 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(StringBuilder sbTemp)
         {
             int Percent = 10;
-            string NotUsed = "";
+            //string NotUsed = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES.ToString()));

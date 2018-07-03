@@ -147,7 +147,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         byte[] responseBytes = webClient.DownloadData(url);
                         json_data = Encoding.UTF8.GetString(responseBytes);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         json_data = "Error";
                     }
@@ -1711,7 +1711,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         byte[] responseBytes = webClient.DownloadData(url);
                                         json_data = Encoding.UTF8.GetString(responseBytes);
                                     }
-                                    catch (Exception ex)
+                                    catch (Exception)
                                     {
                                         json_data = "Error";
                                     }
@@ -1851,7 +1851,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         byte[] responseBytes = webClient.DownloadData(url);
                                         json_data = Encoding.UTF8.GetString(responseBytes);
                                     }
-                                    catch (Exception ex)
+                                    catch (Exception)
                                     {
                                         json_data = "Error";
                                     }
@@ -2687,7 +2687,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     pfsKeywork.DeleteParameter(1);
                     PFSParameter pfsParameter = pfsKeywork.InsertNewParameterInt(SourceCount, 1);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     continue;
                     //NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));

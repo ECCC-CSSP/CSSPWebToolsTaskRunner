@@ -687,9 +687,9 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 {
                     pfsFile.Write(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    int seilfj = 345;
+                    //int seilfj = 345;
                     // nothing
                 }
 

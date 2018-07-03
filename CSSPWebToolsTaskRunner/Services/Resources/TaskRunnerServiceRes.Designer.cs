@@ -412,6 +412,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Classification.
+        /// </summary>
+        public static string Classification {
+            get {
+                return ResourceManager.GetString("Classification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClientFullPath.
         /// </summary>
         public static string ClientFullPath {
@@ -633,6 +642,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotCreateMapInfoObjectForDrawType_TVType_TVItemID_ {
             get {
                 return ResourceManager.GetString("CouldNotCreateMapInfoObjectForDrawType_TVType_TVItemID_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete {0}. Error [{1}]..
+        /// </summary>
+        public static string CouldNotDelete_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDelete_Error_", resourceCulture);
             }
         }
         

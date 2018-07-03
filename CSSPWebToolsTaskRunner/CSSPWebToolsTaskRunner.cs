@@ -32,7 +32,7 @@ namespace CSSPWebToolsTaskRunner
         private int TaskStatusOfRunnningLookupDelay = 5; // seconds
         private List<int> ShawnDonohueEmailTimeHourList = new List<int>() { 6, 12, 18 }; // hours to send email every day
         private int MPNLimitForEmail = 500;
-        private bool testing = false;
+        //private bool testing = false;
         private LanguageEnum LanguageRequest { get; set; }
         #endregion Variables
 
