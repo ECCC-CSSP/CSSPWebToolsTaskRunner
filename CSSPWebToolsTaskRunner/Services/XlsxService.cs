@@ -938,6 +938,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
         private void CreateLiftStationsDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
+            string BasePath = "";
             string ProvInit = "";
             List<string> ProvInitList = new List<string>()
             {
@@ -978,8 +979,32 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
-                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                switch (ProvInit)
+                {
+                    case "NB":
+                    case "NL":
+                    case "NS":
+                    case "PE":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_ATL");
+                        }
+                        break;
+                    case "BC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_NAT"); // will have to change to "CSSP_PYR"
+                        }
+                        break;
+                    case "QC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_QC");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
                 _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
 
@@ -1040,8 +1065,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
 
-                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
-                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
 
                         _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
                     }
@@ -1067,7 +1092,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            FileInfo fi = new FileInfo(BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             if (fi.Exists)
             {
@@ -1083,7 +1108,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            fi = new FileInfo(BasePathForExportToArcGIS + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            fi = new FileInfo(BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
             StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
@@ -1092,6 +1117,7 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private void CreateMonitoringSitesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
+            string BasePath = "";
             string ProvInit = "";
             List<string> ProvInitList = new List<string>()
             {
@@ -1104,7 +1130,7 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Subsector,SiteName,Lat,Lng,CurrentClass,Letter,Color,GMean,Median,P90,PercP90Over43,CSSPUrl");
+            sb.AppendLine("Subsector,SiteName,SiteDesc,Lat,Lng,CurrentClass,Letter,Color,GMean,Median,P90,PercOver43,CSSPUrl");
 
             using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
             {
@@ -1132,8 +1158,32 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
-                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                switch (ProvInit)
+                {
+                    case "NB":
+                    case "NL":
+                    case "NS":
+                    case "PE":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_ATL");
+                        }
+                        break;
+                    case "BC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_NAT"); // will have to change to "CSSP_PYR"
+                        }
+                        break;
+                    case "QC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_QC");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
                 _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
 
@@ -1174,8 +1224,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
 
-                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
-                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
 
                         _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
                     }
@@ -1188,6 +1238,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         string SS = tvItemSS.tl.TVText.Replace(",", "_");
                         string MS = mwqmSite.tl.TVText.Replace(",", "_");
+                        string DESC = mwqmSite.s.MWQMSiteDescription.Replace(",", "_").Replace("\r", "   ").Replace("\n", "  ");
                         string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F5") : "");
                         string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F5") : "");
                         string CC = (mwqmSite.s.MWQMSiteLatestClassification != 0 ? _BaseEnumService.GetEnumText_MWQMSiteLatestClassificationEnum((MWQMSiteLatestClassificationEnum)mwqmSite.s.MWQMSiteLatestClassification) : "");
@@ -1196,14 +1247,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         string GM = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.GeoMean != null ? ((double)tvItemMoreInfoMWQMSiteModel.GeoMean).ToString("F1") : "");
                         string MED = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.Median != null ? ((double)tvItemMoreInfoMWQMSiteModel.Median).ToString("F1") : "");
                         string P90 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.P90 != null ? ((double)tvItemMoreInfoMWQMSiteModel.P90).ToString("F1") : "");
-                        string P90O43 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.PercOver43 != null ? ((double)tvItemMoreInfoMWQMSiteModel.PercOver43).ToString("F1") : "");
+                        string PO43 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.PercOver43 != null ? ((double)tvItemMoreInfoMWQMSiteModel.PercOver43).ToString("F1") : "");
                         string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + mwqmSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
-                        sb.AppendLine($"{SS},{MS},{Lat},{Lng},{CC},{L},{COL},{GM},{MED},{P90},{P90O43},{URL}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                        sb.AppendLine($"{SS},{MS},{DESC},{Lat},{Lng},{CC},{L},{COL},{GM},{MED},{P90},{PO43},{URL}".Replace("\r", "   ").Replace("\n", " ").Replace("empty", "").Replace("Empty", ""));
                     }
                 }
             }
 
-            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            FileInfo fi = new FileInfo(BasePath + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             if (fi.Exists)
             {
@@ -1219,7 +1270,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            fi = new FileInfo(BasePathForExportToArcGIS + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            fi = new FileInfo(BasePath + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
             StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
@@ -1228,6 +1279,7 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private void CreateMunicipalitiesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
+            string BasePath = "";
             string ProvInit = "";
             List<string> ProvInitList = new List<string>()
             {
@@ -1268,8 +1320,32 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
-                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                switch (ProvInit)
+                {
+                    case "NB":
+                    case "NL":
+                    case "NS":
+                    case "PE":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_ATL");
+                        }
+                        break;
+                    case "BC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_NAT"); // will have to change to "CSSP_PYR"
+                        }
+                        break;
+                    case "QC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_QC");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
                 _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
 
@@ -1297,8 +1373,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
 
-                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
-                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
 
                         _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
                     }
@@ -1313,7 +1389,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            FileInfo fi = new FileInfo(BasePath + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             if (fi.Exists)
             {
@@ -1329,7 +1405,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            fi = new FileInfo(BasePathForExportToArcGIS + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            fi = new FileInfo(BasePath + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
             StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
@@ -1338,6 +1414,7 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private void CreatePollutionSourceSitesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
+            string BasePath = "";
             List<string> startWithList = new List<string>() { "101", "143", "910" };
             string ProvInit = "";
             List<string> ProvInitList = new List<string>()
@@ -1379,8 +1456,32 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
-                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                switch (ProvInit)
+                {
+                    case "NB":
+                    case "NL":
+                    case "NS":
+                    case "PE":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_ATL");
+                        }
+                        break;
+                    case "BC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_NAT"); // will have to change to "CSSP_PYR"
+                        }
+                        break;
+                    case "QC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_QC");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
                 _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
 
@@ -1433,8 +1534,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
 
-                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
-                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemSS.tl.TVText + "");
 
                         _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
                     }
@@ -1534,23 +1635,23 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TVText = TVText + Temp;
                                 }
                             }
+
+                            string TVT = (polSourceSite.pso != null && polSourceSite.pso.pso.Observation_ToBeDeleted != null ? polSourceSite.pso.pso.Observation_ToBeDeleted : "");
+
+                            string TempISS = (!string.IsNullOrWhiteSpace(TVT) ? TVT.Replace(",", "_") + " ----- " : "") + TVText;
+                            if (TempISS.Length > 250)
+                            {
+                                TempISS = TempISS.Substring(0, 250) + " ...";
+                            }
+
+                            string ISS = TempISS;
+                            sb.AppendLine($"{SS},{PSS},{PSTVT},{Lat},{Lng},{OBS},{AD},{URL},{ISS}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", "").Replace("\r", "   ").Replace("\n", ""));
                         }
-
-                        string TVT = (polSourceSite.pso != null && polSourceSite.pso.pso.Observation_ToBeDeleted != null ? polSourceSite.pso.pso.Observation_ToBeDeleted : "");
-
-                        string TempISS = (!string.IsNullOrWhiteSpace(TVT) ? TVT.Replace(",", "_") + " ----- " : "") + TVText;
-                        if (TempISS.Length > 250)
-                        {
-                            TempISS = TempISS.Substring(0, 250) + " ...";
-                        }
-
-                        string ISS = TempISS;
-                        sb.AppendLine($"{SS},{PSS},{PSTVT},{Lat},{Lng},{OBS},{AD},{URL},{ISS}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", "").Replace("\r", "   ").Replace("\n", ""));
                     }
                 }
             }
 
-            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            FileInfo fi = new FileInfo(BasePath + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             if (fi.Exists)
             {
@@ -1566,7 +1667,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            fi = new FileInfo(BasePathForExportToArcGIS + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            fi = new FileInfo(BasePath + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
             StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
@@ -1575,6 +1676,7 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private void CreateWWTPsDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
+            string BasePath = "";
             string ProvInit = "";
             List<string> ProvInitList = new List<string>()
             {
@@ -1615,8 +1717,32 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
-                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                switch (ProvInit)
+                {
+                    case "NB":
+                    case "NL":
+                    case "NS":
+                    case "PE":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_ATL");
+                        }
+                        break;
+                    case "BC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_NAT"); // will have to change to "CSSP_PYR"
+                        }
+                        break;
+                    case "QC":
+                        {
+                            BasePath = BasePathForExportToArcGIS.Replace("CSSP_NAT", "CSSP_QC");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
                 _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
 
@@ -1677,8 +1803,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((100.0f * ((float)count - 0.5f + ((float)Count2 / (float)TotalCount2) - 0.5f)) / (float)TotalCount));
 
-                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
-                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv --- doing " + tvItemMuni.tl.TVText + "");
 
                         _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
                     }
@@ -1709,7 +1835,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            FileInfo fi = new FileInfo(BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            FileInfo fi = new FileInfo(BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             if (fi.Exists)
             {
@@ -1725,7 +1851,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            fi = new FileInfo(BasePathForExportToArcGIS + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
+            fi = new FileInfo(BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
             Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
             StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);

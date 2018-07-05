@@ -242,6 +242,172 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
         }
+        public void CreateCSVNationalOfMWQMSites()
+        {
+            string NotUsed = "";
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+
+            int TVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID;
+
+            if (TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.Parameter_NotFound, "TVItemID");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Parameter_NotFound", "TVItemID");
+                return;
+            }
+
+            TVItemModel tvItemModelCountry = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelCountry.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotDeleteFile_Error_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                return;
+            }
+
+            List<TVItemModel> tvItemModelProvList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelCountry.TVItemID, TVTypeEnum.Province);
+
+            StringBuilder sb = new StringBuilder();
+
+            string ServerFilePath = _TVFileService.GetServerFilePath(TVItemID);
+
+            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"Sites_National.csv");
+
+            TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+
+            int CountProv = 0;
+            foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
+            {
+                CountProv += 1;
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemModelProv.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                sb.AppendLine("Prov,Site_ID,Lat,Long");
+
+                if (fi.Exists)
+                {
+                    try
+                    {
+                        fi.Delete();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                        return;
+                    }
+                }
+
+                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                {
+                    var tvItemProv = (from c in db.TVItems
+                                      from cl in db.TVItemLanguages
+                                      where c.TVItemID == cl.TVItemID
+                                      && c.TVItemID == tvItemModelProv.TVItemID
+                                      && cl.Language == (int)LanguageEnum.en
+                                      && c.TVType == (int)TVTypeEnum.Province
+                                      select new { c, cl }).FirstOrDefault();
+
+                    if (tvItemProv == null)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, tvItemModelProv.TVItemID.ToString());
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, tvItemModelProv.TVItemID.ToString());
+                        return;
+                    }
+
+                    for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                    {
+                        if (ProvList[i] == tvItemProv.cl.TVText)
+                        {
+                            ProvInit = ProvInitList[i];
+                            break;
+                        }
+                    }
+
+                    NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name);
+                    List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name);
+
+                    _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                    var tvItemSSList = (from t in db.TVItems
+                                        from tl in db.TVItemLanguages
+                                        where t.TVItemID == tl.TVItemID
+                                        && tl.Language == (int)LanguageEnum.en
+                                        && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                        && t.TVType == (int)TVTypeEnum.Subsector
+                                        orderby tl.TVText
+                                        select new { t, tl }).ToList();
+
+                    var MonitoringSiteList = (from t in db.TVItems
+                                              from mi in db.MapInfos
+                                              from mip in db.MapInfoPoints
+                                              let hasSample = (from c in db.MWQMSamples
+                                                               where c.MWQMSiteTVItemID == t.TVItemID
+                                                               && c.UseForOpenData == true
+                                                               select c).Any()
+                                              where mi.TVItemID == t.TVItemID
+                                              && mip.MapInfoID == mi.MapInfoID
+                                              && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                              && t.TVType == (int)TVTypeEnum.MWQMSite
+                                              && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                              && mi.TVType == (int)TVTypeEnum.MWQMSite
+                                              && hasSample == true
+                                              select new { t, mip, hasSample }).ToList();
+
+
+                    int TotalCount2 = tvItemSSList.Count;
+                    int Count2 = 0;
+                    foreach (var tvItemSS in tvItemSSList)
+                    {
+                        if (Count2 % 100 == 0)
+                        {
+                            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((CountProv - 1) / 6.0f * 100.0f) +  (int)(100.0f / 6.0f * ((float)Count2 / (float)TotalCount2)));
+
+                            NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+                            TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+
+                            _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                        }
+
+                        Count2 += 1;
+
+                        foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                        {
+                            string MS = mwqmSite.t.TVItemID.ToString();
+                            string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
+                            string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
+                            sb.AppendLine($"{ProvInit},{MS},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
+                        }
+                    }
+                }
+            }
+
+            UnicodeEncoding encoding = new UnicodeEncoding();
+
+            FileStream fs = fi.Create();
+            byte[] bytes = encoding.GetBytes(sb.ToString());
+            fs.Write(bytes, 0, bytes.Length);
+            fs.Close();
+
+            _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.CSVOfMWQMSites, FilePurposeEnum.OpenData);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+        }
         public void CreateCSVOfMWQMSamples()
         {
             string NotUsed = "";
@@ -400,6 +566,187 @@ namespace CSSPWebToolsTaskRunner.Services
                                 string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",",".") : "");
                                 string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",",".") : "");
                                 sb.AppendLine($"{MS},{D},{FC},{Temp},{Sal},{pH}"); //,{Depth}");
+                            }
+                        }
+                    }
+                }
+            }
+
+            UnicodeEncoding encoding = new UnicodeEncoding();
+
+            FileStream fs = fi.Create();
+            byte[] bytes = encoding.GetBytes(sb.ToString());
+            fs.Write(bytes, 0, bytes.Length);
+            fs.Close();
+
+            _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MWQMSamplingPlanAutoGenerate, FilePurposeEnum.OpenData);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+        }
+        public void CreateCSVNationalOfMWQMSamples()
+        {
+            string NotUsed = "";
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+            int TVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID;
+
+            if (TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.Parameter_NotFound, "TVItemID");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Parameter_NotFound", "TVItemID");
+                return;
+            }
+
+            TVItemModel tvItemModelCountry = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelCountry.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotDeleteFile_Error_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                return;
+            }
+
+            List<TVItemModel> tvItemModelProvList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelCountry.TVItemID, TVTypeEnum.Province);
+
+            StringBuilder sb = new StringBuilder();
+
+            string ServerFilePath = _TVFileService.GetServerFilePath(TVItemID);
+
+            FileInfo fi = new FileInfo(_TVFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"Samples_Echantillons_National.csv");
+
+            TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+
+            int CountProv = 0;
+            foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
+            {
+                CountProv += 1;
+
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemModelProv.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                sb.AppendLine("Prov,Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_0/00,pH"); //,Depth/Profondeur");
+
+                if (fi.Exists)
+                {
+                    try
+                    {
+                        fi.Delete();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                        return;
+                    }
+                }
+
+                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                {
+                    var tvItemProv = (from c in db.TVItems
+                                      from cl in db.TVItemLanguages
+                                      where c.TVItemID == cl.TVItemID
+                                      && c.TVItemID == tvItemModelProv.TVItemID
+                                      && cl.Language == (int)LanguageEnum.en
+                                      && c.TVType == (int)TVTypeEnum.Province
+                                      select new { c, cl }).FirstOrDefault();
+
+                    if (tvItemProv == null)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, tvItemModelProv.TVItemID.ToString());
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, tvItemModelProv.TVItemID.ToString());
+                        return;
+                    }
+
+                    for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                    {
+                        if (ProvList[i] == tvItemProv.cl.TVText)
+                        {
+                            ProvInit = ProvInitList[i];
+                            break;
+                        }
+                    }
+
+                    NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name);
+                    List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name);
+
+                    _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                    var tvItemSSList = (from t in db.TVItems
+                                        from tl in db.TVItemLanguages
+                                        where t.TVItemID == tl.TVItemID
+                                        && tl.Language == (int)LanguageEnum.en
+                                        && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                        && t.TVType == (int)TVTypeEnum.Subsector
+                                        orderby tl.TVText
+                                        select new { t, tl }).ToList();
+
+                    var MonitoringSiteList = (from t in db.TVItems
+                                              from mi in db.MapInfos
+                                              from mip in db.MapInfoPoints
+                                              let hasSample = (from c in db.MWQMSamples
+                                                               where c.MWQMSiteTVItemID == t.TVItemID
+                                                               && c.UseForOpenData == true
+                                                               select c).Any()
+                                              where mi.TVItemID == t.TVItemID
+                                              && mip.MapInfoID == mi.MapInfoID
+                                              && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                              && t.TVType == (int)TVTypeEnum.MWQMSite
+                                              && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                              && mi.TVType == (int)TVTypeEnum.MWQMSite
+                                              && hasSample == true
+                                              select new { t, mip, hasSample }).ToList();
+
+                    int TotalCount2 = tvItemSSList.Count;
+                    int Count2 = 0;
+                    foreach (var tvItemSS in tvItemSSList)
+                    {
+                        if (Count2 % 100 == 0)
+                        {
+                            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((CountProv - 1) / 6.0f * 100.0f) + (int)(100.0f / 6.0f * ((float)Count2 / (float)TotalCount2)));
+
+                            NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+                            TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+
+                            _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                        }
+
+                        Count2 += 1;
+
+                        foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                        {
+                            using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+                            {
+                                List<MWQMSample> sampleList = (from c in db2.MWQMSamples
+                                                               where c.MWQMSiteTVItemID == mwqmSite.t.TVItemID
+                                                               && c.UseForOpenData == true
+                                                               orderby c.SampleDateTime_Local ascending
+                                                               select c).ToList();
+
+                                foreach (MWQMSample mwqmSample in sampleList)
+                                {
+                                    string MS = mwqmSite.t.TVItemID.ToString();
+                                    string D = mwqmSample.SampleDateTime_Local.ToString("yyyy-MM-dd");
+                                    string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
+                                    string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
+                                    string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
+                                    string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
+                                    string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
+                                    sb.AppendLine($"{ProvInit},{MS},{D},{FC},{Temp},{Sal},{pH}"); //,{Depth}");
+                                }
                             }
                         }
                     }

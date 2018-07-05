@@ -105,6 +105,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case AppTaskCommandEnum.OpenDataCSVNationalOfMWQMSites:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        TxtService txtService = new TxtService(_TaskRunnerBaseService);
+                        txtService.CreateCSVNationalOfMWQMSites();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
                 case AppTaskCommandEnum.OpenDataKMZOfMWQMSites:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -127,6 +143,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
                         TxtService txtService = new TxtService(_TaskRunnerBaseService);
                         txtService.CreateCSVOfMWQMSamples();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.OpenDataCSVNationalOfMWQMSamples:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        TxtService txtService = new TxtService(_TaskRunnerBaseService);
+                        txtService.CreateCSVNationalOfMWQMSamples();
                         if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                         {
                             appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
@@ -308,6 +340,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
                         ClassificationGenerateService classificationGenerateService = new ClassificationGenerateService(_TaskRunnerBaseService);
                         classificationGenerateService.GenerateClassificationForCSSPWebToolsVisualization();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.GenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        ClassificationGenerateService classificationGenerateService = new ClassificationGenerateService(_TaskRunnerBaseService);
+                        classificationGenerateService.GenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization();
                         if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                         {
                             appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);

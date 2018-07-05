@@ -283,19 +283,15 @@ namespace CSSPWebToolsTaskRunner.Services
             #endregion Reading the ClassificationInputs_XX.KML
 
             #region Uploading MapInfo to CSSPWebTools
-            TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelDB();
-            if (!string.IsNullOrWhiteSpace(tvItemModelRoot.Error))
+            TVItemModel tvItemModelProv = tvItemService.GetTVItemModelWithTVItemIDDB(ProvinceTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelProv.Error))
             {
-                int slefij = 34;
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                return;
             }
 
-            TVItemModel tvItemModelNB = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID, "New Brunswick", TVTypeEnum.Province);
-            if (!string.IsNullOrWhiteSpace(tvItemModelNB.Error))
-            {
-                int slefij = 34;
-            }
-
-            List<TVItemModel> tvitemModelSSList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelNB.TVItemID, TVTypeEnum.Subsector);
+            List<TVItemModel> tvitemModelSSList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProv.TVItemID, TVTypeEnum.Subsector);
 
             int CountSS = 0;
             string Status = appTaskModel.StatusText;
@@ -517,6 +513,289 @@ namespace CSSPWebToolsTaskRunner.Services
             appTaskModel.PercentCompleted = 100;
             appTaskService.PostUpdateAppTask(appTaskModel);
         }
+        public void GenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization()
+        {
+            string NotUsed = "";
+
+            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            ClassificationService classificationService = new ClassificationService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            ProvinceToolsService provinceToolsService = new ProvinceToolsService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+
+            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID);
+                return;
+            }
+            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID2 == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID2);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID2);
+                return;
+            }
+
+            TVItemModel tvItemModelProvince = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelProvince.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                return;
+            }
+
+            if (tvItemModelProvince.TVType != TVTypeEnum.Province)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.TVTypeShouldBe_, TVTypeEnum.Province.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("TVTypeShouldBe_", TVTypeEnum.Province.ToString());
+                return;
+            }
+
+            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
+            string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            int ProvinceTVItemID = 0;
+            foreach (string s in ParamValueList)
+            {
+                string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                if (ParamValue.Length != 2)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
+                    return;
+                }
+
+                if (ParamValue[0] == "ProvinceTVItemID")
+                {
+                    ProvinceTVItemID = int.Parse(ParamValue[1]);
+                }
+                else
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
+                    return;
+                }
+            }
+
+            if (tvItemModelProvince.TVItemID != ProvinceTVItemID)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._NotEqualTo_, "tvItemModelProvince.TVItemID[" + tvItemModelProvince.TVItemID.ToString() + "]", "ProvinceTVItemID[" + ProvinceTVItemID.ToString() + "]");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_NotEqualTo_", "tvItemModelProvince.TVItemID[" + tvItemModelProvince.TVItemID.ToString() + "]", "ProvinceTVItemID[" + ProvinceTVItemID.ToString() + "]");
+                return;
+            }
+
+            string ServerPath = tvFileService.GetServerFilePath(ProvinceTVItemID);
+            string Init = provinceToolsService.GetInit(ProvinceTVItemID);
+
+            #region Reading the MWQMSitesAndPolSourceSites_XX.KML
+            List<TVItemIDAndLatLng> TVItemIDAndLatLngList = new List<TVItemIDAndLatLng>();
+
+            string FileName = $"MWQMSitesAndPolSourceSites_{Init}.kml";
+
+            FileInfo fi = new FileInfo(ServerPath + FileName);
+
+            if (!fi.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fi.FullName);
+                return;
+            }
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(fi.FullName);
+
+            foreach (XmlNode node in doc.ChildNodes)
+            {
+                GetTVItemIDAndLatLng(TVItemIDAndLatLngList, node);
+            }
+
+            #endregion Reading the MWQMSitesAndPolSourceSites_XX.KML
+
+            #region Reading the GroupingInputs__XX.KML
+
+            string FileName2 = $"GroupingInputs_{Init}.kml";
+
+            FileInfo fi2 = new FileInfo(ServerPath + FileName2);
+
+            if (!fi2.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fi2.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fi2.FullName);
+                return;
+            }
+
+            XmlDocument doc2 = new XmlDocument();
+            doc2.Load(fi2.FullName);
+
+            string CurrentSubsector = "";
+            string CurrentClassification = "";
+
+            List<PolyObj> polyObjList = new List<PolyObj>();
+
+            XmlNode StartNode2 = doc2.ChildNodes[1].ChildNodes[0];
+            foreach (XmlNode n in StartNode2.ChildNodes)
+            {
+                foreach (XmlNode n1 in n.ChildNodes)
+                {
+                    if (n1.Name == "Folder")
+                    {
+                        CurrentSubsector = "";
+
+                        foreach (XmlNode n22 in n1)
+                        {
+                            if (n22.Name == "name")
+                            {
+                                CurrentSubsector = n22.InnerText;
+                            }
+
+                            if (n22.Name == "Placemark")
+                            {
+                                CurrentClassification = "";
+
+                                foreach (XmlNode n2 in n22)
+                                {
+
+                                    if (n2.Name == "name")
+                                    {
+                                        CurrentClassification = n2.InnerText;
+                                    }
+
+                                    if (n2.Name == "Polygon")
+                                    {
+                                        foreach (XmlNode n222 in n2.ChildNodes)
+                                        {
+                                            if (n222.Name == "outerBoundaryIs")
+                                            {
+                                                foreach (XmlNode n2222 in n222.ChildNodes)
+                                                {
+                                                    if (n2222.Name == "LinearRing")
+                                                    {
+                                                        PolyObj polyObj = new PolyObj();
+
+                                                        polyObj.Subsector = CurrentSubsector;
+                                                        polyObj.Classification = CurrentClassification.ToUpper();
+
+                                                        foreach (XmlNode n3 in n2.ChildNodes)
+                                                        {
+                                                            if (n3.Name == "coordinates")
+                                                            {
+                                                                string coordText = n3.InnerText.Trim();
+
+                                                                List<string> pointListText = coordText.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                                                                int ordinal = 0;
+                                                                foreach (string pointText in pointListText)
+                                                                {
+                                                                    string pointTxt = pointText.Trim();
+
+                                                                    if (!string.IsNullOrWhiteSpace(pointTxt))
+                                                                    {
+                                                                        List<string> valListText = pointTxt.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                                                                        if (valListText.Count != 3)
+                                                                        {
+                                                                            NotUsed = "valListText.Count != 3";
+                                                                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("valListText.Count != 3");
+                                                                            return;
+                                                                        }
+
+                                                                        float Lng = float.Parse(valListText[0]);
+                                                                        float Lat = float.Parse(valListText[1]);
+
+                                                                        List<PolyObj> polyObjCloseList = (from c in polyObjList
+                                                                                                          where c.MinLat <= Lat
+                                                                                                          && c.MaxLat >= Lat
+                                                                                                          && c.MinLng <= Lng
+                                                                                                          && c.MaxLng >= Lng
+                                                                                                          select c).ToList();
+
+                                                                        double distMin = 10000000D;
+                                                                        foreach (PolyObj polyObjClose in polyObjCloseList)
+                                                                        {
+                                                                            foreach (Coord coordClose in polyObjClose.coordList)
+                                                                            {
+                                                                                double dist = mapInfoService.CalculateDistance(Lat * mapInfoService.d2r, Lng * mapInfoService.d2r, coordClose.Lat * mapInfoService.d2r, coordClose.Lng * mapInfoService.d2r, mapInfoService.R);
+
+                                                                                if (dist < 20)
+                                                                                {
+                                                                                    if (distMin > dist)
+                                                                                    {
+                                                                                        Lat = coordClose.Lat;
+                                                                                        Lng = coordClose.Lng;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                        Coord coord = new Coord() { Lat = Lat, Lng = Lng, Ordinal = ordinal };
+
+                                                                        polyObj.coordList.Add(coord);
+
+                                                                        ordinal += 1;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        polyObjList.Add(polyObj);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            #endregion Reading the GroupingInputs__XX.KML
+
+            #region Uploading TVItemLinks in CSSPWebTools
+            TVItemModel tvItemModelProv = tvItemService.GetTVItemModelWithTVItemIDDB(ProvinceTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelProv.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, ProvinceTVItemID.ToString());
+                return;
+            }
+
+            List<TVItemModel> tvitemModelSSList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProv.TVItemID, TVTypeEnum.Subsector);
+
+            int CountSS = 0;
+            string Status = appTaskModel.StatusText;
+            foreach (TVItemModel tvItemModelSS in tvitemModelSSList)
+            {
+                CountSS += 1;
+                if (CountSS % 1 == 0)
+                {
+                    appTaskModel.PercentCompleted = (100 * CountSS) / tvitemModelSSList.Count;
+                    appTaskModel.StatusText = Status + " --- " + tvItemModelSS.TVText;
+                    appTaskService.PostUpdateAppTask(appTaskModel);
+                }
+                Application.DoEvents();
+
+                string TVTextSS = tvItemModelSS.TVText.Substring(0, tvItemModelSS.TVText.IndexOf(" "));
+
+                foreach (PolyObj polyObj in polyObjList.Where(c => c.Subsector == TVTextSS))
+                {
+                    
+
+                    // will need to get all the Active Pollution Source Sites and MWQMSites
+                    // and then check which of these are witin the polygon
+                    // then add a TVItemLink item in the CSSPWebToolsDB
+
+                }
+
+
+            }
+            #endregion Uploading TVItemLink in CSSPWebTools
+
+            appTaskModel.PercentCompleted = 100;
+            appTaskService.PostUpdateAppTask(appTaskModel);
+        }
         #endregion Functions public
 
         #region Functions private
@@ -574,6 +853,67 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
         }
+        private void GetTVItemIDAndLatLng(List<TVItemIDAndLatLng> TVItemIDAndLatLngList, XmlNode node)
+        {
+            string NotUsed = "";
+            if (node.Name == "Placemark")
+            {
+                TVItemIDAndLatLng tvItemIDAndLatLng = new TVItemIDAndLatLng();
+
+                foreach (XmlNode n2 in node.ChildNodes)
+                {
+                    if (n2.Name == "description")
+                    {
+                        string desc = n2.InnerText;
+                        desc = desc.Substring(desc.IndexOf(@"data-tvitemid=""") + @"data-tvitemid=""".Length);
+                        desc = desc.Substring(0, desc.IndexOf(@""""));
+
+                        tvItemIDAndLatLng.TVItemID = int.Parse(desc);
+                    }
+
+                    if (n2.Name == "Point")
+                    {
+                        foreach (XmlNode n3 in n2.ChildNodes)
+                        {
+                            if (n3.Name == "coordinates")
+                            {
+                                List<string> strList = node.InnerText.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                                foreach (string pointText in strList)
+                                {
+                                    string pointTxt = pointText.Replace("\r\n", "");
+
+
+                                    if (strList.Count != 3)
+                                    {
+                                        NotUsed = "valListText.Count != 3";
+                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("valListText.Count != 3");
+                                        return;
+                                    }
+
+                                    float Lng = float.Parse(strList[0]);
+                                    float Lat = float.Parse(strList[1]);
+
+                                    tvItemIDAndLatLng.Lng = Lng;
+                                    tvItemIDAndLatLng.Lat = Lat;
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+                TVItemIDAndLatLngList.Add(tvItemIDAndLatLng);
+            }
+
+
+
+            foreach (XmlNode n in node.ChildNodes)
+            {
+                GetTVItemIDAndLatLng(TVItemIDAndLatLngList, n);
+            }
+
+        }
 
         #endregion Functions private
 
@@ -588,5 +928,11 @@ namespace CSSPWebToolsTaskRunner.Services
         public float MaxLng { get; set; } = 0.0F;
         public List<Coord> coordList { get; set; } = new List<Coord>();
         public string Subsector { get; set; } = "";
+    }
+    public class TVItemIDAndLatLng
+    {
+        public int TVItemID { get; set; } = 0;
+        public float Lat { get; set; } = 0.0F;
+        public float Lng { get; set; } = 0.0F;
     }
 }
