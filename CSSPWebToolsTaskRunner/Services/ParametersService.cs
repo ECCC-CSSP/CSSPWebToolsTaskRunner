@@ -320,6 +320,36 @@ namespace CSSPWebToolsTaskRunner.Services
                 _Document.ActiveWindow.View.Type = Microsoft.Office.Interop.Word.WdViewType.wdPrintView;
             }
 
+            CreateDocxWithHTMLDoPROVINCE_NAMETag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoPROVINCE_INITIALTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoMUNICIPALITY_NAMETag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoSUBSECTOR_NAME_SHORTTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoSUBSECTOR_NAME_LONGTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoSUBSECTOR_NAME_TEXTTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
             CreateDocxWithHTMLDoPAGE_BREAKTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
@@ -344,8 +374,6 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-
-
 
             string NewDocxFileName = fi.FullName.Replace(".html", ".docx");
             _Document.SaveAs2(NewDocxFileName, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatXMLDocument);
@@ -497,71 +525,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             }
         }
-        private void CreateDocxWithHTMLDoPAGE_BREAKTag(Application appWord, Document document)
-        {
-            // turn all |||PageBreak||| into word page break
-            string SearchMarker = "|||PAGE_BREAK|||";
-            bool Found = true;
-            while (Found)
-            {
-                appWord.Selection.Find.ClearFormatting();
-                appWord.Selection.Find.Replacement.ClearFormatting();
-                if (appWord.Selection.Find.Execute(SearchMarker))
-                {
-                    appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
-
-                    appWord.Selection.Find.MatchWildcards = false;
-                    appWord.Selection.Find.ClearFormatting();
-                    if (appWord.Selection.Find.Execute("^p"))
-                    {
-                        appWord.Selection.Delete();
-                    }
-                }
-                else
-                {
-                    Found = false;
-                }
-
-                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-            }
-        }
-        private void CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(Application appWord, Document document)
-        {
-            // turn all |||PageBreak||| into word page break
-            string SearchMarker = "|||TABLE_OF_CONTENTS|||";
-            bool Found = true;
-            while (Found)
-            {
-                appWord.Selection.Find.ClearFormatting();
-                appWord.Selection.Find.Replacement.ClearFormatting();
-                if (appWord.Selection.Find.Execute(SearchMarker))
-                {
-                    appWord.Selection.Font.Size = 14;
-                    appWord.Selection.Text = TaskRunnerServiceRes.TableOfContents;
-                    appWord.Selection.Start = appWord.Selection.End;
-                    appWord.Selection.InsertParagraph();
-
-                    document.TablesOfContents.Add(appWord.Selection.Range, true, 1, 6, true, "", true, true, null, true, true, true);
-
-                    appWord.Selection.Find.MatchWildcards = false;
-                    appWord.Selection.Find.ClearFormatting();
-                    if (appWord.Selection.Find.Execute("^p"))
-                    {
-                        appWord.Selection.Delete();
-                    }
-                }
-                else
-                {
-                    Found = false;
-                }
-
-                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
-            }
-        }
         private void CreateDocxWithHTMLDoImageTag(Application appWord, Document document)
         {
             // importing images/graphics where we find |||Image|||
@@ -641,6 +604,383 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     Found = false;
                 }
+            }
+        }
+        private void CreateDocxWithHTMLDoMUNICIPALITY_NAMETag(Application appWord, Document document)
+        {
+            string MUNICIPALITY_NAME = "ERROR: MUNICIPALITY_NAME";
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                MUNICIPALITY_NAME = tvItemModel.Error;
+            }
+
+            List<TVItemModel> tvItemModelList = _TVItemService.GetParentsTVItemModelList(tvItemModel.TVPath);
+            foreach (TVItemModel tvItemModelMuni in tvItemModelList)
+            {
+                if (tvItemModelMuni.TVType == TVTypeEnum.Municipality)
+                {
+                    MUNICIPALITY_NAME = tvItemModel.TVText.Substring(0, tvItemModel.TVText.IndexOf(" "));
+                    break;
+                }
+            }
+
+            // turn all |||MUNICIPALITY_NAME||| into word page break
+            string SearchMarker = "|||MUNICIPALITY_NAME|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = MUNICIPALITY_NAME;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoPAGE_BREAKTag(Application appWord, Document document)
+        {
+            // turn all |||PageBreak||| into word page break
+            string SearchMarker = "|||PAGE_BREAK|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdPageBreak);
+
+                    appWord.Selection.Find.MatchWildcards = false;
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoPROVINCE_NAMETag(Application appWord, Document document)
+        {
+            string PROVINCE_NAME = "ERROR: PROVINCE_NAME";
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                PROVINCE_NAME = tvItemModel.Error;
+            }
+
+            List<TVItemModel> tvItemModelList = _TVItemService.GetParentsTVItemModelList(tvItemModel.TVPath);
+            foreach (TVItemModel tvItemModelProv in tvItemModelList)
+            {
+                if (tvItemModelProv.TVType == TVTypeEnum.Province)
+                {
+                    PROVINCE_NAME = tvItemModelProv.TVText;
+                    break;
+                }
+            }
+
+            // turn all |||PROVINCE_NAME||| into word page break
+            string SearchMarker = "|||PROVINCE_NAME|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = PROVINCE_NAME;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoPROVINCE_INITIALTag(Application appWord, Document document)
+        {
+            string PROVINCE_INITIAL = "ERROR: PROVINCE_INITIAL";
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                PROVINCE_INITIAL = tvItemModel.Error;
+            }
+
+            List<TVItemModel> tvItemModelList = _TVItemService.GetParentsTVItemModelList(tvItemModel.TVPath);
+            foreach (TVItemModel tvItemModelProv in tvItemModelList)
+            {
+                if (tvItemModelProv.TVType == TVTypeEnum.Province)
+                {
+                    switch (tvItemModelProv.TVText)
+                    {
+                        case "British Columbia":
+                            {
+                                PROVINCE_INITIAL = "BC";
+                            }
+                            break;
+                        case "Colombie-Britannique":
+                            {
+                                PROVINCE_INITIAL = "CB";
+                            }
+                            break;
+                        case "New Brunswick":
+                            {
+                                PROVINCE_INITIAL = "NB";
+                            }
+                            break;
+                        case "Nouveau-Brunswick":
+                            {
+                                PROVINCE_INITIAL = "NB";
+                            }
+                            break;
+                        case "Nova Scotia":
+                            {
+                                PROVINCE_INITIAL = "NS";
+                            }
+                            break;
+                        case "Nouvelle-Écosse":
+                            {
+                                PROVINCE_INITIAL = "NE";
+                            }
+                            break;
+                        case "Newfoundland and Labrador":
+                            {
+                                PROVINCE_INITIAL = "NL";
+                            }
+                            break;
+                        case "Terre-Neuve-et-Labrador":
+                            {
+                                PROVINCE_INITIAL = "TL";
+                            }
+                            break;
+                        case "Québec":
+                            {
+                                PROVINCE_INITIAL = "QC";
+                            }
+                            break;
+                        case "Quebec":
+                            {
+                                PROVINCE_INITIAL = "QC";
+                            }
+                            break;
+                        case "Prince Edward Island":
+                            {
+                                PROVINCE_INITIAL = "PEI";
+                            }
+                            break;
+                        case "Île-du-Prince-Édouard":
+                            {
+                                PROVINCE_INITIAL = "IPE";
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            }
+
+            // turn all |||PROVINCE_INITIAL||| into word page break
+            string SearchMarker = "|||PROVINCE_INITIAL|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = PROVINCE_INITIAL;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoSUBSECTOR_NAME_SHORTTag(Application appWord, Document document)
+        {
+            string SUBSECTOR_NAME_SHORT = "ERROR: SUBSECTOR_NAME_SHORT";
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                SUBSECTOR_NAME_SHORT = tvItemModel.Error;
+            }
+
+            List<TVItemModel> tvItemModelList = _TVItemService.GetParentsTVItemModelList(tvItemModel.TVPath);
+            foreach (TVItemModel tvItemModelSS in tvItemModelList)
+            {
+                if (tvItemModelSS.TVType == TVTypeEnum.Subsector)
+                {
+                    SUBSECTOR_NAME_SHORT = tvItemModelSS.TVText.Substring(0, tvItemModelSS.TVText.IndexOf(" "));
+                    break;
+                }
+            }
+
+            // turn all |||SUBSECTOR_NAME_SHORT||| into word page break
+            string SearchMarker = "|||SUBSECTOR_NAME_SHORT|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = SUBSECTOR_NAME_SHORT;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoSUBSECTOR_NAME_LONGTag(Application appWord, Document document)
+        {
+            string SUBSECTOR_NAME_LONG = "ERROR: SUBSECTOR_NAME_LONG";
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                SUBSECTOR_NAME_LONG = tvItemModel.Error;
+            }
+
+            List<TVItemModel> tvItemModelList = _TVItemService.GetParentsTVItemModelList(tvItemModel.TVPath);
+            foreach (TVItemModel tvItemModelSS in tvItemModelList)
+            {
+                if (tvItemModelSS.TVType == TVTypeEnum.Subsector)
+                {
+                    SUBSECTOR_NAME_LONG = tvItemModelSS.TVText;
+                    break;
+                }
+            }
+
+            // turn all |||SUBSECTOR_NAME_LONG||| into word page break
+            string SearchMarker = "|||SUBSECTOR_NAME_LONG|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = SUBSECTOR_NAME_LONG;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoSUBSECTOR_NAME_TEXTTag(Application appWord, Document document)
+        {
+            string SUBSECTOR_NAME_TEXT = "ERROR: SUBSECTOR_NAME_TEXT";
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                SUBSECTOR_NAME_TEXT = tvItemModel.Error;
+            }
+
+            List<TVItemModel> tvItemModelList = _TVItemService.GetParentsTVItemModelList(tvItemModel.TVPath);
+            foreach (TVItemModel tvItemModelSS in tvItemModelList)
+            {
+                if (tvItemModelSS.TVType == TVTypeEnum.Subsector)
+                {
+                    SUBSECTOR_NAME_TEXT = tvItemModelSS.TVText.Substring(tvItemModelSS.TVText.IndexOf(" ") + 1).Trim();
+                    if (SUBSECTOR_NAME_TEXT.Substring(0, 1) == "(")
+                    {
+                        SUBSECTOR_NAME_TEXT = SUBSECTOR_NAME_TEXT.Substring(1);
+                    }
+                    if (SUBSECTOR_NAME_TEXT.Substring(SUBSECTOR_NAME_TEXT.Length - 1) == ")")
+                    {
+                        SUBSECTOR_NAME_TEXT = SUBSECTOR_NAME_TEXT.Substring(0, SUBSECTOR_NAME_TEXT.Length - 1);
+                    }
+                    break;
+                }
+            }
+
+            // turn all |||SUBSECTOR_NAME_TEXT||| into word page break
+            string SearchMarker = "|||SUBSECTOR_NAME_TEXT|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = SUBSECTOR_NAME_TEXT;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoTABLE_OF_CONTENTSTag(Application appWord, Document document)
+        {
+            // turn all |||PageBreak||| into word page break
+            string SearchMarker = "|||TABLE_OF_CONTENTS|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Font.Size = 14;
+                    appWord.Selection.Text = TaskRunnerServiceRes.TableOfContents;
+                    appWord.Selection.Start = appWord.Selection.End;
+                    appWord.Selection.InsertParagraph();
+
+                    document.TablesOfContents.Add(appWord.Selection.Range, true, 1, 6, true, "", true, true, null, true, true, true);
+
+                    appWord.Selection.Find.MatchWildcards = false;
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             }
         }
 

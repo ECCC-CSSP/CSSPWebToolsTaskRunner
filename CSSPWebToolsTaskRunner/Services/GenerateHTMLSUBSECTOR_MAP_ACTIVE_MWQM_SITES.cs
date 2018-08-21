@@ -75,8 +75,8 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.AppendLine($@"<h1>{ Error }</h1>");
             }
 
-            sbTemp.AppendLine($@"|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||");
-            sbTemp.AppendLine($@"|||FigureCaption|: { TaskRunnerServiceRes.MWQMSitesApproximateLocation }|||");
+            sbTemp.AppendLine($@"<div>|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||</div>");
+            sbTemp.AppendLine($@"<div>|||FigureCaption|: { TaskRunnerServiceRes.MWQMSitesApproximateLocation }|||</div>");
 
             Percent = 70;
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);

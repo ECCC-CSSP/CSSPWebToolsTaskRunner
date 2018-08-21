@@ -1320,8 +1320,8 @@
   <data name="Urban" xml:space="preserve">
     <value>Urban</value>
   </data>
-  <data name="AtlanticMarineWaterQualityMonitoring" xml:space="preserve">
-    <value>Atlantic Marine Water Quality Monitoring</value>
+  <data name="ShellfishWaterClassificationProgram" xml:space="preserve">
+    <value>Shellfish Water Classification Program</value>
   </data>
   <data name="MarineWaterQualityReEvaluationReport" xml:space="preserve">
     <value>Marine Water Quality Re-Evaluation Report</value>

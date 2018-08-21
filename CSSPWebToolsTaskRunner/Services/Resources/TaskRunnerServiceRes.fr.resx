@@ -1308,8 +1308,8 @@
   <data name="Urban" xml:space="preserve">
     <value>Urbain</value>
   </data>
-  <data name="AtlanticMarineWaterQualityMonitoring" xml:space="preserve">
-    <value>Monitoring de la qualité d'eau marine atlantique</value>
+  <data name="ShellfishWaterClassificationProgram" xml:space="preserve">
+    <value>Programme de classification des eaux coquillières</value>
   </data>
   <data name="MarineWaterQualityReEvaluationReport" xml:space="preserve">
     <value>Rapport de ré-évaluation qualité d'eau marine</value>

@@ -157,7 +157,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 sbTemp.AppendLine($@"   <p>&nbsp;</p>");
             }
-            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.AtlanticMarineWaterQualityMonitoring }</strong></p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ShellfishWaterClassificationProgram }</strong></p>");
             sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Report } </strong><span>_______________________</span></p>");
             sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ ReportDateText }</strong></p>");
             sbTemp.AppendLine($@" </div>");

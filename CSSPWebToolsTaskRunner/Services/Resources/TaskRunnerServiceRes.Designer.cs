@@ -304,15 +304,6 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Atlantic Marine Water Quality Monitoring.
-        /// </summary>
-        public static string AtlanticMarineWaterQualityMonitoring {
-            get {
-                return ResourceManager.GetString("AtlanticMarineWaterQualityMonitoring", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to at.
         /// </summary>
         public static string AtLowerCase {
@@ -3495,6 +3486,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ShellfishGrowingArea {
             get {
                 return ResourceManager.GetString("ShellfishGrowingArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shellfish Water Classification Program.
+        /// </summary>
+        public static string ShellfishWaterClassificationProgram {
+            get {
+                return ResourceManager.GetString("ShellfishWaterClassificationProgram", resourceCulture);
             }
         }
         
