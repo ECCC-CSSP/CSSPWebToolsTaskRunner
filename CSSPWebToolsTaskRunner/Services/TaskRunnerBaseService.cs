@@ -185,6 +185,54 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case AppTaskCommandEnum.ProvinceToolsCreateClassificationInputsKML:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        KmzService kmzService = new KmzService(_TaskRunnerBaseService);
+                        kmzService.ProvinceToolsCreateClassificationInputsKML();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.ProvinceToolsCreateGroupingInputsKML:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        KmzService kmzService = new KmzService(_TaskRunnerBaseService);
+                        kmzService.ProvinceToolsCreateGroupingInputsKML();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.ProvinceToolsCreateMWQMSitesAndPolSourceSitesKML:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        KmzService kmzService = new KmzService(_TaskRunnerBaseService);
+                        kmzService.ProvinceToolsCreateMWQMSitesAndPolSourceSitesKML();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
                 case AppTaskCommandEnum.CreateWebTideDataWLAtFirstNode:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -354,8 +402,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
                         AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-                        ClassificationGenerateService classificationGenerateService = new ClassificationGenerateService(_TaskRunnerBaseService);
-                        classificationGenerateService.GenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization();
+                        GroupingMWQMSitesAndPolSourceSitesGenerateService groupingMWQMSitesAndPolSourceSitesGenerateService = new GroupingMWQMSitesAndPolSourceSitesGenerateService(_TaskRunnerBaseService);
+                        groupingMWQMSitesAndPolSourceSitesGenerateService.GenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization();
                         if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                         {
                             appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
@@ -1112,578 +1160,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
             }
         }
-        //public void GenerateDoc()
-        //{
-        //    string NotUsed = "";
-        //    AppTaskModel appTaskModel = new AppTaskModel();
-        //    AppTaskLanguageModel appTaskLanguageModel = new AppTaskLanguageModel();
-
-        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    TVItemModel tvItemModel = tvItemService.GetTVItemModelWithTVItemIDDB(_BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _BWObj.appTaskModel.TVItemID.ToString());
-        //        UpdateAppTaskWithDeleteOrError();
-        //        return;
-        //    }
-
-        //    switch (_BWObj.fileGeneratorType)
-        //    {
-        //        case FileGeneratorTypeEnum.Excel:
-        //            {
-        //                GenerateDocOfTypeXLSX(_BWObj.fileGenerator);
-        //            }
-        //            break;
-        //        case FileGeneratorTypeEnum.ExcelAndPDF:
-        //            {
-        //                GenerateDocOfTypeXLSXAndPDF(_BWObj.fileGenerator);
-        //            }
-        //            break;
-        //        case FileGeneratorTypeEnum.Word:
-        //            {
-        //                GenerateDocOfTypeDOCX(_BWObj.fileGenerator);
-        //            }
-        //            break;
-        //        case FileGeneratorTypeEnum.WordAndPDF:
-        //            {
-        //                GenerateDocOfTypeDOCXAndPDF(_BWObj.fileGenerator);
-        //            }
-        //            break;
-        //        case FileGeneratorTypeEnum.KMZ:
-        //            {
-        //                GenerateDocOfTypeKMZ(_BWObj.fileGenerator);
-        //            }
-        //            break;
-        //        case FileGeneratorTypeEnum.HTML:
-        //            {
-        //                GenerateDocOfTypeHTML(_BWObj.fileGenerator);
-        //            }
-        //            break;
-        //        case FileGeneratorTypeEnum.TXT:
-        //            {
-        //                GenerateDocOfTypeTXT(_BWObj.fileGenerator);
-        //            }
-        //            break;
-        //        default:
-        //            {
-        //                NotUsed = string.Format(TaskRunnerServiceRes._NotImplemented, _BWObj.fileGeneratorType.ToString());
-        //                _BWObj.TextLanguageList = GetTextLanguageFormat1List("_NotImplemented", _BWObj.fileGeneratorType.ToString());
-        //                UpdateAppTaskWithDeleteOrError();
-        //            }
-        //            break;
-        //    }
-        //}
-        //public void GenerateDocOfTypeDOCX(FileGeneratorEnum fileGenerator)
-        //{
-        //    DocxService docxService = new DocxService(_TaskRunnerBaseService);
-
-        //    switch (_BWObj.fileGenerator)
-        //    {
-        //        case FileGeneratorEnum.Area:
-        //            docxService.GenerateAreaDOCX();
-        //            break;
-        //        case FileGeneratorEnum.Country:
-        //            docxService.GenerateCountryDOCX();
-        //            break;
-        //        case FileGeneratorEnum.Infrastructure:
-        //            //docxService.GenerateInfrastructureDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SamplingPlan:
-        //            docxService.GenerateSamplingPlanDOCX();
-        //            break;
-        //        case FileGeneratorEnum.MWQMSite:
-        //            //docxService.GenerateMWQMSiteDOCX();
-        //            break;
-        //        case FileGeneratorEnum.Municipality:
-        //            docxService.GenerateMunicipalityDOCX();
-        //            break;
-        //        case FileGeneratorEnum.PolSourceSite:
-        //            //docxService.GeneratePolSourceSiteDOCX();
-        //            break;
-        //        case FileGeneratorEnum.Province:
-        //            docxService.GenerateProvinceDOCX();
-        //            break;
-        //        case FileGeneratorEnum.Root:
-        //            docxService.GenerateRootDOCX();
-        //            break;
-        //        case FileGeneratorEnum.Sector:
-        //            docxService.GenerateSectorDOCX();
-        //            break;
-        //        case FileGeneratorEnum.Subsector:
-        //            docxService.GenerateSubsectorDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformDensities:
-        //            docxService.GenerateSubsectorFaecalColiformDensitiesDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformSummaryStat:
-        //            docxService.GenerateSubsectorFaecalColiformSummaryStatDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteFaecalColiformDensities:
-        //            //docxService.GenerateSubsectorMWQMSiteFaecalColiformDensitiesDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSalinity:
-        //            //docxService.GenerateSubsectorMWQMSiteSalinityDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummary:
-        //            //docxService.GenerateSubsectorMWQMSiteSummaryDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummaryLowPrecipitation:
-        //            //docxService.GenerateSubsectorMWQMSiteSummaryLowPrecipitationDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteWaterTemperature:
-        //            //docxService.GenerateSubsectorMWQMSiteWaterTemperatureDOCX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceInfo:
-        //            //docxService.GenerateSubsectorPollutionSourceInfoDOCX();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    UpdateAppTaskWithDeleteOrError();
-        //}
-        //public void GenerateDocOfTypeDOCXAndPDF(FileGeneratorEnum fileGenerator)
-        //{
-        //    DocxService docxService = new DocxService(_TaskRunnerBaseService);
-
-        //    switch (_BWObj.fileGenerator)
-        //    {
-        //        case FileGeneratorEnum.Area:
-        //            docxService.GenerateAreaDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Country:
-        //            docxService.GenerateCountryDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Infrastructure:
-        //            //docxService.GenerateInfrastructureDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SamplingPlan:
-        //            //docxService.GenerateSamplingPlanDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.MWQMSite:
-        //            //docxService.GenerateMWQMSiteDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Municipality:
-        //            docxService.GenerateMunicipalityDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.PolSourceSite:
-        //            //docxService.GeneratePolSourceSiteDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Province:
-        //            docxService.GenerateProvinceDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Root:
-        //            docxService.GenerateRootDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Sector:
-        //            docxService.GenerateSectorDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Subsector:
-        //            docxService.GenerateSubsectorDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformDensities:
-        //            //docxService.GenerateSubsectorFaecalColiformDensitiesDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformSummaryStat:
-        //            //docxService.GenerateSubsectorFaecalColiformSummaryStatDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteFaecalColiformDensities:
-        //            //docxService.GenerateSubsectorMWQMSiteFaecalColiformDensitiesDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSalinity:
-        //            //docxService.GenerateSubsectorMWQMSiteSalinityDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummary:
-        //            //docxService.GenerateSubsectorMWQMSiteSummaryDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummaryLowPrecipitation:
-        //            //docxService.GenerateSubsectorMWQMSiteSummaryLowPrecipitationDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteWaterTemperature:
-        //            //docxService.GenerateSubsectorMWQMSiteWaterTemperatureDOCXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceInfo:
-        //            //docxService.GenerateSubsectorPollutionSourceInfoDOCXAndPDF();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    UpdateAppTaskWithDeleteOrError();
-        //}
-        //public void GenerateDocOfTypeHTML(FileGeneratorEnum fileGenerator)
-        //{
-        //    HtmlService htmlService = new HtmlService(_TaskRunnerBaseService);
-
-        //    switch (_BWObj.fileGenerator)
-        //    {
-        //        case FileGeneratorEnum.Area:
-        //            htmlService.GenerateAreaHTML();
-        //            break;
-        //        case FileGeneratorEnum.Country:
-        //            htmlService.GenerateCountryHTML();
-        //            break;
-        //        case FileGeneratorEnum.Infrastructure:
-        //            //htmlService.GenerateInfrastructureHTML();
-        //            break;
-        //        case FileGeneratorEnum.SamplingPlan:
-        //            //htmlService.GenerateSamplingPlanHTML();
-        //            break;
-        //        case FileGeneratorEnum.MWQMSite:
-        //            //htmlService.GenerateMWQMSiteHTML();
-        //            break;
-        //        case FileGeneratorEnum.Municipality:
-        //            htmlService.GenerateMunicipalityHTML();
-        //            break;
-        //        case FileGeneratorEnum.PolSourceSite:
-        //            //htmlService.GeneratePolSourceSiteHTML();
-        //            break;
-        //        case FileGeneratorEnum.Province:
-        //            htmlService.GenerateProvinceHTML();
-        //            break;
-        //        case FileGeneratorEnum.Root:
-        //            htmlService.GenerateRootHTML();
-        //            break;
-        //        case FileGeneratorEnum.Sector:
-        //            htmlService.GenerateSectorHTML();
-        //            break;
-        //        case FileGeneratorEnum.Subsector:
-        //            htmlService.GenerateSubsectorHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformDensities:
-        //            //htmlService.GenerateSubsectorFaecalColiformDensitiesHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformSummaryStat:
-        //            //htmlService.GenerateSubsectorFaecalColiformSummaryStatHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteFaecalColiformDensities:
-        //            //htmlService.GenerateSubsectorMWQMSiteFaecalColiformDensitiesHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSalinity:
-        //            //htmlService.GenerateSubsectorMWQMSiteSalinityHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummary:
-        //            //htmlService.GenerateSubsectorMWQMSiteSummaryHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummaryLowPrecipitation:
-        //            //htmlService.GenerateSubsectorMWQMSiteSummaryLowPrecipitationHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteWaterTemperature:
-        //            //htmlService.GenerateSubsectorMWQMSiteWaterTemperatureHTML();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceInfo:
-        //            //htmlService.GenerateSubsectorPollutionSourceInfoHTML();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    UpdateAppTaskWithDeleteOrError();
-        //}
-        //public void GenerateDocOfTypeKMZ(FileGeneratorEnum fileGenerator)
-        //{
-        //    KmzService kmzService = new KmzService(_TaskRunnerBaseService);
-
-        //    switch (_BWObj.fileGenerator)
-        //    {
-        //        case FileGeneratorEnum.Area:
-        //            kmzService.GenerateAreaKMZ();
-        //            break;
-        //        case FileGeneratorEnum.Country:
-        //            kmzService.GenerateCountryKMZ();
-        //            break;
-        //        case FileGeneratorEnum.Infrastructure:
-        //            //kmzService.GenerateInfrastructureKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SamplingPlan:
-        //            kmzService.GenerateSamplingPlanKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MWQMSite:
-        //            //kmzService.GenerateMWQMSiteKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MIKEScenarioBoundaryConditions:
-        //            kmzService.GenerateMikeScenarioBoundaryConditionsKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MIKEScenarioConcentrationAnimation:
-        //            kmzService.GenerateMikeScenarioConcentrationAnimationKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MIKEScenarioConcentrationLimits:
-        //            kmzService.GenerateMikeScenarioConcentrationLimitsKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MIKEScenarioCurrentAnimation:
-        //            kmzService.GenerateMikeScenarioCurrentAnimationKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MIKEScenarioCurrentMaximum:
-        //            kmzService.GenerateMikeScenarioCurrentMaximumKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MIKEScenarioMesh:
-        //            kmzService.GenerateMikeScenarioMeshKMZ();
-        //            break;
-        //        case FileGeneratorEnum.MIKEScenarioStudyArea:
-        //            kmzService.GenerateMikeScenarioStudyAreaKMZ();
-        //            break;
-        //        case FileGeneratorEnum.Municipality:
-        //            kmzService.GenerateMunicipalityKMZ();
-        //            break;
-        //        case FileGeneratorEnum.PolSourceSite:
-        //            //kmzService.GeneratePolSourceSiteKMZ();
-        //            break;
-        //        case FileGeneratorEnum.Province:
-        //            kmzService.GenerateProvinceKMZ();
-        //            break;
-        //        case FileGeneratorEnum.Root:
-        //            kmzService.GenerateRootKMZ();
-        //            break;
-        //        case FileGeneratorEnum.Sector:
-        //            kmzService.GenerateSectorKMZ();
-        //            break;
-        //        case FileGeneratorEnum.Subsector:
-        //            kmzService.GenerateSubsectorKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformDensities:
-        //            //kmzService.GenerateSubsectorFaecalColiformDensitiesKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformSummaryStat:
-        //            //kmzService.GenerateSubsectorFaecalColiformSummaryStatKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteFaecalColiformDensities:
-        //            //kmzService.GenerateSubsectorMWQMSiteFaecalColiformDensitiesKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSalinity:
-        //            //kmzService.GenerateSubsectorMWQMSiteSalinityKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummary:
-        //            //kmzService.GenerateSubsectorMWQMSiteSummaryKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummaryLowPrecipitation:
-        //            //kmzService.GenerateSubsectorMWQMSiteSummaryLowPrecipitationKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteWaterTemperature:
-        //            //kmzService.GenerateSubsectorMWQMSiteWaterTemperatureKMZ();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceInfo:
-        //            //kmzService.GenerateSubsectorPollutionSourceInfoKMZ();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    UpdateAppTaskWithDeleteOrError();
-        //}
-        //public void GenerateDocOfTypeTXT(FileGeneratorEnum fileGenerator)
-        //{
-        //    TxtService txtService = new TxtService(_TaskRunnerBaseService);
-
-        //    switch (_BWObj.fileGenerator)
-        //    {
-        //        case FileGeneratorEnum.Area:
-        //            //txtService.GenerateAreaTXT();
-        //            break;
-        //        case FileGeneratorEnum.Country:
-        //            //txtService.GenerateCountryTXT();
-        //            break;
-        //        case FileGeneratorEnum.Infrastructure:
-        //            //txtService.GenerateInfrastructureTXT();
-        //            break;
-        //        case FileGeneratorEnum.SamplingPlan:
-        //            txtService.GenerateSamplingPlanConfigFileTXT();
-        //            break;
-        //        case FileGeneratorEnum.MWQMSite:
-        //            //txtService.GenerateMWQMSiteTXT();
-        //            break;
-        //        case FileGeneratorEnum.Municipality:
-        //            //txtService.GenerateMunicipalityTXT();
-        //            break;
-        //        case FileGeneratorEnum.PolSourceSite:
-        //            //txtService.GeneratePolSourceSiteTXT();
-        //            break;
-        //        case FileGeneratorEnum.Province:
-        //            //txtService.GenerateProvinceTXT();
-        //            break;
-        //        case FileGeneratorEnum.Root:
-        //            //txtService.GenerateRootTXT();
-        //            break;
-        //        case FileGeneratorEnum.Sector:
-        //            //txtService.GenerateSectorTXT();
-        //            break;
-        //        case FileGeneratorEnum.Subsector:
-        //            //txtService.GenerateSubsectorTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformDensities:
-        //            //txtService.GenerateSubsectorFaecalColiformDensitiesTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformSummaryStat:
-        //            //txtService.GenerateSubsectorFaecalColiformSummaryStatTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteFaecalColiformDensities:
-        //            //txtService.GenerateSubsectorMWQMSiteFaecalColiformDensitiesTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSalinity:
-        //            //txtService.GenerateSubsectorMWQMSiteSalinityTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummary:
-        //            //txtService.GenerateSubsectorMWQMSiteSummaryTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummaryLowPrecipitation:
-        //            //txtService.GenerateSubsectorMWQMSiteSummaryLowPrecipitationTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteWaterTemperature:
-        //            //txtService.GenerateSubsectorMWQMSiteWaterTemperatureTXT();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceInfo:
-        //            //txtService.GenerateSubsectorPollutionSourceInfoTXT();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    UpdateAppTaskWithDeleteOrError();
-        //}
-        //public void GenerateDocOfTypeXLSX(FileGeneratorEnum fileGenerator)
-        //{
-        //    XlsxService xlsxService = new XlsxService(_TaskRunnerBaseService);
-
-        //    switch (fileGenerator)
-        //    {
-        //        case FileGeneratorEnum.Area:
-        //            xlsxService.GenerateAreaXLSX();
-        //            break;
-        //        case FileGeneratorEnum.Country:
-        //            xlsxService.GenerateCountryXLSX();
-        //            break;
-        //        case FileGeneratorEnum.Infrastructure:
-        //            //xlsxService.GenerateInfrastructureXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SamplingPlan:
-        //            xlsxService.GenerateSamplingPlanXLSX();
-        //            break;
-        //        case FileGeneratorEnum.MWQMSite:
-        //            //xlsxService.GenerateMWQMSiteXLSX();
-        //            break;
-        //        case FileGeneratorEnum.Municipality:
-        //            xlsxService.GenerateMunicipalityXLSX();
-        //            break;
-        //        case FileGeneratorEnum.PolSourceSite:
-        //            //xlsxService.GeneratePolSourceSiteXLSX();
-        //            break;
-        //        case FileGeneratorEnum.Province:
-        //            xlsxService.GenerateProvinceXLSX();
-        //            break;
-        //        case FileGeneratorEnum.Root:
-        //            xlsxService.GenerateRootXLSX();
-        //            break;
-        //        case FileGeneratorEnum.Sector:
-        //            xlsxService.GenerateSectorXLSX();
-        //            break;
-        //        case FileGeneratorEnum.Subsector:
-        //            xlsxService.GenerateSubsectorXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformDensities:
-        //            //xlsxService.GenerateSubsectorFaecalColiformDensitiesXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformSummaryStat:
-        //            //xlsxService.GenerateSubsectorFaecalColiformSummaryStatXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteFaecalColiformDensities:
-        //            //xlsxService.GenerateSubsectorMWQMSiteFaecalColiformDensitiesXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSalinity:
-        //            //xlsxService.GenerateSubsectorMWQMSiteSalinityXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummary:
-        //            //xlsxService.GenerateSubsectorMWQMSiteSummaryXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummaryLowPrecipitation:
-        //            //xlsxService.GenerateSubsectorMWQMSiteSummaryLowPrecipitationXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteWaterTemperature:
-        //            //xlsxService.GenerateSubsectorMWQMSiteWaterTemperatureXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceInfo:
-        //            //xlsxService.GenerateSubsectorPollutionSourceInfoXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceFieldSheet:
-        //            xlsxService.GenerateSubsectorPollutionSourceFieldSheetXLSX();
-        //            break;
-        //        case FileGeneratorEnum.TideSite:
-        //            xlsxService.GenerateTideSiteXLSX();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    UpdateAppTaskWithDeleteOrError();
-        //}
-        //public void GenerateDocOfTypeXLSXAndPDF(FileGeneratorEnum fileGenerator)
-        //{
-        //    XlsxService xlsxService = new XlsxService(_TaskRunnerBaseService);
-
-        //    switch (_BWObj.fileGenerator)
-        //    {
-        //        case FileGeneratorEnum.Area:
-        //            xlsxService.GenerateAreaXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Country:
-        //            xlsxService.GenerateCountryXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Infrastructure:
-        //            //xlsxService.GenerateInfrastructureXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SamplingPlan:
-        //            //xlsxService.GenerateSamplingPlanXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.MWQMSite:
-        //            //xlsxService.GenerateMWQMSiteXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Municipality:
-        //            xlsxService.GenerateMunicipalityXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.PolSourceSite:
-        //            //xlsxService.GeneratePolSourceSiteXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Province:
-        //            xlsxService.GenerateProvinceXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Root:
-        //            xlsxService.GenerateRootXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Sector:
-        //            xlsxService.GenerateSectorXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.Subsector:
-        //            xlsxService.GenerateSubsectorXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformDensities:
-        //            //xlsxService.GenerateSubsectorFaecalColiformDensitiesXLSX();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorFaecalColiformSummaryStat:
-        //            //xlsxService.GenerateSubsectorFaecalColiformSummaryStatXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteFaecalColiformDensities:
-        //            //xlsxService.GenerateSubsectorMWQMSiteFaecalColiformDensitiesXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSalinity:
-        //            //xlsxService.GenerateSubsectorMWQMSiteSalinityXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummary:
-        //            //xlsxService.GenerateSubsectorMWQMSiteSummaryXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteSummaryLowPrecipitation:
-        //            //xlsxService.GenerateSubsectorMWQMSiteSummaryLowPrecipitationXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorMWQMSiteWaterTemperature:
-        //            //xlsxService.GenerateSubsectorMWQMSiteWaterTemperatureXLSXAndPDF();
-        //            break;
-        //        case FileGeneratorEnum.SubsectorPollutionSourceInfo:
-        //            //xlsxService.GenerateSubsectorPollutionSourceInfoXLSXAndPDF();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    UpdateAppTaskWithDeleteOrError();
-        //}
         public string GetCap(string str)
         {
             string CapStr = "";
@@ -1697,24 +1173,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return CapStr;
         }
-        //public FileInfo GetFileInfo(GenerateDocParams generateDocParams)
-        //{
-        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService.generateDocParams.TVItemID);
-
-        //    DirectoryInfo di = new DirectoryInfo(ServerFilePath);
-        //    if (!di.Exists)
-        //        di.Create();
-
-        //    string ServerFileName = _TaskRunnerBaseService._BWObj.FileName;
-
-        //    FileInfo fi = new FileInfo(ServerFilePath + ServerFileName);
-
-        //    if (fi.Exists)
-        //        fi.Delete();
-
-        //    return fi;
-        //}
         public List<TextLanguage> GetTextLanguageList()
         {
             List<TextLanguage> TextLanguageList = new List<TextLanguage>();

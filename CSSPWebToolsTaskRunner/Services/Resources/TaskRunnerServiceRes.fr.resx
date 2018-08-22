@@ -1506,4 +1506,19 @@
   <data name="CouldNotDelete_Error_" xml:space="preserve">
     <value>Could not delete {0}. Error [{1}]. (fr)</value>
   </data>
+  <data name="ClassificationInputsKML" xml:space="preserve">
+    <value>Classification Inputs KML (fr)</value>
+  </data>
+  <data name="GroupingInputsKML" xml:space="preserve">
+    <value>Grouping Inputs KML (fr)</value>
+  </data>
+  <data name="MWQMSitesAndPolSourceSitesKML" xml:space="preserve">
+    <value>MWQMSites and PolSourceSites KML (fr)</value>
+  </data>
+  <data name="TVItemLink" xml:space="preserve">
+    <value>TVItemLink</value>
+  </data>
+  <data name="TVItemLinkID" xml:space="preserve">
+    <value>TVItemLinkID</value>
+  </data>
 </root>

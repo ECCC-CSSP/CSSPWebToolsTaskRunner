@@ -412,6 +412,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Classification Inputs KML.
+        /// </summary>
+        public static string ClassificationInputsKML {
+            get {
+                return ResourceManager.GetString("ClassificationInputsKML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClientFullPath.
         /// </summary>
         public static string ClientFullPath {
@@ -1690,6 +1699,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grouping Inputs KML.
+        /// </summary>
+        public static string GroupingInputsKML {
+            get {
+                return ResourceManager.GetString("GroupingInputsKML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HasHourly Or HasDaily Or HasMonthly Has To Be True.
         /// </summary>
         public static string HasHourlyOrHasDailyOrHasMonthlyHasToBeTrue {
@@ -2586,6 +2604,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MWQMSiteSampleDataAvailability {
             get {
                 return ResourceManager.GetString("MWQMSiteSampleDataAvailability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMSites and PolSourceSites KML.
+        /// </summary>
+        public static string MWQMSitesAndPolSourceSitesKML {
+            get {
+                return ResourceManager.GetString("MWQMSitesAndPolSourceSitesKML", resourceCulture);
             }
         }
         
@@ -3990,6 +4017,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string TVItemLanguage {
             get {
                 return ResourceManager.GetString("TVItemLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVItemLink.
+        /// </summary>
+        public static string TVItemLink {
+            get {
+                return ResourceManager.GetString("TVItemLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVItemLinkID.
+        /// </summary>
+        public static string TVItemLinkID {
+            get {
+                return ResourceManager.GetString("TVItemLinkID", resourceCulture);
             }
         }
         
