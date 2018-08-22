@@ -1028,15 +1028,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 foreach (TVItemModel tvItemModel in tvitemModelPSSList)
                 {
+                    PolSourceSiteModel polSourceSiteModel = polSourceSiteModelList.Where(c => c.PolSourceSiteTVItemID == tvItemModel.TVItemID).FirstOrDefault();
+
                     sb.AppendLine($@"			    <Placemark>");
-                    if (tvItemModel.TVText.Contains(" "))
-                    {
-                        sb.AppendLine($@"			    	<name>P_{tvItemModel.TVText.Substring(tvItemModel.TVText.LastIndexOf(" "))}</name>");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"			    	<name>P_{tvItemModel.TVText}</name>");
-                    }
+                    sb.AppendLine($@"			    <name>P{ polSourceSiteModel.Site }</name>");
                     sb.AppendLine($@"	            <visibility>0</visibility>");
                     sb.AppendLine($@"               <description><![CDATA[");
 
@@ -1184,14 +1179,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 foreach (TVItemModel tvItemModel in tvitemModelMWQMSiteList)
                 {
                     sb.AppendLine($@"			    <Placemark>");
-                    if (tvItemModel.TVText.Contains(" "))
-                    {
-                        sb.AppendLine($@"			    	<name>S_{tvItemModel.TVText.Substring(0, tvItemModel.TVText.IndexOf(" "))}</name>");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"			    	<name>S_{tvItemModel.TVText}</name>");
-                    }
+                    sb.AppendLine($@"			    <name>S{tvItemModel.TVText}</name>");
                     sb.AppendLine($@"	            <visibility>0</visibility>");
                     sb.AppendLine($@"               <description><![CDATA[");
                     sb.AppendLine($@"                <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
