@@ -375,12 +375,16 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"</kml>");
 
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
+            StreamWriter sw = fi.CreateText();
+            sw.Write(sb.ToString());
+            sw.Close();
+            
+            //UnicodeEncoding encoding = new UnicodeEncoding();
 
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
+            //FileStream fs = fi.Create();
+            //byte[] bytes = encoding.GetBytes(sb.ToString());
+            //fs.Write(bytes, 0, bytes.Length);
+            //fs.Close();
 
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.KMZOfMWQMSites, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -527,12 +531,16 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine($@"</Document>");
             sb.AppendLine($@"</kml>");
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
+            StreamWriter sw = fi.CreateText();
+            sw.Write(sb.ToString());
+            sw.Close();
 
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
+            //UnicodeEncoding encoding = new UnicodeEncoding();
+
+            //FileStream fs = fi.Create();
+            //byte[] bytes = encoding.GetBytes(sb.ToString());
+            //fs.Write(bytes, 0, bytes.Length);
+            //fs.Close();
 
             fi = new FileInfo(ServerPath + FileName);
 
@@ -729,12 +737,16 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine($@"</Document>");
             sb.AppendLine($@"</kml>");
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
+            StreamWriter sw = fi.CreateText();
+            sw.Write(sb.ToString());
+            sw.Close();
+            
+            //UnicodeEncoding encoding = new UnicodeEncoding();
 
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
+            //FileStream fs = fi.Create();
+            //byte[] bytes = encoding.GetBytes(sb.ToString());
+            //fs.Write(bytes, 0, bytes.Length);
+            //fs.Close();
 
             fi = new FileInfo(ServerPath + FileName);
 
@@ -1227,7 +1239,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             if (mapInfoPointModelList.Count > 0)
                             {
                                 sb.AppendLine($@"			        <Placemark>");
-                                sb.AppendLine($@"			        	<name>I_{tvItemModel.TVText}</name>");
+                                sb.AppendLine($@"			        	<name>{tvItemModel.TVText}</name>");
                                 sb.AppendLine($@"	                    <visibility>0</visibility>");
                                 sb.AppendLine($@"                       <description><![CDATA[");
                                 sb.AppendLine($@"                        <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
@@ -1260,12 +1272,16 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine($@"</Document>");
             sb.AppendLine($@"</kml>");
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
+            StreamWriter sw = fi.CreateText();
+            sw.Write(sb.ToString());
+            sw.Close();
 
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
+            //UnicodeEncoding encoding = new UnicodeEncoding();
+
+            //FileStream fs = fi.Create();
+            //byte[] bytes = encoding.GetBytes(sb.ToString());
+            //fs.Write(bytes, 0, bytes.Length);
+            //fs.Close();
 
             fi = new FileInfo(ServerPath + FileName);
 

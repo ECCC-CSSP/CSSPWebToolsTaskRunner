@@ -315,7 +315,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 foreach (PolyObj polyObj in polyObjList2.Where(c => c.Subsector == TVTextSS).OrderBy(c => c.Classification))
                 {
                     Ordinal += 1;
-                    //richTextBoxStatus.AppendText($"{TVTextSS}\t{polyObj.Classification}\r\n");
 
                     string TVTextClass = "";
                     TVTypeEnum tvType = TVTypeEnum.Error;
@@ -378,35 +377,48 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     bool CoordListIsDifferent = false;
                     List<MapInfoModel> mapInfoModelList = mapInfoService.GetMapInfoModelListWithTVItemIDDB(tvItemModelClass.TVItemID);
-                    foreach (MapInfoModel mapInfoModel in mapInfoModelList)
+                    if (mapInfoModelList.Count == 0)
                     {
-                        if (mapInfoModel.TVType == tvType)
+                        MapInfoModel mapInfoModelRet = tvItemService.CreateMapInfoObjectDB(polyObj.coordList, MapInfoDrawTypeEnum.Polyline, tvType, tvItemModelClass.TVItemID);
+                        if (!string.IsNullOrWhiteSpace(mapInfoModelRet.Error))
                         {
-                            List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithMapInfoIDDB(mapInfoModel.MapInfoID);
-                            if (mapInfoPointModelList.Count != polyObj.coordList.Count)
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.MapInfo, mapInfoModelRet.Error);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.MapInfo, mapInfoModelRet.Error);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        foreach (MapInfoModel mapInfoModel in mapInfoModelList)
+                        {
+                            if (mapInfoModel.TVType == tvType)
                             {
-                                CoordListIsDifferent = true;
-                            }
-                            else
-                            {
-                                for (int i = 0, count = mapInfoPointModelList.Count; i < count; i++)
+                                List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithMapInfoIDDB(mapInfoModel.MapInfoID);
+                                if (mapInfoPointModelList.Count != polyObj.coordList.Count)
                                 {
-                                    if (!(mapInfoPointModelList[i].Lat == polyObj.coordList[i].Lat && mapInfoPointModelList[i].Lng == polyObj.coordList[i].Lng))
+                                    CoordListIsDifferent = true;
+                                }
+                                else
+                                {
+                                    for (int i = 0, count = mapInfoPointModelList.Count; i < count; i++)
                                     {
-                                        CoordListIsDifferent = true;
-                                        break;
+                                        if (!(mapInfoPointModelList[i].Lat == polyObj.coordList[i].Lat && mapInfoPointModelList[i].Lng == polyObj.coordList[i].Lng))
+                                        {
+                                            CoordListIsDifferent = true;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
 
-                            if (CoordListIsDifferent)
-                            {
-                                MapInfoModel mapInfoModelDeletRet = mapInfoService.PostDeleteMapInfoDB(mapInfoModel.MapInfoID);
-                                if (!string.IsNullOrWhiteSpace(mapInfoModelDeletRet.Error))
+                                if (CoordListIsDifferent)
                                 {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDelete_Error_, TaskRunnerServiceRes.MapInfo, mapInfoModelDeletRet.Error);
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDelete_Error_", TaskRunnerServiceRes.MapInfo, mapInfoModelDeletRet.Error);
-                                    return;
+                                    MapInfoModel mapInfoModelDeletRet = mapInfoService.PostDeleteMapInfoDB(mapInfoModel.MapInfoID);
+                                    if (!string.IsNullOrWhiteSpace(mapInfoModelDeletRet.Error))
+                                    {
+                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDelete_Error_, TaskRunnerServiceRes.MapInfo, mapInfoModelDeletRet.Error);
+                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDelete_Error_", TaskRunnerServiceRes.MapInfo, mapInfoModelDeletRet.Error);
+                                        return;
+                                    }
                                 }
                             }
                         }
