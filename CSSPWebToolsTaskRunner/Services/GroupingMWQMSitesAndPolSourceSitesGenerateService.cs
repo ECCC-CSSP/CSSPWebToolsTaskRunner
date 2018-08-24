@@ -273,6 +273,7 @@ namespace CSSPWebToolsTaskRunner.Services
             // getting all active MWQMSites and PolSourceSites under the province
             List<TVItem> tvItemMWQMSiteList = new List<TVItem>();
             List<TVItem> tvItemPSSList = new List<TVItem>();
+            List<TVItem> tvItemInfraList = new List<TVItem>();
             using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
             {
                 tvItemMWQMSiteList = (from c in db2.TVItems
@@ -287,6 +288,13 @@ namespace CSSPWebToolsTaskRunner.Services
                                  && c.TVType == (int)TVTypeEnum.PolSourceSite
                                  && c.IsActive == true
                                  select c).ToList();
+
+                tvItemPSSList = (from c in db2.TVItems
+                                 where c.TVPath.StartsWith(tvItemModelProv.TVPath + "p")
+                                 && c.TVType == (int)TVTypeEnum.Infrastructure
+                                 && c.IsActive == true
+                                 select c).ToList();
+
             }
 
             List<TVItemModel> tvitemModelSSList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProv.TVItemID, TVTypeEnum.Subsector);
@@ -331,6 +339,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     List<MapInfo> mapInfoMWQMSiteList2 = new List<MapInfo>();
                     List<MapInfo> mapInfoPSSList2 = new List<MapInfo>();
+                    List<MapInfo> mapInfoInfraList2 = new List<MapInfo>();
 
                     using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
                     {
@@ -357,6 +366,19 @@ namespace CSSPWebToolsTaskRunner.Services
                                               && lng <= polyObj.MaxLng
                                               select new { c, lat, lng }).ToList();
 
+                        var mapInfoInfraList = (from c in db2.MapInfos
+                                              let lat = (from d in db2.MapInfoPoints where c.MapInfoID == d.MapInfoID select d).FirstOrDefault().Lat
+                                              let lng = (from d in db2.MapInfoPoints where c.MapInfoID == d.MapInfoID select d).FirstOrDefault().Lng
+                                              where (c.TVType == (int)TVTypeEnum.WasteWaterTreatmentPlant
+                                              || c.TVType == (int)TVTypeEnum.LiftStation
+                                              || c.TVType == (int)TVTypeEnum.LineOverflow)
+                                              && c.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
+                                              && lat >= polyObj.MinLat
+                                              && lat <= polyObj.MaxLat
+                                              && lng >= polyObj.MinLng
+                                              && lng <= polyObj.MaxLng
+                                              select new { c, lat, lng }).ToList();
+
 
                         foreach (var mapInfo in mapInfoMWQMSiteList)
                         {
@@ -374,6 +396,14 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
                         }
 
+                        foreach (var mapInfo in mapInfoInfraList)
+                        {
+                            if (mapInfoService.CoordInPolygon(polyObj.coordList, new Coord() { Lat = (float)mapInfo.lat, Lng = (float)mapInfo.lng, Ordinal = 0 }))
+                            {
+                                mapInfoInfraList2.Add(mapInfo.c);
+                            }
+                        }
+
                     }
 
                     foreach (MapInfo mapInfoMWQMSite in mapInfoMWQMSiteList2)
@@ -381,7 +411,6 @@ namespace CSSPWebToolsTaskRunner.Services
                         TVItem tvItemMWQMSite = tvItemMWQMSiteList.Where(c => c.TVItemID == mapInfoMWQMSite.TVItemID).FirstOrDefault();
                         if (tvItemMWQMSite != null)
                         {
-
                             int TVLevel = tvItemMWQMSite.TVLevel;
                             string TVPath = tvItemMWQMSite.TVPath;
                             foreach (MapInfo mapInfoPSS in mapInfoPSSList2)
@@ -399,6 +428,40 @@ namespace CSSPWebToolsTaskRunner.Services
                                 };
 
                                 TVItemLinkModel tvItemLinkAlreadyExist = tvItemLinkService.GetTVItemLinkModelWithFromTVItemIDAndToTVItemIDDB(mapInfoMWQMSite.TVItemID, mapInfoPSS.TVItemID);
+                                if (string.IsNullOrWhiteSpace(tvItemLinkAlreadyExist.Error))
+                                {
+                                    tvItemLinkModelNewList.Add(tvItemLinkAlreadyExist);
+                                }
+                                else
+                                {
+
+                                    TVItemLinkModel tvItemLinkModelRet = tvItemLinkService.PostAddTVItemLinkDB(tvItemLinkModelNew);
+                                    if (!string.IsNullOrWhiteSpace(tvItemLinkModelRet.Error))
+                                    {
+                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVItemLink, tvItemLinkModelRet.Error);
+                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVItemLink, tvItemLinkModelRet.Error);
+                                        return;
+                                    }
+
+                                    tvItemLinkModelNewList.Add(tvItemLinkModelRet);
+                                }
+                            }
+
+                            foreach (MapInfo mapInfoInfra in mapInfoInfraList2)
+                            {
+
+                                TVItemLinkModel tvItemLinkModelNew = new TVItemLinkModel()
+                                {
+                                    FromTVItemID = mapInfoMWQMSite.TVItemID,
+                                    ToTVItemID = mapInfoInfra.TVItemID,
+                                    FromTVType = TVTypeEnum.MWQMSite,
+                                    ToTVType = TVTypeEnum.Infrastructure,
+                                    Ordinal = 0,
+                                    TVLevel = TVLevel,
+                                    TVPath = TVPath,
+                                };
+
+                                TVItemLinkModel tvItemLinkAlreadyExist = tvItemLinkService.GetTVItemLinkModelWithFromTVItemIDAndToTVItemIDDB(mapInfoMWQMSite.TVItemID, mapInfoInfra.TVItemID);
                                 if (string.IsNullOrWhiteSpace(tvItemLinkAlreadyExist.Error))
                                 {
                                     tvItemLinkModelNewList.Add(tvItemLinkAlreadyExist);
