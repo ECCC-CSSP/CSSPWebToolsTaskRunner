@@ -2590,6 +2590,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MWQMSitePolSourceSite.
+        /// </summary>
+        public static string MWQMSitePolSourceSite {
+            get {
+                return ResourceManager.GetString("MWQMSitePolSourceSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MWQM Sites.
         /// </summary>
         public static string MWQMSites {

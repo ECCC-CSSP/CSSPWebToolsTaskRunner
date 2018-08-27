@@ -53,7 +53,7 @@ namespace CSSPWebToolsTaskRunner.Services
             ProvinceToolsService provinceToolsService = new ProvinceToolsService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-            TVItemLinkService tvItemLinkService = new TVItemLinkService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMSitePolSourceSiteService mwqmSitePolSourceSiteService = new MWQMSitePolSourceSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
             {
@@ -261,7 +261,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             #endregion Reading the GroupingInputs__XX.KML
 
-            #region Uploading TVItemLinks in CSSPWebTools
+            #region Uploading MWQMSitePolSourceSite in CSSPWebTools
             TVItemModel tvItemModelProv = tvItemService.GetTVItemModelWithTVItemIDDB(ProvinceTVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelProv.Error))
             {
@@ -313,8 +313,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 string TVTextSS = tvItemModelSS.TVText.Substring(0, tvItemModelSS.TVText.IndexOf(" "));
 
-                List<TVItemLinkModel> tvItemLinkModelNewList = new List<TVItemLinkModel>();
-                List<TVItemLinkModel> tvItemLinkModelExistList = new List<TVItemLinkModel>();
+                List<MWQMSitePolSourceSiteModel> mwqmSitePolSourceSiteModelNewList = new List<MWQMSitePolSourceSiteModel>();
+                List<MWQMSitePolSourceSiteModel> mwqmSitePolSourceSiteModelExistList = new List<MWQMSitePolSourceSiteModel>();
 
                 List<TVItem> tvItemMWQMSiteSubsectorList = new List<TVItem>();
                 using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
@@ -329,9 +329,14 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 foreach (TVItem tvItem in tvItemMWQMSiteSubsectorList)
                 {
-                    foreach (TVItemLinkModel tvItemLinkModel in tvItemLinkService.GetTVItemLinkModelListWithFromTVItemIDDB(tvItem.TVItemID))
+                    foreach (MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModel in mwqmSitePolSourceSiteService.GetMWQMSitePolSourceSiteModelListWithMWQMSiteTVItemIDDB(tvItem.TVItemID, TVTypeEnum.PolSourceSite))
                     {
-                        tvItemLinkModelExistList.Add(tvItemLinkModel);
+                        mwqmSitePolSourceSiteModelExistList.Add(mwqmSitePolSourceSiteModel);
+                    }
+
+                    foreach (MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModel in mwqmSitePolSourceSiteService.GetMWQMSitePolSourceSiteModelListWithMWQMSiteTVItemIDDB(tvItem.TVItemID, TVTypeEnum.Infrastructure))
+                    {
+                        mwqmSitePolSourceSiteModelExistList.Add(mwqmSitePolSourceSiteModel);
                     }
                 }
 
@@ -416,93 +421,87 @@ namespace CSSPWebToolsTaskRunner.Services
                             foreach (MapInfo mapInfoPSS in mapInfoPSSList2)
                             {
 
-                                TVItemLinkModel tvItemLinkModelNew = new TVItemLinkModel()
+                                MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModelNew = new MWQMSitePolSourceSiteModel()
                                 {
-                                    FromTVItemID = mapInfoMWQMSite.TVItemID,
-                                    ToTVItemID = mapInfoPSS.TVItemID,
-                                    FromTVType = TVTypeEnum.MWQMSite,
-                                    ToTVType = TVTypeEnum.PolSourceSite,
-                                    Ordinal = 0,
-                                    TVLevel = TVLevel,
-                                    TVPath = TVPath,
+                                    MWQMSiteTVItemID = mapInfoMWQMSite.TVItemID,
+                                    PolSourceSiteTVItemID = mapInfoPSS.TVItemID,
+                                    TVType = TVTypeEnum.PolSourceSite,
+                                    LinkReasons = "Please identify the reasons [why, when, how,...] the pollution source site can effect the monitoring site."
                                 };
 
-                                TVItemLinkModel tvItemLinkAlreadyExist = tvItemLinkService.GetTVItemLinkModelWithFromTVItemIDAndToTVItemIDDB(mapInfoMWQMSite.TVItemID, mapInfoPSS.TVItemID);
-                                if (string.IsNullOrWhiteSpace(tvItemLinkAlreadyExist.Error))
+                                MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModelAlreadyExist = mwqmSitePolSourceSiteService.GetMWQMSitePolSourceSiteModelWithMWQMSiteTVItemIDAndPolSourceSiteTVItemIDDB(mapInfoMWQMSite.TVItemID, mapInfoPSS.TVItemID);
+                                if (string.IsNullOrWhiteSpace(mwqmSitePolSourceSiteModelAlreadyExist.Error))
                                 {
-                                    tvItemLinkModelNewList.Add(tvItemLinkAlreadyExist);
+                                    mwqmSitePolSourceSiteModelNewList.Add(mwqmSitePolSourceSiteModelAlreadyExist);
                                 }
                                 else
                                 {
 
-                                    TVItemLinkModel tvItemLinkModelRet = tvItemLinkService.PostAddTVItemLinkDB(tvItemLinkModelNew);
-                                    if (!string.IsNullOrWhiteSpace(tvItemLinkModelRet.Error))
+                                    MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModelRet = mwqmSitePolSourceSiteService.PostAddMWQMSitePolSourceSiteDB(mwqmSitePolSourceSiteModelNew);
+                                    if (!string.IsNullOrWhiteSpace(mwqmSitePolSourceSiteModelRet.Error))
                                     {
-                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVItemLink, tvItemLinkModelRet.Error);
-                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVItemLink, tvItemLinkModelRet.Error);
+                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.MWQMSitePolSourceSite, mwqmSitePolSourceSiteModelRet.Error);
+                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.MWQMSitePolSourceSite, mwqmSitePolSourceSiteModelRet.Error);
                                         return;
                                     }
 
-                                    tvItemLinkModelNewList.Add(tvItemLinkModelRet);
+                                    mwqmSitePolSourceSiteModelNewList.Add(mwqmSitePolSourceSiteModelRet);
                                 }
                             }
 
                             foreach (MapInfo mapInfoInfra in mapInfoInfraList2)
                             {
 
-                                TVItemLinkModel tvItemLinkModelNew = new TVItemLinkModel()
+                                MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModelNew = new MWQMSitePolSourceSiteModel()
                                 {
-                                    FromTVItemID = mapInfoMWQMSite.TVItemID,
-                                    ToTVItemID = mapInfoInfra.TVItemID,
-                                    FromTVType = TVTypeEnum.MWQMSite,
-                                    ToTVType = TVTypeEnum.Infrastructure,
-                                    Ordinal = 0,
-                                    TVLevel = TVLevel,
-                                    TVPath = TVPath,
+                                    MWQMSiteTVItemID = mapInfoMWQMSite.TVItemID,
+                                    PolSourceSiteTVItemID = mapInfoInfra.TVItemID,
+                                    TVType = TVTypeEnum.Infrastructure,
+                                    LinkReasons = "Please identify the reasons [why, when, how,...] the pollution source site can effect the monitoring site."
                                 };
 
-                                TVItemLinkModel tvItemLinkAlreadyExist = tvItemLinkService.GetTVItemLinkModelWithFromTVItemIDAndToTVItemIDDB(mapInfoMWQMSite.TVItemID, mapInfoInfra.TVItemID);
-                                if (string.IsNullOrWhiteSpace(tvItemLinkAlreadyExist.Error))
+                                MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModelAlreadyExist = mwqmSitePolSourceSiteService.GetMWQMSitePolSourceSiteModelWithMWQMSiteTVItemIDAndPolSourceSiteTVItemIDDB(mapInfoMWQMSite.TVItemID, mapInfoInfra.TVItemID);
+                                if (string.IsNullOrWhiteSpace(mwqmSitePolSourceSiteModelAlreadyExist.Error))
                                 {
-                                    tvItemLinkModelNewList.Add(tvItemLinkAlreadyExist);
+                                    mwqmSitePolSourceSiteModelNewList.Add(mwqmSitePolSourceSiteModelAlreadyExist);
                                 }
                                 else
                                 {
 
-                                    TVItemLinkModel tvItemLinkModelRet = tvItemLinkService.PostAddTVItemLinkDB(tvItemLinkModelNew);
-                                    if (!string.IsNullOrWhiteSpace(tvItemLinkModelRet.Error))
+                                    MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModelRet = mwqmSitePolSourceSiteService.PostAddMWQMSitePolSourceSiteDB(mwqmSitePolSourceSiteModelNew);
+                                    if (!string.IsNullOrWhiteSpace(mwqmSitePolSourceSiteModelRet.Error))
                                     {
-                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVItemLink, tvItemLinkModelRet.Error);
-                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVItemLink, tvItemLinkModelRet.Error);
+                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.MWQMSitePolSourceSite, mwqmSitePolSourceSiteModelRet.Error);
+                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.MWQMSitePolSourceSite, mwqmSitePolSourceSiteModelRet.Error);
                                         return;
                                     }
 
-                                    tvItemLinkModelNewList.Add(tvItemLinkModelRet);
+                                    mwqmSitePolSourceSiteModelNewList.Add(mwqmSitePolSourceSiteModelRet);
                                 }
                             }
                         }
                     }
                 }
 
-                foreach (TVItemLinkModel tvItemLinkModel in tvItemLinkModelExistList)
+                foreach (MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModel in mwqmSitePolSourceSiteModelExistList)
                 {
-                    bool ShouldDelete = !((from c in tvItemLinkModelNewList
-                                           where c.TVItemLinkID == tvItemLinkModel.TVItemLinkID
+                    bool ShouldDelete = !((from c in mwqmSitePolSourceSiteModelNewList
+                                           where c.MWQMSitePolSourceSiteID == mwqmSitePolSourceSiteModel.MWQMSitePolSourceSiteID
                                            select c).Any());
 
                     if (ShouldDelete)
                     {
-                        TVItemLinkModel tvItemLinkModelDelRet = tvItemLinkService.PostDeleteTVItemLinkWithTVItemLinkIDDB(tvItemLinkModel.TVItemLinkID);
-                        if (!string.IsNullOrWhiteSpace(tvItemLinkModelDelRet.Error))
+                        MWQMSitePolSourceSiteModel mwqmSitePolSourceSiteModelDelRet = mwqmSitePolSourceSiteService.PostDeleteMWQMSitePolSourceSiteDB(mwqmSitePolSourceSiteModel.MWQMSitePolSourceSiteID);
+                        if (!string.IsNullOrWhiteSpace(mwqmSitePolSourceSiteModelDelRet.Error))
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDelete_Error_, TaskRunnerServiceRes.TVItemLink, tvItemLinkModelDelRet.Error);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDelete_Error_", TaskRunnerServiceRes.TVItemLink, tvItemLinkModelDelRet.Error);
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDelete_Error_, TaskRunnerServiceRes.MWQMSitePolSourceSite, mwqmSitePolSourceSiteModelDelRet.Error);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDelete_Error_", TaskRunnerServiceRes.MWQMSitePolSourceSite, mwqmSitePolSourceSiteModelDelRet.Error);
                             return;
                         }
                     }
                 }
             }
-            #endregion Uploading TVItemLink in CSSPWebTools
+            #endregion Uploading MWQMSitePolSourceSite in CSSPWebTools
 
             appTaskModel.PercentCompleted = 100;
             appTaskService.PostUpdateAppTask(appTaskModel);
