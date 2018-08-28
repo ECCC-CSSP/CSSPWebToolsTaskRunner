@@ -1236,7 +1236,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 MikeBoundaryConditionModel mbcmExist = mikeBoundaryConditionService.GetMikeBoundaryConditionModelWithMikeBoundaryConditionTVItemIDDB(tvItemModelBC.TVItemID);
                 if (string.IsNullOrWhiteSpace(mbcmExist.Error))
                 {
-                    MikeBoundaryConditionModel mbcmRet = mikeBoundaryConditionService.PostDeleteMikeBoundaryConditionDB(tvItemModelBC.TVItemID);
+                    MikeBoundaryConditionModel mbcmRet = mikeBoundaryConditionService.PostDeleteMikeBoundaryConditionDB(mbcmExist.MikeBoundaryConditionID);
                     if (!string.IsNullOrWhiteSpace(mbcmRet.Error))
                     {
                         NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDelete_With_Equal_Error_, TaskRunnerServiceRes.MIKEBoundaryCondition, TaskRunnerServiceRes.MikeBoundaryConditionTVItemID, tvItemModelBC.TVItemID, mbcmRet.Error);
