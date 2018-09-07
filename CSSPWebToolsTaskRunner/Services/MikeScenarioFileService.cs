@@ -23,6 +23,7 @@ using DHI.PFS;
 using System.Net;
 using System.Collections.Specialized;
 using Newtonsoft.Json;
+using DHI.Generic.MikeZero.DFS.mesh;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -4238,6 +4239,14 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
+            if (mikeScenarioModel.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null && mikeScenarioModel.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID > 0)
+            {
+                if (!string.IsNullOrWhiteSpace(CreateInititalConditionFileSalAndTempFromTVFileItemID(MikeScenarioTVItemID, (int)mikeScenarioModel.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID, fiM21_M3)))
+                {
+                    return;
+                }
+            }
+
             PFSFile pfsFile = new PFSFile(fiM21_M3.FullName);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
             {
@@ -4379,54 +4388,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TransDfsu + " | " + HydroDfsu);
                 return;
             }
-
-            //List<Element> ElementList = new List<Element>();
-            //List<Node> NodeList = new List<Node>();
-
-            //// ----------------------------------------
-            //// filling the ElementList and The NodeList
-            //// ----------------------------------------
-
-            //kmzServiceMikeScenario.FillElementListAndNodeList(dfsuFile, ElementList, NodeList);
-
-            //List<NodeLayer> TopNodeLayerList = new List<NodeLayer>();
-            //List<NodeLayer> BottomNodeLayerList = new List<NodeLayer>();
-            //List<ElementLayer> ElementLayerList = new List<ElementLayer>();
-
-
-            //kmzServiceMikeScenario.FillElementLayerList(dfsuFile, new List<int>() { 1 }, ElementList, ElementLayerList, TopNodeLayerList, BottomNodeLayerList);
-            //if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-            //{
-            //    return;
-            //}
-
-            //MikeSourceService mikeSourceService = new MikeSourceService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            //List<MikeSourceModel> mikeSourceModelList = mikeSourceService.GetMikeSourceModelListWithMikeScenarioTVItemIDDB(mikeScenarioModel.MikeScenarioTVItemID);
-            //foreach (MikeSourceModel msm in mikeSourceModelList)
-            //{
-            //    List<Node> ListOfNode = new List<Node>();
-            //    List<ElementLayer> ElementLayerContainingNode = new List<ElementLayer>();
-
-            //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            //    List<MapInfoPointModel> mapInfoPointModelMikeSourceList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(msm.MikeSourceTVItemID, TVTypeEnum.MikeSource, MapInfoDrawTypeEnum.Point);
-
-            //    Node n = new Node();
-            //    n.X = (float)mapInfoPointModelMikeSourceList[0].Lng;
-            //    n.Y = (float)mapInfoPointModelMikeSourceList[0].Lat;
-            //    ListOfNode.Add(n);
-
-            //    ElementLayerContainingNode = kmzServiceMikeScenario.GetElementSurrondingEachPoint(ElementLayerList, ListOfNode);
-
-            //    if (ElementLayerContainingNode.Count == 0)
-            //    {
-            //        if (msm.Include == true)
-            //        {
-            //            NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNullOrEmpty, TaskRunnerServiceRes.ElementLayerContainingNode);
-            //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNullOrEmpty", TaskRunnerServiceRes.ElementLayerContainingNode);
-            //            return;
-            //        }
-            //    }
-            //}
 
             dfsuFile.Close();
 
@@ -4625,6 +4586,223 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
         }
+
+        public string CreateInititalConditionFileSalAndTempFromTVFileItemID(int MikeScenarioTVItemID, int useSalinityAndTemperatureInitialConditionFromTVFileTVItemID, FileInfo fiM21_M3)
+        {
+            string NotUsed = "";
+            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            string DFSUFileName = "";
+            TVFileModel tvFileModelUseDFSUFile = tvFileService.GetTVFileModelWithTVFileTVItemIDDB(useSalinityAndTemperatureInitialConditionFromTVFileTVItemID);
+            if (string.IsNullOrWhiteSpace(tvFileModelUseDFSUFile.Error))
+            {
+                DFSUFileName = tvFileModelUseDFSUFile.ServerFilePath + tvFileModelUseDFSUFile.ServerFileName;
+            }
+
+            List<string> ParamTypeList = new List<string>() { "Salinity", "Temperature" };
+            foreach (string ParamType in ParamTypeList)
+            {
+                DfsuFile dfsuFile;
+                try
+                {
+                    dfsuFile = DfsuFile.Open(DFSUFileName);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotOpenFile_Error_, DFSUFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotOpenFile_Error_", DFSUFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return NotUsed;
+                }
+
+                DfsuDynamicItemInfo itemInfoParam = null;
+                foreach (DfsuDynamicItemInfo itemInfo in dfsuFile.ItemInfo)
+                {
+                    if (ParamType == "Salinity")
+                    {
+                        if (itemInfo.Quantity.Item == eumItem.eumISalinity)
+                        {
+                            itemInfoParam = itemInfo;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (itemInfo.Quantity.Item == eumItem.eumITemperature)
+                        {
+                            itemInfoParam = itemInfo;
+                            break;
+                        }
+                    }
+                }
+
+                DfsuBuilder dfsBuilder = DfsuBuilder.Create(DfsuFileType.Dfsu2D);
+                dfsBuilder.ApplicationTitle = dfsuFile.ApplicationTitle;
+                dfsBuilder.ApplicationVersion = dfsuFile.ApplicationVersion;
+                dfsBuilder.FileTitle = dfsuFile.FileTitle;
+                dfsBuilder.SetNodeIds(dfsuFile.NodeIds);
+                dfsBuilder.SetElementIds(dfsuFile.ElementIds);
+                dfsBuilder.SetProjection(dfsuFile.Projection);
+                dfsBuilder.SetNodes(dfsuFile.X, dfsuFile.Y, dfsuFile.Z, dfsuFile.Code);
+                dfsBuilder.SetElements(dfsuFile.ElementTable);
+
+                dfsBuilder.SetTimeInfo(dfsuFile.StartDateTime.AddSeconds((dfsuFile.NumberOfTimeSteps - 1) * dfsuFile.TimeStepInSeconds), dfsuFile.TimeStepInSeconds);
+                dfsBuilder.AddDynamicItem(itemInfoParam.Name, itemInfoParam.Quantity);
+
+                string ParamDfsuFileName = (ParamType == "Salinity" ? fiM21_M3.FullName.Replace(fiM21_M3.Name, "Salinity.dfsu") : fiM21_M3.FullName.Replace(fiM21_M3.Name, "Temperature.dfsu"));
+                DfsuFile dfsuFileParam = null;
+                try
+                {
+                    dfsuFileParam = dfsBuilder.CreateFile(ParamDfsuFileName);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return NotUsed;
+                }
+
+                IDfsItemData itemData = dfsuFile.ReadItemTimeStep(itemInfoParam.ItemNumber, dfsuFile.NumberOfTimeSteps - 1);
+
+                try
+                {
+                    dfsuFileParam.WriteItemTimeStep(1, 0, 0, itemData.Data);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return NotUsed;
+                }
+
+                dfsuFileParam.Close();
+
+                dfsuFile.Close();
+
+                FileInfo fiParam = new FileInfo(ParamDfsuFileName);
+
+                if (!fiParam.Exists)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ParamDfsuFileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ParamDfsuFileName);
+                    return NotUsed;
+                }
+
+                TVItemModel tvItemModelMikeScenario = tvItemService.GetTVItemModelWithTVItemIDDB(MikeScenarioTVItemID);
+                if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
+                    return NotUsed;
+                }
+
+                TVItemModel tvItemModelFileParam = null;
+                List<TVItemModel> tvItemModelFileList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(MikeScenarioTVItemID, TVTypeEnum.File);
+                foreach (TVItemModel tvItemModelFile in tvItemModelFileList)
+                {
+                    if (ParamType == "Salinity")
+                    {
+                        if (tvItemModelFile.TVText.ToLower().EndsWith("salinity.dfsu"))
+                        {
+                            tvItemModelFileParam = tvItemModelFile;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (tvItemModelFile.TVText.ToLower().EndsWith("temperature.dfsu"))
+                        {
+                            tvItemModelFileParam = tvItemModelFile;
+                            break;
+                        }
+                    }
+                }
+
+                if (tvItemModelFileParam == null)
+                {
+                    TVItemModel tvItemModelRet = tvItemService.PostAddChildTVItemDB(MikeScenarioTVItemID, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"), TVTypeEnum.File);
+                    if (!string.IsNullOrWhiteSpace(tvItemModelRet.Error))
+                    {
+                        // already exist
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, "MikeScenario", TaskRunnerServiceRes.TVText, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, "MikeScenario", TaskRunnerServiceRes.TVText, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"));
+                        return NotUsed;
+                    }
+
+                    TVFileModel tvFileModelNew = new TVFileModel()
+                    {
+                        ClientFilePath = "",
+                        FileDescription = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                        FileInfo = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                        FileCreatedDate_UTC = fiParam.CreationTimeUtc,
+                        FileSize_kb = (int)(fiParam.Length / 1024),
+                        Language = LanguageEnum.enAndfr,
+                        Year = DateTime.Now.Year,
+                        FromWater = null,
+                        FilePurpose = FilePurposeEnum.MikeInput,
+                        FileType = FileTypeEnum.DFSU,
+                        ServerFileName = fiParam.Name,
+                        ServerFilePath = fiParam.DirectoryName + @"\",
+                        TVFileTVItemID = tvItemModelRet.TVItemID,
+                    };
+
+                    TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
+                    if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                        return NotUsed;
+                    }
+
+                }
+                else
+                {
+                    TVFileModel tvFileModelSal = tvFileService.GetTVFileModelWithTVFileTVItemIDDB(tvItemModelFileParam.TVItemID);
+                    if (string.IsNullOrWhiteSpace(tvFileModelSal.Error))
+                    {
+                        tvFileModelSal.FileSize_kb = (int)(fiParam.Length / 1024);
+
+                        TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelSal);
+                        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            return NotUsed;
+                        }
+                    }
+                    else
+                    {
+                        TVFileModel tvFileModelNew = new TVFileModel()
+                        {
+                            ClientFilePath = "",
+                            FileDescription = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                            FileInfo = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                            FileCreatedDate_UTC = fiParam.CreationTimeUtc,
+                            FileSize_kb = (int)(fiParam.Length / 1024),
+                            Language = LanguageEnum.enAndfr,
+                            Year = DateTime.Now.Year,
+                            FromWater = null,
+                            FilePurpose = FilePurposeEnum.MikeInput,
+                            FileType = FileTypeEnum.DFSU,
+                            ServerFileName = fiParam.Name,
+                            ServerFilePath = fiParam.DirectoryName + @"\",
+                            TVFileTVItemID = tvItemModelFileParam.TVItemID,
+                        };
+
+                        TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
+                        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            return NotUsed;
+                        }
+                    }
+                }
+            }
+
+            return "";
+        }
+
         private bool SetFileName(PFSFile pfsFile, string Path, string FileName)
         {
             string NotUsed = "";
