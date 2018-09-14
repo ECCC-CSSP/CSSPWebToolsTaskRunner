@@ -862,6 +862,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not parse {0} as {1}.
+        /// </summary>
+        public static string CouldNotParse_As_ {
+            get {
+                return ResourceManager.GetString("CouldNotParse_As_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not parse [{0}] properly..
         /// </summary>
         public static string CouldNotParse_Properly {
@@ -930,6 +939,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotSaveExcelFile_Error_ {
             get {
                 return ResourceManager.GetString("CouldNotSaveExcelFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not start excel.
+        /// </summary>
+        public static string CouldNotStartExcel {
+            get {
+                return ResourceManager.GetString("CouldNotStartExcel", resourceCulture);
             }
         }
         
@@ -1731,6 +1749,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Hours {
             get {
                 return ResourceManager.GetString("Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HydrometricSite.
+        /// </summary>
+        public static string HydrometricSite {
+            get {
+                return ResourceManager.GetString("HydrometricSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HydrometricSiteTVItemID.
+        /// </summary>
+        public static string HydrometricSiteTVItemID {
+            get {
+                return ResourceManager.GetString("HydrometricSiteTVItemID", resourceCulture);
             }
         }
         
@@ -4129,6 +4165,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Variable {0} should be {1} it is {2}.
+        /// </summary>
+        public static string Variable_ShouldBe_ItIs_ {
+            get {
+                return ResourceManager.GetString("Variable_ShouldBe_ItIs_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Waiting to run.
         /// </summary>
         public static string WaitingToRun {
@@ -4251,6 +4296,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WritingFile_Completed {
             get {
                 return ResourceManager.GetString("WritingFile_Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong number of values. Should be {0}.
+        /// </summary>
+        public static string WrongNumberOfValuesShouldBe_ {
+            get {
+                return ResourceManager.GetString("WrongNumberOfValuesShouldBe_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong number of variables. Should be {0}.
+        /// </summary>
+        public static string WrongNumberOfVariablesShouldBe_ {
+            get {
+                return ResourceManager.GetString("WrongNumberOfVariablesShouldBe_", resourceCulture);
             }
         }
         

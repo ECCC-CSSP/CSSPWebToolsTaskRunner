@@ -1536,4 +1536,25 @@
   <data name="MWQMSitePolSourceSite" xml:space="preserve">
     <value>MWQMSitePolSourceSite</value>
   </data>
+  <data name="HydrometricSite" xml:space="preserve">
+    <value>HydrometricSite</value>
+  </data>
+  <data name="HydrometricSiteTVItemID" xml:space="preserve">
+    <value>HydrometricSiteTVItemID</value>
+  </data>
+  <data name="CouldNotParse_As_" xml:space="preserve">
+    <value>Could not parse {0} as {1}</value>
+  </data>
+  <data name="Variable_ShouldBe_ItIs_" xml:space="preserve">
+    <value>Variable {0} should be {1} it is {2}</value>
+  </data>
+  <data name="WrongNumberOfValuesShouldBe_" xml:space="preserve">
+    <value>Wrong number of values. Should be {0}</value>
+  </data>
+  <data name="WrongNumberOfVariablesShouldBe_" xml:space="preserve">
+    <value>Wrong number of variables. Should be {0}</value>
+  </data>
+  <data name="CouldNotStartExcel" xml:space="preserve">
+    <value>Could not start excel</value>
+  </data>
 </root>

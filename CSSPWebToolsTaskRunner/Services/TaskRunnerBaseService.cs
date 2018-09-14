@@ -483,7 +483,23 @@ namespace CSSPWebToolsTaskRunner.Services
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
                         AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
                         ClimateService climateService = new ClimateService(_TaskRunnerBaseService);
-                        climateService.UpdateClimateSitesInformationForProvinceTVItemID();
+                        climateService.UpdateClimateSitesInformationForCountryTVItemID();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
+                case AppTaskCommandEnum.UpdateHydrometricSiteInformation:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        HydrometricService hydrometricService = new HydrometricService(_TaskRunnerBaseService);
+                        hydrometricService.UpdateHydrometricSitesInformationForProvinceTVItemID();
                         if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                         {
                             appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
