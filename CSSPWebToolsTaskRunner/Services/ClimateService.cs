@@ -61,11 +61,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if ((sender as WebBrowser).Url == e.Url)
             {
-                if ((sender as WebBrowser).Url.ToString().Contains("historical_data/search_historic_data_stations_e.html"))
-                {
-                    //UpdateClimateSitesInformationForProvinceTVItemIDParse(sender, e);
-                }
-                else if ((sender as WebBrowser).Url.ToString().Contains("climate_data/monthly_data_e.html"))
+                if ((sender as WebBrowser).Url.ToString().Contains("climate_data/monthly_data_e.html"))
                 {
                     UpdateClimateSiteInfoLatLngWMOElevTCParse(sender, e);
                 }

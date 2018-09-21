@@ -1557,4 +1557,10 @@
   <data name="CouldNotStartExcel" xml:space="preserve">
     <value>Could not start excel</value>
   </data>
+  <data name="CouldNotFindHtmlElement_" xml:space="preserve">
+    <value>Could not find HTML Element {0}</value>
+  </data>
+  <data name="FedStationName" xml:space="preserve">
+    <value>FedStationName</value>
+  </data>
 </root>

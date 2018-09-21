@@ -781,6 +781,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find HTML Element {0}.
+        /// </summary>
+        public static string CouldNotFindHtmlElement_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindHtmlElement_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find part {0}. Current part is {1} in {2} at line {3}.
         /// </summary>
         public static string CouldNotFindPart_CurrentPartIs_In_AtLine_ {
@@ -1497,6 +1506,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string FCMPNPollutionContour {
             get {
                 return ResourceManager.GetString("FCMPNPollutionContour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FedStationName.
+        /// </summary>
+        public static string FedStationName {
+            get {
+                return ResourceManager.GetString("FedStationName", resourceCulture);
             }
         }
         

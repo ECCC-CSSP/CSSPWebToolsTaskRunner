@@ -737,7 +737,14 @@ namespace CSSPWebToolsTaskRunner.Services
                 mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelMWQMSite.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
 
                 sb.AppendLine(@"		<Point>");
-                sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
+                if (mapInfoPointModelList.Count == 0)
+                {
+                    sb.AppendLine(@"			<coordinates>0,0,0</coordinates>");
+                }
+                else
+                {
+                    sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
+                }
                 sb.AppendLine(@"		</Point>");
                 sb.AppendLine(@"	</Placemark>");
 

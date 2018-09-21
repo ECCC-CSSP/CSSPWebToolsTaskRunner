@@ -30,10 +30,15 @@ namespace CSSPWebToolsTaskRunner.Services
         public string URLUpdateHydrometricSiteInfoLatLngWMOElevTC = "http://Hydrometric.weather.gc.ca/HydrometricData/dailydata_e.html?timeframe=2&StationID={0}&Year=1800&Month=1&Day=01";
         public string UpdateHydrometricSiteDailyFromStartDateToEndDate = "http://Hydrometric.weather.gc.ca/HydrometricData/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month=1&Day=1&timeframe=2&submit=Download+Data";
         //public string GetHydrometricSiteDataForRun = "http://Hydrometric.weather.gc.ca/HydrometricData/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month=1&Day=1&timeframe=2&submit=Download+Data";
-        public string UrlToGetHydrometricSiteDataForRunsOfYear = "http://Hydrometric.weather.gc.ca/Hydrometric_data/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month=1&Day=1&timeframe=2&submit=Download+Data";
+        public string UrlToGetHydrometricSiteDataForRunsOfYear = "https://wateroffice.ec.gc.ca/report/historical_e.html?stn={0}&mode=Table&type=h2oArc&results_type=historical&dataType=Daily&parameterType={1}&year={2}";
+        //public string UrlToGetHydrometricSiteDataForRunsOfYear = "http://Hydrometric.weather.gc.ca/Hydrometric_data/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month=1&Day=1&timeframe=2&submit=Download+Data";
         public string UpdateHydrometricSiteHourlyFromStartDateToEndDate = "http://Hydrometric.weather.gc.ca/Hydrometric_data/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month={2}&Day=1&timeframe=1&submit=Download+Data";
         public bool WebBrowserContentAnalysed = true;
         public bool AllDone = false;
+        private string FedStationNameToDo = "";
+        private string DataTypeToDo = "";
+        private int YearToDo = 0;
+        private int SubsectorTVItemIDToDo = 0;
         #endregion Variables
 
         #region Properties
@@ -48,47 +53,413 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Constructors
 
         #region Events
-        //public void browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        //{
-        //    string NotUsed = "";
+        public void browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            string NotUsed = "";
 
-        //    if (e.Url.AbsolutePath != (sender as WebBrowser).Url.AbsolutePath)
-        //        return;
+            if (e.Url.AbsolutePath != (sender as WebBrowser).Url.AbsolutePath)
+                return;
 
-        //    if ((sender as WebBrowser).Url == e.Url)
-        //    {
-        //        if ((sender as WebBrowser).Url.ToString().Contains("HydrometricData/dailydata_e.html"))
-        //        {
-        //            UpdateHydrometricSiteInfoLatLngWMOElevTCParse(sender, e);
-        //        }
-        //        else if ((sender as WebBrowser).Url.ToString().Contains("HydrometricData/bulkdata_e.html"))
-        //        {
-        //            if ((sender as WebBrowser).Url.ToString().Contains("timeframe=2"))
-        //            {
-        //                UpdateHydrometricSiteInfoLatLngWMOElevTCParse(sender, e);
-        //            }
-        //            else if ((sender as WebBrowser).Url.ToString().Contains("timeframe=1"))
-        //            {
-        //                UpdateHydrometricSiteInfoLatLngWMOElevTCParse(sender, e);
-        //            }
-        //            else
-        //            {
-        //            }
-        //        }
-        //        else
-        //        {
+            if ((sender as WebBrowser).Url == e.Url)
+            {
+                if ((sender as WebBrowser).Url.ToString().Contains("https://wateroffice.ec.gc.ca/report/historical_e.html?stn="))
+                {
+                    ParseHydrometricPage(sender, e);
+                    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    NotUsed = TaskRunnerServiceRes.CurrentURLNotTheSameInDocumentCompletedEvent;
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CurrentURLNotTheSameInDocumentCompletedEvent");
+                    return;
+                }
+            }
+            else
+            {
+                NotUsed = TaskRunnerServiceRes.CurrentURLNotTheSameInDocumentCompletedEvent;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CurrentURLNotTheSameInDocumentCompletedEvent");
+                return;
+            }
 
-        //        }
-        //    }
-        //    else
-        //    {
-        //        NotUsed = TaskRunnerServiceRes.CurrentURLNotTheSameInDocumentCompletedEvent;
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CurrentURLNotTheSameInDocumentCompletedEvent");
-        //        return;
-        //    }
+            Application.ExitThread();   // Stops the thread
+        }
 
-        //    Application.ExitThread();   // Stops the thread
-        //}
+        private void ParseHydrometricPage(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            string NotUsed = "";
+            string FedStationName = "";
+            string ReportType = "";
+            string DataType = "";
+            string Year = "";
+            float Discharge = -1.0f;
+            float Level = -1.0f;
+            bool IsDischarge = true;
+
+            if ((sender as WebBrowser).Url.ToString().Contains("&parameterType=Flow"))
+            {
+                IsDischarge = true;
+            }
+            else if ((sender as WebBrowser).Url.ToString().Contains("&parameterType=Level"))
+            {
+                IsDischarge = false;
+            }
+            else
+            {
+                NotUsed = TaskRunnerServiceRes.CurrentURLNotTheSameInDocumentCompletedEvent;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CurrentURLNotTheSameInDocumentCompletedEvent");
+                return;
+            }
+
+            HtmlDocument doc = (sender as WebBrowser).Document;
+
+            // verifying fed station name
+            HtmlElement htmlElementSelectStn = doc.GetElementById("selectStn");
+            if (htmlElementSelectStn != null)
+            {
+                HtmlElementCollection htmlElementCollectionOption = htmlElementSelectStn.Children;
+                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
+                {
+                    string selected = htmlElementOption.GetAttribute("selected");
+                    if (!string.IsNullOrWhiteSpace(selected))
+                    {
+                        FedStationName = htmlElementOption.GetAttribute("value").Trim();
+                        break;
+                    }
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(FedStationName))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "FedStationName");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "FedStationName");
+                return;
+            }
+
+            // verifying report type
+            HtmlElement htmlElementselectReportType = doc.GetElementById("selectReportType");
+            if (htmlElementselectReportType != null)
+            {
+                HtmlElementCollection htmlElementCollectionOption = htmlElementselectReportType.Children;
+                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
+                {
+                    string selected = htmlElementOption.GetAttribute("selected");
+                    if (!string.IsNullOrWhiteSpace(selected))
+                    {
+                        ReportType = htmlElementOption.GetAttribute("value").Trim();
+                        break;
+                    }
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(ReportType))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "ReportType");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "ReportType");
+                return;
+            }
+
+            // verifying data type
+            HtmlElement htmlElementselectDataType = doc.GetElementById("selectDataType");
+            if (htmlElementselectDataType != null)
+            {
+                HtmlElementCollection htmlElementCollectionOption = htmlElementselectDataType.Children;
+                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
+                {
+                    string selected = htmlElementOption.GetAttribute("selected");
+                    if (!string.IsNullOrWhiteSpace(selected))
+                    {
+                        DataType = htmlElementOption.GetAttribute("value").Trim();
+                        break;
+                    }
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(DataType))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "DataType");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "DataType");
+                return;
+            }
+
+            // verifying year
+            HtmlElement htmlElementselectYear = doc.GetElementById("selectYear");
+            if (htmlElementselectYear != null)
+            {
+                HtmlElementCollection htmlElementCollectionOption = htmlElementselectYear.Children;
+                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
+                {
+                    string selected = htmlElementOption.GetAttribute("selected");
+                    if (!string.IsNullOrWhiteSpace(selected))
+                    {
+                        Year = htmlElementOption.GetAttribute("value").Trim();
+                        break;
+                    }
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(Year))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "Year");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "Year");
+                return;
+            }
+
+            // getting data
+            HtmlElement htmlElementTable = doc.GetElementById("wb-auto-1");
+            if (htmlElementTable == null)
+            {
+                NotUsed = TaskRunnerServiceRes.CouldNotFindHtmlElement_;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "wb-auto-1");
+                return;
+            }
+
+            HtmlElementCollection htmlElementTableCollection = htmlElementTable.Children;
+            HtmlElement htmlElementTBody = null;
+            foreach (HtmlElement htmlElementTableChild in htmlElementTableCollection)
+            {
+                if (htmlElementTableChild.TagName.ToLower() == "tbody")
+                {
+                    htmlElementTBody = htmlElementTableChild;
+                    break;
+                }
+            }
+
+            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            HydrometricSiteModel hydrometricSiteModel = hydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteNameDB(FedStationName);
+            if (!string.IsNullOrWhiteSpace(hydrometricSiteModel.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.FedStationName, FedStationName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.FedStationName, FedStationName);
+                return;
+            }
+
+            if (htmlElementTBody == null)
+            {
+                List<DateTime?> dateTimeList = new List<DateTime?>();
+                List<int?> dayList = new List<int?>();
+                List<float?> JanList = new List<float?>();
+                List<float?> FebList = new List<float?>();
+                List<float?> MarList = new List<float?>();
+                List<float?> AprList = new List<float?>();
+                List<float?> MayList = new List<float?>();
+                List<float?> JunList = new List<float?>();
+                List<float?> JulList = new List<float?>();
+                List<float?> AugList = new List<float?>();
+                List<float?> SepList = new List<float?>();
+                List<float?> OctList = new List<float?>();
+                List<float?> NovList = new List<float?>();
+                List<float?> DecList = new List<float?>();
+
+                HtmlElementCollection htmlElementTrCollection = htmlElementTBody.Children;
+                foreach (HtmlElement htmlElementTr in htmlElementTrCollection)
+                {
+                    if (htmlElementTr.TagName.ToLower() == "tr")
+                    {
+                        HtmlElementCollection htmlElementThCollection = htmlElementTr.GetElementsByTagName("th");
+                        foreach (HtmlElement htmlElementTh in htmlElementThCollection)
+                        {
+                            if (int.TryParse(htmlElementTh.InnerText.Trim(), out int val))
+                            {
+                                dayList.Add(val);
+                            }
+                            else
+                            {
+                                dayList.Add(null);
+                            }
+                        }
+
+                        HtmlElementCollection htmlElementTdCollection = htmlElementTr.GetElementsByTagName("td");
+                        int CountMonth = 0;
+                        foreach (HtmlElement htmlElementTd in htmlElementTdCollection)
+                        {
+                            CountMonth += 1;
+                            dateTimeList.Add(new DateTime(YearToDo, CountMonth, dayList.Last().Value));
+                            if (float.TryParse(htmlElementTd.InnerText.Trim(), out float val))
+                            {
+                                switch (CountMonth)
+                                {
+                                    case 1:
+                                        {
+                                            JanList.Add(val);
+                                        }
+                                        break;
+                                    case 2:
+                                        {
+                                            FebList.Add(val);
+                                        }
+                                        break;
+                                    case 3:
+                                        {
+                                            MarList.Add(val);
+                                        }
+                                        break;
+                                    case 4:
+                                        {
+                                            AprList.Add(val);
+                                        }
+                                        break;
+                                    case 5:
+                                        {
+                                            MayList.Add(val);
+                                        }
+                                        break;
+                                    case 6:
+                                        {
+                                            JunList.Add(val);
+                                        }
+                                        break;
+                                    case 7:
+                                        {
+                                            JulList.Add(val);
+                                        }
+                                        break;
+                                    case 8:
+                                        {
+                                            AugList.Add(val);
+                                        }
+                                        break;
+                                    case 9:
+                                        {
+                                            SepList.Add(val);
+                                        }
+                                        break;
+                                    case 10:
+                                        {
+                                            OctList.Add(val);
+                                        }
+                                        break;
+                                    case 11:
+                                        {
+                                            NovList.Add(val);
+                                        }
+                                        break;
+                                    case 12:
+                                        {
+                                            DecList.Add(val);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch (CountMonth)
+                                {
+                                    case 1:
+                                        {
+                                            JanList.Add(null);
+                                        }
+                                        break;
+                                    case 2:
+                                        {
+                                            FebList.Add(null);
+                                        }
+                                        break;
+                                    case 3:
+                                        {
+                                            MarList.Add(null);
+                                        }
+                                        break;
+                                    case 4:
+                                        {
+                                            AprList.Add(null);
+                                        }
+                                        break;
+                                    case 5:
+                                        {
+                                            MayList.Add(null);
+                                        }
+                                        break;
+                                    case 6:
+                                        {
+                                            JunList.Add(null);
+                                        }
+                                        break;
+                                    case 7:
+                                        {
+                                            JulList.Add(null);
+                                        }
+                                        break;
+                                    case 8:
+                                        {
+                                            AugList.Add(null);
+                                        }
+                                        break;
+                                    case 9:
+                                        {
+                                            SepList.Add(null);
+                                        }
+                                        break;
+                                    case 10:
+                                        {
+                                            OctList.Add(null);
+                                        }
+                                        break;
+                                    case 11:
+                                        {
+                                            NovList.Add(null);
+                                        }
+                                        break;
+                                    case 12:
+                                        {
+                                            DecList.Add(null);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(SubsectorTVItemIDToDo).Where(c => c.DateTime_Local.Year == YearToDo).OrderBy(c => c.DateTime_Local).ToList();
+            if (mwqmRunModelList.Count == 0)
+            {
+                return;
+            }
+
+            List<HydrometricDataValueModel> hydrometricDataValueModelList = hydrometricDataValueService.GetHydrometricDataValueModelListWithHydrometricSiteIDDB(hydrometricSiteModel.HydrometricSiteID);
+
+            foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList)
+            {
+                DateTime runDate = mwqmRunModel.DateTime_Local;
+                DateTime currentDate = runDate;
+                for (int i = 0; i < 11; i++)
+                {
+                    currentDate = runDate.AddDays(i * -1);
+                    HydrometricDataValueModel hydrometricDataValueModel = hydrometricDataValueModelList.Where(c => c.DateTime_Local == currentDate).FirstOrDefault();
+
+                    if (hydrometricDataValueModel == null)
+                    {
+                        HydrometricDataValueModel hydrometricDataValueModelNew = new HydrometricDataValueModel();
+                        hydrometricDataValueModelNew.DateTime_Local = currentDate;
+                        hydrometricDataValueModelNew.DischargeEntered_m3_s = null;
+                        if (!IsDischarge) // Level
+                        {
+                            hydrometricDataValueModelNew.Discharge_m3_s = 0.0f;
+                        }
+                        else // Discharge
+                        {
+                            hydrometricDataValueModelNew.Discharge_m3_s = 0.0f;
+                        }
+                    }
+                    else
+                    {
+                    }
+                }
+            }
+
+        }
         #endregion Events
 
         #region Functions public
@@ -115,20 +486,20 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        //public void RunBrowserThread(string URL)
-        //{
-        //    var thread = new Thread(() =>
-        //    {
-        //        var br = new WebBrowser();
-        //        br.DocumentCompleted += browser_DocumentCompleted;
-        //        br.Navigate(URL);
-        //        Application.Run();
-        //    });
-        //    thread.SetApartmentState(ApartmentState.STA);
-        //    thread.Start();
+        public void RunBrowserThread(string URL)
+        {
+            var thread = new Thread(() =>
+            {
+                var br = new WebBrowser();
+                br.DocumentCompleted += browser_DocumentCompleted;
+                br.Navigate(URL);
+                Application.Run();
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
 
-        //    return;
-        //}
+            return;
+        }
         //public void GetAllDischargesForYear()
         //{
         //    string NotUsed = "";
@@ -246,213 +617,180 @@ namespace CSSPWebToolsTaskRunner.Services
         //    appTaskModel.PercentCompleted = 100;
         //    appTaskService.PostUpdateAppTask(appTaskModel);
         //}
-        //public void GetHydrometricSitesDataForRunsOfYear()
-        //{
-        //    string NotUsed = "";
+        public void GetHydrometricSitesDataForRunsOfYear()
+        {
+            string NotUsed = "";
 
-        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-        //    AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+            AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
 
-        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID);
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID);
-        //        return;
-        //    }
+            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID);
+                return;
+            }
 
-        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID2 == 0)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID2);
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID2);
-        //        return;
-        //    }
+            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID2 == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID2);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID2);
+                return;
+            }
 
-        //    TVItemModel tvItemModelSubsector = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
+            TVItemModel tvItemModelSubsector = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+                return;
+            }
 
-        //    if (tvItemModelSubsector.TVType != TVTypeEnum.Subsector)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.TVTypeShouldBe_, TVTypeEnum.Subsector.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("TVTypeShouldBe_", TVTypeEnum.Subsector.ToString());
-        //        return;
-        //    }
+            if (tvItemModelSubsector.TVType != TVTypeEnum.Subsector)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.TVTypeShouldBe_, TVTypeEnum.Subsector.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("TVTypeShouldBe_", TVTypeEnum.Subsector.ToString());
+                return;
+            }
 
-        //    string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
-        //    string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        //    int SubsectorTVItemID = 0;
-        //    int Year = 0;
-        //    foreach (string s in ParamValueList)
-        //    {
-        //        string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
+            string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            int SubsectorTVItemID = 0;
+            int Year = 0;
+            foreach (string s in ParamValueList)
+            {
+                string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-        //        if (ParamValue.Length != 2)
-        //        {
-        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
-        //            return;
-        //        }
+                if (ParamValue.Length != 2)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
+                    return;
+                }
 
-        //        if (ParamValue[0] == "SubsectorTVItemID")
-        //        {
-        //            SubsectorTVItemID = int.Parse(ParamValue[1]);
-        //        }
-        //        else if (ParamValue[0] == "Year")
-        //        {
-        //            Year = int.Parse(ParamValue[1]);
-        //        }
-        //        else
-        //        {
-        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
-        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
-        //            return;
-        //        }
-        //    }
+                if (ParamValue[0] == "SubsectorTVItemID")
+                {
+                    SubsectorTVItemID = int.Parse(ParamValue[1]);
+                }
+                else if (ParamValue[0] == "Year")
+                {
+                    Year = int.Parse(ParamValue[1]);
+                }
+                else
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
+                    return;
+                }
+            }
 
-        //    if (tvItemModelSubsector.TVItemID != SubsectorTVItemID)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes._NotEqualTo_, "tvItemModelSubsector.TVItemID[" + tvItemModelSubsector.TVItemID.ToString() + "]", "SubsectorTVItemID[" + SubsectorTVItemID.ToString() + "]");
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_NotEqualTo_", "tvItemModelSubsector.TVItemID[" + tvItemModelSubsector.TVItemID.ToString() + "]", "SubsectorTVItemID[" + SubsectorTVItemID.ToString() + "]");
-        //        return;
-        //    }
+            if (tvItemModelSubsector.TVItemID != SubsectorTVItemID)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._NotEqualTo_, "tvItemModelSubsector.TVItemID[" + tvItemModelSubsector.TVItemID.ToString() + "]", "SubsectorTVItemID[" + SubsectorTVItemID.ToString() + "]");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_NotEqualTo_", "tvItemModelSubsector.TVItemID[" + tvItemModelSubsector.TVItemID.ToString() + "]", "SubsectorTVItemID[" + SubsectorTVItemID.ToString() + "]");
+                return;
+            }
 
-        //    GetHydrometricSitesDataForSubsectorRunsOfYear(SubsectorTVItemID, Year);
+            GetHydrometricSitesDataForSubsectorRunsOfYear(SubsectorTVItemID, Year);
 
-        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //    {
-        //        return;
-        //    }
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+            {
+                return;
+            }
 
-        //    // should get all the runs for the particular year and subsector
+            // should get all the runs for the particular year and subsector
 
-        //    appTaskModel.PercentCompleted = 100;
-        //    appTaskService.PostUpdateAppTask(appTaskModel);
-        //}
-        //public void GetHydrometricSitesDataForSubsectorRunsOfYear(int SubsectorTVItemID, int Year)
-        //{
-        //    string NotUsed = "";
-        //    int CurrentYear = DateTime.Now.Year;
+            appTaskModel.PercentCompleted = 100;
+            appTaskService.PostUpdateAppTask(appTaskModel);
+        }
+        public void GetHydrometricSitesDataForSubsectorRunsOfYear(int SubsectorTVItemID, int Year)
+        {
+            string NotUsed = "";
+            int CurrentYear = DateTime.Now.Year;
 
-        //    HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    UseOfSiteService useOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            UseOfSiteService useOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-        //    AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+            AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
 
-        //    List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(SubsectorTVItemID).Where(c => c.DateTime_Local.Year == Year).OrderBy(c => c.DateTime_Local).ToList();
+            List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(SubsectorTVItemID).Where(c => c.DateTime_Local.Year == Year).OrderBy(c => c.DateTime_Local).ToList();
+            if (mwqmRunModelList.Count == 0)
+            {
+                return;
+            }
 
-        //    // need to get all Hydrometric sites for this particular subsector and run
-        //    List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Hydrometric, SubsectorTVItemID);
-        //    List<int> HydrometricSiteTVItemID = new List<int>();
+            List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Hydrometric, SubsectorTVItemID);
+            if (useOfSiteModelList.Count == 0)
+            {
+                return;
+            }
 
-        //    //appTaskModel.PercentCompleted = 5;
-        //    //appTaskService.PostUpdateAppTask(appTaskModel);
+            List<int> HydrometricSiteTVItemID = new List<int>();
 
-        //    int Count = 0;
-        //    int TotalCount = mwqmRunModelList.Count() * useOfSiteModelList.Count();
-        //    foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
-        //    {
+            int Count = 0;
+            int TotalCount = mwqmRunModelList.Count() * useOfSiteModelList.Count();
+            foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
+            {
+                Count += 1;
+                appTaskModel.PercentCompleted = (int)((100.0f*Count/TotalCount));
+                appTaskService.PostUpdateAppTask(appTaskModel);
 
-        //        int EndYear = (useOfSiteModel.EndYear == null ? CurrentYear : (int)useOfSiteModel.EndYear);
-        //        if (Year >= useOfSiteModel.StartYear && Year <= EndYear)
-        //        {
-        //            HydrometricSiteModel HydrometricSiteModel = hydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB(useOfSiteModel.SiteTVItemID);
-        //            if (!string.IsNullOrWhiteSpace(HydrometricSiteModel.Error))
-        //            {
-        //                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
-        //                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
-        //                return;
-        //            }
+                int EndYear = (useOfSiteModel.EndYear == null ? CurrentYear : (int)useOfSiteModel.EndYear);
+                if (Year >= useOfSiteModel.StartYear && Year <= EndYear)
+                {
+                    HydrometricSiteModel hydrometricSiteModel = hydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB(useOfSiteModel.SiteTVItemID);
+                    if (!string.IsNullOrWhiteSpace(hydrometricSiteModel.Error))
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
+                        return;
+                    }
 
-        //            string httpStrDaily = "";
+                    List<string> FlowLevelList = new List<string>() { "Flow", "Level" };
 
-        //            using (WebClient webClient = new WebClient())
-        //            {
-        //                WebProxy webProxy = new WebProxy();
-        //                webClient.Proxy = webProxy;
-        //                string url = string.Format(UrlToGetHydrometricSiteDataForRunsOfYear, HydrometricSiteModel.ECDBID, Year);
-        //                httpStrDaily = webClient.DownloadString(new Uri(url));
-        //                if (httpStrDaily.Length > 0)
-        //                {
-        //                    if (httpStrDaily.Substring(0, "\"Station Name".Length) == "\"Station Name")
-        //                    {
-        //                        httpStrDaily = httpStrDaily.Replace("\"", "").Replace("\n", "\r\n");
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
-        //                    return;
-        //                }
-        //            }
+                    foreach (string FlowLevel in FlowLevelList)
+                    {
 
-        //            foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList)
-        //            {
-        //                DateTime RunDate = new DateTime(mwqmRunModel.DateTime_Local.Year, mwqmRunModel.DateTime_Local.Month, mwqmRunModel.DateTime_Local.Day);
-        //                DateTime RunDateMinus10 = RunDate.AddDays(-10);
+                        if (hydrometricSiteModel.HasDischarge != true && FlowLevel == "Flow")
+                        {
+                            continue;
+                        }
 
-        //                DateTime HydrometricStartDate = new DateTime(HydrometricSiteModel.StartDate_Local.Value.Year, HydrometricSiteModel.StartDate_Local.Value.Month, HydrometricSiteModel.StartDate_Local.Value.Day);
-        //                DateTime HydrometricEndDate = new DateTime(HydrometricSiteModel.EndDate_Local.Value.Year, HydrometricSiteModel.EndDate_Local.Value.Month, HydrometricSiteModel.EndDate_Local.Value.Day);
+                        if (hydrometricSiteModel.HasDischarge != true && FlowLevel == "Level")
+                        {
+                            continue;
+                        }
 
-        //                Count += 1;
+                        FedStationNameToDo = hydrometricSiteModel.FedSiteNumber;
+                        DataTypeToDo = FlowLevel;
+                        YearToDo = Year;
+                        SubsectorTVItemIDToDo = SubsectorTVItemID;
 
-        //                //appTaskModel.PercentCompleted = 100 * Count / TotalCount;
-        //                //appTaskService.PostUpdateAppTask(appTaskModel);
+                        string url = string.Format(UrlToGetHydrometricSiteDataForRunsOfYear, hydrometricSiteModel.FedSiteNumber, FlowLevel, Year);
+                        RunBrowserThread(url);
 
-        //                if (HydrometricStartDate <= RunDate && HydrometricEndDate >= RunDate)
-        //                {
-        //                    UpdateDailyValuesForHydrometricSiteTVItemID(HydrometricSiteModel, httpStrDaily, RunDateMinus10, RunDate, new List<DateTime>() { RunDate });
-        //                    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //                    {
-        //                        return;
-        //                    }
-        //                }
+                        if (Year != mwqmRunModelList[mwqmRunModelList.Count - 1].DateTime_Local.AddDays(-10).Year)
+                        {
+                            Year = Year - 1;
 
-        //                if (RunDate.Year != RunDateMinus10.Year)
-        //                {
-        //                    string httpStrDaily2 = "";
+                            FedStationNameToDo = hydrometricSiteModel.FedSiteNumber;
+                            DataTypeToDo = FlowLevel;
+                            YearToDo = Year;
+                            SubsectorTVItemIDToDo = SubsectorTVItemID;
 
-        //                    using (WebClient webClient2 = new WebClient())
-        //                    {
-        //                        WebProxy webProxy2 = new WebProxy();
-        //                        webClient2.Proxy = webProxy2;
-        //                        string url2 = string.Format(UrlToGetHydrometricSiteDataForRunsOfYear, HydrometricSiteModel.ECDBID, RunDateMinus10.Year);
-        //                        httpStrDaily2 = webClient2.DownloadString(new Uri(url2));
-        //                        if (httpStrDaily2.Length > 0)
-        //                        {
-        //                            if (httpStrDaily2.Substring(0, "\"Station Name".Length) == "\"Station Name")
-        //                            {
-        //                                httpStrDaily2 = httpStrDaily2.Replace("\"", "").Replace("\n", "\r\n");
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url2);
-        //                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url2);
-        //                            return;
-        //                        }
-        //                    }
+                            url = string.Format(UrlToGetHydrometricSiteDataForRunsOfYear, hydrometricSiteModel.FedSiteNumber, FlowLevel, Year);
+                            RunBrowserThread(url);
+                        }
 
-        //                    UpdateDailyValuesForHydrometricSiteTVItemID(HydrometricSiteModel, httpStrDaily2, RunDateMinus10, RunDate, new List<DateTime>() { RunDateMinus10 });
-        //                    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //                    {
-        //                        return;
-        //                    }
-
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+                    }
+                }
+            }
+        }
         public void UpdateHydrometricSitesInformationForProvinceTVItemID()
         {
             string NotUsed = "";

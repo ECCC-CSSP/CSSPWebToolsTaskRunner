@@ -576,6 +576,11 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     mikeSourceModelNew.IsRiver = false;
                 }
+                mikeSourceModelNew.UseHydrometric = false;
+                mikeSourceModelNew.HydrometricTVItemID = null;
+                mikeSourceModelNew.DrainageArea_km2 = null;
+                mikeSourceModelNew.Factor = null;
+
                 mikeSourceModelNew.MikeSourceTVText = SourceName;
 
                 MikeSourceStartEndModel mikeSourceStartEndModelNew = new MikeSourceStartEndModel();
