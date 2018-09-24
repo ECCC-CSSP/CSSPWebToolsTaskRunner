@@ -682,8 +682,8 @@ namespace CSSPWebToolsTaskRunner.Services
             List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Climate, SubsectorTVItemID);
             List<int> ClimateSiteTVItemID = new List<int>();
 
-            //appTaskModel.PercentCompleted = 5;
-            //appTaskService.PostUpdateAppTask(appTaskModel);
+            appTaskModel.PercentCompleted = 5;
+            appTaskService.PostUpdateAppTask(appTaskModel);
 
             int Count = 0;
             int TotalCount = mwqmRunModelList.Count() * useOfSiteModelList.Count();
@@ -734,8 +734,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         Count += 1;
 
-                        //appTaskModel.PercentCompleted = 100 * Count / TotalCount;
-                        //appTaskService.PostUpdateAppTask(appTaskModel);
+                        appTaskModel.PercentCompleted = 100 * Count / TotalCount;
+                        appTaskService.PostUpdateAppTask(appTaskModel);
 
                         if (ClimateStartDate <= RunDate && ClimateEndDate >= RunDate)
                         {
@@ -2750,6 +2750,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     if (countLine == 6)
                     {
+                        // would get the Elevation
+                    }
+                    if (countLine == 7)
+                    {
                         LookupTxt = "Climate Identifier";
                         if (lineValueArr[0] != LookupTxt)
                         {
@@ -3052,6 +3056,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     if (countLine == 6)
                     {
+                        // would read the Elevation
+                    }
+                    if (countLine == 7)
+                    {
                         LookupTxt = "Climate Identifier";
                         if (lineValueArr[0] != LookupTxt)
                         {
@@ -3074,7 +3082,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         if (lineValueArr[0].Substring(4, 1) == "-")
                         {
-                            if (lineValueArr.Count != 25 && lineValueArr.Count != 26 && lineValueArr.Count != 27 && lineValueArr.Count != 28 && lineValueArr.Count != 5)
+                            if (lineValueArr.Count != 24 && lineValueArr.Count != 25 && lineValueArr.Count != 26 && lineValueArr.Count != 27 && lineValueArr.Count != 28 && lineValueArr.Count != 5)
                             {
                                 NotUsed = string.Format(TaskRunnerServiceRes.CountOfValuesInLine_ShouldBe_, countLine, "25");
                                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CountOfValuesInLine_ShouldBe_", countLine.ToString(), "25");
@@ -3119,41 +3127,41 @@ namespace CSSPWebToolsTaskRunner.Services
                             if (lineValueArr.Count > 5)
                             {
                                 HasValue = true;
-                                if (lineValueArr[6].Length > 0)
+                                if (lineValueArr[5].Length > 0)
                                 {
-                                    Temp_C = float.Parse(lineValueArr[6]);
+                                    Temp_C = float.Parse(lineValueArr[5]);
                                 }
-                                if (lineValueArr[8].Length > 0)
+                                if (lineValueArr[7].Length > 0)
                                 {
-                                    DewPoint_C = float.Parse(lineValueArr[8]);
+                                    DewPoint_C = float.Parse(lineValueArr[7]);
                                 }
-                                if (lineValueArr[10].Length > 0)
+                                if (lineValueArr[9].Length > 0)
                                 {
-                                    RelHum_Perc = float.Parse(lineValueArr[10]);
+                                    RelHum_Perc = float.Parse(lineValueArr[9]);
                                 }
-                                if (lineValueArr[12].Length > 0)
+                                if (lineValueArr[11].Length > 0)
                                 {
-                                    WindDir_10deg = float.Parse(lineValueArr[12]);
+                                    WindDir_10deg = float.Parse(lineValueArr[11]);
                                 }
-                                if (lineValueArr[14].Length > 0)
+                                if (lineValueArr[13].Length > 0)
                                 {
-                                    WindSpd_km_h = float.Parse(lineValueArr[14]);
+                                    WindSpd_km_h = float.Parse(lineValueArr[13]);
                                 }
-                                if (lineValueArr[16].Length > 0)
+                                if (lineValueArr[15].Length > 0)
                                 {
-                                    Visibility_km = float.Parse(lineValueArr[16]);
+                                    Visibility_km = float.Parse(lineValueArr[15]);
                                 }
-                                if (lineValueArr[18].Length > 0)
+                                if (lineValueArr[17].Length > 0)
                                 {
-                                    StnPress_kPa = float.Parse(lineValueArr[18]);
+                                    StnPress_kPa = float.Parse(lineValueArr[17]);
                                 }
-                                if (lineValueArr[20].Length > 0)
+                                if (lineValueArr[19].Length > 0)
                                 {
-                                    Humidx = float.Parse(lineValueArr[20]);
+                                    Humidx = float.Parse(lineValueArr[19]);
                                 }
-                                if (lineValueArr[22].Length > 0)
+                                if (lineValueArr[21].Length > 0)
                                 {
-                                    WindChill = float.Parse(lineValueArr[22]);
+                                    WindChill = float.Parse(lineValueArr[21]);
                                 }
 
                                 hourlyValues.AppendLine(
