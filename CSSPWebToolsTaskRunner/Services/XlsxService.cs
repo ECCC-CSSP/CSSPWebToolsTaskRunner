@@ -1429,7 +1429,8 @@ namespace CSSPWebToolsTaskRunner.Services
             StringBuilder sb = new StringBuilder();
 
             //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl,C0,C250,C500,C750,C1000,C1250,C1500,C1750,C2000,C2250,C2500,C2750,C3000,C3250,C3500,C3750");
-            sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl");
+            //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl");
+            sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,ObsDate,CSSPUrl");
 
             using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
             {
@@ -1547,7 +1548,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         string SS = tvItemSS.tl.TVText.Replace(",", "_");
                         string PSS = (polSourceSite.pss != null && polSourceSite.pss.Site != null ? polSourceSite.pss.Site.ToString().Replace(",", "_") : "");
-                        string OBS = (polSourceSite.pso != null && polSourceSite.pso.pso.ObservationDate_Local != null ? polSourceSite.pso.pso.ObservationDate_Local.ToString("yyyy-MM-dd") : "");
+                        string OBSDate = (polSourceSite.pso != null && polSourceSite.pso.pso.ObservationDate_Local != null ? polSourceSite.pso.pso.ObservationDate_Local.ToString("yyyy-MM-dd") : "");
                         string PSTVT = polSourceSite.tl.TVText;
                         string[] PSArr = PSTVT.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
                         string PSType = "";
@@ -1571,7 +1572,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         string Lat = (polSourceSite.mip != null ? polSourceSite.mip.Lat.ToString("F5") : "");
                         string Lng = (polSourceSite.mip != null ? polSourceSite.mip.Lng.ToString("F5") : "");
-                        string AD = (!string.IsNullOrWhiteSpace(polSourceSite.add) ? polSourceSite.add.Replace(",", "_") : "");
+                        //string AD = (!string.IsNullOrWhiteSpace(polSourceSite.add) ? polSourceSite.add.Replace(",", "_") : "");
                         string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + polSourceSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
 
                         string TVText = "";
@@ -1885,19 +1886,20 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 Lng = " ";
                             }
-                            if (OBS.Length == 0)
+                            if (OBSDate.Length == 0)
                             {
-                                OBS = " ";
+                                OBSDate = " ";
                             }
-                            if (AD.Length == 0)
-                            {
-                                AD = " ";
-                            }
+                            //if (AD.Length == 0)
+                            //{
+                            //    AD = " ";
+                            //}
                             if (URL.Length == 0)
                             {
                                 URL = " ";
                             }
-                            sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBS},{AD},{URL}");
+                            //sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBS},{AD},{URL}");
+                            sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBSDate},{URL}");
                         }
                     }
                 }
