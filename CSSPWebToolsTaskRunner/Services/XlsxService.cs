@@ -1428,7 +1428,8 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Subsector,Site,PSTVText,Lat,Lng,OBS,Address,CSSPUrl,Issues");
+            //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl,C0,C250,C500,C750,C1000,C1250,C1500,C1750,C2000,C2250,C2500,C2750,C3000,C3250,C3500,C3750");
+            sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl");
 
             using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
             {
@@ -1547,7 +1548,27 @@ namespace CSSPWebToolsTaskRunner.Services
                         string SS = tvItemSS.tl.TVText.Replace(",", "_");
                         string PSS = (polSourceSite.pss != null && polSourceSite.pss.Site != null ? polSourceSite.pss.Site.ToString().Replace(",", "_") : "");
                         string OBS = (polSourceSite.pso != null && polSourceSite.pso.pso.ObservationDate_Local != null ? polSourceSite.pso.pso.ObservationDate_Local.ToString("yyyy-MM-dd") : "");
-                        string PSTVT = polSourceSite.tl.TVText.Replace(",", "_");
+                        string PSTVT = polSourceSite.tl.TVText;
+                        string[] PSArr = PSTVT.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                        string PSType = "";
+                        string PSSubtype = "";
+                        string PSRisk = "";
+                        if (PSArr.Length > 0)
+                        {
+                            PSType = PSArr[0];
+                            if (PSType.Contains(" - "))
+                            {
+                                PSType = PSType.Substring(PSType.IndexOf(" - ") + 3);
+                            }
+                        }
+                        if (PSArr.Length > 1)
+                        {
+                            PSSubtype = PSArr[1];
+                        }
+                        if (PSArr.Length > 2)
+                        {
+                            PSRisk = PSArr[2];
+                        }
                         string Lat = (polSourceSite.mip != null ? polSourceSite.mip.Lat.ToString("F5") : "");
                         string Lng = (polSourceSite.mip != null ? polSourceSite.mip.Lng.ToString("F5") : "");
                         string AD = (!string.IsNullOrWhiteSpace(polSourceSite.add) ? polSourceSite.add.Replace(",", "_") : "");
@@ -1626,7 +1647,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         case "220":
                                         case "930":
                                             {
-                                                Temp = @"<span class=""hidden"">" + Temp + "</span>";
+                                                //Temp = @"<span class=""hidden"">" + Temp + "</span>";
                                             }
                                             break;
                                         default:
@@ -1639,13 +1660,244 @@ namespace CSSPWebToolsTaskRunner.Services
                             string TVT = (polSourceSite.pso != null && polSourceSite.pso.pso.Observation_ToBeDeleted != null ? polSourceSite.pso.pso.Observation_ToBeDeleted : "");
 
                             string TempISS = (!string.IsNullOrWhiteSpace(TVT) ? TVT.Replace(",", "_") + " ----- " : "") + TVText;
-                            if (TempISS.Length > 250)
+
+                            string ISS = TempISS.Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", "").Replace("\r", "   ").Replace("\n", "");
+
+                            if (ISS.Length > 4000)
                             {
-                                TempISS = TempISS.Substring(0, 250) + " ...";
+                                int lsief = 354;
                             }
 
-                            string ISS = TempISS;
-                            sb.AppendLine($"{SS},{PSS},{PSTVT},{Lat},{Lng},{OBS},{AD},{URL},{ISS}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", "").Replace("\r", "   ").Replace("\n", ""));
+                            //string C0 = " ";
+                            //string C250 = " ";
+                            //string C500 = " ";
+                            //string C750 = " ";
+                            //string C1000 = " ";
+                            //string C1250 = " ";
+                            //string C1500 = " ";
+                            //string C1750 = " ";
+                            //string C2000 = " ";
+                            //string C2250 = " ";
+                            //string C2500 = " ";
+                            //string C2750 = " ";
+                            //string C3000 = " ";
+                            //string C3250 = " ";
+                            //string C3500 = " ";
+                            //string C3750 = " ";
+                            //if (ISS.Length > 0)
+                            //{
+                            //    if (ISS.Length < 250)
+                            //    {
+                            //        C0 = ISS.Substring(0);
+                            //    }
+                            //    else
+                            //    {
+                            //        C0 = ISS.Substring(0, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 250)
+                            //{
+                            //    if (ISS.Length < 500)
+                            //    {
+                            //        C250 = ISS.Substring(250);
+                            //    }
+                            //    else
+                            //    {
+                            //        C250 = ISS.Substring(250, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 500)
+                            //{
+                            //    if (ISS.Length < 750)
+                            //    {
+                            //        C500 = ISS.Substring(500);
+                            //    }
+                            //    else
+                            //    {
+                            //        C500 = ISS.Substring(500, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 750)
+                            //{
+                            //    if (ISS.Length < 1000)
+                            //    {
+                            //        C750 = ISS.Substring(750);
+                            //    }
+                            //    else
+                            //    {
+                            //        C750 = ISS.Substring(750, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 1000)
+                            //{
+                            //    if (ISS.Length < 1250)
+                            //    {
+                            //        C1000 = ISS.Substring(1000);
+                            //    }
+                            //    else
+                            //    {
+                            //        C1000 = ISS.Substring(1000, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 1250)
+                            //{
+                            //    if (ISS.Length < 1500)
+                            //    {
+                            //        C1250 = ISS.Substring(1250);
+                            //    }
+                            //    else
+                            //    {
+                            //        C1250 = ISS.Substring(1250, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 1500)
+                            //{
+                            //    if (ISS.Length < 1750)
+                            //    {
+                            //        C1500 = ISS.Substring(1500);
+                            //    }
+                            //    else
+                            //    {
+                            //        C1500 = ISS.Substring(1500, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 1750)
+                            //{
+                            //    if (ISS.Length < 2000)
+                            //    {
+                            //        C1750 = ISS.Substring(1750);
+                            //    }
+                            //    else
+                            //    {
+                            //        C1750 = ISS.Substring(1750, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 2000)
+                            //{
+                            //    if (ISS.Length < 2250)
+                            //    {
+                            //        C2000 = ISS.Substring(2000);
+                            //    }
+                            //    else
+                            //    {
+                            //        C2000 = ISS.Substring(2000, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 2250)
+                            //{
+                            //    if (ISS.Length < 2500)
+                            //    {
+                            //        C2250 = ISS.Substring(2250);
+                            //    }
+                            //    else
+                            //    {
+                            //        C2250 = ISS.Substring(2250, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 2500)
+                            //{
+                            //    if (ISS.Length < 2750)
+                            //    {
+                            //        C2500 = ISS.Substring(2500);
+                            //    }
+                            //    else
+                            //    {
+                            //        C2500 = ISS.Substring(2500, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 2750)
+                            //{
+                            //    if (ISS.Length < 3000)
+                            //    {
+                            //        C2750 = ISS.Substring(2750);
+                            //    }
+                            //    else
+                            //    {
+                            //        C2750 = ISS.Substring(2750, 250);
+                            //    }
+                            //}
+                            //if (ISS.Length > 3000)
+                            //{
+                            //    if (ISS.Length < 3250)
+                            //    {
+                            //        C3000 = ISS.Substring(3000);
+                            //    }
+                            //    else
+                            //    {
+                            //        C3000 = ISS.Substring(3000, 350);
+                            //    }
+                            //}
+                            //if (ISS.Length > 3250)
+                            //{
+                            //    if (ISS.Length < 3500)
+                            //    {
+                            //        C3250 = ISS.Substring(3250);
+                            //    }
+                            //    else
+                            //    {
+                            //        C3250 = ISS.Substring(3250, 350);
+                            //    }
+                            //}
+                            //if (ISS.Length > 3500)
+                            //{
+                            //    if (ISS.Length < 3750)
+                            //    {
+                            //        C3500 = ISS.Substring(3500);
+                            //    }
+                            //    else
+                            //    {
+                            //        C3500 = ISS.Substring(3500, 350);
+                            //    }
+                            //}
+                            //if (ISS.Length > 3750)
+                            //{
+                            //    if (ISS.Length < 3000)
+                            //    {
+                            //        C3750 = ISS.Substring(3750);
+                            //    }
+                            //    else
+                            //    {
+                            //        C3750 = ISS.Substring(3750, 350);
+                            //    }
+                            //}
+                            //sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBS},{AD},{URL},{C0},{C250},{C500},{C750},{C1000},{C1250},{C1500},{C1750},{C2000},{C2250},{C2500},{C2750},{C3000},{C3250},{C3500},{C3750}");
+                            if (SS.Length == 0)
+                            {
+                                SS = " ";
+                            }
+                            if (PSS.Length == 0)
+                            {
+                                PSS = " ";
+                            }
+                            if (PSType.Length == 0)
+                            {
+                                PSType = " ";
+                            }
+                            if (PSSubtype.Length == 0)
+                            {
+                                PSSubtype = " ";
+                            }
+                            if (Lat.Length == 0)
+                            {
+                                Lat = " ";
+                            }
+                            if (Lng.Length == 0)
+                            {
+                                Lng = " ";
+                            }
+                            if (OBS.Length == 0)
+                            {
+                                OBS = " ";
+                            }
+                            if (AD.Length == 0)
+                            {
+                                AD = " ";
+                            }
+                            if (URL.Length == 0)
+                            {
+                                URL = " ";
+                            }
+                            sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBS},{AD},{URL}");
                         }
                     }
                 }
