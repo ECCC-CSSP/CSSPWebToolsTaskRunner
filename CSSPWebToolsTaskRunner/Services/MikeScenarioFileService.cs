@@ -144,7 +144,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         TimeSpan span = (mikeScenarioModel.MikeScenarioStartDateTime_Local - epoch);
                         string timeStamp = ((long)Convert.ToDouble(span.TotalSeconds)).ToString();
                         string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
-                            mapInfoPointList[0].Lat.ToString("F5") + "," + mapInfoPointList[0].Lng.ToString("F5") + "&timestamp=" + timeStamp;
+                            mapInfoPointList[0].Lat.ToString("F5") + "," + mapInfoPointList[0].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                         byte[] responseBytes = webClient.DownloadData(url);
                         json_data = Encoding.UTF8.GetString(responseBytes);
                     }
@@ -1713,7 +1713,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         TimeSpan span = (mikeScenarioModel.MikeScenarioStartDateTime_Local - epoch);
                                         string timeStamp = ((long)Convert.ToDouble(span.TotalSeconds)).ToString();
                                         string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
-                                            mapInfoPointModelBC[i].Lat.ToString("F5") + "," + mapInfoPointModelBC[i].Lng.ToString("F5") + "&timestamp=" + timeStamp;
+                                            mapInfoPointModelBC[i].Lat.ToString("F5") + "," + mapInfoPointModelBC[i].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                                         byte[] responseBytes = webClient.DownloadData(url);
                                         json_data = Encoding.UTF8.GetString(responseBytes);
                                     }
@@ -1853,7 +1853,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         TimeSpan span = (mikeScenarioModel.MikeScenarioStartDateTime_Local - epoch);
                                         string timeStamp = ((long)Convert.ToDouble(span.TotalSeconds)).ToString();
                                         string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
-                                            mapInfoPointModelBC[i].Lat.ToString("F5") + "," + mapInfoPointModelBC[i].Lng.ToString("F5") + "&timestamp=" + timeStamp;
+                                            mapInfoPointModelBC[i].Lat.ToString("F5") + "," + mapInfoPointModelBC[i].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                                         byte[] responseBytes = webClient.DownloadData(url);
                                         json_data = Encoding.UTF8.GetString(responseBytes);
                                     }

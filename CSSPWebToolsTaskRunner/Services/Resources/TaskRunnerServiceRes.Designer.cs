@@ -223,6 +223,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active pollution source sites.
+        /// </summary>
+        public static string ActivePollutionSourceSites {
+            get {
+                return ResourceManager.GetString("ActivePollutionSourceSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agriculture.
         /// </summary>
         public static string Agriculture {
@@ -385,6 +394,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to by.
+        /// </summary>
+        public static string by {
+            get {
+                return ResourceManager.GetString("by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculation type.
         /// </summary>
         public static string CalculationType {
@@ -399,6 +417,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Celcius {
             get {
                 return ResourceManager.GetString("Celcius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Civic address.
+        /// </summary>
+        public static string CivicAddress {
+            get {
+                return ResourceManager.GetString("CivicAddress", resourceCulture);
             }
         }
         
@@ -1456,6 +1483,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra comment.
+        /// </summary>
+        public static string ExtraComment {
+            get {
+                return ResourceManager.GetString("ExtraComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FC Densities.
         /// </summary>
         public static string FCDensities {
@@ -1942,6 +1978,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last observation date.
+        /// </summary>
+        public static string LastObservationDate {
+            get {
+                return ResourceManager.GetString("LastObservationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lat.
+        /// </summary>
+        public static string Lat {
+            get {
+                return ResourceManager.GetString("Lat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latitude.
         /// </summary>
         public static string Latitude {
@@ -2028,6 +2082,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string LocalTime {
             get {
                 return ResourceManager.GetString("LocalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long.
+        /// </summary>
+        public static string Long {
+            get {
+                return ResourceManager.GetString("Long", resourceCulture);
             }
         }
         

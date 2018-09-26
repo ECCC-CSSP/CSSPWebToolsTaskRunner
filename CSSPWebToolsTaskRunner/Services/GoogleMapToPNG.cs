@@ -1746,7 +1746,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             using (WebClient client = new WebClient())
             {
-                string url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ Lat.ToString("F6") },{ Lng.ToString("F6") }&zoom={ InsetZoom.ToString() }&size={ InsetWidth.ToString() }x{ InsetHeight.ToString() }&language={ LanguageRequest.ToString() }";
+                string url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ Lat.ToString("F6") },{ Lng.ToString("F6") }&zoom={ InsetZoom.ToString() }&size={ InsetWidth.ToString() }x{ InsetHeight.ToString() }&language={ LanguageRequest.ToString() }&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                 try
                 {
                     client.DownloadFile(url, DirName + FileNameInset);
@@ -1918,19 +1918,19 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 try
                 {
-                    string url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ CenterLat.ToString("F6") },{ CenterLng.ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }";
+                    string url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ CenterLat.ToString("F6") },{ CenterLng.ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                     client.DownloadFile(url, DirName + FileNameNW);
 
-                    url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ CenterLat.ToString("F6") },{ (CenterLng + deltaLng).ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }";
+                    url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ CenterLat.ToString("F6") },{ (CenterLng + deltaLng).ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                     client.DownloadFile(url, DirName + FileNameNE);
 
-                    url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ (CenterLat - deltaLat).ToString("F6") },{ CenterLng.ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }";
+                    url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ (CenterLat - deltaLat).ToString("F6") },{ CenterLng.ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                     client.DownloadFile(url, DirName + FileNameSW);
 
-                    url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ (CenterLat - deltaLat).ToString("F6") },{ (CenterLng + deltaLng).ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }";
+                    url = $@"https://maps.googleapis.com/maps/api/staticmap?maptype={ MapType }&center={ (CenterLat - deltaLat).ToString("F6") },{ (CenterLng + deltaLng).ToString("F6") }&zoom={ Zoom.ToString() }&size={ GoogleImageWidth.ToString() }x{ GoogleImageHeight.ToString() }&language={ LanguageRequest.ToString() }&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                     client.DownloadFile(url, DirName + FileNameSE);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return new CoordMap();
                 }

@@ -14,6 +14,7 @@ using CSSPEnumsDLL.Enums;
 using CSSPEnumsDLL.Services;
 using CSSPModelsDLL.Models;
 using System.Windows.Forms;
+using CSSPWebToolsDBDLL;
 //using System.Web.Helpers;
 
 namespace CSSPWebToolsTaskRunner.Services
@@ -23,7 +24,8 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(StringBuilder sbTemp)
         {
             int Percent = 10;
-            //string NotUsed = "";
+            string NotUsed = "";
+            LanguageEnum language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES.ToString()));
@@ -33,1068 +35,283 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
-            sbTemp.AppendLine("<h2>Not implemented</h2>");
-
-            //List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            //// TVItemID and Year already loaded
-
-            //TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
-            //if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
-            //{
-            //    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-            //    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-            //    return false;
-            //}
-
-            //string ServerPath = _TVFileService.GetServerFilePath(tvItemModelSubsector.TVItemID);
-
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
-
-            //List<TVItemModel> tvItemModelListPolSourceSite = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.PolSourceSite).Where(c => c.IsActive == true).ToList();
-            //List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(TVItemID).OrderBy(c => c.Site).ToList();
-            //List<PolSourceObservationModel> polSourceObservationModelList = _PolSourceObservationService.GetPolSourceObservationModelListWithSubsectorTVItemIDDB(TVItemID);
-            //List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithSubsectorTVItemIDDB(TVItemID);
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDList = new List<PolSourceObsInfoEnumTextAndID>();
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBasePolSourceType = new List<PolSourceObsInfoEnumTextAndID>();
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType = new List<PolSourceObsInfoEnumTextAndID>();
-
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseAgriculture = new List<PolSourceObsInfoEnumTextAndID>();
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseForested = new List<PolSourceObsInfoEnumTextAndID>();
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseIndustry = new List<PolSourceObsInfoEnumTextAndID>();
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseMarine = new List<PolSourceObsInfoEnumTextAndID>();
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseRecreational = new List<PolSourceObsInfoEnumTextAndID>();
-            //List<PolSourceObsInfoEnumTextAndID> polSourceObsInfoEnumTextAndIDListLandBaseUrban = new List<PolSourceObsInfoEnumTextAndID>();
-
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
-
-            //foreach (int id in Enum.GetValues(typeof(PolSourceObsInfoEnum)))
-            //{
-            //    if (id == 0)
-            //        continue;
-
-            //    polSourceObsInfoEnumTextAndIDList.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-
-            //    if (id.ToString().StartsWith("105") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListLandBasePolSourceType.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-
-            //    if (id.ToString().StartsWith("152") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-
-            //    if (id.ToString().StartsWith("106") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListLandBaseAgriculture.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-
-            //    if (id.ToString().StartsWith("111") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListLandBaseForested.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-
-            //    if (id.ToString().StartsWith("112") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListLandBaseIndustry.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-
-            //    if (id.ToString().StartsWith("114") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListLandBaseMarine.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-
-            //    if (id.ToString().StartsWith("117") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListLandBaseRecreational.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-
-            //    if (id.ToString().StartsWith("121") && !id.ToString().EndsWith("00"))
-            //    {
-            //        polSourceObsInfoEnumTextAndIDListLandBaseUrban.Add(new PolSourceObsInfoEnumTextAndID() { Text = _BaseEnumService.GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum)id), ID = id });
-            //    }
-            //}
-
-            //polSourceObsInfoEnumTextAndIDListLandBasePolSourceType = polSourceObsInfoEnumTextAndIDListLandBasePolSourceType.OrderBy(c => c.Text).ToList();
-            //polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType = polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType.OrderBy(c => c.Text).ToList();
-            //polSourceObsInfoEnumTextAndIDListLandBaseAgriculture = polSourceObsInfoEnumTextAndIDListLandBaseAgriculture.OrderBy(c => c.Text).ToList();
-            //polSourceObsInfoEnumTextAndIDListLandBaseForested = polSourceObsInfoEnumTextAndIDListLandBaseForested.OrderBy(c => c.Text).ToList();
-            //polSourceObsInfoEnumTextAndIDListLandBaseIndustry = polSourceObsInfoEnumTextAndIDListLandBaseIndustry.OrderBy(c => c.Text).ToList();
-            //polSourceObsInfoEnumTextAndIDListLandBaseMarine = polSourceObsInfoEnumTextAndIDListLandBaseMarine.OrderBy(c => c.Text).ToList();
-            //polSourceObsInfoEnumTextAndIDListLandBaseRecreational = polSourceObsInfoEnumTextAndIDListLandBaseRecreational.OrderBy(c => c.Text).ToList();
-            //polSourceObsInfoEnumTextAndIDListLandBaseUrban = polSourceObsInfoEnumTextAndIDListLandBaseUrban.OrderBy(c => c.Text).ToList();
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Land Base graphic showing the number of polsource issues of different pollution source type (Agriculture, Forested, ...)
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //Percent = 15;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //List<string> PolSourceTypeList = new List<string>();
-            //List<int> CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBasePolSourceType)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    string enumTextID = "," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",";
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains(enumTextID)
-            //                 select psoi).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //Percent = 20;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //if (xlApp == null)
-            //{
-            //    xlApp = new Microsoft.Office.Interop.Excel.Application();
-            //    workbook = xlApp.Workbooks.Add();
-            //    worksheet = workbook.Worksheets.get_Item(1);
-            //    xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
-            //}
-
-            //Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 600, 200);
-            //Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //Microsoft.Office.Interop.Excel.SeriesCollection seriesCollection = chartPage.SeriesCollection();
-            //Microsoft.Office.Interop.Excel.Series series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByLandBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageLand = new FileInfo(fi.DirectoryName + @"\LandBaseStat" + FileNameExtra + ".png");
-
-            //DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageLand.FullName, "PNG", false);
-
-            //Percent = 25;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Water Base graphic showing the number of polsource issues of different pollution source type (Aquaculture, Seaport ...)
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //PolSourceTypeList = new List<string>();
-            //CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-            //                 select psoi.PolSourceObservationIssueID).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //chart = xlCharts.Add(100, 100, 600, 200);
-            //chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //seriesCollection = chartPage.SeriesCollection();
-            //series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageWater = new FileInfo(fi.DirectoryName + @"\WaterBaseStat" + FileNameExtra + ".png");
-
-            //di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageWater.FullName, "PNG", false);
-
-            //Percent = 35;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Agriculture graphic showing the number of polsource issues of different pollution source type
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //PolSourceTypeList = new List<string>();
-            //CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseAgriculture)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-            //                 select psoi.PolSourceObservationIssueID).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //chart = xlCharts.Add(100, 100, 600, 200);
-            //chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //seriesCollection = chartPage.SeriesCollection();
-            //series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageAgriculture = new FileInfo(fi.DirectoryName + @"\AgricultureStat" + FileNameExtra + ".png");
-
-            //di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageAgriculture.FullName, "PNG", false);
-
-            //Percent = 45;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Forested graphic showing the number of polsource issues of different pollution source type
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //PolSourceTypeList = new List<string>();
-            //CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseForested)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-            //                 select psoi.PolSourceObservationIssueID).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //chart = xlCharts.Add(100, 100, 600, 200);
-            //chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //seriesCollection = chartPage.SeriesCollection();
-            //series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageForested = new FileInfo(fi.DirectoryName + @"\ForestedStat" + FileNameExtra + ".png");
-
-            //di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageForested.FullName, "PNG", false);
-
-            //Percent = 55;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Industry graphic showing the number of polsource issues of different pollution source type
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //PolSourceTypeList = new List<string>();
-            //CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseIndustry)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-            //                 select psoi.PolSourceObservationIssueID).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //chart = xlCharts.Add(100, 100, 600, 200);
-            //chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //seriesCollection = chartPage.SeriesCollection();
-            //series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageIndustry = new FileInfo(fi.DirectoryName + @"\IndustryStat" + FileNameExtra + ".png");
-
-            //di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageIndustry.FullName, "PNG", false);
-
-            //Percent = 65;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Marine graphic showing the number of polsource issues of different pollution source type
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //PolSourceTypeList = new List<string>();
-            //CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseMarine)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-            //                 select psoi.PolSourceObservationIssueID).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //chart = xlCharts.Add(100, 100, 600, 200);
-            //chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //seriesCollection = chartPage.SeriesCollection();
-            //series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageMarine = new FileInfo(fi.DirectoryName + @"\MarineStat" + FileNameExtra + ".png");
-
-            //di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageMarine.FullName, "PNG", false);
-
-            //Percent = 75;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Recreational graphic showing the number of polsource issues of different pollution source type
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //PolSourceTypeList = new List<string>();
-            //CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseRecreational)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-            //                 select psoi.PolSourceObservationIssueID).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //chart = xlCharts.Add(100, 100, 600, 200);
-            //chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //seriesCollection = chartPage.SeriesCollection();
-            //series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageRecreational = new FileInfo(fi.DirectoryName + @"\RecreationalStat" + FileNameExtra + ".png");
-
-            //di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageRecreational.FullName, "PNG", false);
-
-            //Percent = 85;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //// ---------------------------------------------------------------------------------------------------------------
-            //// Urban graphic showing the number of polsource issues of different pollution source type
-            //// ---------------------------------------------------------------------------------------------------------------
-
-            //PolSourceTypeList = new List<string>();
-            //CountOfPolSourceType = new List<int>();
-
-            //foreach (PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBaseUrban)
-            //{
-            //    List<PolSourceSiteModel> polSourceSiteModelListActive = (from pss in polSourceSiteModelList
-            //                                                             from t in tvItemModelListPolSourceSite
-            //                                                             where pss.PolSourceSiteTVItemID == t.TVItemID
-            //                                                             && t.IsActive == true
-            //                                                             select pss).ToList();
-
-            //    List<PolSourceObservationModel> polSourceObservationModelLastOfActive = (from pss in polSourceSiteModelListActive
-            //                                                                             let psoLast = (from pso in polSourceObservationModelList
-            //                                                                                            where pss.PolSourceSiteID == pso.PolSourceSiteID
-            //                                                                                            orderby pso.ObservationDate_Local descending
-            //                                                                                            select pso).FirstOrDefault()
-            //                                                                             select psoLast).ToList();
-
-            //    int count = (from pso in polSourceObservationModelLastOfActive
-            //                 from psoi in polSourceObservationIssueModelList
-            //                 where pso != null
-            //                 && pso.PolSourceObservationID == psoi.PolSourceObservationID
-            //                 && psoi.ObservationInfo.Contains("," + polSourceObsInfoEnumTextAndID.ID.ToString() + ",")
-            //                 select psoi.PolSourceObservationIssueID).Count();
-
-            //    PolSourceTypeList.Add(polSourceObsInfoEnumTextAndID.Text);
-            //    CountOfPolSourceType.Add(count);
-            //}
-
-            //chart = xlCharts.Add(100, 100, 600, 200);
-            //chartPage = chart.Chart;
-
-            //chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-            //seriesCollection = chartPage.SeriesCollection();
-            //series = seriesCollection.NewSeries();
-
-            //series.XValues = PolSourceTypeList.ToArray();
-            //series.Values = CountOfPolSourceType.ToArray();
-
-            //chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-            //chartPage.ChartTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-            //xlApp.Selection.Delete();
-            //chartPage.Legend.Select();
-            //xlApp.Selection.Delete();
-            ////chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-            //chartPage.Parent.RoundedCorners = true;
-
-            //chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfIssuesByWaterBasePollutionType;
-
-            //// need to save the file with a unique name under the TVItemID
-            //FileInfo fiImageUrban = new FileInfo(fi.DirectoryName + @"\UrbanStat" + FileNameExtra + ".png");
-
-            //di = new DirectoryInfo(fi.DirectoryName);
-
-            //if (!di.Exists)
-            //{
-            //    try
-            //    {
-            //        di.Create();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-            //        return false;
-            //    }
-            //}
-
-            //chartPage.Export(fiImageUrban.FullName, "PNG", false);
-
-            //Percent = 95;
-            //_TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            //sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.LandBasePollutionSourceSiteObservationAndIssues }</h3>");
-
-            //sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageLand.FullName }|width,400|height,150|||</div>");
-
-            //foreach (PolSourceObsInfoEnumTextAndID PolSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListLandBasePolSourceType)
-            //{
-            //    sbTemp.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
-
-            //    switch (PolSourceObsInfoEnumTextAndID.ID)
-            //    {
-            //        case 10501: // Agriculture
-            //            {
-            //                sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageAgriculture.FullName }|width,400|height,150|||</div>");
-            //            }
-            //            break;
-            //        case 10502: // Forested
-            //            {
-            //                sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageForested.FullName }|width,400|height,150|||</div>");
-            //            }
-            //            break;
-            //        case 10503: // Industry
-            //            {
-            //                sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageIndustry.FullName }|width,400|height,150|||</div>");
-            //            }
-            //            break;
-            //        case 10504: // Marine
-            //            {
-            //                sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageMarine.FullName }|width,400|height,150|||</div>");
-            //            }
-            //            break;
-            //        case 10505: // Recreational
-            //            {
-            //                sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageRecreational.FullName }|width,400|height,150|||</div>");
-            //            }
-            //            break;
-            //        case 10506: // Urban
-            //            {
-            //                sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageUrban.FullName }|width,400|height,150|||</div>");
-            //            }
-            //            break;
-            //        default:
-            //            break;
-            //    }
-
-
-            //    int countPolSourceSiteForPollutionType = 0;
-            //    foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList)
-            //    {
-            //        TVItemModel tvItemModel = tvItemModelListPolSourceSite.Where(c => c.TVItemID == polSourceSiteModel.PolSourceSiteTVItemID).FirstOrDefault();
-            //        if (tvItemModel != null && tvItemModel.IsActive)
-            //        {
-            //            if (polSourceSiteModel != null)
-            //            {
-            //                PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
-            //                if (polSourceObservationModel != null)
-            //                {
-            //                    List<PolSourceObservationIssueModel> polSourceObservationIssueModelList2 = polSourceObservationIssueModelList.Where(c => c.PolSourceObservationID == polSourceObservationModel.PolSourceObservationID).OrderBy(c => c.Ordinal).ToList();
-            //                    if (polSourceObservationIssueModelList2.Count > 0)
-            //                    {
-            //                        if (polSourceObservationIssueModelList2[0].ObservationInfo.Contains(((int)PolSourceObsInfoEnum.SourceHumanPollution).ToString() + ","))
-            //                        {
-            //                            if (polSourceObservationModel == null)
-            //                            {
-            //                                countPolSourceSiteForPollutionType += 1;
-
-            //                                sbTemp.AppendLine($@" <blockquote>");
-            //                                sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
-
-            //                                List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-            //                                if (mapInfoPointModelList.Count > 0)
-            //                                {
-            //                                    sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
-            //                                }
-            //                                sbTemp.AppendLine($@"           <br />");
-            //                                sbTemp.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
-            //                                sbTemp.AppendLine($@" </blockquote>");
-            //                            }
-            //                            else
-            //                            {
-            //                                if (polSourceObservationIssueModelList2.Count == 0)
-            //                                {
-            //                                    countPolSourceSiteForPollutionType += 1;
-
-            //                                    sbTemp.AppendLine($@" <blockquote>");
-            //                                    sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
-
-            //                                    List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-            //                                    if (mapInfoPointModelList.Count > 0)
-            //                                    {
-            //                                        sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
-            //                                    }
-            //                                    sbTemp.AppendLine($@"           <br />");
-            //                                    sbTemp.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
-            //                                    sbTemp.AppendLine($@" </blockquote>");
-            //                                }
-            //                                else
-            //                                {
-            //                                    bool IssueOfSourceTypeExist = false;
-            //                                    foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList2)
-            //                                    {
-            //                                        if (polSourceObservationIssueModel.ObservationInfo.Contains(PolSourceObsInfoEnumTextAndID.ID.ToString()))
-            //                                        {
-            //                                            IssueOfSourceTypeExist = true;
-            //                                        }
-            //                                    }
-
-            //                                    if (IssueOfSourceTypeExist)
-            //                                    {
-            //                                        sbTemp.AppendLine($@" <blockquote>");
-            //                                        sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
-
-            //                                        List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-            //                                        if (mapInfoPointModelList.Count > 0)
-            //                                        {
-            //                                            sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Coord }:</b> { mapInfoPointModelList[0].Lat.ToString("F5") } { mapInfoPointModelList[0].Lng.ToString("F5") }</span>");
-            //                                        }
-
-            //                                        int CountIssues = 0;
-            //                                        foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList2)
-            //                                        {
-            //                                            if (polSourceObservationIssueModel.ObservationInfo.Contains(PolSourceObsInfoEnumTextAndID.ID.ToString()))
-            //                                            {
-            //                                                countPolSourceSiteForPollutionType += 1;
-            //                                                CountIssues += 1;
-            //                                                List<int> obsInfoList = polSourceObservationIssueModel.ObservationInfo.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Where(c => !string.IsNullOrWhiteSpace(c)).Select(c => int.Parse(c)).ToList();
-            //                                                if (CountIssues == 1)
-            //                                                {
-            //                                                    if (obsInfoList.Count > 1)
-            //                                                    {
-            //                                                        PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault();
-            //                                                        sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
-            //                                                    }
-            //                                                    if (obsInfoList.Count > 2)
-            //                                                    {
-            //                                                        PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault();
-            //                                                        sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
-            //                                                        polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault();
-            //                                                        sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { (polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty) }</span>");
-            //                                                    }
-            //                                                    sbTemp.AppendLine($@"           <br />");
-            //                                                }
-
-            //                                                sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;&nbsp;{ countPolSourceSiteForPollutionType }) - ");
-            //                                                int CountObsInfo = 0;
-            //                                                foreach (int obsInfo in obsInfoList)
-            //                                                {
-            //                                                    CountObsInfo += 1;
-            //                                                    if (CountObsInfo > 3 && CountObsInfo < obsInfoList.Count - 2)
-            //                                                    {
-            //                                                        PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault();
-            //                                                        string text = polSourceObsInfoEnumTextAndID != null ? polSourceObsInfoEnumTextAndID.Text : TaskRunnerServiceRes.Empty;
-            //                                                        sbTemp.AppendLine($@"           <span>{ text }</span> | ");
-            //                                                    }
-            //                                                }
-            //                                                sbTemp.AppendLine($@"           <br />");
-            //                                            }
-            //                                        }
-            //                                        sbTemp.AppendLine($@"           <br />");
-            //                                        sbTemp.AppendLine($@"           &nbsp;&nbsp;&nbsp;&nbsp;<span>Photo</span>");
-            //                                        sbTemp.AppendLine($@" </blockquote>");
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
-
-            //sbTemp.AppendLine($@" <h3>{ TaskRunnerServiceRes.WaterBasePollutionSourceSiteObservationAndIssues }</h3>");
-
-            //sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageWater.FullName }|width,400|height,150|||</div>");
-
-            //foreach (PolSourceObsInfoEnumTextAndID PolSourceObsInfoEnumTextAndID in polSourceObsInfoEnumTextAndIDListWaterBasePolSourceType)
-            //{
-            //    sbTemp.AppendLine($@" <h4>{ PolSourceObsInfoEnumTextAndID.Text }</h4>");
-            //    foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList)
-            //    {
-            //        TVItemModel tvItemModel = tvItemModelListPolSourceSite.Where(c => c.TVItemID == polSourceSiteModel.PolSourceSiteTVItemID).FirstOrDefault();
-            //        if (tvItemModel != null && tvItemModel.IsActive)
-            //        {
-            //            if (polSourceSiteModel != null)
-            //            {
-            //                PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
-            //                if (polSourceObservationModel != null)
-            //                {
-            //                    List<PolSourceObservationIssueModel> polSourceObservationIssueModelList2 = polSourceObservationIssueModelList.Where(c => c.PolSourceObservationID == polSourceObservationModel.PolSourceObservationID).OrderBy(c => c.Ordinal).ToList();
-            //                    if (polSourceObservationIssueModelList2.Count > 0)
-            //                    {
-            //                        if (polSourceObservationIssueModelList2[0].ObservationInfo.Contains(((int)PolSourceObsInfoEnum.SourceAnimalPollution).ToString() + ","))
-            //                        {
-            //                            if (polSourceObservationModel == null)
-            //                            {
-            //                                sbTemp.AppendLine($@" <blockquote>");
-            //                                sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
-
-            //                                List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-            //                                if (mapInfoPointModelList.Count > 0)
-            //                                {
-            //                                    sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
-            //                                }
-            //                                sbTemp.AppendLine($@"           <br />");
-            //                                sbTemp.AppendLine($@"           <span>{ TaskRunnerServiceRes.NoObservationForThisPollutionSourceSite }</span>");
-            //                                sbTemp.AppendLine($@" </blockquote>");
-            //                            }
-            //                            else
-            //                            {
-            //                                if (polSourceObservationIssueModelList2.Count == 0)
-            //                                {
-            //                                    sbTemp.AppendLine($@" <blockquote>");
-            //                                    sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.ID }: { polSourceSiteModel.Site }</span>");
-
-            //                                    List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-            //                                    if (mapInfoPointModelList.Count > 0)
-            //                                    {
-            //                                        sbTemp.AppendLine($@" <span>{ TaskRunnerServiceRes.Coord }: { mapInfoPointModelList[0].Lat }, { mapInfoPointModelList[0].Lng }</span>");
-            //                                    }
-            //                                    sbTemp.AppendLine($@"           <br />");
-            //                                    sbTemp.AppendLine($@"           <span>{ polSourceObservationModel.Observation_ToBeDeleted }</span>");
-            //                                    sbTemp.AppendLine($@" </blockquote>");
-            //                                }
-            //                                else
-            //                                {
-            //                                    bool IssueOfSourceTypeExist = false;
-            //                                    foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList2)
-            //                                    {
-            //                                        if (polSourceObservationIssueModel.ObservationInfo.Contains(PolSourceObsInfoEnumTextAndID.ID.ToString()))
-            //                                        {
-            //                                            IssueOfSourceTypeExist = true;
-            //                                        }
-            //                                    }
-
-            //                                    if (IssueOfSourceTypeExist)
-            //                                    {
-            //                                        sbTemp.AppendLine($@" <blockquote>");
-            //                                        sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Site }:</b> { polSourceSiteModel.Site }</span>");
-
-            //                                        List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-            //                                        if (mapInfoPointModelList.Count > 0)
-            //                                        {
-            //                                            sbTemp.AppendLine($@" <span><b>{ TaskRunnerServiceRes.Coord }:</b> { mapInfoPointModelList[0].Lat.ToString("F5") }, { mapInfoPointModelList[0].Lng.ToString("F5") }</span>");
-            //                                        }
-
-            //                                        int CountIssues = 0;
-            //                                        foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList2)
-            //                                        {
-            //                                            if (polSourceObservationIssueModel.ObservationInfo.Contains(PolSourceObsInfoEnumTextAndID.ID.ToString()))
-            //                                            {
-            //                                                CountIssues += 1;
-            //                                                List<int> obsInfoList = polSourceObservationIssueModel.ObservationInfo.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Where(c => !string.IsNullOrWhiteSpace(c)).Select(c => int.Parse(c)).ToList();
-            //                                                if (CountIssues == 1)
-            //                                                {
-            //                                                    if (obsInfoList.Count > 1)
-            //                                                    {
-            //                                                        PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[1]).FirstOrDefault();
-            //                                                        string text = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
-            //                                                        sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Dist }:</b> { text }</span>");
-            //                                                    }
-            //                                                    if (obsInfoList.Count > 2)
-            //                                                    {
-            //                                                        PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[2]).FirstOrDefault();
-            //                                                        string text = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
-
-            //                                                        sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Slope }:</b> { text }</span>");
-
-            //                                                        PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID2 = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == (int)obsInfoList[obsInfoList.Count - 1]).FirstOrDefault();
-            //                                                        string text2 = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
-            //                                                        sbTemp.AppendLine($@"           <span><b>{ TaskRunnerServiceRes.Risk }:</b> { text2 }</span>");
-            //                                                    }
-            //                                                    sbTemp.AppendLine($@"           <br />");
-            //                                                }
-
-            //                                                int CountObsInfo = 0;
-            //                                                foreach (int obsInfo in obsInfoList)
-            //                                                {
-            //                                                    CountObsInfo += 1;
-            //                                                    if (CountObsInfo > 3 && CountObsInfo < obsInfoList.Count - 2)
-            //                                                    {
-            //                                                        PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = polSourceObsInfoEnumTextAndIDList.Where(c => c.ID == obsInfo).FirstOrDefault();
-            //                                                        string text = polSourceObsInfoEnumTextAndID == null ? TaskRunnerServiceRes.Empty : polSourceObsInfoEnumTextAndID.Text;
-
-            //                                                        sbTemp.AppendLine($@"           <span>{ text }</span> | ");
-            //                                                    }
-            //                                                }
-            //                                                sbTemp.AppendLine($@"           <br />");
-            //                                            }
-
-            //                                        }
-            //                                        sbTemp.AppendLine($@"           <span>Photo</span>");
-            //                                        sbTemp.AppendLine($@" </blockquote>");
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //sbTemp.AppendLine(@"<span>|||PageBreak|||</span>");
+            //sbTemp.AppendLine("<h2>SUBSECTOR_POLLUTION_SOURCE_SITES - Not implemented</h2>");
+
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            // TVItemID and Year already loaded
+
+            TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                return false;
+            }
+
+            string ServerPath = _TVFileService.GetServerFilePath(tvItemModelSubsector.TVItemID);
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
+
+            List<TVItemModel> tvItemModelListPolSourceSite = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.PolSourceSite);
+            List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(TVItemID).OrderBy(c => c.Site).ToList();
+            List<PolSourceObservationModel> polSourceObservationModelList = _PolSourceObservationService.GetPolSourceObservationModelListWithSubsectorTVItemIDDB(TVItemID);
+            List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithSubsectorTVItemIDDB(TVItemID);
+            List<int> TVItemIDPolSourceSiteActiveList = tvItemModelListPolSourceSite.Where(c => c.IsActive == true).Select(c => c.TVItemID).ToList();
+            List<int> TVItemIDPolSourceSiteInactiveList = tvItemModelListPolSourceSite.Where(c => c.IsActive == false).Select(c => c.TVItemID).ToList();
+            List<int> TVItemIDCivicAddressList = polSourceSiteModelList.Where(c => c.CivicAddressTVItemID != null && c.CivicAddressTVItemID != 0).Where(c => c != null).Select(c => (int)c.CivicAddressTVItemID).ToList();
+            List<int> TVItemIDContactList = polSourceObservationModelList.Select(c => c.ContactTVItemID).ToList();
+
+            List<Address> addressList = new List<Address>();
+            List<MapInfo> mapInfoActiveList = new List<MapInfo>();
+            List<MapInfo> mapInfoInactiveList = new List<MapInfo>();
+            List<MapInfoPoint> mapInfoPointActiveList = new List<MapInfoPoint>();
+            List<MapInfoPoint> mapInfoPointInactiveList = new List<MapInfoPoint>();
+            List<TVItemLanguage> countryList = new List<TVItemLanguage>();
+            List<TVItemLanguage> provinceList = new List<TVItemLanguage>();
+            List<TVItemLanguage> municipalityList = new List<TVItemLanguage>();
+            List<TVItemLanguage> contactList = new List<TVItemLanguage>();
+
+            using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+            {
+                addressList = (from c in db2.Addresses
+                               from a in TVItemIDCivicAddressList
+                               where c.AddressTVItemID == a
+                               select c).ToList();
+
+                List<int> countryTVItemIDList = addressList.Select(c => c.CountryTVItemID).ToList();
+                List<int> provinceTVItemIDList = addressList.Select(c => c.ProvinceTVItemID).ToList();
+                List<int> municipalityTVItemIDList = addressList.Select(c => c.MunicipalityTVItemID).ToList();
+
+                countryList = (from c in db2.TVItemLanguages
+                               from a in countryTVItemIDList
+                               where c.TVItemID == a
+                               && c.Language == (int)language
+                               select c).ToList();
+
+                provinceList = (from c in db2.TVItemLanguages
+                                from a in provinceTVItemIDList
+                                where c.TVItemID == a
+                                && c.Language == (int)language
+                                select c).ToList();
+
+                municipalityList = (from c in db2.TVItemLanguages
+                                    from a in municipalityTVItemIDList
+                                    where c.TVItemID == a
+                                    && c.Language == (int)language
+                                    select c).ToList();
+
+                contactList = (from c in db2.TVItemLanguages
+                               from a in TVItemIDContactList
+                               where c.TVItemID == a
+                               && c.Language == (int)language
+                               select c).ToList();
+
+
+                mapInfoActiveList = (from c in db2.MapInfos
+                                     from a in TVItemIDPolSourceSiteActiveList
+                                     where c.TVItemID == a
+                                     select c).ToList();
+
+                mapInfoInactiveList = (from c in db2.MapInfos
+                                       from a in TVItemIDPolSourceSiteInactiveList
+                                       where c.TVItemID == a
+                                       select c).ToList();
+
+                List<int> mapInfoIDActiveList = mapInfoActiveList.Select(c => c.MapInfoID).ToList();
+
+                mapInfoPointActiveList = (from c in db2.MapInfoPoints
+                                          from a in mapInfoIDActiveList
+                                          where c.MapInfoID == a
+                                          select c).ToList();
+
+                List<int> mapInfoIDInactiveList = mapInfoInactiveList.Select(c => c.MapInfoID).ToList();
+
+                mapInfoPointInactiveList = (from c in db2.MapInfoPoints
+                                            from a in mapInfoIDInactiveList
+                                            where c.MapInfoID == a
+                                            select c).ToList();
+
+            }
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+
+            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
+            sbTemp.AppendLine("");
+            sbTemp.AppendLine($@"<h1 style=""text-align: center"">{ tvItemModelSubsector.TVText }</h1>");
+            sbTemp.AppendLine($@"<h2 style=""text-align: center"">{ TaskRunnerServiceRes.ActivePollutionSourceSites }</h2>");
+            foreach (TVItemModel tvItemModelPSSActive in tvItemModelListPolSourceSite.Where(c => c.IsActive == true))
+            {
+
+                PolSourceSiteModel polSourceSiteModel = polSourceSiteModelList.Where(c => c.PolSourceSiteTVItemID == tvItemModelPSSActive.TVItemID).FirstOrDefault();
+
+                if (polSourceSiteModel != null)
+                {
+                    sbTemp.AppendLine($@"<div>");
+                    sbTemp.AppendLine($@"<p>");
+                    sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.Site }</strong>: { polSourceSiteModel.Site }&nbsp;&nbsp;&nbsp;&nbsp;");
+
+                    MapInfo mapInfo = mapInfoActiveList.Where(c => c.TVItemID == tvItemModelPSSActive.TVItemID).FirstOrDefault();
+                    if (mapInfo != null)
+                    {
+                        List<MapInfoPoint> mapInfoPointListCurrent = mapInfoPointActiveList.Where(c => c.MapInfoID == mapInfo.MapInfoID).ToList();
+                        if (mapInfoPointListCurrent.Count > 0)
+                        {
+                            sbTemp.AppendLine($@"<span><strong>{ TaskRunnerServiceRes.Lat } { TaskRunnerServiceRes.Long }</strong>: { mapInfoPointListCurrent[0].Lat.ToString("F5") } { mapInfoPointListCurrent[0].Lng.ToString("F5") }</span>");
+                        }
+                    }
+                    else
+                    {
+                        sbTemp.AppendLine($@"<span><strong>{ TaskRunnerServiceRes.Lat } { TaskRunnerServiceRes.Long }</strong>: --- ---</span>");
+                    }
+                    sbTemp.AppendLine($@"</p>");
+
+
+                    if (polSourceSiteModel.CivicAddressTVItemID != null)
+                    {
+                        if (polSourceSiteModel.CivicAddressTVItemID != 0)
+                        {
+                            Address address = addressList.Where(c => c.AddressTVItemID == ((int)polSourceSiteModel.CivicAddressTVItemID)).FirstOrDefault();
+                            if (address != null)
+                            {
+                                sbTemp.AppendLine($@"<p>");
+                                if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+                                {
+                                    string CountryText = countryList.Where(c => c.TVItemID == address.CountryTVItemID).Select(c => c.TVText).FirstOrDefault();
+                                    string ProvinceText = provinceList.Where(c => c.TVItemID == address.ProvinceTVItemID).Select(c => c.TVText).FirstOrDefault();
+                                    string MunicipalityText = municipalityList.Where(c => c.TVItemID == address.MunicipalityTVItemID).Select(c => c.TVText).FirstOrDefault();
+                                    string StreetTypeText = _BaseEnumService.GetEnumText_StreetTypeEnum((StreetTypeEnum)address.StreetType);
+                                    string AddressText = $" { address.StreetNumber} { address.StreetName } { StreetTypeText }, { MunicipalityText }, { ProvinceText }, { CountryText }";
+                                    sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.CivicAddress }</strong>: { AddressText }");
+                                }
+                                else
+                                {
+                                    string CountryText = countryList.Where(c => c.TVItemID == address.CountryTVItemID).Select(c => c.TVText).FirstOrDefault();
+                                    string ProvinceText = provinceList.Where(c => c.TVItemID == address.ProvinceTVItemID).Select(c => c.TVText).FirstOrDefault();
+                                    string MunicipalityText = municipalityList.Where(c => c.TVItemID == address.MunicipalityTVItemID).Select(c => c.TVText).FirstOrDefault();
+                                    string StreetTypeText = _BaseEnumService.GetEnumText_StreetTypeEnum((StreetTypeEnum)address.StreetType);
+                                    string AddressText = $" { address.StreetNumber}, { StreetTypeText } { address.StreetName }, { MunicipalityText }, { ProvinceText }, { CountryText }";
+                                    sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.CivicAddress }</strong>: { AddressText }");
+                                }
+                                sbTemp.AppendLine($@"</p>");
+                            }
+                        }
+                    }
+
+                    PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
+
+                    if (polSourceObservationModel != null)
+                    {
+                        sbTemp.AppendLine($@"<p>");
+                        string ContactObsText = contactList.Where(c => c.TVItemID == polSourceObservationModel.ContactTVItemID).Select(c => c.TVText).FirstOrDefault();
+                        sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.LastObservationDate }</strong>: { polSourceObservationModel.ObservationDate_Local.ToString("yyyy MMMM dd") } <strong>{ TaskRunnerServiceRes.by }</strong>: { ContactObsText }");
+                        sbTemp.AppendLine($@"</p>");
+
+                        int IssueNumber = 0;
+                        foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList.Where(c => c.PolSourceObservationID == polSourceObservationModel.PolSourceObservationID).OrderBy(c => c.Ordinal).ToList())
+                        {
+                            IssueNumber += 1;
+                            string TVText = "";
+                            sbTemp.AppendLine($@"<p><strong>{ TaskRunnerServiceRes.Issue }</strong>: { IssueNumber }</p>");
+                            sbTemp.AppendLine($@"<blockquote>");
+                            List<string> ObservationInfoList = (string.IsNullOrWhiteSpace(polSourceObservationIssueModel.ObservationInfo) ? new List<string>() : polSourceObservationIssueModel.ObservationInfo.Trim().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
+
+                            for (int i = 0, countObs = ObservationInfoList.Count; i < countObs; i++)
+                            {
+                                string Temp = _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum)int.Parse(ObservationInfoList[i]));
+                                switch (ObservationInfoList[i].Substring(0, 3))
+                                {
+                                    case "101":
+                                        {
+                                            Temp = Temp.Replace("Source", "<br /><strong>Source</strong>");
+                                        }
+                                        break;
+                                    //case "153":
+                                    //    {
+                                    //        Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
+                                    //    }
+                                    //    break;
+                                    case "250":
+                                        {
+                                            Temp = Temp.Replace("Pathway", "<br /><strong>Pathway</strong>");
+                                        }
+                                        break;
+                                    case "900":
+                                        {
+                                            Temp = Temp.Replace("Status", "<br /><strong>Status</strong>");
+                                        }
+                                        break;
+                                    case "910":
+                                        {
+                                            Temp = Temp.Replace("Risk", "<br /><strong>Risk</strong>");
+                                        }
+                                        break;
+                                    case "110":
+                                    case "120":
+                                    case "122":
+                                    case "151":
+                                    case "152":
+                                    case "153":
+                                    case "155":
+                                    case "156":
+                                    case "157":
+                                    case "163":
+                                    case "166":
+                                    case "167":
+                                    case "170":
+                                    case "171":
+                                    case "172":
+                                    case "173":
+                                    case "176":
+                                    case "178":
+                                    case "181":
+                                    case "182":
+                                    case "183":
+                                    case "185":
+                                    case "186":
+                                    case "187":
+                                    case "190":
+                                    case "191":
+                                    case "192":
+                                    case "193":
+                                    case "194":
+                                    case "196":
+                                    case "198":
+                                    case "199":
+                                    case "220":
+                                    case "930":
+                                        {
+                                            //Temp = @"<span class=""hidden"">" + Temp + "</span>";
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                TVText = TVText + Temp;
+                            }
+
+                            sbTemp.AppendLine($@"{ TVText }");
+                            if (polSourceObservationIssueModel.ExtraComment != null)
+                            {
+                                if (polSourceObservationIssueModel.ExtraComment.Length > 0)
+                                {
+                                    sbTemp.AppendLine($@"<p><strong>{ TaskRunnerServiceRes.ExtraComment }</strong></p>");
+                                    sbTemp.AppendLine($@"<p>");
+                                    sbTemp.AppendLine($@"{ polSourceObservationIssueModel.ExtraComment }");
+                                    sbTemp.AppendLine($@"</p>");
+                                }
+                            }
+                            sbTemp.AppendLine($@"</blockquote>");
+                        }
+
+                    }
+
+                    sbTemp.AppendLine($@"</div>");
+                    sbTemp.AppendLine($@"<hr />");
+                }
+            }
+
+            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
 
             if (!GetBottomHTML())
             {

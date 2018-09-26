@@ -27,6 +27,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
         #region Properties
         private TaskRunnerBaseService _TaskRunnerBaseService { get; set; }
+        private AddressService _AddressService { get; set; }
         private TVFileService _TVFileService { get; set; }
         private TVItemService _TVItemService { get; set; }
         private ReportTypeService _ReportTypeService { get; set; }

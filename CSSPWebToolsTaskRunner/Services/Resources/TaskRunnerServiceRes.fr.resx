@@ -1545,4 +1545,25 @@
   <data name="FedStationName" xml:space="preserve">
     <value>FedStationName</value>
   </data>
+  <data name="ActivePollutionSourceSites" xml:space="preserve">
+    <value>Sites actifs de source de pollution</value>
+  </data>
+  <data name="by" xml:space="preserve">
+    <value>par</value>
+  </data>
+  <data name="CivicAddress" xml:space="preserve">
+    <value>Adresse civique</value>
+  </data>
+  <data name="ExtraComment" xml:space="preserve">
+    <value>Commentaire d'extra</value>
+  </data>
+  <data name="LastObservationDate" xml:space="preserve">
+    <value>Date de la dernière observation</value>
+  </data>
+  <data name="Lat" xml:space="preserve">
+    <value>Lat</value>
+  </data>
+  <data name="Long" xml:space="preserve">
+    <value>Long</value>
+  </data>
 </root>
