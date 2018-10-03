@@ -867,59 +867,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return;
         }
-        public void LoadHydrometricDataValueDB()
-        {
-            string NotUsed = "";
-
-            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
-            string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            int MikeSourceTVItemID = 0;
-            int MikeScenarioTVItemID = 0;
-            foreach (string s in ParamValueList)
-            {
-                string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-                if (ParamValue.Length != 2)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
-                    return;
-                }
-
-                if (ParamValue[0] == "MikeSourceTVItemID")
-                {
-                    MikeSourceTVItemID = int.Parse(ParamValue[1]);
-                }
-                if (ParamValue[0] == "MikeScenarioTVItemID")
-                {
-                    MikeScenarioTVItemID = int.Parse(ParamValue[1]);
-                }
-                else
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
-                    return;
-                }
-            }
-
-            if (MikeSourceTVItemID == 0)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNullOrEmpty, TaskRunnerServiceRes.MikeScenarioTVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNullOrEmpty", TaskRunnerServiceRes.MikeScenarioTVItemID);
-                return;
-            }
-
-            if (MikeScenarioTVItemID == 0)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNullOrEmpty, TaskRunnerServiceRes.MikeScenarioTVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNullOrEmpty", TaskRunnerServiceRes.MikeScenarioTVItemID);
-                return;
-            }
-
-            /// will need to get the Hydrometric data 
-
-            return;
-        }
         public void MikeScenarioAskToRun()
         {
             MikeScenarioService mikeScenarioService = new MikeScenarioService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);

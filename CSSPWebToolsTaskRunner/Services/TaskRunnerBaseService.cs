@@ -349,8 +349,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
                         AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-                        MikeScenarioFileService mikeScenarioFileService = new MikeScenarioFileService(_TaskRunnerBaseService);
-                        mikeScenarioFileService.LoadHydrometricDataValueDB();
+                        HydrometricService hydrometricService = new HydrometricService(_TaskRunnerBaseService);
+                        hydrometricService.LoadHydrometricDataValueDB();
                         if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                         {
                             appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);

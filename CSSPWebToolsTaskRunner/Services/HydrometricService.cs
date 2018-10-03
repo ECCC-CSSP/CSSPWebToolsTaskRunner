@@ -17,6 +17,10 @@ using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Enums;
 using CSSPWebToolsDBDLL;
 using System.Data.OleDb;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using System.Collections.ObjectModel;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -27,18 +31,13 @@ namespace CSSPWebToolsTaskRunner.Services
         public List<string> ProvNameListEN = new List<string>() { "British Columbia", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec" };
         public List<string> ProvNameListFR = new List<string>() { "Colombie-Britannique", "Nouveau-Brunswick", "Terre-Neuve-et-Labrador", "Nouvelle-Écosse", "Île-du-Prince-Édouard", "Québec" };
         public string URLUpdateHydrometricSiteInfo = "https://wateroffice.ec.gc.ca/station_metadata/station_result_e.html?search_type=province&province={0}";
-        public string URLUpdateHydrometricSiteInfoLatLngWMOElevTC = "http://Hydrometric.weather.gc.ca/HydrometricData/dailydata_e.html?timeframe=2&StationID={0}&Year=1800&Month=1&Day=01";
-        public string UpdateHydrometricSiteDailyFromStartDateToEndDate = "http://Hydrometric.weather.gc.ca/HydrometricData/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month=1&Day=1&timeframe=2&submit=Download+Data";
-        //public string GetHydrometricSiteDataForRun = "http://Hydrometric.weather.gc.ca/HydrometricData/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month=1&Day=1&timeframe=2&submit=Download+Data";
-        public string UrlToGetHydrometricSiteDataForRunsOfYear = "https://wateroffice.ec.gc.ca/report/historical_e.html?stn={0}&mode=Table&type=h2oArc&results_type=historical&dataType=Daily&parameterType={1}&year={2}";
-        //public string UrlToGetHydrometricSiteDataForRunsOfYear = "http://Hydrometric.weather.gc.ca/Hydrometric_data/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month=1&Day=1&timeframe=2&submit=Download+Data";
-        public string UpdateHydrometricSiteHourlyFromStartDateToEndDate = "http://Hydrometric.weather.gc.ca/Hydrometric_data/bulk_data_e.html?format=csv&stationID={0}&Year={1}&Month={2}&Day=1&timeframe=1&submit=Download+Data";
+        public string UrlToGetHydrometricSiteDataForYear = "https://wateroffice.ec.gc.ca/report/historical_e.html?stn={0}&mode=Table&type=h2oArc&results_type=historical&dataType=Daily&parameterType={1}&year={2}";
         public bool WebBrowserContentAnalysed = true;
         public bool AllDone = false;
-        private string FedStationNameToDo = "";
-        private string DataTypeToDo = "";
-        private int YearToDo = 0;
-        private int SubsectorTVItemIDToDo = 0;
+        public string FedStationNameToDo = "";
+        public string DataTypeToDo = "";
+        public int YearToDo = 0;
+        public int HydrometricSiteIDToDo = 0;
         #endregion Variables
 
         #region Properties
@@ -53,612 +52,27 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Constructors
 
         #region Events
-        public void browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            string NotUsed = "";
-
-            if (e.Url.AbsolutePath != (sender as WebBrowser).Url.AbsolutePath)
-                return;
-
-            if ((sender as WebBrowser).Url == e.Url)
-            {
-                if ((sender as WebBrowser).Url.ToString().Contains("https://wateroffice.ec.gc.ca/report/historical_e.html?stn="))
-                {
-                    ParseHydrometricPage(sender, e);
-                    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    NotUsed = TaskRunnerServiceRes.CurrentURLNotTheSameInDocumentCompletedEvent;
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CurrentURLNotTheSameInDocumentCompletedEvent");
-                    return;
-                }
-            }
-            else
-            {
-                NotUsed = TaskRunnerServiceRes.CurrentURLNotTheSameInDocumentCompletedEvent;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CurrentURLNotTheSameInDocumentCompletedEvent");
-                return;
-            }
-
-            Application.ExitThread();   // Stops the thread
-        }
-
-        private void ParseHydrometricPage(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            string NotUsed = "";
-            string FedStationName = "";
-            string ReportType = "";
-            string DataType = "";
-            string Year = "";
-            float Discharge = -1.0f;
-            float Level = -1.0f;
-            bool IsDischarge = true;
-
-            if ((sender as WebBrowser).Url.ToString().Contains("&parameterType=Flow"))
-            {
-                IsDischarge = true;
-            }
-            else if ((sender as WebBrowser).Url.ToString().Contains("&parameterType=Level"))
-            {
-                IsDischarge = false;
-            }
-            else
-            {
-                NotUsed = TaskRunnerServiceRes.CurrentURLNotTheSameInDocumentCompletedEvent;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("CurrentURLNotTheSameInDocumentCompletedEvent");
-                return;
-            }
-
-            HtmlDocument doc = (sender as WebBrowser).Document;
-
-            // verifying fed station name
-            HtmlElement htmlElementSelectStn = doc.GetElementById("selectStn");
-            if (htmlElementSelectStn != null)
-            {
-                HtmlElementCollection htmlElementCollectionOption = htmlElementSelectStn.Children;
-                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
-                {
-                    string selected = htmlElementOption.GetAttribute("selected");
-                    if (!string.IsNullOrWhiteSpace(selected))
-                    {
-                        FedStationName = htmlElementOption.GetAttribute("value").Trim();
-                        break;
-                    }
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(FedStationName))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "FedStationName");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "FedStationName");
-                return;
-            }
-
-            // verifying report type
-            HtmlElement htmlElementselectReportType = doc.GetElementById("selectReportType");
-            if (htmlElementselectReportType != null)
-            {
-                HtmlElementCollection htmlElementCollectionOption = htmlElementselectReportType.Children;
-                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
-                {
-                    string selected = htmlElementOption.GetAttribute("selected");
-                    if (!string.IsNullOrWhiteSpace(selected))
-                    {
-                        ReportType = htmlElementOption.GetAttribute("value").Trim();
-                        break;
-                    }
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(ReportType))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "ReportType");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "ReportType");
-                return;
-            }
-
-            // verifying data type
-            HtmlElement htmlElementselectDataType = doc.GetElementById("selectDataType");
-            if (htmlElementselectDataType != null)
-            {
-                HtmlElementCollection htmlElementCollectionOption = htmlElementselectDataType.Children;
-                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
-                {
-                    string selected = htmlElementOption.GetAttribute("selected");
-                    if (!string.IsNullOrWhiteSpace(selected))
-                    {
-                        DataType = htmlElementOption.GetAttribute("value").Trim();
-                        break;
-                    }
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(DataType))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "DataType");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "DataType");
-                return;
-            }
-
-            // verifying year
-            HtmlElement htmlElementselectYear = doc.GetElementById("selectYear");
-            if (htmlElementselectYear != null)
-            {
-                HtmlElementCollection htmlElementCollectionOption = htmlElementselectYear.Children;
-                foreach (HtmlElement htmlElementOption in htmlElementCollectionOption)
-                {
-                    string selected = htmlElementOption.GetAttribute("selected");
-                    if (!string.IsNullOrWhiteSpace(selected))
-                    {
-                        Year = htmlElementOption.GetAttribute("value").Trim();
-                        break;
-                    }
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(Year))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindHtmlElement_, "Year");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "Year");
-                return;
-            }
-
-            // getting data
-            HtmlElement htmlElementTable = doc.GetElementById("wb-auto-1");
-            if (htmlElementTable == null)
-            {
-                NotUsed = TaskRunnerServiceRes.CouldNotFindHtmlElement_;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindHtmlElement_", "wb-auto-1");
-                return;
-            }
-
-            HtmlElementCollection htmlElementTableCollection = htmlElementTable.Children;
-            HtmlElement htmlElementTBody = null;
-            foreach (HtmlElement htmlElementTableChild in htmlElementTableCollection)
-            {
-                if (htmlElementTableChild.TagName.ToLower() == "tbody")
-                {
-                    htmlElementTBody = htmlElementTableChild;
-                    break;
-                }
-            }
-
-            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-            HydrometricSiteModel hydrometricSiteModel = hydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteNameDB(FedStationName);
-            if (!string.IsNullOrWhiteSpace(hydrometricSiteModel.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.FedStationName, FedStationName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.FedStationName, FedStationName);
-                return;
-            }
-
-            if (htmlElementTBody == null)
-            {
-                List<DateTime?> dateTimeList = new List<DateTime?>();
-                List<int?> dayList = new List<int?>();
-                List<float?> JanList = new List<float?>();
-                List<float?> FebList = new List<float?>();
-                List<float?> MarList = new List<float?>();
-                List<float?> AprList = new List<float?>();
-                List<float?> MayList = new List<float?>();
-                List<float?> JunList = new List<float?>();
-                List<float?> JulList = new List<float?>();
-                List<float?> AugList = new List<float?>();
-                List<float?> SepList = new List<float?>();
-                List<float?> OctList = new List<float?>();
-                List<float?> NovList = new List<float?>();
-                List<float?> DecList = new List<float?>();
-
-                HtmlElementCollection htmlElementTrCollection = htmlElementTBody.Children;
-                foreach (HtmlElement htmlElementTr in htmlElementTrCollection)
-                {
-                    if (htmlElementTr.TagName.ToLower() == "tr")
-                    {
-                        HtmlElementCollection htmlElementThCollection = htmlElementTr.GetElementsByTagName("th");
-                        foreach (HtmlElement htmlElementTh in htmlElementThCollection)
-                        {
-                            if (int.TryParse(htmlElementTh.InnerText.Trim(), out int val))
-                            {
-                                dayList.Add(val);
-                            }
-                            else
-                            {
-                                dayList.Add(null);
-                            }
-                        }
-
-                        HtmlElementCollection htmlElementTdCollection = htmlElementTr.GetElementsByTagName("td");
-                        int CountMonth = 0;
-                        foreach (HtmlElement htmlElementTd in htmlElementTdCollection)
-                        {
-                            CountMonth += 1;
-                            dateTimeList.Add(new DateTime(YearToDo, CountMonth, dayList.Last().Value));
-                            if (float.TryParse(htmlElementTd.InnerText.Trim(), out float val))
-                            {
-                                switch (CountMonth)
-                                {
-                                    case 1:
-                                        {
-                                            JanList.Add(val);
-                                        }
-                                        break;
-                                    case 2:
-                                        {
-                                            FebList.Add(val);
-                                        }
-                                        break;
-                                    case 3:
-                                        {
-                                            MarList.Add(val);
-                                        }
-                                        break;
-                                    case 4:
-                                        {
-                                            AprList.Add(val);
-                                        }
-                                        break;
-                                    case 5:
-                                        {
-                                            MayList.Add(val);
-                                        }
-                                        break;
-                                    case 6:
-                                        {
-                                            JunList.Add(val);
-                                        }
-                                        break;
-                                    case 7:
-                                        {
-                                            JulList.Add(val);
-                                        }
-                                        break;
-                                    case 8:
-                                        {
-                                            AugList.Add(val);
-                                        }
-                                        break;
-                                    case 9:
-                                        {
-                                            SepList.Add(val);
-                                        }
-                                        break;
-                                    case 10:
-                                        {
-                                            OctList.Add(val);
-                                        }
-                                        break;
-                                    case 11:
-                                        {
-                                            NovList.Add(val);
-                                        }
-                                        break;
-                                    case 12:
-                                        {
-                                            DecList.Add(val);
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                switch (CountMonth)
-                                {
-                                    case 1:
-                                        {
-                                            JanList.Add(null);
-                                        }
-                                        break;
-                                    case 2:
-                                        {
-                                            FebList.Add(null);
-                                        }
-                                        break;
-                                    case 3:
-                                        {
-                                            MarList.Add(null);
-                                        }
-                                        break;
-                                    case 4:
-                                        {
-                                            AprList.Add(null);
-                                        }
-                                        break;
-                                    case 5:
-                                        {
-                                            MayList.Add(null);
-                                        }
-                                        break;
-                                    case 6:
-                                        {
-                                            JunList.Add(null);
-                                        }
-                                        break;
-                                    case 7:
-                                        {
-                                            JulList.Add(null);
-                                        }
-                                        break;
-                                    case 8:
-                                        {
-                                            AugList.Add(null);
-                                        }
-                                        break;
-                                    case 9:
-                                        {
-                                            SepList.Add(null);
-                                        }
-                                        break;
-                                    case 10:
-                                        {
-                                            OctList.Add(null);
-                                        }
-                                        break;
-                                    case 11:
-                                        {
-                                            NovList.Add(null);
-                                        }
-                                        break;
-                                    case 12:
-                                        {
-                                            DecList.Add(null);
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-            List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(SubsectorTVItemIDToDo).Where(c => c.DateTime_Local.Year == YearToDo).OrderBy(c => c.DateTime_Local).ToList();
-            if (mwqmRunModelList.Count == 0)
-            {
-                return;
-            }
-
-            List<HydrometricDataValueModel> hydrometricDataValueModelList = hydrometricDataValueService.GetHydrometricDataValueModelListWithHydrometricSiteIDDB(hydrometricSiteModel.HydrometricSiteID);
-
-            foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList)
-            {
-                DateTime runDate = mwqmRunModel.DateTime_Local;
-                DateTime currentDate = runDate;
-                for (int i = 0; i < 11; i++)
-                {
-                    currentDate = runDate.AddDays(i * -1);
-                    HydrometricDataValueModel hydrometricDataValueModel = hydrometricDataValueModelList.Where(c => c.DateTime_Local == currentDate).FirstOrDefault();
-
-                    if (hydrometricDataValueModel == null)
-                    {
-                        HydrometricDataValueModel hydrometricDataValueModelNew = new HydrometricDataValueModel();
-                        hydrometricDataValueModelNew.DateTime_Local = currentDate;
-                        hydrometricDataValueModelNew.DischargeEntered_m3_s = null;
-                        if (!IsDischarge) // Level
-                        {
-                            hydrometricDataValueModelNew.Discharge_m3_s = 0.0f;
-                        }
-                        else // Discharge
-                        {
-                            hydrometricDataValueModelNew.Discharge_m3_s = 0.0f;
-                        }
-                    }
-                    else
-                    {
-                    }
-                }
-            }
-
-        }
         #endregion Events
 
         #region Functions public
-        public bool FindHtmlElement(HtmlElement htmlElement, int count, string tagName, string message)
+        public void LoadHydrometricDataValueDB()
         {
+            TVItemService _TVItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MikeSourceService _MikeSourceService = new MikeSourceService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MikeScenarioService _MikeScenarioService = new MikeScenarioService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMRunService _MWQMRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            HydrometricSiteService _HydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            HydrometricDataValueService _HydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            int HydrometricSiteTVItemID = 0;
+            int Year = 0;
+
             string NotUsed = "";
-
-            if (htmlElement.Children.Count < count)
-            {
-                AllDone = true;
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, message);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", message);
-                return false;
-            }
-
-            HtmlElement htmlElementChild = htmlElement.Children[count - 1];
-            if (htmlElementChild.TagName.ToUpper() != tagName.ToUpper())
-            {
-                AllDone = true;
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, message);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", message);
-                return false;
-            }
-
-            return true;
-        }
-        public void RunBrowserThread(string URL)
-        {
-            var thread = new Thread(() =>
-            {
-                var br = new WebBrowser();
-                br.DocumentCompleted += browser_DocumentCompleted;
-                br.Navigate(URL);
-                Application.Run();
-            });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-
-            return;
-        }
-        //public void GetAllDischargesForYear()
-        //{
-        //    string NotUsed = "";
-
-        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    MWQMSubsectorService mwqmSubsectorService = new MWQMSubsectorService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-        //    AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-
-        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID);
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID);
-        //        return;
-        //    }
-        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID2 == 0)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID2);
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID2);
-        //        return;
-        //    }
-
-        //    TVItemModel tvItemModelProvince = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //    if (!string.IsNullOrWhiteSpace(tvItemModelProvince.Error))
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        //        return;
-        //    }
-
-        //    if (tvItemModelProvince.TVType != TVTypeEnum.Province)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes.TVTypeShouldBe_, TVTypeEnum.Province.ToString());
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("TVTypeShouldBe_", TVTypeEnum.Province.ToString());
-        //        return;
-        //    }
-
-        //    string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
-        //    string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        //    int ProvinceTVItemID = 0;
-        //    int Year = 0;
-        //    foreach (string s in ParamValueList)
-        //    {
-        //        string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-        //        if (ParamValue.Length != 2)
-        //        {
-        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
-        //            return;
-        //        }
-
-        //        if (ParamValue[0] == "ProvinceTVItemID")
-        //        {
-        //            ProvinceTVItemID = int.Parse(ParamValue[1]);
-        //        }
-        //        else if (ParamValue[0] == "Year")
-        //        {
-        //            Year = int.Parse(ParamValue[1]);
-        //        }
-        //        else
-        //        {
-        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
-        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
-        //            return;
-        //        }
-        //    }
-
-        //    if (tvItemModelProvince.TVItemID != ProvinceTVItemID)
-        //    {
-        //        NotUsed = string.Format(TaskRunnerServiceRes._NotEqualTo_, "tvItemModelProvince.TVItemID[" + tvItemModelProvince.TVItemID.ToString() + "]", "ProvinceTVItemID[" + ProvinceTVItemID.ToString() + "]");
-        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_NotEqualTo_", "tvItemModelProvince.TVItemID[" + tvItemModelProvince.TVItemID.ToString() + "]", "ProvinceTVItemID[" + ProvinceTVItemID.ToString() + "]");
-        //        return;
-        //    }
-
-        //    List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(ProvinceTVItemID, TVTypeEnum.Subsector).OrderBy(c => c.TVText).ToList();
-        //    if (tvItemModelSubsectorList.Count == 0)
-        //    {
-        //        return;
-        //    }
-
-        //    int CountSS = 0;
-        //    string Status = appTaskModel.StatusText;
-        //    foreach (TVItemModel tvItemModel in tvItemModelSubsectorList)
-        //    {
-        //        CountSS += 1;
-        //        if (CountSS % 1 == 0)
-        //        {
-        //            appTaskModel.PercentCompleted = (100 * CountSS) / tvItemModelSubsectorList.Count;
-        //            appTaskModel.StatusText = Status + " --- " + tvItemModel.TVText;
-        //            appTaskService.PostUpdateAppTask(appTaskModel);
-        //        }
-
-        //        List<MWQMRun> mwqmRunList = new List<MWQMRun>();
-        //        using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
-        //        {
-        //            mwqmRunList = (from c in db.MWQMRuns
-        //                           where c.SubsectorTVItemID == tvItemModel.TVItemID
-        //                           select c).ToList();
-        //        }
-
-        //        if (mwqmRunList.Count == 0)
-        //        {
-        //            continue;
-        //        }
-
-        //        GetHydrometricSitesDataForSubsectorRunsOfYear(tvItemModel.TVItemID, Year);
-        //        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //        {
-        //            return;
-        //        }
-        //    }
-
-        //    appTaskModel.PercentCompleted = 100;
-        //    appTaskService.PostUpdateAppTask(appTaskModel);
-        //}
-        public void GetHydrometricSitesDataForRunsOfYear()
-        {
-            string NotUsed = "";
-
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-            AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID);
-                return;
-            }
-
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID2 == 0)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID2);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID2);
-                return;
-            }
-
-            TVItemModel tvItemModelSubsector = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
-
-            if (tvItemModelSubsector.TVType != TVTypeEnum.Subsector)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.TVTypeShouldBe_, TVTypeEnum.Subsector.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("TVTypeShouldBe_", TVTypeEnum.Subsector.ToString());
-                return;
-            }
 
             string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
             string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            int SubsectorTVItemID = 0;
-            int Year = 0;
+            int MikeSourceTVItemID = 0;
+            int MikeScenarioTVItemID = 0;
             foreach (string s in ParamValueList)
             {
                 string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -670,13 +84,13 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
 
-                if (ParamValue[0] == "SubsectorTVItemID")
+                if (ParamValue[0] == "MikeSourceTVItemID")
                 {
-                    SubsectorTVItemID = int.Parse(ParamValue[1]);
+                    MikeSourceTVItemID = int.Parse(ParamValue[1]);
                 }
-                else if (ParamValue[0] == "Year")
+                else if (ParamValue[0] == "MikeScenarioTVItemID")
                 {
-                    Year = int.Parse(ParamValue[1]);
+                    MikeScenarioTVItemID = int.Parse(ParamValue[1]);
                 }
                 else
                 {
@@ -686,111 +100,467 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            if (tvItemModelSubsector.TVItemID != SubsectorTVItemID)
+            if (MikeSourceTVItemID == 0)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes._NotEqualTo_, "tvItemModelSubsector.TVItemID[" + tvItemModelSubsector.TVItemID.ToString() + "]", "SubsectorTVItemID[" + SubsectorTVItemID.ToString() + "]");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("_NotEqualTo_", "tvItemModelSubsector.TVItemID[" + tvItemModelSubsector.TVItemID.ToString() + "]", "SubsectorTVItemID[" + SubsectorTVItemID.ToString() + "]");
+                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNullOrEmpty, TaskRunnerServiceRes.MikeScenarioTVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNullOrEmpty", TaskRunnerServiceRes.MikeScenarioTVItemID);
                 return;
             }
 
-            GetHydrometricSitesDataForSubsectorRunsOfYear(SubsectorTVItemID, Year);
-
-            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+            TVItemModel tvItemModelMikeSource = _TVItemService.GetTVItemModelWithTVItemIDDB(MikeSourceTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelMikeSource.Error))
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeSourceTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeSourceTVItemID.ToString());
                 return;
             }
 
-            // should get all the runs for the particular year and subsector
-
-            appTaskModel.PercentCompleted = 100;
-            appTaskService.PostUpdateAppTask(appTaskModel);
-        }
-        public void GetHydrometricSitesDataForSubsectorRunsOfYear(int SubsectorTVItemID, int Year)
-        {
-            string NotUsed = "";
-            int CurrentYear = DateTime.Now.Year;
-
-            HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            UseOfSiteService useOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-            AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-
-            List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(SubsectorTVItemID).Where(c => c.DateTime_Local.Year == Year).OrderBy(c => c.DateTime_Local).ToList();
-            if (mwqmRunModelList.Count == 0)
+            MikeSourceModel mikeSourceModel = _MikeSourceService.GetMikeSourceModelWithMikeSourceTVItemIDDB(MikeSourceTVItemID);
+            if (!string.IsNullOrWhiteSpace(mikeSourceModel.Error))
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.MikeSourceTVItemID, MikeSourceTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeSource, TaskRunnerServiceRes.MikeSourceTVItemID, MikeSourceTVItemID.ToString());
                 return;
             }
 
-            List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Hydrometric, SubsectorTVItemID);
-            if (useOfSiteModelList.Count == 0)
+            if (mikeSourceModel.UseHydrometric == false)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes._ShouldBeTrue, "UseHydrometric");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldBeTrue", "UseHydrometric");
                 return;
             }
 
-            List<int> HydrometricSiteTVItemID = new List<int>();
-
-            int Count = 0;
-            int TotalCount = mwqmRunModelList.Count() * useOfSiteModelList.Count();
-            foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
+            if (mikeSourceModel.HydrometricTVItemID == null)
             {
-                Count += 1;
-                appTaskModel.PercentCompleted = (int)((100.0f*Count/TotalCount));
-                appTaskService.PostUpdateAppTask(appTaskModel);
+                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNull, "HydrometricTVItemID");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNull", "HydrometricTVItemID");
+                return;
+            }
 
-                int EndYear = (useOfSiteModel.EndYear == null ? CurrentYear : (int)useOfSiteModel.EndYear);
-                if (Year >= useOfSiteModel.StartYear && Year <= EndYear)
+            HydrometricSiteTVItemID = (int)mikeSourceModel.HydrometricTVItemID;
+
+            if (MikeScenarioTVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNullOrEmpty, TaskRunnerServiceRes.MikeScenarioTVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNullOrEmpty", TaskRunnerServiceRes.MikeScenarioTVItemID);
+                return;
+            }
+
+            HydrometricSiteModel hydrometricSiteModel = _HydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB(HydrometricSiteTVItemID);
+            if (!string.IsNullOrWhiteSpace(hydrometricSiteModel.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSiteModel, TaskRunnerServiceRes.HydrometricSiteTVItemID, HydrometricSiteTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSiteModel, TaskRunnerServiceRes.HydrometricSiteTVItemID, HydrometricSiteTVItemID.ToString());
+                return;
+            }
+
+            TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(MikeScenarioTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeSourceTVItemID.ToString());
+                return;
+            }
+
+            MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(MikeScenarioTVItemID);
+            if (!string.IsNullOrWhiteSpace(mikeScenarioModel.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, MikeScenarioTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MikeScenario, TaskRunnerServiceRes.MikeScenarioTVItemID, MikeSourceTVItemID.ToString());
+                return;
+            }
+
+            if (mikeScenarioModel.ForSimulatingMWQMRunTVItemID == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNull, "ForSimulatingMWQMRunTVItemID");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNull", "ForSimulatingMWQMRunTVItemID");
+                return;
+            }
+
+            MWQMRunModel mwqmRunModel = _MWQMRunService.GetMWQMRunModelWithMWQMRunTVItemIDDB((int)mikeScenarioModel.ForSimulatingMWQMRunTVItemID);
+            if (!string.IsNullOrWhiteSpace(mwqmRunModel.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MWQMRun, TaskRunnerServiceRes.MWQMRunTVItemID, ((int)mikeScenarioModel.ForSimulatingMWQMRunTVItemID).ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MWQMRun, TaskRunnerServiceRes.MWQMRunTVItemID, ((int)mikeScenarioModel.ForSimulatingMWQMRunTVItemID).ToString());
+                return;
+            }
+
+            Year = mwqmRunModel.DateTime_Local.Year;
+
+            List<HydrometricDataValueModel> hydrometricDataValueModel11ValueList = _HydrometricDataValueService.GetHydrometricDataValueModelListWithHydrometricSiteIDBack10DaysFromDateDB(hydrometricSiteModel.HydrometricSiteID, mwqmRunModel.DateTime_Local);
+
+            if (hydrometricDataValueModel11ValueList.Count != 11)
+            {
+                List<string> FlowLevelList = new List<string>() { "Flow", "Level" };
+
+                foreach (string FlowLevel in FlowLevelList)
                 {
-                    HydrometricSiteModel hydrometricSiteModel = hydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB(useOfSiteModel.SiteTVItemID);
-                    if (!string.IsNullOrWhiteSpace(hydrometricSiteModel.Error))
+
+                    if (hydrometricSiteModel.HasDischarge != true && FlowLevel == "Flow")
                     {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
+                        continue;
+                    }
+
+                    if (hydrometricSiteModel.HasDischarge != true && FlowLevel == "Level")
+                    {
+                        continue;
+                    }
+
+                    FedStationNameToDo = hydrometricSiteModel.FedSiteNumber;
+                    DataTypeToDo = FlowLevel;
+                    YearToDo = Year;
+                    HydrometricSiteIDToDo = hydrometricSiteModel.HydrometricSiteID;
+
+                    string url = string.Format(UrlToGetHydrometricSiteDataForYear, hydrometricSiteModel.FedSiteNumber, FlowLevel, Year);
+
+                    using (IWebDriver driver = new ChromeDriver())
+                    {
+                        GetHydrometricSiteDataForYear(driver, hydrometricSiteModel, FlowLevel, Year);
+                    }
+
+                    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                    {
                         return;
                     }
 
-                    List<string> FlowLevelList = new List<string>() { "Flow", "Level" };
-
-                    foreach (string FlowLevel in FlowLevelList)
+                    if (Year != mwqmRunModel.DateTime_Local.AddDays(-10).Year)
                     {
-
-                        if (hydrometricSiteModel.HasDischarge != true && FlowLevel == "Flow")
-                        {
-                            continue;
-                        }
-
-                        if (hydrometricSiteModel.HasDischarge != true && FlowLevel == "Level")
-                        {
-                            continue;
-                        }
+                        Year = Year - 1;
 
                         FedStationNameToDo = hydrometricSiteModel.FedSiteNumber;
                         DataTypeToDo = FlowLevel;
                         YearToDo = Year;
-                        SubsectorTVItemIDToDo = SubsectorTVItemID;
+                        HydrometricSiteIDToDo = hydrometricSiteModel.HydrometricSiteID;
 
-                        string url = string.Format(UrlToGetHydrometricSiteDataForRunsOfYear, hydrometricSiteModel.FedSiteNumber, FlowLevel, Year);
-                        RunBrowserThread(url);
+                        url = string.Format(UrlToGetHydrometricSiteDataForYear, hydrometricSiteModel.FedSiteNumber, FlowLevel, Year);
 
-                        if (Year != mwqmRunModelList[mwqmRunModelList.Count - 1].DateTime_Local.AddDays(-10).Year)
+                        using (IWebDriver driver = new ChromeDriver())
                         {
-                            Year = Year - 1;
-
-                            FedStationNameToDo = hydrometricSiteModel.FedSiteNumber;
-                            DataTypeToDo = FlowLevel;
-                            YearToDo = Year;
-                            SubsectorTVItemIDToDo = SubsectorTVItemID;
-
-                            url = string.Format(UrlToGetHydrometricSiteDataForRunsOfYear, hydrometricSiteModel.FedSiteNumber, FlowLevel, Year);
-                            RunBrowserThread(url);
+                            GetHydrometricSiteDataForYear(driver, hydrometricSiteModel, FlowLevel, Year);
                         }
 
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            return;
+        }
+
+        public void GetHydrometricSiteDataForYear(IWebDriver driver, HydrometricSiteModel hydrometricSiteModel, string DataType, int year)
+        {
+            int RowCount = 37;
+            int CellCount = 13;
+            IWebElement webElement = null;
+            IWebElement webElementTable = null;
+            ReadOnlyCollection<IWebElement> webElementRowList = null;
+            ReadOnlyCollection<IWebElement> webElementCellList = null;
+
+            if (DataType == "Level")
+            {
+                RowCount = 35;
+            }
+
+            bool GoodURL = false;
+            string NotUsed = "";
+            bool IsDischarge = true;
+
+            string url = string.Format(UrlToGetHydrometricSiteDataForYear, hydrometricSiteModel.FedSiteNumber, DataType, year);
+
+            if (url.Contains("&parameterType=Flow"))
+            {
+                IsDischarge = true;
+            }
+            else if (url.Contains("&parameterType=Level"))
+            {
+                IsDischarge = false;
+            }
+            else
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.InvalidURL_CouldNotFind_, url, "&parameterType=Flow or &parameterType=Level");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("InvalidURL_CouldNotFind_", url, "&parameterType=Flow or &parameterType=Level");
+                return;
+            }
+
+            driver.Navigate().GoToUrl(url);
+
+            if (driver.Title.StartsWith("Disclaimer for Hydrometric Information"))
+            {
+                // need to go through disclaimer first
+                IReadOnlyCollection<IWebElement> webElementToClickList = driver.FindElements(By.Name("disclaimer_action"));
+                foreach (IWebElement webElementDisclaimer in webElementToClickList)
+                {
+                    if (webElementDisclaimer.GetAttribute("value") == "I Agree")
+                    {
+                        webElementDisclaimer.Click();
+
+                        if (driver.Title.StartsWith("Daily Discharge Data") && driver.Title.Contains(FedStationNameToDo))
+                        {
+                            // strong possibility we are at the right url
+                            GoodURL = true;
+                        }
+                        else if (driver.Title.StartsWith("Daily Water Level Data") && driver.Title.Contains(FedStationNameToDo))
+                        {
+                            // strong possibility we are at the right url
+                            GoodURL = true;
+                        }
+                        else
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.HTMLTitleShouldStartWith_, "Disclaimer for Hydrometric Information or Daily Discharge Data");
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("HTMLTitleShouldStartWith_", "Disclaimer or Daily Discharge Data");
+                            return;
+                        }
+
+                        break;
+                    }
+                }
+            }
+            else if (driver.Title.StartsWith("Daily Discharge Data") && driver.Title.Contains(FedStationNameToDo))
+            {
+                // strong possibility we are at the right url
+                GoodURL = true;
+            }
+            else if (driver.Title.StartsWith("Daily Water Level Data") && driver.Title.Contains(FedStationNameToDo))
+            {
+                // strong possibility we are at the right url
+                GoodURL = true;
+            }
+            else
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.HTMLTitleShouldStartWith_, "Disclaimer for Hydrometric Information or Daily Discharge Data or Daily Water Level Data");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("HTMLTitleShouldStartWith_", "Disclaimer or Daily Discharge Data or Daily Water Level Data");
+                return;
+            }
+
+            if (!GoodURL)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.HTMLTitleShouldStartWith_, "Disclaimer for Hydrometric Information or Daily Discharge Data or Daily Water Level Data");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("HTMLTitleShouldStartWith_", "Disclaimer or Daily Discharge Data or Daily Water Level Data");
+                return;
+            }
+
+            // now let's parse the page and store the data in the DB
+
+            List<string> idListToVerify = new List<string>() { "selectStn", "selectReportType", "selectDataType", "selectYear" };
+            List<string> ShouldBeValueList = new List<string>() { FedStationNameToDo, "Daily", DataTypeToDo, YearToDo.ToString() };
+
+            for (int i = 0, count = idListToVerify.Count; i < count; i++)
+            {
+                try
+                {
+                    webElement = driver.FindElement(By.Id(idListToVerify[i]));
+                    SelectElement selectedValue = new SelectElement(webElement);
+                    string selectedText = selectedValue.SelectedOption.Text;
+
+                    if (ShouldBeValueList[i] != selectedText.Trim())
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindElementID_WithinURL_, idListToVerify[i], url);
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFindElementID_WithinURL_", idListToVerify[i], url);
+                        return;
+                    }
+                }
+                catch (Exception)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindElementID_WithinURL_, idListToVerify[i], url);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFindElementID_WithinURL_", idListToVerify[i], url);
+                    return;
+                }
+            }
+
+            // all verification done to really know we are at the right URL
+
+            try
+            {
+                webElementTable = driver.FindElement(By.Id("wb-auto-1"));
+
+                if (webElementTable.TagName != "table")
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindElementID_WithinURL_, "wb-auto-1", url);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFindElementID_WithinURL_", "wb-auto-1", url);
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindElementID_WithinURL_, "wb-auto-1", url);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFindElementID_WithinURL_", "wb-auto-1", url);
+                return;
+            }
+
+            webElementRowList = webElementTable.FindElements(By.TagName("tr"));
+            if (webElementRowList.Count() != RowCount)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.TableDoesNotContain_RowsWithinURL_, RowCount.ToString(), url);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("TableDoesNotContain_RowsWithinURL_", RowCount.ToString(), url);
+                return;
+            }
+
+            webElementCellList = webElementRowList[0].FindElements(By.TagName("th"));
+            if (webElementCellList.Count() != CellCount)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.TableDoesNotContain_CellsOnFirstRowWithinURL_, CellCount.ToString(), url);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("TableDoesNotContain_CellsOnFirstRowWithinURL_", CellCount.ToString(), url);
+                return;
+            }
+
+            List<string> HeaderTextList = new List<string>()
+            {
+                "Day", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+            };
+
+            for (int i = 0, count = HeaderTextList.Count; i < count; i++)
+            {
+                string CellText = webElementCellList[i].Text.Trim();
+                if (HeaderTextList[i] != CellText)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.TableDoesNotContainProperHeader_OnFirstRowWithinURL_, HeaderTextList[i], url);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("TableDoesNotContainProperHeader_OnFirstRowWithinURL_", HeaderTextList[i], url);
+                    return;
+                }
+            }
+
+            List<HydrometricDataValueModel> hydrometricDataValueModelList = new List<HydrometricDataValueModel>();
+
+            for (int row = 1, count = webElementRowList.Count; row < count; row++) // starting after header
+            {
+                // getting Day
+                webElementCellList = webElementRowList[row].FindElements(By.TagName("th"));
+                if (webElementCellList.Count != 1)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.FirstCellOfRow_WasSupposeToBeATHWithinURL_, row.ToString(), url);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("FirstCellOfRow_WasSupposeToBeATHWithinURL_", row.ToString(), url);
+                    return;
+                }
+
+                string dayText = webElementCellList[0].Text.Trim();
+
+                if (dayText == "Mean")
+                {
+                    break;
+                }
+
+                int day = int.Parse(webElementCellList[0].Text.Trim());
+
+                webElementCellList = webElementRowList[row].FindElements(By.TagName("td"));
+                if (webElementCellList.Count != 12)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.ShouldHaveFound_CellsOfTypeTDWithinURL_, 12.ToString(), url);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ShouldHaveFound_CellsOfTypeTDWithinURL_", 12.ToString(), url);
+                    return;
+                }
+
+                for (int col = 0, countCol = webElementCellList.Count; col < countCol; col++)
+                {
+                    int month = col + 1;
+
+                    DateTime ValueDate = DateTime.Now;
+                    try
+                    {
+                        ValueDate = new DateTime(YearToDo, month, day);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+
+                    string colText = webElementCellList[col].Text;
+
+                    double? value = null;
+
+                    if (!string.IsNullOrWhiteSpace(colText))
+                    {
+                        colText = colText.Trim();
+
+                        if (colText.Contains(" "))
+                        {
+                            if (double.TryParse(colText.Substring(0, colText.IndexOf(" ")), out double TempVal))
+                            {
+                                value = TempVal;
+                            }
+                        }
+                        else
+                        {
+                            if (double.TryParse(colText, out double TempVal))
+                            {
+                                value = TempVal;
+                            }
+                        }
+                    }
+
+                    hydrometricDataValueModelList.Add(new HydrometricDataValueModel()
+                    {
+                        DateTime_Local = ValueDate,
+                        DischargeEntered_m3_s = null,
+                        Discharge_m3_s = (IsDischarge ? value : null),
+                        HasBeenRead = true,
+                        HourlyValues = "",
+                        HydrometricSiteID = HydrometricSiteIDToDo,
+                        Keep = true,
+                        Level_m = (!IsDischarge ? value : null),
+                        StorageDataType = StorageDataTypeEnum.Archived,
+                    });
+
+                }
+            }
+
+            HydrometricDataValueService _HydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            List<HydrometricDataValueModel> hydrometricDataValueModelInDBList = _HydrometricDataValueService.GetHydrometricDataValueModelListWithHydrometricSiteIDAndYearDB(hydrometricSiteModel.HydrometricSiteID, year);
+
+            foreach (HydrometricDataValueModel hydrometricDataValueModel in hydrometricDataValueModelList.OrderBy(c => c.DateTime_Local))
+            {
+                HydrometricDataValueModel hydrometricDataValueModelInDB = (from c in hydrometricDataValueModelInDBList
+                                                                           where c.DateTime_Local == hydrometricDataValueModel.DateTime_Local
+                                                                 select c).FirstOrDefault();
+
+                if (hydrometricDataValueModelInDB == null)
+                {
+                    HydrometricDataValueModel hydrometricDataValueModelRet = _HydrometricDataValueService.PostAddHydrometricDataValueDB(hydrometricDataValueModel);
+                    if (!string.IsNullOrWhiteSpace(hydrometricDataValueModelRet.Error))
+                    {
+                        NotUsed = hydrometricDataValueModelRet.Error;
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(hydrometricDataValueModelRet.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    bool NeedChange = false;
+
+                    if (IsDischarge)
+                    {
+                        if (hydrometricDataValueModelInDB.Discharge_m3_s != hydrometricDataValueModel.Discharge_m3_s)
+                        {
+                            hydrometricDataValueModelInDB.Discharge_m3_s = hydrometricDataValueModel.Discharge_m3_s;
+                            NeedChange = true;
+                        }
+                    }
+                    else
+                    {
+                        if (hydrometricDataValueModelInDB.Level_m != hydrometricDataValueModel.Level_m)
+                        {
+                            hydrometricDataValueModelInDB.Level_m = hydrometricDataValueModel.Level_m;
+                            NeedChange = true;
+                        }
+                    }
+
+                    if (NeedChange)
+                    {
+                        HydrometricDataValueModel hydrometricDataValueModelRet = _HydrometricDataValueService.PostUpdateHydrometricDataValueDB(hydrometricDataValueModelInDB);
+                        if (!string.IsNullOrWhiteSpace(hydrometricDataValueModelRet.Error))
+                        {
+                            NotUsed = hydrometricDataValueModelRet.Error;
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(hydrometricDataValueModelRet.Error);
+                            return;
+                        }
                     }
                 }
             }
         }
+
         public void UpdateHydrometricSitesInformationForProvinceTVItemID()
         {
             string NotUsed = "";
@@ -1444,1038 +1214,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return;
         }
-        ////public void UpdateHydrometricSiteDailyAndHourlyFromStartDateToEndDate()
-        ////{
-        ////    string NotUsed = "";
-
-        ////    string[] ParamValueList = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        ////    int HydrometricSiteTVItemID = 0;
-        ////    int StartYear = 0;
-        ////    int StartMonth = 0;
-        ////    int StartDay = 0;
-        ////    int EndYear = 0;
-        ////    int EndMonth = 0;
-        ////    int EndDay = 0;
-
-        ////    if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
-        ////    }
-
-        ////    if (ParamValueList.Count() != 9)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes.ParameterCount_NotEqual_, ParamValueList.Count().ToString(), 9);
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ParameterCount_NotEqual_", ParamValueList.Count().ToString(), "9");
-        ////    }
-
-        ////    foreach (string s in ParamValueList)
-        ////    {
-        ////        string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-        ////        if (ParamValue.Length != 2)
-        ////        {
-        ////            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-        ////            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
-        ////            return;
-        ////        }
-
-        ////        if (ParamValue[0] == "HydrometricSiteTVItemID")
-        ////        {
-        ////            HydrometricSiteTVItemID = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "StartYear")
-        ////        {
-        ////            StartYear = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "StartMonth")
-        ////        {
-        ////            StartMonth = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "StartDay")
-        ////        {
-        ////            StartDay = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "EndYear")
-        ////        {
-        ////            EndYear = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "EndMonth")
-        ////        {
-        ////            EndMonth = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "EndDay")
-        ////        {
-        ////            EndDay = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "Generate")
-        ////        {
-        ////            // nothing
-        ////        }
-        ////        else if (ParamValue[0] == "Command")
-        ////        {
-        ////            // nothing
-        ////        }
-        ////        else
-        ////        {
-        ////            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
-        ////            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
-        ////            return;
-        ////        }
-        ////    }
-
-        ////    if (HydrometricSiteTVItemID == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, HydrometricSiteTVItemID.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.HydrometricSiteTVItemID);
-        ////        return;
-        ////    }
-
-        ////    if (StartYear == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, StartYear.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.StartYear);
-        ////        return;
-        ////    }
-
-        ////    if (StartMonth == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, StartMonth.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.StartMonth);
-        ////        return;
-        ////    }
-
-        ////    if (StartDay == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, StartDay.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.StartDay);
-        ////        return;
-        ////    }
-
-        ////    if (EndYear == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, EndYear.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.EndYear);
-        ////        return;
-        ////    }
-
-        ////    if (EndMonth == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, EndMonth.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.EndMonth);
-        ////        return;
-        ////    }
-
-        ////    if (EndDay == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, EndDay.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.EndDay);
-        ////        return;
-        ////    }
-
-        ////    HydrometricSiteService HydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        ////    HydrometricSiteModel HydrometricSiteModel = HydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        ////    if (!string.IsNullOrWhiteSpace(HydrometricSiteModel.Error))
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-        ////        return;
-        ////    }
-
-        ////    DateTime StartDate = new DateTime(StartYear, StartMonth, StartDay).AddDays(-10);
-        ////    DateTime EndDate = new DateTime(EndYear, EndMonth, EndDay).AddDays(10);
-
-        ////    for (int year = StartDate.Year; year <= EndDate.Year; year++)
-        ////    {
-        ////        string httpStrDaily = "";
-
-        ////        using (WebClient webClient = new WebClient())
-        ////        {
-        ////            WebProxy webProxy = new WebProxy();
-        ////            webClient.Proxy = webProxy;
-        ////            string url = string.Format(UpdateHydrometricSiteDailyFromStartDateToEndDate, HydrometricSiteModel.ECDBID, year);
-        ////            httpStrDaily = webClient.DownloadString(new Uri(url));
-        ////            if (httpStrDaily.Length > 0)
-        ////            {
-        ////                if (httpStrDaily.Substring(0, "\"Station Name".Length) == "\"Station Name")
-        ////                {
-        ////                    httpStrDaily = httpStrDaily.Replace("\"", "").Replace("\n", "\r\n");
-        ////                }
-        ////            }
-        ////            else
-        ////            {
-        ////                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        ////                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
-        ////                return;
-        ////            }
-        ////        }
-        ////        UpdateDailyValuesForHydrometricSiteTVItemID(HydrometricSiteModel, httpStrDaily, StartDate, EndDate, new List<DateTime>());
-        ////        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        ////            return;
-
-        ////    }
-        ////    return;
-        ////}
-        ////public void UpdateHydrometricSiteDailyAndHourlyForSubsectorFromStartDateToEndDate()
-        ////{
-        ////    string NotUsed = "";
-
-        ////    HydrometricDataValueService HydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        ////    HydrometricSiteService HydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        ////    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        ////    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        ////    UseOfSiteService useOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-        ////    string[] ParamValueList = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        ////    int SubsectorTVItemID = 0;
-        ////    int StartYear = 0;
-        ////    int StartMonth = 0;
-        ////    int StartDay = 0;
-        ////    int EndYear = 0;
-        ////    int EndMonth = 0;
-        ////    int EndDay = 0;
-
-        ////    if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
-        ////        return;
-        ////    }
-
-
-        ////    if (ParamValueList.Count() != 9)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes.ParameterCount_NotEqual_, ParamValueList.Count().ToString(), 9);
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ParameterCount_NotEqual_", ParamValueList.Count().ToString(), "9");
-        ////        return;
-        ////    }
-
-        ////    foreach (string s in ParamValueList)
-        ////    {
-        ////        string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-        ////        if (ParamValue.Length != 2)
-        ////        {
-        ////            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
-        ////            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
-        ////            return;
-        ////        }
-
-        ////        if (ParamValue[0] == "SubsectorTVItemID")
-        ////        {
-        ////            SubsectorTVItemID = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "StartYear")
-        ////        {
-        ////            StartYear = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "StartMonth")
-        ////        {
-        ////            StartMonth = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "StartDay")
-        ////        {
-        ////            StartDay = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "EndYear")
-        ////        {
-        ////            EndYear = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "EndMonth")
-        ////        {
-        ////            EndMonth = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "EndDay")
-        ////        {
-        ////            EndDay = int.Parse(ParamValue[1]);
-        ////        }
-        ////        else if (ParamValue[0] == "Generate")
-        ////        {
-        ////            // nothing
-        ////        }
-        ////        else if (ParamValue[0] == "Command")
-        ////        {
-        ////            // nothing
-        ////        }
-        ////        else
-        ////        {
-        ////            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
-        ////            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
-        ////            return;
-        ////        }
-        ////    }
-
-        ////    if (SubsectorTVItemID == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, SubsectorTVItemID.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.SubsectorTVItemID);
-        ////        return;
-        ////    }
-
-        ////    if (StartYear == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, StartYear.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.StartYear);
-        ////        return;
-        ////    }
-
-        ////    if (StartMonth == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, StartMonth.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.StartMonth);
-        ////        return;
-        ////    }
-
-        ////    if (StartDay == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, StartDay.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.StartDay);
-        ////        return;
-        ////    }
-
-        ////    if (EndYear == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, EndYear.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.EndYear);
-        ////        return;
-        ////    }
-
-        ////    if (EndMonth == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, EndMonth.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.EndMonth);
-        ////        return;
-        ////    }
-
-        ////    if (EndDay == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, EndDay.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.EndDay);
-        ////        return;
-        ////    }
-
-        ////    DateTime StartDate = new DateTime(StartYear, StartMonth, StartDay).AddDays(-10);
-        ////    DateTime EndDate = new DateTime(EndYear, EndMonth, EndDay).AddDays(10);
-
-        ////    TVItemModel tvItemModelSubsector = tvItemService.GetTVItemModelWithTVItemIDDB(SubsectorTVItemID);
-        ////    if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, SubsectorTVItemID.ToString());
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, SubsectorTVItemID.ToString());
-        ////        return;
-
-        ////    }
-
-        ////    List<MapInfoPointModel> mapInfoPointListSubsector = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Subsector, MapInfoDrawTypeEnum.Point);
-        ////    if (mapInfoPointListSubsector.Count == 0)
-        ////    {
-        ////        NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNullOrEmpty, TaskRunnerServiceRes.mapInfoPointListSubsector);
-        ////        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNullOrEmpty", TaskRunnerServiceRes.mapInfoPointListSubsector);
-        ////        return;
-        ////    }
-
-        ////    float LookupRadius = 100000.0f; // 100 km radius
-
-        ////    List<MapInfoModel> mapInfoModelList = new List<MapInfoModel>();
-        ////    List<HydrometricSiteModel> HydrometricSiteModelListWithHourly = new List<HydrometricSiteModel>();
-        ////    List<HydrometricSiteModel> HydrometricSiteModelListWithDaily = new List<HydrometricSiteModel>();
-
-        ////    while (mapInfoModelList.Count == 0)
-        ////    {
-        ////        mapInfoModelList = mapInfoService.GetMapInfoModelWithinCircleWithTVTypeAndMapInfoDrawTypeDB((float)mapInfoPointListSubsector[0].Lat, (float)mapInfoPointListSubsector[0].Lng, LookupRadius, TVTypeEnum.HydrometricSite, MapInfoDrawTypeEnum.Point);
-
-        ////        foreach (MapInfoModel mapInfoModel in mapInfoModelList)
-        ////        {
-        ////            HydrometricSiteModel HydrometricSiteModel = HydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB(mapInfoModel.TVItemID);
-        ////            if (!string.IsNullOrWhiteSpace(HydrometricSiteModel.Error))
-        ////            {
-        ////                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, mapInfoModel.TVItemID.ToString());
-        ////                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, mapInfoModel.TVItemID.ToString());
-        ////                return;
-        ////            }
-        ////            if (HydrometricSiteModel.HourlyStartDate_Local != null)
-        ////            {
-        ////                HydrometricSiteModelListWithHourly.Add(HydrometricSiteModel);
-        ////            }
-        ////            if (HydrometricSiteModel.DailyStartDate_Local != null)
-        ////            {
-        ////                HydrometricSiteModelListWithDaily.Add(HydrometricSiteModel);
-        ////            }
-        ////        }
-
-        ////        LookupRadius += 10000;
-        ////    }
-
-        ////    for (int year = StartDate.Year; year <= EndDate.Year; year++)
-        ////    {
-
-        ////        List<HydrometricSiteModel> HydrometricSiteForDailyModelListUsed = new List<HydrometricSiteModel>();
-        ////        //List<HydrometricSiteModel> HydrometricSiteForHourlyModelListUsed = new List<HydrometricSiteModel>();
-        ////        foreach (HydrometricSiteModel HydrometricSiteModel in HydrometricSiteModelListWithDaily)
-        ////        {
-        ////            if (HydrometricSiteForDailyModelListUsed.Count > 2)
-        ////                break;
-
-        ////            if (HydrometricSiteModel.DailyStartDate_Local.Value <= StartDate && HydrometricSiteModel.DailyEndDate_Local.Value >= EndDate)
-        ////            {
-        ////                HydrometricDataValueModel HydrometricDataValueStartDone = HydrometricDataValueService.GetHydrometricDataValueModelExitDB(new HydrometricDataValueModel() { HydrometricSiteID = HydrometricSiteModel.HydrometricSiteID, DateTime_Local = StartDate });
-        ////                HydrometricDataValueModel HydrometricDataValueEndDone = HydrometricDataValueService.GetHydrometricDataValueModelExitDB(new HydrometricDataValueModel() { HydrometricSiteID = HydrometricSiteModel.HydrometricSiteID, DateTime_Local = EndDate });
-        ////                if (string.IsNullOrWhiteSpace(HydrometricDataValueStartDone.Error) && string.IsNullOrWhiteSpace(HydrometricDataValueEndDone.Error))
-        ////                {
-        ////                    HydrometricSiteForDailyModelListUsed.Add(HydrometricSiteModel);
-        ////                    continue;
-        ////                }
-        ////                string httpStr = "";
-        ////                using (WebClient webClient = new WebClient())
-        ////                {
-        ////                    WebProxy webProxy = new WebProxy();
-        ////                    webClient.Proxy = webProxy;
-        ////                    string url = string.Format(UpdateHydrometricSiteDailyFromStartDateToEndDate, HydrometricSiteModel.ECDBID, year);
-        ////                    httpStr = webClient.DownloadString(new Uri(url));
-        ////                    if (httpStr.Length > 0)
-        ////                    {
-        ////                        if (httpStr.Substring(0, "\"Station Name".Length) == "\"Station Name")
-        ////                        {
-        ////                            httpStr = httpStr.Replace("\"", "").Replace("\n", "\r\n");
-        ////                        }
-        ////                    }
-        ////                    else
-        ////                    {
-        ////                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        ////                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
-        ////                        return;
-        ////                    }
-        ////                }
-        ////                HydrometricDataValueModel HydrometricDataValueModel = UpdateDailyValuesForHydrometricSiteTVItemID(HydrometricSiteModel, httpStr, StartDate, EndDate, new List<DateTime>());
-        ////                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        ////                    return;
-
-        ////                if (HydrometricDataValueModel.Rainfall_mm != null || HydrometricDataValueModel.TotalPrecip_mm_cm != null)
-        ////                {
-        ////                    HydrometricSiteForDailyModelListUsed.Add(HydrometricSiteModel);
-        ////                }
-
-        ////                UseOfSiteModel useOfSiteModelNew = new UseOfSiteModel()
-        ////                {
-        ////                    SiteTVItemID = HydrometricSiteModel.HydrometricSiteTVItemID,
-        ////                    SubsectorTVItemID = tvItemModelSubsector.TVItemID,
-        ////                    SiteType = SiteTypeEnum.Hydrometric,
-        ////                    Ordinal = 0, // will be replaced 
-        ////                    StartYear = year,
-        ////                    EndYear = year,
-        ////                    UseWeight = false,
-        ////                    Weight_perc = 1.0f,
-        ////                    UseEquation = false,
-        ////                };
-
-        ////                List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Hydrometric, tvItemModelSubsector.TVItemID);
-        ////                bool hasUpdated = false;
-        ////                foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
-        ////                {
-        ////                    if (useOfSiteModel.EndYear == year - 1 || useOfSiteModel.EndYear == year)
-        ////                    {
-        ////                        useOfSiteModel.EndYear = year;
-        ////                        UseOfSiteModel useOfSiteModelRet = useOfSiteService.PostUpdateUseOfSiteDB(useOfSiteModel);
-        ////                        if (!string.IsNullOrWhiteSpace(useOfSiteModelRet.Error))
-        ////                        {
-        ////                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.UseOfSite, useOfSiteModelRet.Error);
-        ////                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.UseOfSite, useOfSiteModelRet.Error);
-        ////                            return;
-        ////                        }
-        ////                        hasUpdated = true;
-        ////                        break;
-        ////                    }
-        ////                }
-        ////                if (!hasUpdated)
-        ////                {
-        ////                    if (useOfSiteModelList.Count > 0)
-        ////                    {
-        ////                        useOfSiteModelNew.Ordinal = useOfSiteModelList.OrderBy(c => c.Ordinal).Last().Ordinal + 1;
-        ////                    }
-        ////                    UseOfSiteModel useOfSiteModelRet = useOfSiteService.PostAddUseOfSiteDB(useOfSiteModelNew);
-        ////                    if (!string.IsNullOrWhiteSpace(useOfSiteModelRet.Error))
-        ////                    {
-        ////                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.UseOfSite, useOfSiteModelRet.Error);
-        ////                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList(useOfSiteModelRet.Error);
-        ////                        return;
-        ////                    }
-        ////                }
-
-        ////                //if (!string.IsNullOrWhiteSpace(HydrometricDataValueModel.HourlyValues))
-        ////                //{
-        ////                //    HydrometricSiteForHourlyModelListUsed.Add(HydrometricSiteModel);
-        ////                //}
-        ////            }
-        ////        }
-
-        ////        //    if (HydrometricSiteForHourlyModelListUsed.Count == 0)
-        ////        //    {
-        ////        //        foreach (HydrometricSiteModel HydrometricSiteModel in HydrometricSiteModelListWithHourly)
-        ////        //        {
-        ////        //            if (HydrometricSiteForHourlyModelListUsed.Count > 0)
-        ////        //                break;
-
-        ////        //            if (HydrometricSiteModel.DailyStartDate_Local.Value <= StartDate && HydrometricSiteModel.DailyEndDate_Local.Value >= EndDate)
-        ////        //            {
-        ////        //                string httpStr = "";
-        ////        //                using (WebClient webClient = new WebClient())
-        ////        //                {
-        ////        //                    WebProxy webProxy = new WebProxy();
-        ////        //                    webClient.Proxy = webProxy;
-        ////        //                    string url = string.Format(UpdateHydrometricSiteDailyFromStartDateToEndDate, HydrometricSiteModel.ECDBID, year);
-        ////        //                    httpStr = webClient.DownloadString(new Uri(url));
-        ////        //                    if (httpStr.Length > 0)
-        ////        //                    {
-        ////        //                        if (httpStr.Substring(0, "\"Station Name".Length) == "\"Station Name")
-        ////        //                        {
-        ////        //                            httpStr = httpStr.Replace("\"", "").Replace("\n", "\r\n");
-        ////        //                        }
-        ////        //                    }
-        ////        //                    else
-        ////        //                    {
-        ////        //                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        ////        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
-        ////        //                        return;
-        ////        //                    }
-        ////        //                }
-        ////        //                HydrometricDataValueModel HydrometricDataValueModel = UpdateDailyValuesForHydrometricSiteTVItemID(HydrometricSiteModel.HydrometricSiteTVItemID, httpStr, StartDate, EndDate);
-        ////        //                if (!string.IsNullOrWhiteSpace(HydrometricDataValueModel.Error))
-        ////        //                {
-        ////        //                    NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID);
-        ////        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID));
-        ////        //                    return;
-        ////        //                }
-        ////        //                if (HydrometricDataValueModel.Rainfall_mm != null)
-        ////        //                {
-        ////        //                    HydrometricSiteForDailyModelListUsed.Add(HydrometricSiteModel);
-        ////        //                }
-        ////        //                //if (HydrometricDataValueModel.HourlyValues != null)
-        ////        //                //{
-        ////        //                //    HydrometricSiteForHourlyModelListUsed.Add(HydrometricSiteModel);
-        ////        //                //    break;
-        ////        //                //}
-        ////        //            }
-        ////        //        }
-        ////        //    }
-
-        ////        //    foreach (HydrometricSiteModel HydrometricSiteModelHourly in HydrometricSiteForHourlyModelListUsed)
-        ////        //    {
-        ////        //        HydrometricSiteForDailyModelListUsed.Add(HydrometricSiteModelHourly);
-        ////        //    }
-        ////    }
-        ////}
-        //public void UpdateDailyValuesForHydrometricSiteTVItemID(HydrometricSiteModel HydrometricSiteModel, string httpStrDaily, DateTime StartDate, DateTime EndDate, List<DateTime> HourlyDateListToLoad)
-        //{
-        //    string NotUsed = "";
-
-        //    //string httpStrHourly = "";
-        //    //HydrometricDataValueModel HydrometricDataValueModel = new HydrometricDataValueModel();
-        //    List<string> FullProvList = new List<string>() { "BRITISH COLUMBIA", "NEW BRUNSWICK", "NEWFOUNDLAND", "NOVA SCOTIA", "PRINCE EDWARD ISLAND", "QUEBEC" };
-        //    List<string> ShortProvList = new List<string>() { "BC", "NB", "NL", "NS", "PE", "QC" };
-
-        //    StringBuilder hourlyValues = new StringBuilder();
-
-        //    hourlyValues.Clear();
-
-        //    HydrometricSiteService HydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-        //    HydrometricDataValueService HydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-        //    using (TextReader tr = new StringReader(httpStrDaily))
-        //    {
-
-        //        int countLine = 0;
-        //        string LookupTxt = "";
-        //        while (true)
-        //        {
-        //            countLine += 1;
-        //            string lineStr = tr.ReadLine();
-        //            if (lineStr == null)
-        //            {
-        //                break;
-        //            }
-
-        //            List<string> lineValueArr = lineStr.Split(",".ToCharArray(), StringSplitOptions.None).ToList();
-
-        //            if (countLine == 1)
-        //            {
-        //                LookupTxt = "Station Name";
-        //                if (lineValueArr[0] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                LookupTxt = HydrometricSiteModel.HydrometricSiteName;
-        //                if (lineValueArr[1] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //            }
-        //            if (countLine == 2)
-        //            {
-        //                LookupTxt = "Province";
-        //                if (lineValueArr[0] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                LookupTxt = lineValueArr[1];
-        //                if (!FullProvList.Contains(LookupTxt))
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                for (int i = 0; i < 6; i++)
-        //                {
-        //                    if (lineValueArr[1] == FullProvList[i])
-        //                    {
-        //                        if (HydrometricSiteModel.Province != ShortProvList[i])
-        //                        {
-        //                            NotUsed = string.Format(TaskRunnerServiceRes.Province_NotEqualTo_AtLine_, ShortProvList[i], HydrometricSiteModel.Province, countLine.ToString());
-        //                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                            return;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            if (countLine == 6)
-        //            {
-        //                LookupTxt = "Hydrometric Identifier";
-        //                if (lineValueArr[0] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                if (lineValueArr[1].Length > 0)
-        //                {
-        //                    LookupTxt = HydrometricSiteModel.HydrometricID;
-        //                    if (lineValueArr[1] != HydrometricSiteModel.HydrometricID)
-        //                    {
-        //                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                        return;
-        //                    }
-        //                }
-        //            }
-        //            if (lineValueArr[0].Contains("-"))
-        //            {
-        //                if (lineValueArr[0].Substring(4, 1) == "-")
-        //                {
-        //                    if (lineValueArr.Count != 27)
-        //                    {
-        //                        NotUsed = string.Format(TaskRunnerServiceRes.CountOfValuesInLine_ShouldBe_, countLine, "27");
-        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CountOfValuesInLine_ShouldBe_", countLine.ToString(), "27");
-        //                        return;
-        //                    }
-
-        //                    int Year = int.Parse(lineValueArr[1]);
-        //                    int Month = int.Parse(lineValueArr[2]);
-        //                    int Day = int.Parse(lineValueArr[3]);
-
-        //                    if (Year == 0 || Month == 0 || Day == 0)
-        //                    {
-        //                        NotUsed = string.Format(TaskRunnerServiceRes.YearNotCorrect_AtLine_, Year.ToString() + " - " + Month.ToString() + " - " + Day.ToString(), countLine.ToString());
-        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("YearNotCorrect_AtLine_", Year.ToString() + " - " + Month.ToString() + " - " + Day.ToString(), countLine.ToString());
-        //                        return;
-        //                    }
-
-        //                    DateTime LineDate = new DateTime(Year, Month, Day);
-
-        //                    if (!(StartDate <= LineDate && EndDate >= LineDate))
-        //                    {
-        //                        continue;
-        //                    }
-
-        //                    string httpStrHourly = "";
-        //                    if (HourlyDateListToLoad.Contains(LineDate))
-        //                    {
-        //                        using (WebClient webClient = new WebClient())
-        //                        {
-        //                            WebProxy webProxy = new WebProxy();
-        //                            webClient.Proxy = webProxy;
-        //                            string url = string.Format(UpdateHydrometricSiteHourlyFromStartDateToEndDate, HydrometricSiteModel.ECDBID, Year, LineDate.Month);
-        //                            httpStrHourly = webClient.DownloadString(new Uri(url));
-        //                            if (httpStrHourly.Length > 0)
-        //                            {
-        //                                if (httpStrHourly.Substring(0, "\"Station Name".Length) == "\"Station Name")
-        //                                {
-        //                                    httpStrHourly = httpStrHourly.Replace("\"", "").Replace("\n", "\r\n");
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-        //                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
-        //                                return;
-        //                            }
-        //                        }
-
-        //                        if (HydrometricSiteModel.HourlyStartDate_Local <= LineDate && HydrometricSiteModel.HourlyEndDate_Local >= LineDate)
-        //                        {
-        //                            UpdateHourlyValuesForHydrometricSiteAndDate(HydrometricSiteModel, httpStrHourly, LineDate, hourlyValues);
-        //                            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-        //                                return;
-
-        //                            if (!string.IsNullOrWhiteSpace(hourlyValues.ToString()))
-        //                            {
-        //                                string Title = "Year,Month,Day,Hour,Temp_C,DewPoint_C,RelHum_Perc,WindDir_10deg,WindSpd_km_h,Visibility_km,StnPress_kPa,Humidx,WindChill\r\n";
-        //                                hourlyValues.Append(Title + hourlyValues.ToString());
-        //                            }
-        //                        }
-        //                    }
-
-
-        //                    float? MaxTemp = null;
-        //                    if (lineValueArr[5].Length > 0)
-        //                    {
-        //                        MaxTemp = float.Parse(lineValueArr[5]);
-        //                    }
-        //                    float? MinTemp = null;
-        //                    if (lineValueArr[7].Length > 0)
-        //                    {
-        //                        MinTemp = float.Parse(lineValueArr[7]);
-        //                    }
-        //                    float? MeanTemp = null;
-        //                    if (lineValueArr[9].Length > 0)
-        //                    {
-        //                        MeanTemp = float.Parse(lineValueArr[9]);
-        //                    }
-        //                    float? HeatDegDays = null;
-        //                    if (lineValueArr[11].Length > 0)
-        //                    {
-        //                        HeatDegDays = float.Parse(lineValueArr[11]);
-        //                    }
-        //                    float? CoolDegDays = null;
-        //                    if (lineValueArr[13].Length > 0)
-        //                    {
-        //                        CoolDegDays = float.Parse(lineValueArr[13]);
-        //                    }
-        //                    float? TotalRain = null;
-        //                    if (lineValueArr[15].Length > 0)
-        //                    {
-        //                        if (lineValueArr[15].Trim() == "T")
-        //                        {
-        //                            TotalRain = 0.0f;
-        //                        }
-        //                        else
-        //                        {
-        //                            TotalRain = float.Parse(lineValueArr[15]);
-        //                        }
-        //                    }
-        //                    float? TotalSnow = null;
-        //                    if (lineValueArr[17].Length > 0)
-        //                    {
-        //                        if (lineValueArr[17].Trim() == "T")
-        //                        {
-        //                            TotalSnow = 0.0f;
-        //                        }
-        //                        else
-        //                        {
-        //                            TotalSnow = float.Parse(lineValueArr[17]);
-        //                        }
-        //                    }
-        //                    float? TotalPrecip = null;
-        //                    if (lineValueArr[19].Length > 0)
-        //                    {
-        //                        if (lineValueArr[19].Trim() == "T")
-        //                        {
-        //                            TotalPrecip = 0.0f;
-        //                        }
-        //                        else
-        //                        {
-        //                            TotalPrecip = float.Parse(lineValueArr[19]);
-        //                        }
-        //                    }
-        //                    float? SnowOnGround = null;
-        //                    if (lineValueArr[21].Length > 0)
-        //                    {
-        //                        if (lineValueArr[21].Trim() == "T")
-        //                        {
-        //                            SnowOnGround = 0.0f;
-        //                        }
-        //                        else
-        //                        {
-        //                            SnowOnGround = float.Parse(lineValueArr[21]);
-        //                        }
-        //                    }
-        //                    float? DirMaxGust = null;
-        //                    if (lineValueArr[23].Length > 0)
-        //                    {
-        //                        DirMaxGust = float.Parse(lineValueArr[23]);
-        //                    }
-        //                    float? SpdMaxGust = null;
-        //                    if (lineValueArr[25].Length > 0)
-        //                    {
-        //                        if (lineValueArr[25].Substring(0, 1) == "<")
-        //                        {
-        //                            SpdMaxGust = float.Parse(lineValueArr[25].Substring(1));
-        //                        }
-        //                        else
-        //                        {
-        //                            SpdMaxGust = float.Parse(lineValueArr[25]);
-        //                        }
-        //                    }
-
-        //                    HydrometricDataValueModel HydrometricDataValueModelNew = new HydrometricDataValueModel()
-        //                    {
-        //                        HydrometricSiteID = HydrometricSiteModel.HydrometricSiteID,
-        //                        HasBeenRead = true,
-        //                        CoolDegDays_C = CoolDegDays,
-        //                        DateTime_Local = LineDate,
-        //                        DirMaxGust_0North = DirMaxGust,
-        //                        HeatDegDays_C = HeatDegDays,
-        //                        HourlyValues = hourlyValues.ToString(),
-        //                        Keep = true,
-        //                        MaxTemp_C = MaxTemp,
-        //                        MinTemp_C = MinTemp,
-        //                        Rainfall_mm = TotalRain,
-        //                        RainfallEntered_mm = null,
-        //                        Snow_cm = TotalSnow,
-        //                        SnowOnGround_cm = SnowOnGround,
-        //                        SpdMaxGust_kmh = SpdMaxGust,
-        //                        StorageDataType = StorageDataTypeEnum.Archived,
-        //                        TotalPrecip_mm_cm = TotalPrecip,
-        //                    };
-        //                    HydrometricDataValueModel HydrometricDataValueModelExist = HydrometricDataValueService.GetHydrometricDataValueModelExitDB(HydrometricDataValueModelNew);
-        //                    if (!string.IsNullOrWhiteSpace(HydrometricDataValueModelExist.Error))
-        //                    {
-        //                        HydrometricDataValueModel HydrometricDataValueModelRet = HydrometricDataValueService.PostAddHydrometricDataValueDB(HydrometricDataValueModelNew);
-        //                        if (!string.IsNullOrWhiteSpace(HydrometricDataValueModelRet.Error))
-        //                        {
-        //                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.HydrometricDataValue, HydrometricDataValueModelRet.Error);
-        //                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.HydrometricDataValue, HydrometricDataValueModelRet.Error);
-        //                            return;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-
-        //                        if (HydrometricDataValueModelExist.HasBeenRead == false)
-        //                        {
-        //                            HydrometricDataValueModelNew.HydrometricDataValueID = HydrometricDataValueModelExist.HydrometricDataValueID;
-        //                            HydrometricDataValueModelNew.RainfallEntered_mm = HydrometricDataValueModelExist.RainfallEntered_mm;
-        //                            HydrometricDataValueModelNew.HasBeenRead = true;
-        //                            HydrometricDataValueModelExist = HydrometricDataValueService.PostUpdateHydrometricDataValueDB(HydrometricDataValueModelNew);
-        //                            if (!string.IsNullOrWhiteSpace(HydrometricDataValueModelExist.Error))
-        //                            {
-        //                                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.HydrometricDataValue, HydrometricDataValueModelExist.Error); ;
-        //                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.HydrometricDataValue, HydrometricDataValueModelExist.Error);
-        //                                return;
-        //                            }
-        //                        }
-        //                    }
-
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-        //public void UpdateHourlyValuesForHydrometricSiteAndDate(HydrometricSiteModel HydrometricSiteModel, string httpStrHourly, DateTime CurrentDate, StringBuilder hourlyValues)
-        //{
-        //    string NotUsed = "";
-        //    bool HasValue = false;
-
-        //    //HydrometricDataValueModel HydrometricDataValueModel = new HydrometricDataValueModel();
-        //    List<string> FullProvList = new List<string>() { "BRITISH COLUMBIA", "NEW BRUNSWICK", "NEWFOUNDLAND", "NOVA SCOTIA", "PRINCE EDWARD ISLAND", "QUEBEC" };
-        //    List<string> ShortProvList = new List<string>() { "BC", "NB", "NL", "NS", "PE", "QC" };
-
-        //    hourlyValues.Clear();
-
-        //    using (TextReader tr = new StringReader(httpStrHourly))
-        //    {
-        //        string LookupTxt = "";
-        //        int countLine = 0;
-        //        while (true)
-        //        {
-        //            countLine += 1;
-        //            string lineStr = tr.ReadLine();
-        //            if (lineStr == null)
-        //                break;
-
-        //            List<string> lineValueArr = lineStr.Split(",".ToCharArray(), StringSplitOptions.None).ToList();
-        //            if (countLine == 1)
-        //            {
-        //                LookupTxt = "Station Name";
-        //                if (lineValueArr[0] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                LookupTxt = HydrometricSiteModel.HydrometricSiteName;
-        //                if (lineValueArr[1] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //            }
-        //            if (countLine == 2)
-        //            {
-        //                LookupTxt = "Province";
-        //                if (lineValueArr[0] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                LookupTxt = lineValueArr[1];
-        //                if (!FullProvList.Contains(LookupTxt))
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                for (int i = 0; i < 6; i++)
-        //                {
-        //                    if (lineValueArr[1] == FullProvList[i])
-        //                    {
-        //                        if (HydrometricSiteModel.Province != ShortProvList[i])
-        //                        {
-        //                            NotUsed = string.Format(TaskRunnerServiceRes.Province_NotEqualTo_AtLine_, ShortProvList[i], HydrometricSiteModel.Province, countLine.ToString());
-        //                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                            return;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            if (countLine == 6)
-        //            {
-        //                LookupTxt = "Hydrometric Identifier";
-        //                if (lineValueArr[0] != LookupTxt)
-        //                {
-        //                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                    return;
-        //                }
-        //                if (lineValueArr[1].Length > 0)
-        //                {
-        //                    LookupTxt = HydrometricSiteModel.HydrometricID;
-        //                    if (lineValueArr[1] != HydrometricSiteModel.HydrometricID)
-        //                    {
-        //                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-        //                        return;
-        //                    }
-        //                }
-        //            }
-        //            if (lineValueArr[0].Contains("-"))
-        //            {
-        //                if (lineValueArr[0].Substring(4, 1) == "-")
-        //                {
-        //                    if (lineValueArr.Count != 25 && lineValueArr.Count != 26 && lineValueArr.Count != 27 && lineValueArr.Count != 28 && lineValueArr.Count != 5)
-        //                    {
-        //                        NotUsed = string.Format(TaskRunnerServiceRes.CountOfValuesInLine_ShouldBe_, countLine, "25");
-        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CountOfValuesInLine_ShouldBe_", countLine.ToString(), "25");
-        //                        return;
-        //                    }
-
-        //                    int Year = int.Parse(lineValueArr[1]);
-        //                    int Month = int.Parse(lineValueArr[2]);
-        //                    int Day = int.Parse(lineValueArr[3]);
-
-        //                    if (Year == 0 || Month == 0 || Day == 0)
-        //                    {
-        //                        NotUsed = string.Format(TaskRunnerServiceRes.YearNotCorrect_AtLine_, Year.ToString() + " - " + Month.ToString() + " - " + Day.ToString(), countLine.ToString());
-        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("YearNotCorrect_AtLine_", Year.ToString() + " - " + Month.ToString() + " - " + Day.ToString(), countLine.ToString());
-        //                        return;
-        //                    }
-
-
-        //                    DateTime LineDate = new DateTime(Year, Month, Day);
-
-        //                    if (CurrentDate != LineDate)
-        //                    {
-        //                        continue;
-        //                    }
-
-        //                    int? Hour = null;
-        //                    if (lineValueArr[4].Length > 2)
-        //                    {
-        //                        Hour = int.Parse(lineValueArr[4].Substring(0, 2));
-        //                    }
-
-        //                    float? Temp_C = null;
-        //                    float? DewPoint_C = null;
-        //                    float? RelHum_Perc = null;
-        //                    float? WindDir_10deg = null;
-        //                    float? WindSpd_km_h = null;
-        //                    float? Visibility_km = null;
-        //                    float? StnPress_kPa = null;
-        //                    float? Humidx = null;
-        //                    float? WindChill = null;
-
-        //                    if (lineValueArr.Count > 5)
-        //                    {
-        //                        HasValue = true;
-        //                        if (lineValueArr[6].Length > 0)
-        //                        {
-        //                            Temp_C = float.Parse(lineValueArr[6]);
-        //                        }
-        //                        if (lineValueArr[8].Length > 0)
-        //                        {
-        //                            DewPoint_C = float.Parse(lineValueArr[8]);
-        //                        }
-        //                        if (lineValueArr[10].Length > 0)
-        //                        {
-        //                            RelHum_Perc = float.Parse(lineValueArr[10]);
-        //                        }
-        //                        if (lineValueArr[12].Length > 0)
-        //                        {
-        //                            WindDir_10deg = float.Parse(lineValueArr[12]);
-        //                        }
-        //                        if (lineValueArr[14].Length > 0)
-        //                        {
-        //                            WindSpd_km_h = float.Parse(lineValueArr[14]);
-        //                        }
-        //                        if (lineValueArr[16].Length > 0)
-        //                        {
-        //                            Visibility_km = float.Parse(lineValueArr[16]);
-        //                        }
-        //                        if (lineValueArr[18].Length > 0)
-        //                        {
-        //                            StnPress_kPa = float.Parse(lineValueArr[18]);
-        //                        }
-        //                        if (lineValueArr[20].Length > 0)
-        //                        {
-        //                            Humidx = float.Parse(lineValueArr[20]);
-        //                        }
-        //                        if (lineValueArr[22].Length > 0)
-        //                        {
-        //                            WindChill = float.Parse(lineValueArr[22]);
-        //                        }
-
-        //                        hourlyValues.AppendLine(
-        //                            Year.ToString() + "," +
-        //                            Month.ToString() + "," +
-        //                            Day.ToString() + "," +
-        //                            Hour.ToString() + "," +
-        //                            (Temp_C == null ? "" : Temp_C.ToString()) + "," +
-        //                            (DewPoint_C == null ? "" : DewPoint_C.ToString()) + "," +
-        //                            (RelHum_Perc == null ? "" : RelHum_Perc.ToString()) + "," +
-        //                            (WindDir_10deg == null ? "" : WindDir_10deg.ToString()) + "," +
-        //                            (WindSpd_km_h == null ? "" : WindSpd_km_h.ToString()) + "," +
-        //                            (Visibility_km == null ? "" : Visibility_km.ToString()) + "," +
-        //                            (StnPress_kPa == null ? "" : StnPress_kPa.ToString()) + "," +
-        //                            (Humidx == null ? "" : Humidx.ToString()) + "," +
-        //                            (WindChill == null ? "" : WindChill.ToString())
-        //                            );
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    if (!HasValue)
-        //    {
-        //        hourlyValues.Clear();
-        //    }
-        //}
         #endregion Functions public
 
         #region Functions private

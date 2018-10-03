@@ -1584,4 +1584,46 @@
   <data name="Long" xml:space="preserve">
     <value>Long</value>
   </data>
+  <data name="HydrometricDataValue" xml:space="preserve">
+    <value>HydrometricDataValue</value>
+  </data>
+  <data name="HydrometricSiteModel" xml:space="preserve">
+    <value>HydrometricSiteModel</value>
+  </data>
+  <data name="MikeSourceTVItemID" xml:space="preserve">
+    <value>MikeSourceTVItemID</value>
+  </data>
+  <data name="MWQMRun" xml:space="preserve">
+    <value>MWQMRun</value>
+  </data>
+  <data name="MWQMRunTVItemID" xml:space="preserve">
+    <value>MWQMRunTVItemID</value>
+  </data>
+  <data name="_CountShouldBe_" xml:space="preserve">
+    <value>{0} count should be {1}</value>
+  </data>
+  <data name="CouldNotFindElementID_WithinURL_" xml:space="preserve">
+    <value>Could not find element id {0} within URL [{1}]</value>
+  </data>
+  <data name="FirstCellOfRow_WasSupposeToBeATHWithinURL_" xml:space="preserve">
+    <value>First cell of row {0} was suppose to be a "th" within URL [{1}]</value>
+  </data>
+  <data name="HTMLTitleShouldStartWith_" xml:space="preserve">
+    <value>HTML title should start with [{0}]</value>
+  </data>
+  <data name="InvalidURL_CouldNotFind_" xml:space="preserve">
+    <value>Invalid URL [{0}] could not find [{1}]</value>
+  </data>
+  <data name="ShouldHaveFound_CellsOfTypeTDWithinURL_" xml:space="preserve">
+    <value>Should have found {0} cells of type "td" within URL [{1}]</value>
+  </data>
+  <data name="TableDoesNotContainProperHeader_OnFirstRowWithinURL_" xml:space="preserve">
+    <value>Table does not contain proper header [{0}] on first row within URL [{1}]</value>
+  </data>
+  <data name="TableDoesNotContain_CellsOnFirstRowWithinURL_" xml:space="preserve">
+    <value>Table does not contain {0} cells on first row within URL [{1}]</value>
+  </data>
+  <data name="TableDoesNotContain_RowsWithinURL_" xml:space="preserve">
+    <value>Table does not contain {0} rows within URL [{1}]</value>
+  </data>
 </root>

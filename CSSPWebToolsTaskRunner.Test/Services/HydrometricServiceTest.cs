@@ -15,6 +15,8 @@ using System.Windows.Forms;
 using CSSPWebToolsDBDLL;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -33,7 +35,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         private BWObj bwObj { get; set; }
         private HydrometricService HydrometricService { get; set; }
         private AppTaskService appTaskService { get; set; }
-        private HydrometricSiteService HydrometricSiteService { get; set; }
+        private HydrometricSiteService hydrometricSiteService { get; set; }
         private TVItemService tvItemService { get; set; }
         private MWQMSiteService mwqmSiteService { get; set; }
         private MWQMSampleService mwqmSampleService { get; set; }
@@ -83,8 +85,196 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         #endregion Initialize and Cleanup
 
         #region Functions public
+        //[TestMethod]
+        //public void HydrometricService_RunBrowserThread_Test()
+        //{
+        //    // AppTaskID	TVItemID	TVItemID2	AppTaskCommand	AppTaskStatus	PercentCompleted	Parameters	Language	StartDateTime_UTC	EndDateTime_UTC	EstimatedLength_second	RemainingTime_second	LastUpdateDate_UTC	LastUpdateContactTVItemID
+        //    // 14775	361210	361210	44	2	1	|||MikeSourceTVItemID,361210|||MikeScenarioTVItemID,357139|||	1	2018-10-02 14:15:24.317	NULL	NULL	NULL	2018-10-02 14:15:25.307	2
+        //    foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+        //    {
+        //        int MikeSourceTVItemID = 361210;
+        //        int MikeScenarioTVItemID = 357139;
+
+        //        string Parameters = $"|||MikeSourceTVItemID,{ MikeSourceTVItemID }|||MikeScenarioTVItemID,{ MikeScenarioTVItemID }|||";
+
+        //        AppTaskModel appTaskModel = new AppTaskModel()
+        //        {
+        //            AppTaskID = 100000,
+        //            TVItemID = MikeSourceTVItemID,
+        //            TVItemID2 = MikeSourceTVItemID,
+        //            AppTaskCommand = AppTaskCommandEnum.LoadHydrometricDataValue,
+        //            AppTaskStatus = AppTaskStatusEnum.Created,
+        //            PercentCompleted = 1,
+        //            Parameters = Parameters,
+        //            Language = LanguageRequest,
+        //            StartDateTime_UTC = DateTime.Now,
+        //            EndDateTime_UTC = null,
+        //            EstimatedLength_second = null,
+        //            RemainingTime_second = null,
+        //            LastUpdateDate_UTC = DateTime.Now,
+        //            LastUpdateContactTVItemID = 2, // Charles LeBlanc
+        //        };
+
+        //        appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+        //        BWObj bwObj = new BWObj()
+        //        {
+        //            Index = 1,
+        //            appTaskModel = appTaskModel,
+        //            appTaskCommand = appTaskModel.AppTaskCommand,
+        //            TextLanguageList = new List<TextLanguage>(),
+        //            bw = new BackgroundWorker(),
+        //        };
+
+        //        TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+        //        {
+        //            bwObj
+        //        });
+
+        //        taskRunnerBaseService._BWObj = bwObj;
+
+        //        HydrometricService _HydrometricService = new HydrometricService(taskRunnerBaseService);
+
+        //        string url = "https://wateroffice.ec.gc.ca/report/historical_e.html?stn=02ZJ001&mode=Table&type=h2oArc&results_type=historical&dataType=Daily&parameterType=Flow&year=2008";
+        //        _HydrometricService.RunBrowserThread(url);
+        //        Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+
+        //        break;
+        //    }
+
+        //}
         [TestMethod]
-        public void HydrometricService_Constructor_Test()
+        public void HydrometricService_GetHydrometricSiteDataForYear_Test()
+        {
+            // AppTaskID	TVItemID	TVItemID2	AppTaskCommand	AppTaskStatus	PercentCompleted	Parameters	Language	StartDateTime_UTC	EndDateTime_UTC	EstimatedLength_second	RemainingTime_second	LastUpdateDate_UTC	LastUpdateContactTVItemID
+            // 14775	361210	361210	44	2	1	|||MikeSourceTVItemID,361210|||MikeScenarioTVItemID,357139|||	1	2018-10-02 14:15:24.317	NULL	NULL	NULL	2018-10-02 14:15:25.307	2
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                int MikeSourceTVItemID = 361210;
+                int MikeScenarioTVItemID = 357139;
+
+                string Parameters = $"|||MikeSourceTVItemID,{ MikeSourceTVItemID }|||MikeScenarioTVItemID,{ MikeScenarioTVItemID }|||";
+
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 100000,
+                    TVItemID = MikeSourceTVItemID,
+                    TVItemID2 = MikeSourceTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.LoadHydrometricDataValue,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+
+                HydrometricService _HydrometricService = new HydrometricService(taskRunnerBaseService);
+
+                _HydrometricService.FedStationNameToDo = "02ZJ001"; // HydrometricTVItemID = 56367;
+                _HydrometricService.DataTypeToDo = "Flow";
+                _HydrometricService.YearToDo = 2015;
+                _HydrometricService.HydrometricSiteIDToDo = 288;
+
+                HydrometricSiteModel hydrometricSiteModel = hydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB(56367);
+
+                string url = string.Format(_HydrometricService.UrlToGetHydrometricSiteDataForYear, _HydrometricService.FedStationNameToDo, _HydrometricService.DataTypeToDo, _HydrometricService.YearToDo);
+
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.AddArgument("headless");
+                using (IWebDriver driver = new ChromeDriver()) // chromeOptions))
+                {
+                    _HydrometricService.GetHydrometricSiteDataForYear(driver, hydrometricSiteModel, _HydrometricService.DataTypeToDo, _HydrometricService.YearToDo);
+                    Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+                }
+
+                break;
+            }
+
+        }
+        [TestMethod]
+        public void HydrometricService_LoadHydrometricDataValueDB_Test()
+        {
+            // AppTaskID	TVItemID	TVItemID2	AppTaskCommand	AppTaskStatus	PercentCompleted	Parameters	Language	StartDateTime_UTC	EndDateTime_UTC	EstimatedLength_second	RemainingTime_second	LastUpdateDate_UTC	LastUpdateContactTVItemID
+            // 14775	361210	361210	44	2	1	|||MikeSourceTVItemID,361210|||MikeScenarioTVItemID,357139|||	1	2018-10-02 14:15:24.317	NULL	NULL	NULL	2018-10-02 14:15:25.307	2
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                int MikeSourceTVItemID = 361210;
+                int MikeScenarioTVItemID = 357139;
+
+                string Parameters = $"|||MikeSourceTVItemID,{ MikeSourceTVItemID }|||MikeScenarioTVItemID,{ MikeScenarioTVItemID }|||";
+
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 100000,
+                    TVItemID = MikeSourceTVItemID,
+                    TVItemID2 = MikeSourceTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.LoadHydrometricDataValue,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+
+                HydrometricService _HydrometricService = new HydrometricService(taskRunnerBaseService);
+
+                _HydrometricService.LoadHydrometricDataValueDB();
+                Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+
+                break;
+            }
+
+        }
+        [TestMethod]
+        public void HydrometricService_UpdateHydrometricSitesInformationForProvinceTVItemID_Test()
         {
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
@@ -137,94 +327,15 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         #endregion Functions public
 
         #region Functions private
-        //private void RemoveAllTask()
-        //{
-        //    List<AppTaskModel> appTaskModelList = appTaskService.GetAppTaskModelListDB();
-        //    foreach (AppTaskModel appTaskModel in appTaskModelList)
-        //    {
-        //        AppTaskModel appTaskModelRet = appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
-        //        Assert.AreEqual("", appTaskModelRet.Error);
-        //    }
-        //}
-        //private void SetupBWObj(int TVItemID, string LanguageRequest, AppTaskCommandEnum appTaskCommand, DateTime StartDate, DateTime EndDate)
-        //{
-        //    using (ShimsContext.Create())
-        //    {
-        //        SetupShim();
-
-        //        shimTaskRunnerBaseService.DoCommand = () =>
-        //        {
-        //            return; // just so it does not start to Generate the documents
-        //        };
-        //        csspWebToolsTaskRunner.GetNextTask();
-
-        //        //
-        //        Assert.IsNotNull(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel);
-        //        Assert.AreEqual(TVItemID, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //        Assert.IsNotNull(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.bw);
-        //        Assert.IsFalse(string.IsNullOrWhiteSpace(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskCommand.ToString()));
-        //        Assert.IsTrue(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.Index > 0);
-        //        Assert.AreEqual(TVItemID, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-        //        Assert.IsTrue(string.IsNullOrWhiteSpace(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.ErrorText));
-        //        Assert.IsTrue(string.IsNullOrWhiteSpace(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.StatusText));
-        //        if (appTaskCommand == AppTaskCommandEnum.UpdateHydrometricSiteInformation)
-        //        {
-        //            string FirstPart = "|||ProvinceTVItemID," + TVItemID.ToString() +
-        //              "|||Generate,0" +
-        //              "|||Command,1|||";
-        //            Assert.AreEqual(FirstPart, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.Parameters);
-        //            Assert.AreEqual(AppTaskCommandEnum.UpdateHydrometricSiteInformation, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskCommand);
-        //        }
-        //        else if (appTaskCommand == AppTaskCommandEnum.UpdateHydrometricSiteDailyAndHourlyFromStartDateToEndDate)
-        //        {
-        //            string FirstPart = "|||HydrometricSiteTVItemID," + TVItemID.ToString() +
-        //              "|||StartYear," + StartDate.Year.ToString() +
-        //              "|||StartMonth," + StartDate.Month.ToString() +
-        //              "|||StartDay," + StartDate.Day.ToString() +
-        //              "|||EndYear," + EndDate.Year.ToString() +
-        //              "|||EndMonth," + EndDate.Month.ToString() +
-        //              "|||EndDay," + EndDate.Day.ToString() +
-        //              "|||Generate,0" +
-        //              "|||Command,1|||";
-        //            Assert.AreEqual(FirstPart, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.Parameters);
-        //            Assert.AreEqual(AppTaskCommandEnum.UpdateHydrometricSiteDailyAndHourlyFromStartDateToEndDate, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskCommand);
-        //        }
-        //        else if (appTaskCommand == AppTaskCommandEnum.UpdateHydrometricSiteDailyAndHourlyForSubsectorFromStartDateToEndDate)
-        //        {
-        //            string FirstPart = "|||SubsectorTVItemID," + TVItemID.ToString() +
-        //              "|||StartYear," + StartDate.Year.ToString() +
-        //              "|||StartMonth," + StartDate.Month.ToString() +
-        //              "|||StartDay," + StartDate.Day.ToString() +
-        //              "|||EndYear," + EndDate.Year.ToString() +
-        //              "|||EndMonth," + EndDate.Month.ToString() +
-        //              "|||EndDay," + EndDate.Day.ToString() +
-        //              "|||Generate,0" +
-        //              "|||Command,1|||";
-        //            Assert.AreEqual(FirstPart, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.Parameters);
-        //            Assert.AreEqual(AppTaskCommandEnum.UpdateHydrometricSiteDailyAndHourlyForSubsectorFromStartDateToEndDate, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskCommand);
-        //        }
-        //        else
-        //        {
-        //            Assert.IsTrue(false);
-        //        }
-        //        //    Assert.AreEqual(true, csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.bw.IsBusy);
-        //        //    Assert.AreEqual(false, csspWebToolsTaskRunner._BWList[0 + 1].bw.IsBusy);
-        //    }
-
-        //}
-        //public void SetupTest(string LanguageRequest)
-        //{
-        //    csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
-        //    appTaskService = new AppTaskService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //    tvItemService = new TVItemService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //    HydrometricSiteService = new HydrometricSiteService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //    mwqmSiteService = new MWQMSiteService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //    mwqmSampleService = new MWQMSampleService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
-        //}
-        //private void SetupShim()
-        //{
-        //    shimTaskRunnerBaseService = new ShimTaskRunnerBaseService(csspWebToolsTaskRunner._TaskRunnerBaseService);
-        //}
+        public void SetupTest(LanguageEnum LanguageRequest)
+        {
+            csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
+            //appTaskService = new AppTaskService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            //tvItemService = new TVItemService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            hydrometricSiteService = new HydrometricSiteService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            //mwqmSiteService = new MWQMSiteService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            //mwqmSampleService = new MWQMSampleService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+        }
         #endregion Functions private
 
     }

@@ -79,6 +79,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} count should be {1}.
+        /// </summary>
+        public static string _CountShouldBe_ {
+            get {
+                return ResourceManager.GetString("_CountShouldBe_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} devrait être &gt; 0 dans {1}.
         /// </summary>
         public static string _CountShouldBeBigger0In_ {
@@ -795,6 +804,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskCommand_ {
             get {
                 return ResourceManager.GetString("CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskCommand_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find element id {0} within URL [{1}].
+        /// </summary>
+        public static string CouldNotFindElementID_WithinURL_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindElementID_WithinURL_", resourceCulture);
             }
         }
         
@@ -1672,6 +1690,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First cell of row {0} was suppose to be a &quot;th&quot; within URL [{1}].
+        /// </summary>
+        public static string FirstCellOfRow_WasSupposeToBeATHWithinURL_ {
+            get {
+                return ResourceManager.GetString("FirstCellOfRow_WasSupposeToBeATHWithinURL_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flow.
         /// </summary>
         public static string Flow {
@@ -1807,11 +1834,38 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTML title should start with [{0}].
+        /// </summary>
+        public static string HTMLTitleShouldStartWith_ {
+            get {
+                return ResourceManager.GetString("HTMLTitleShouldStartWith_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HydrometricDataValue.
+        /// </summary>
+        public static string HydrometricDataValue {
+            get {
+                return ResourceManager.GetString("HydrometricDataValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HydrometricSite.
         /// </summary>
         public static string HydrometricSite {
             get {
                 return ResourceManager.GetString("HydrometricSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HydrometricSiteModel.
+        /// </summary>
+        public static string HydrometricSiteModel {
+            get {
+                return ResourceManager.GetString("HydrometricSiteModel", resourceCulture);
             }
         }
         
@@ -1875,6 +1929,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Inset {
             get {
                 return ResourceManager.GetString("Inset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid URL [{0}] could not find [{1}].
+        /// </summary>
+        public static string InvalidURL_CouldNotFind_ {
+            get {
+                return ResourceManager.GetString("InvalidURL_CouldNotFind_", resourceCulture);
             }
         }
         
@@ -2536,6 +2599,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MikeSourceTVItemID.
+        /// </summary>
+        public static string MikeSourceTVItemID {
+            get {
+                return ResourceManager.GetString("MikeSourceTVItemID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MIKE study area.
         /// </summary>
         public static string MIKEStudyArea {
@@ -2685,6 +2757,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MWQMAnalysisReportParameterID {
             get {
                 return ResourceManager.GetString("MWQMAnalysisReportParameterID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMRun.
+        /// </summary>
+        public static string MWQMRun {
+            get {
+                return ResourceManager.GetString("MWQMRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMRunTVItemID.
+        /// </summary>
+        public static string MWQMRunTVItemID {
+            get {
+                return ResourceManager.GetString("MWQMRunTVItemID", resourceCulture);
             }
         }
         
@@ -3661,6 +3751,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Should have found {0} cells of type &quot;td&quot; within URL [{1}].
+        /// </summary>
+        public static string ShouldHaveFound_CellsOfTypeTDWithinURL_ {
+            get {
+                return ResourceManager.GetString("ShouldHaveFound_CellsOfTypeTDWithinURL_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Showing 24 hours before start date just in case you need to set a different start date.
         /// </summary>
         public static string Showing24HoursBeforeStartDateJustInCaseYouNeedToSetADifferentStartDate {
@@ -3900,6 +3999,33 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SummaryStatisticsOfFCDensities {
             get {
                 return ResourceManager.GetString("SummaryStatisticsOfFCDensities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Table does not contain {0} cells on first row within URL [{1}].
+        /// </summary>
+        public static string TableDoesNotContain_CellsOnFirstRowWithinURL_ {
+            get {
+                return ResourceManager.GetString("TableDoesNotContain_CellsOnFirstRowWithinURL_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Table does not contain {0} rows within URL [{1}].
+        /// </summary>
+        public static string TableDoesNotContain_RowsWithinURL_ {
+            get {
+                return ResourceManager.GetString("TableDoesNotContain_RowsWithinURL_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Table does not contain proper header [{0}] on first row within URL [{1}].
+        /// </summary>
+        public static string TableDoesNotContainProperHeader_OnFirstRowWithinURL_ {
+            get {
+                return ResourceManager.GetString("TableDoesNotContainProperHeader_OnFirstRowWithinURL_", resourceCulture);
             }
         }
         
