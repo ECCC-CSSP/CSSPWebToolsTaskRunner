@@ -378,7 +378,7 @@ namespace CSSPWebToolsTaskRunner.Services
             StreamWriter sw = fi.CreateText();
             sw.Write(sb.ToString());
             sw.Close();
-            
+
             //UnicodeEncoding encoding = new UnicodeEncoding();
 
             //FileStream fs = fi.Create();
@@ -740,7 +740,7 @@ namespace CSSPWebToolsTaskRunner.Services
             StreamWriter sw = fi.CreateText();
             sw.Write(sb.ToString());
             sw.Close();
-            
+
             //UnicodeEncoding encoding = new UnicodeEncoding();
 
             //FileStream fs = fi.Create();
@@ -992,7 +992,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 if (Count % 5 == 0)
                 {
-                    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count/(float)TotalCount)));
+                    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count / (float)TotalCount)));
                 }
 
                 string TVText = tvItemModelSS.TVText.Substring(0, tvItemModelSS.TVText.IndexOf(" "));

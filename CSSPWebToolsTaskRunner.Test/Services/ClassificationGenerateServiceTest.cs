@@ -135,6 +135,63 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             }
 
         }
+        [TestMethod]
+        public void ClassificationGenerateService_GenerateKMLFileClassificationForCSSPWebToolsVisualization_Test()
+        {
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                int ProvinceTVItemID = 7;
+
+                StringBuilder sbKML = new StringBuilder();
+                string Parameters = $"|||ProvinceTVItemID,{ ProvinceTVItemID }|||";
+
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 100000,
+                    TVItemID = ProvinceTVItemID,
+                    TVItemID2 = ProvinceTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.GenerateKMLFileClassificationForCSSPWebToolsVisualization,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+
+                ClassificationGenerateService classificationGenerateService = new ClassificationGenerateService(taskRunnerBaseService);
+
+                classificationGenerateService.GenerateKMLFileClassificationForCSSPWebToolsVisualization();
+                Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+
+                break;
+            }
+
+        }
         #endregion Functions public
 
         #region Functions private

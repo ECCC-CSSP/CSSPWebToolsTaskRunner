@@ -1626,4 +1626,7 @@
   <data name="TableDoesNotContain_RowsWithinURL_" xml:space="preserve">
     <value>Table does not contain {0} rows within URL [{1}]</value>
   </data>
+  <data name="KMZClassViewCheck" xml:space="preserve">
+    <value>KMZ Class View Check</value>
+  </data>
 </root>

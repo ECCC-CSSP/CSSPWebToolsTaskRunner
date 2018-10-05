@@ -1987,6 +1987,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to KMZ Class View Check.
+        /// </summary>
+        public static string KMZClassViewCheck {
+            get {
+                return ResourceManager.GetString("KMZClassViewCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to KMZ file of MWQM Sites.
         /// </summary>
         public static string KMZOfMWQMSites {
