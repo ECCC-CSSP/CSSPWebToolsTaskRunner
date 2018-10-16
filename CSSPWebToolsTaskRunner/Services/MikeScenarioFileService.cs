@@ -1447,7 +1447,8 @@ namespace CSSPWebToolsTaskRunner.Services
                 PFSSection pfsSectionSources = pfsFile.GetSectionFromHandle(path);
                 if (pfsSectionSources == null)
                 {
-                    return string.Format(TaskRunnerServiceRes.CouldNotFind_, path);
+                    continue;
+                    //return string.Format(TaskRunnerServiceRes.CouldNotFind_, path);
                 }
 
                 PFSSection pfsSectionNew = pfsSectionSources.InsertNewSection(NewSource, SourceInt);
