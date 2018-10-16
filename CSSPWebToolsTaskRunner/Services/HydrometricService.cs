@@ -187,9 +187,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             Year = mwqmRunModel.DateTime_Local.Year;
 
-            List<HydrometricDataValueModel> hydrometricDataValueModel11ValueList = _HydrometricDataValueService.GetHydrometricDataValueModelListWithHydrometricSiteIDBack10DaysFromDateDB(hydrometricSiteModel.HydrometricSiteID, mwqmRunModel.DateTime_Local);
+            List<HydrometricDataValueModel> hydrometricDataValueModel10ValueList = _HydrometricDataValueService.GetHydrometricDataValueModelListWithHydrometricSiteIDAroundRunDateDB(hydrometricSiteModel.HydrometricSiteID, mwqmRunModel.DateTime_Local);
 
-            if (hydrometricDataValueModel11ValueList.Count != 11)
+            if (hydrometricDataValueModel10ValueList.Count != 10)
             {
                 List<string> FlowLevelList = new List<string>() { "Flow", "Level" };
 
@@ -223,7 +223,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         return;
                     }
 
-                    if (Year != mwqmRunModel.DateTime_Local.AddDays(-10).Year)
+                    if (Year != mwqmRunModel.DateTime_Local.AddDays(-7).Year)
                     {
                         Year = Year - 1;
 
