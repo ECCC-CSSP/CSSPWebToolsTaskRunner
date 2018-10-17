@@ -241,6 +241,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new source [{0}] number [{1}] in .m21fm or .m3fm.
+        /// </summary>
+        public static string AddNewSource_Number_InM21FMOrM3MFFile {
+            get {
+                return ResourceManager.GetString("AddNewSource_Number_InM21FMOrM3MFFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agriculture.
         /// </summary>
         public static string Agriculture {
@@ -1096,6 +1105,60 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating a log file if it does not yet exist.
+        /// </summary>
+        public static string CreatingALogFileIfItDoesNotYetExist {
+            get {
+                return ResourceManager.GetString("CreatingALogFileIfItDoesNotYetExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating file Decay.dfs0.
+        /// </summary>
+        public static string CreatingFileDecayDotDFS0 {
+            get {
+                return ResourceManager.GetString("CreatingFileDecayDotDFS0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating salinity and temperature initial conditions files.
+        /// </summary>
+        public static string CreatingSalinityAndTemperatureInitialConditionsFiles {
+            get {
+                return ResourceManager.GetString("CreatingSalinityAndTemperatureInitialConditionsFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating sinusoidal decay file.
+        /// </summary>
+        public static string CreatingSinusoidalDecayFile {
+            get {
+                return ResourceManager.GetString("CreatingSinusoidalDecayFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving source flow .dfs0 file in DB source name [{0}] number [{1}].
+        /// </summary>
+        public static string CreatingSourceFlowDFSOFileSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("CreatingSourceFlowDFSOFileSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating source pollution .dfs0 file source name [{0}] number [{1}].
+        /// </summary>
+        public static string CreatingSourcePolDFSOFileSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("CreatingSourcePolDFSOFileSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating WebTide boundary conditions files..
         /// </summary>
         public static string CreatingWebTideBoundaryConditionFiles {
@@ -1263,6 +1326,33 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Dist {
             get {
                 return ResourceManager.GetString("Dist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing decay.
+        /// </summary>
+        public static string DoingDecay {
+            get {
+                return ResourceManager.GetString("DoingDecay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing source {0}.
+        /// </summary>
+        public static string DoingSource_ {
+            get {
+                return ResourceManager.GetString("DoingSource_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing sources.
+        /// </summary>
+        public static string DoingSources {
+            get {
+                return ResourceManager.GetString("DoingSources", resourceCulture);
             }
         }
         
@@ -1785,6 +1875,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string GenerateProvincePollutionSourceSitesForInputTool {
             get {
                 return ResourceManager.GetString("GenerateProvincePollutionSourceSitesForInputTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting approximate size of hydrodynamic result file.
+        /// </summary>
+        public static string GettingApproximateSizeOfHydrodynamicResultFile {
+            get {
+                return ResourceManager.GetString("GettingApproximateSizeOfHydrodynamicResultFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting approximate size of transport result file.
+        /// </summary>
+        public static string GettingApproximateSizeOfTransportResultFile {
+            get {
+                return ResourceManager.GetString("GettingApproximateSizeOfTransportResultFile", resourceCulture);
             }
         }
         
@@ -3229,6 +3337,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Partial save of .m21fm or .m3fm file.
+        /// </summary>
+        public static string PartialSaveOfM21FMOrM3FMFile {
+            get {
+                return ResourceManager.GetString("PartialSaveOfM21FMOrM3FMFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Period.
         /// </summary>
         public static string Period {
@@ -3463,6 +3580,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reading user input.
+        /// </summary>
+        public static string ReadingUserInput {
+            get {
+                return ResourceManager.GetString("ReadingUserInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recreation.
         /// </summary>
         public static string Recreation {
@@ -3652,6 +3778,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saving source flow .dfs0 file in DB source name [{0}] number [{1}].
+        /// </summary>
+        public static string SavingSourceFlowDFSOFileInDBSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SavingSourceFlowDFSOFileInDBSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving source pollution .dfs0 file in DB source name [{0}] number [{1}].
+        /// </summary>
+        public static string SavingSourcePolDFSOFileInDBSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SavingSourcePolDFSOFileInDBSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scenario time at the end.
         /// </summary>
         public static string ScenarioEndTime {
@@ -3702,6 +3846,303 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ServerFullPath {
             get {
                 return ResourceManager.GetString("ServerFullPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module initial condition salinity file name.
+        /// </summary>
+        public static string SettingHydrodynamicModuleInitialConditionSalinityFileName {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleInitialConditionSalinityFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module initial condition salinity format.
+        /// </summary>
+        public static string SettingHydrodynamicModuleInitialConditionSalinityFormat {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleInitialConditionSalinityFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module initial condition temperature file name.
+        /// </summary>
+        public static string SettingHydrodynamicModuleInitialConditionTemperatureFileName {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleInitialConditionTemperatureFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module initial condition temperature format.
+        /// </summary>
+        public static string SettingHydrodynamicModuleInitialConditionTemperatureFormat {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleInitialConditionTemperatureFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module manning.
+        /// </summary>
+        public static string SettingHydrodynamicModuleManning {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleManning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module salinity.
+        /// </summary>
+        public static string SettingHydrodynamicModuleSalinity {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSalinity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module source constant value source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingHydrodynamicModuleSourceConstantValueSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSourceConstantValueSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module source coordinates source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingHydrodynamicModuleSourceCoordinatesSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSourceCoordinatesSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module source file name source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingHydrodynamicModuleSourceFileNameSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSourceFileNameSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module source include source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingHydrodynamicModuleSourceIncludeSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSourceIncludeSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingHydrodynamicModuleSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module temperature.
+        /// </summary>
+        public static string SettingHydrodynamicModuleTemperature {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module wind direction.
+        /// </summary>
+        public static string SettingHydrodynamicModuleWindDirection {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleWindDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module wind speed.
+        /// </summary>
+        public static string SettingHydrodynamicModuleWindSpeed {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleWindSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic output last time step.
+        /// </summary>
+        public static string SettingHydrodynamicOutputLastTimeStep {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicOutputLastTimeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic output time step frequency.
+        /// </summary>
+        public static string SettingHydrodynamicOutputTimeStepFrequency {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicOutputTimeStepFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting number of time steps in .m21fm or .m3fm file.
+        /// </summary>
+        public static string SettingNumberOfTimeStepsInM21FMOrM3FMFile {
+            get {
+                return ResourceManager.GetString("SettingNumberOfTimeStepsInM21FMOrM3FMFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting start time in .m21fm or .m3fm file.
+        /// </summary>
+        public static string SettingStartTimeInM21FMOrM3FMFile {
+            get {
+                return ResourceManager.GetString("SettingStartTimeInM21FMOrM3FMFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module decay constant value.
+        /// </summary>
+        public static string SettingTransportModuleDecayConstantValue {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleDecayConstantValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module decay continuous.
+        /// </summary>
+        public static string SettingTransportModuleDecayContinuous {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleDecayContinuous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module decay file name.
+        /// </summary>
+        public static string SettingTransportModuleDecayFileName {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleDecayFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module decay file name to empty.
+        /// </summary>
+        public static string SettingTransportModuleDecayFileNameToEmpty {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleDecayFileNameToEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module decay not continuous.
+        /// </summary>
+        public static string SettingTransportModuleDecayNotContinuous {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleDecayNotContinuous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module last time step.
+        /// </summary>
+        public static string SettingTransportModuleLastTimeStep {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleLastTimeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module salinity constant value source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingTransportModuleSalinityConstantValueSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleSalinityConstantValueSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module source constant value source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingTransportModuleSourceConstantValueSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleSourceConstantValueSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module source file name source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingTransportModuleSourceFileNameSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleSourceFileNameSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module source format source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingTransportModuleSourceFormatSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleSourceFormatSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingTransportModuleSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module temperature constant value source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingTransportModuleTemperatureConstantValueSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleTemperatureConstantValueSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module time step frequency.
+        /// </summary>
+        public static string SettingTransportModuleTimeStepFrequency {
+            get {
+                return ResourceManager.GetString("SettingTransportModuleTimeStepFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport output last time step.
+        /// </summary>
+        public static string SettingTransportOutputLastTimeStep {
+            get {
+                return ResourceManager.GetString("SettingTransportOutputLastTimeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport output time step frequency.
+        /// </summary>
+        public static string SettingTransportOutputTimeStepFrequency {
+            get {
+                return ResourceManager.GetString("SettingTransportOutputTimeStepFrequency", resourceCulture);
             }
         }
         
@@ -3963,6 +4404,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string StepsInfo {
             get {
                 return ResourceManager.GetString("StepsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storing decay file [{0}] in DB.
+        /// </summary>
+        public static string StoringDecayFile_InDB {
+            get {
+                return ResourceManager.GetString("StoringDecayFile_InDB", resourceCulture);
             }
         }
         
@@ -4327,6 +4777,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tweak scenario start time to have 60 % high tide and falling.
+        /// </summary>
+        public static string TweakScenarioStartTimeToHave60PercHighTideAndFalling {
+            get {
+                return ResourceManager.GetString("TweakScenarioStartTimeToHave60PercHighTideAndFalling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string Type {
@@ -4341,6 +4800,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string UnknownErrorPleaseCheckLogFile {
             get {
                 return ResourceManager.GetString("UnknownErrorPleaseCheckLogFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating mike scenario info in DB.
+        /// </summary>
+        public static string UpdatingMikeScenarioInfoInDB {
+            get {
+                return ResourceManager.GetString("UpdatingMikeScenarioInfoInDB", resourceCulture);
             }
         }
         

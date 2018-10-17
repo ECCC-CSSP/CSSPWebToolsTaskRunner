@@ -83,16 +83,14 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         [TestMethod]
         public void MikeScenarioFileService_MikeScenarioAskToRun_Test()
         {
-            // AppTaskID	TVItemID	TVItemID2	AppTaskCommand	AppTaskStatus	PercentCompleted	Parameters	Language	StartDateTime_UTC	EndDateTime_UTC	EstimatedLength_second	RemainingTime_second	LastUpdateDate_UTC	LastUpdateContactTVItemID
-            // 12643   344316  344316  2   1   1 ||| MikeScenarioTVItemID,344316 ||| 1   2018 - 03 - 20 14:49:58.440 NULL NULL    NULL    2018 - 03 - 20 14:49:58.443 2
+            // AppTaskID TVItemID    TVItemID2 AppTaskCommand  AppTaskStatus PercentCompleted    Parameters Language    StartDateTime_UTC EndDateTime_UTC EstimatedLength_second RemainingTime_second    LastUpdateDate_UTC LastUpdateContactTVItemID
+            // 14895   357139  357139  2   1   1 ||| MikeScenarioTVItemID,357139 ||| 1   2018 - 10 - 17 12:04:21.687 NULL NULL    NULL    2018 - 10 - 17 12:04:21.687 2
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
                 SetupTest(LanguageRequest);
 
-                int MikeScenarioTVItemID = 344316;
+                int MikeScenarioTVItemID = 357139;
 
-                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\TestingMikeScenario344316.m21fm");
-                StringBuilder sbKML = new StringBuilder();
                 string Parameters = $"|||MikeScenarioTVItemID,{ MikeScenarioTVItemID }|||";
 
                 AppTaskModel appTaskModel = new AppTaskModel()
@@ -132,36 +130,8 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 taskRunnerBaseService._BWObj = bwObj;
 
                 MikeScenarioFileService _MikeScenarioFileService = new MikeScenarioFileService(taskRunnerBaseService);
-                MikeScenarioModel mikeScenarioModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(MikeScenarioTVItemID);
-
-
-                TVFileModel tvFileModelM21_3FM = _TVFileService.GetTVFileModelWithTVItemIDAndTVFileTypeM21FMOrM3FMDB(MikeScenarioTVItemID);
-                Assert.AreEqual("", tvFileModelM21_3FM.Error);
-
-                string ServerPath = _TVFileService.GetServerFilePath(MikeScenarioTVItemID);
-                Assert.IsFalse(string.IsNullOrWhiteSpace(ServerPath));
-
-                FileInfo fiM21_M3 = new FileInfo(ServerPath + tvFileModelM21_3FM.ServerFileName);
-                Assert.IsTrue(fiM21_M3.Exists);
-
-                PFSFile pfsFile = new PFSFile(fiM21_M3.FullName);
-                Assert.IsNotNull(pfsFile);
-
-                _MikeScenarioFileService.DoSources(pfsFile, fiM21_M3, mikeScenarioModel, MikeScenarioTVItemID, tvFileModelM21_3FM);
+                _MikeScenarioFileService.MikeScenarioAskToRun();
                 Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
-
-                try
-                {
-                    pfsFile.Write(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
-                }
-                catch (Exception)
-                {
-                    //int seilfj = 345;
-                    // nothing
-                }
-
-                pfsFile.Close();
-                _MikeScenarioFileService.FixPFSFileSystemPart(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
 
                 break;
             }

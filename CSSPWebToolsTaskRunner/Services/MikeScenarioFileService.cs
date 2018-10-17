@@ -39,7 +39,6 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Properties
 
         #region Constructors
-
         public MikeScenarioFileService(TaskRunnerBaseService taskRunnerBaseService)
         {
             _TaskRunnerBaseService = taskRunnerBaseService;
@@ -917,6 +916,8 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             // should save the new start end date to the .m21fm or .m3fm file
+            // will also create the initial conditions (sal, temp)
+            // will also create file for pollution source (flow, concentration)
             SaveDBInfoToMikeScenarioFile(MikeScenarioTVItemID);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
             {
@@ -941,7 +942,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 // Can only run 3 mike scenarios at once
                 return;
             }
-
 
             // starting the Updater.exe application
             ProcessStartInfo pInfoUpdater = new ProcessStartInfo();
@@ -1516,6 +1516,593 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return;
         }
+        private bool CreateFlowSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, FileInfo fiFlow, TVItemLanguageModel tvItemLanguageModelSourceName, string NewFlowSourceFileName, TVItemService tvItemService, TVFileService tvFileService)
+        {
+            string NotUsed = "";
+
+
+            MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            List<MikeSourceStartEndModel> mikeSourceStartEndModelList = mikeSourceStartEndService.GetMikeSourceStartEndModelListWithMikeSourceIDDB(msm.MikeSourceID);
+
+            DfsFactory factory = new DfsFactory();
+
+            IDfsFile dfsOldFile = DfsFileFactory.DfsGenericOpen(fiBC.FullName);
+
+            DfsBuilder dfsNewFile = DfsBuilder.Create(tvItemLanguageModelSourceName.TVText + " - Flow", dfsOldFile.FileInfo.ApplicationTitle + tvItemLanguageModelSourceName.TVText + " - Flow", dfsOldFile.FileInfo.ApplicationVersion);
+
+            double FlowStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
+
+            DateTime? dateTimeTemp = GetStartTime(pfsFile);
+            if (dateTimeTemp == null)
+            {
+                return false;
+            }
+
+            int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
+            if (NumberOfTimeSteps == null)
+            {
+                return false;
+            }
+
+            int? TimeStepInterval = GetTimeStepInterval(pfsFile);
+            if (TimeStepInterval == null)
+            {
+                return false;
+            }
+
+            DateTime StartDate = ((DateTime)dateTimeTemp).AddHours(-1);
+            DateTime EndDate = ((DateTime)dateTimeTemp).AddSeconds((int)NumberOfTimeSteps * (int)TimeStepInterval).AddHours(1);
+
+            dfsNewFile.SetDataType(1);
+            dfsNewFile.SetGeographicalProjection(dfsOldFile.FileInfo.Projection);
+            dfsNewFile.SetTemporalAxis(factory.CreateTemporalEqCalendarAxis(eumUnit.eumUsec, StartDate, 0, FlowStepsInMinutes * 60));
+            dfsNewFile.SetItemStatisticsType(StatType.RegularStat);
+
+            DfsDynamicItemBuilder item = dfsNewFile.CreateDynamicItemBuilder();
+            item.Set(NewFlowSourceFileName, eumQuantity.Create(eumItem.eumIDischarge, eumUnit.eumUConcNonDimM3PerSec), DfsSimpleType.Float);
+            item.SetValueType(DataValueType.Instantaneous);
+            item.SetAxis(factory.CreateAxisEqD0());
+            item.SetReferenceCoordinates(1f, 2f, 3f);
+            dfsNewFile.AddDynamicItem(item.GetDynamicItemInfo());
+
+            dfsOldFile.Close();
+
+            string[] NewFileErrors = dfsNewFile.Validate();
+            StringBuilder sbErr = new StringBuilder();
+            foreach (string s in NewFileErrors)
+            {
+                sbErr.AppendLine(s);
+            }
+
+            if (NewFileErrors.Count() > 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fiFlow.FullName, sbErr.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fiFlow.FullName, sbErr.ToString());
+                return false;
+            }
+
+            dfsNewFile.CreateFile(fiFlow.FullName);
+            IDfsFile FlowFile = dfsNewFile.GetFile();
+
+            DateTime NewDateTime = StartDate;
+
+            foreach (MikeSourceStartEndModel mssem in mikeSourceStartEndModelList.OrderBy(c => c.StartDateAndTime_Local))
+            {
+                while (NewDateTime < (DateTime)mssem.StartDateAndTime_Local)
+                {
+                    FlowFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Flow
+                    NewDateTime = NewDateTime.AddSeconds(FlowStepsInMinutes * 60);
+                }
+
+                long TotalTicks = mssem.EndDateAndTime_Local.Ticks - mssem.StartDateAndTime_Local.Ticks;
+                while (NewDateTime < EndDate)
+                {
+                    if (NewDateTime < mssem.StartDateAndTime_Local)
+                    {
+                        FlowFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Flow
+                    }
+                    else if (NewDateTime >= mssem.StartDateAndTime_Local && NewDateTime <= mssem.EndDateAndTime_Local)
+                    {
+                        double TickFraction = (double)(NewDateTime.Ticks - mssem.StartDateAndTime_Local.Ticks) / (double)TotalTicks;
+                        double PolValue = 0.0D;
+                        if (mssem.SourcePollutionEnd_MPN_100ml == mssem.SourcePollutionStart_MPN_100ml)
+                        {
+                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml;
+                        }
+                        else if (mssem.SourcePollutionEnd_MPN_100ml > mssem.SourcePollutionStart_MPN_100ml)
+                        {
+                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml - ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
+                        }
+                        else if (mssem.SourcePollutionEnd_MPN_100ml < mssem.SourcePollutionStart_MPN_100ml)
+                        {
+                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml + ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
+                        }
+                        FlowFile.WriteItemTimeStepNext(0, new float[] { (float)PolValue });  // Flow
+                    }
+                    else if (NewDateTime > mssem.EndDateAndTime_Local)
+                    {
+                        break;
+                    }
+                    NewDateTime = NewDateTime.AddSeconds(FlowStepsInMinutes * 60);
+                }
+            }
+
+            while (NewDateTime < EndDate)
+            {
+                FlowFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Flow
+                NewDateTime = NewDateTime.AddSeconds(FlowStepsInMinutes * 60);
+            }
+
+            FlowFile.Close();
+
+            fiFlow = new FileInfo(fiFlow.FullName);
+
+            NotUsed = string.Format(TaskRunnerServiceRes.SavingSourceFlowDFSOFileInDBSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SavingSourceFlowDFSOFileInDBSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+            TVFileModel tvFileModelPolNew = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(fiFlow.Directory + "\\", fiFlow.Name);
+            if (!string.IsNullOrWhiteSpace(tvFileModelPolNew.Error))
+            {
+                if (!fiFlow.Exists)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFlow.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiFlow.FullName);
+                    return false;
+                }
+
+                TVItemModel tvItemFileModel = tvItemService.PostAddChildTVItemDB(mikeScenarioModel.MikeScenarioTVItemID, NewFlowSourceFileName, TVTypeEnum.File);
+                if (!string.IsNullOrEmpty(tvItemFileModel.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, NewFlowSourceFileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, NewFlowSourceFileName);
+                    return false;
+                }
+
+                tvFileModelPolNew = new TVFileModel()
+                {
+                    TVFileTVItemID = tvItemFileModel.TVItemID,
+                    FilePurpose = FilePurposeEnum.MikeInput,
+                    Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
+                    Year = DateTime.Now.Year,
+                    FileDescription = "Mike Pollution File",
+                    FileType = tvFileService.GetFileType(fiFlow.Extension),
+                    FileSize_kb = (int)(fiFlow.Length / 1024),
+                    FileInfo = "Mike Scenario Documentation",
+                    FileCreatedDate_UTC = fiFlow.CreationTime.ToUniversalTime(),
+                    ServerFileName = NewFlowSourceFileName,
+                    ServerFilePath = fiFlow.Directory + "\\",
+                };
+
+                TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelPolNew);
+                if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    return false;
+                }
+            }
+            else
+            {
+                tvFileModelPolNew.FilePurpose = FilePurposeEnum.MikeInput;
+                tvFileModelPolNew.FileDescription = "Mike Pollution File";
+                tvFileModelPolNew.FileType = tvFileService.GetFileType(fiFlow.Extension);
+                tvFileModelPolNew.FileSize_kb = (int)(fiFlow.Length / 1024);
+                tvFileModelPolNew.FileCreatedDate_UTC = fiFlow.CreationTime.ToUniversalTime();
+                tvFileModelPolNew.ServerFileName = NewFlowSourceFileName;
+                tvFileModelPolNew.ServerFilePath = fiFlow.Directory + "\\";
+
+                TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelPolNew);
+                if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        public string CreateInititalConditionFileSalAndTempFromTVFileItemID(int MikeScenarioTVItemID, int useSalinityAndTemperatureInitialConditionFromTVFileTVItemID, FileInfo fiM21_M3)
+        {
+            string NotUsed = "";
+            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            string DFSUFileName = "";
+            TVFileModel tvFileModelUseDFSUFile = tvFileService.GetTVFileModelWithTVFileTVItemIDDB(useSalinityAndTemperatureInitialConditionFromTVFileTVItemID);
+            if (string.IsNullOrWhiteSpace(tvFileModelUseDFSUFile.Error))
+            {
+                DFSUFileName = tvFileModelUseDFSUFile.ServerFilePath + tvFileModelUseDFSUFile.ServerFileName;
+            }
+
+            List<string> ParamTypeList = new List<string>() { "Salinity", "Temperature" };
+            foreach (string ParamType in ParamTypeList)
+            {
+                DfsuFile dfsuFile;
+                try
+                {
+                    dfsuFile = DfsuFile.Open(DFSUFileName);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotOpenFile_Error_, DFSUFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotOpenFile_Error_", DFSUFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return NotUsed;
+                }
+
+                DfsuDynamicItemInfo itemInfoParam = null;
+                foreach (DfsuDynamicItemInfo itemInfo in dfsuFile.ItemInfo)
+                {
+                    if (ParamType == "Salinity")
+                    {
+                        if (itemInfo.Quantity.Item == eumItem.eumISalinity)
+                        {
+                            itemInfoParam = itemInfo;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (itemInfo.Quantity.Item == eumItem.eumITemperature)
+                        {
+                            itemInfoParam = itemInfo;
+                            break;
+                        }
+                    }
+                }
+
+                DfsuBuilder dfsBuilder = DfsuBuilder.Create(DfsuFileType.Dfsu2D);
+                dfsBuilder.ApplicationTitle = dfsuFile.ApplicationTitle;
+                dfsBuilder.ApplicationVersion = dfsuFile.ApplicationVersion;
+                dfsBuilder.FileTitle = dfsuFile.FileTitle;
+                dfsBuilder.SetNodeIds(dfsuFile.NodeIds);
+                dfsBuilder.SetElementIds(dfsuFile.ElementIds);
+                dfsBuilder.SetProjection(dfsuFile.Projection);
+                dfsBuilder.SetNodes(dfsuFile.X, dfsuFile.Y, dfsuFile.Z, dfsuFile.Code);
+                dfsBuilder.SetElements(dfsuFile.ElementTable);
+
+                dfsBuilder.SetTimeInfo(dfsuFile.StartDateTime.AddSeconds((dfsuFile.NumberOfTimeSteps - 1) * dfsuFile.TimeStepInSeconds), dfsuFile.TimeStepInSeconds);
+                dfsBuilder.AddDynamicItem(itemInfoParam.Name, itemInfoParam.Quantity);
+
+                string ParamDfsuFileName = (ParamType == "Salinity" ? fiM21_M3.FullName.Replace(fiM21_M3.Name, "Salinity.dfsu") : fiM21_M3.FullName.Replace(fiM21_M3.Name, "Temperature.dfsu"));
+                DfsuFile dfsuFileParam = null;
+                try
+                {
+                    dfsuFileParam = dfsBuilder.CreateFile(ParamDfsuFileName);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return NotUsed;
+                }
+
+                IDfsItemData itemData = dfsuFile.ReadItemTimeStep(itemInfoParam.ItemNumber, dfsuFile.NumberOfTimeSteps - 1);
+
+                try
+                {
+                    dfsuFileParam.WriteItemTimeStep(1, 0, 0, itemData.Data);
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return NotUsed;
+                }
+
+                dfsuFileParam.Close();
+
+                dfsuFile.Close();
+
+                FileInfo fiParam = new FileInfo(ParamDfsuFileName);
+
+                if (!fiParam.Exists)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ParamDfsuFileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ParamDfsuFileName);
+                    return NotUsed;
+                }
+
+                TVItemModel tvItemModelMikeScenario = tvItemService.GetTVItemModelWithTVItemIDDB(MikeScenarioTVItemID);
+                if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
+                    return NotUsed;
+                }
+
+                TVItemModel tvItemModelFileParam = null;
+                List<TVItemModel> tvItemModelFileList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(MikeScenarioTVItemID, TVTypeEnum.File);
+                foreach (TVItemModel tvItemModelFile in tvItemModelFileList)
+                {
+                    if (ParamType == "Salinity")
+                    {
+                        if (tvItemModelFile.TVText.ToLower().EndsWith("salinity.dfsu"))
+                        {
+                            tvItemModelFileParam = tvItemModelFile;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (tvItemModelFile.TVText.ToLower().EndsWith("temperature.dfsu"))
+                        {
+                            tvItemModelFileParam = tvItemModelFile;
+                            break;
+                        }
+                    }
+                }
+
+                if (tvItemModelFileParam == null)
+                {
+                    TVItemModel tvItemModelRet = tvItemService.PostAddChildTVItemDB(MikeScenarioTVItemID, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"), TVTypeEnum.File);
+                    if (!string.IsNullOrWhiteSpace(tvItemModelRet.Error))
+                    {
+                        // already exist
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, "MikeScenario", TaskRunnerServiceRes.TVText, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, "MikeScenario", TaskRunnerServiceRes.TVText, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"));
+                        return NotUsed;
+                    }
+
+                    TVFileModel tvFileModelNew = new TVFileModel()
+                    {
+                        ClientFilePath = "",
+                        FileDescription = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                        FileInfo = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                        FileCreatedDate_UTC = fiParam.CreationTimeUtc,
+                        FileSize_kb = (int)(fiParam.Length / 1024),
+                        Language = LanguageEnum.enAndfr,
+                        Year = DateTime.Now.Year,
+                        FromWater = null,
+                        FilePurpose = FilePurposeEnum.MikeInput,
+                        FileType = FileTypeEnum.DFSU,
+                        ServerFileName = fiParam.Name,
+                        ServerFilePath = fiParam.DirectoryName + @"\",
+                        TVFileTVItemID = tvItemModelRet.TVItemID,
+                    };
+
+                    TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
+                    if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                        return NotUsed;
+                    }
+
+                }
+                else
+                {
+                    TVFileModel tvFileModelSal = tvFileService.GetTVFileModelWithTVFileTVItemIDDB(tvItemModelFileParam.TVItemID);
+                    if (string.IsNullOrWhiteSpace(tvFileModelSal.Error))
+                    {
+                        tvFileModelSal.FileSize_kb = (int)(fiParam.Length / 1024);
+
+                        TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelSal);
+                        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            return NotUsed;
+                        }
+                    }
+                    else
+                    {
+                        TVFileModel tvFileModelNew = new TVFileModel()
+                        {
+                            ClientFilePath = "",
+                            FileDescription = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                            FileInfo = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
+                            FileCreatedDate_UTC = fiParam.CreationTimeUtc,
+                            FileSize_kb = (int)(fiParam.Length / 1024),
+                            Language = LanguageEnum.enAndfr,
+                            Year = DateTime.Now.Year,
+                            FromWater = null,
+                            FilePurpose = FilePurposeEnum.MikeInput,
+                            FileType = FileTypeEnum.DFSU,
+                            ServerFileName = fiParam.Name,
+                            ServerFilePath = fiParam.DirectoryName + @"\",
+                            TVFileTVItemID = tvItemModelFileParam.TVItemID,
+                        };
+
+                        TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
+                        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                            return NotUsed;
+                        }
+                    }
+                }
+            }
+
+            return "";
+        }
+        private bool CreatePolSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, FileInfo fiPol, TVItemLanguageModel tvItemLanguageModelSourceName, string NewPolSourceFileName, TVItemService tvItemService, TVFileService tvFileService)
+        {
+            string NotUsed = "";
+
+
+            MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            List<MikeSourceStartEndModel> mikeSourceStartEndModelList = mikeSourceStartEndService.GetMikeSourceStartEndModelListWithMikeSourceIDDB(msm.MikeSourceID);
+
+            DfsFactory factory = new DfsFactory();
+
+            IDfsFile dfsOldFile = DfsFileFactory.DfsGenericOpen(fiBC.FullName);
+
+            DfsBuilder dfsNewFile = DfsBuilder.Create(tvItemLanguageModelSourceName.TVText + " - Pol", dfsOldFile.FileInfo.ApplicationTitle + tvItemLanguageModelSourceName.TVText + " - Pol", dfsOldFile.FileInfo.ApplicationVersion);
+
+            double PolStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
+
+            DateTime? dateTimeTemp = GetStartTime(pfsFile);
+            if (dateTimeTemp == null)
+            {
+                return false;
+            }
+
+            int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
+            if (NumberOfTimeSteps == null)
+            {
+                return false;
+            }
+
+            int? TimeStepInterval = GetTimeStepInterval(pfsFile);
+            if (TimeStepInterval == null)
+            {
+                return false;
+            }
+
+            DateTime StartDate = ((DateTime)dateTimeTemp).AddHours(-1);
+            DateTime EndDate = ((DateTime)dateTimeTemp).AddSeconds((int)NumberOfTimeSteps * (int)TimeStepInterval).AddHours(1);
+
+            dfsNewFile.SetDataType(1);
+            dfsNewFile.SetGeographicalProjection(dfsOldFile.FileInfo.Projection);
+            dfsNewFile.SetTemporalAxis(factory.CreateTemporalEqCalendarAxis(eumUnit.eumUsec, StartDate, 0, PolStepsInMinutes * 60));
+            dfsNewFile.SetItemStatisticsType(StatType.RegularStat);
+
+            DfsDynamicItemBuilder item = dfsNewFile.CreateDynamicItemBuilder();
+            item.Set(NewPolSourceFileName, eumQuantity.Create(eumItem.eumIBacteriaConc, eumUnit.eumUPer100ml), DfsSimpleType.Float);
+            item.SetValueType(DataValueType.Instantaneous);
+            item.SetAxis(factory.CreateAxisEqD0());
+            item.SetReferenceCoordinates(1f, 2f, 3f);
+            dfsNewFile.AddDynamicItem(item.GetDynamicItemInfo());
+
+            dfsOldFile.Close();
+
+            string[] NewFileErrors = dfsNewFile.Validate();
+            StringBuilder sbErr = new StringBuilder();
+            foreach (string s in NewFileErrors)
+            {
+                sbErr.AppendLine(s);
+            }
+
+            if (NewFileErrors.Count() > 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fiPol.FullName, sbErr.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fiPol.FullName, sbErr.ToString());
+                return false;
+            }
+
+            dfsNewFile.CreateFile(fiPol.FullName);
+            IDfsFile PolFile = dfsNewFile.GetFile();
+
+            DateTime NewDateTime = StartDate;
+
+            foreach (MikeSourceStartEndModel mssem in mikeSourceStartEndModelList.OrderBy(c => c.StartDateAndTime_Local))
+            {
+                while (NewDateTime < (DateTime)mssem.StartDateAndTime_Local)
+                {
+                    PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
+                    NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
+                }
+
+                long TotalTicks = mssem.EndDateAndTime_Local.Ticks - mssem.StartDateAndTime_Local.Ticks;
+                while (NewDateTime < EndDate)
+                {
+                    if (NewDateTime < mssem.StartDateAndTime_Local)
+                    {
+                        PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
+                    }
+                    else if (NewDateTime >= mssem.StartDateAndTime_Local && NewDateTime <= mssem.EndDateAndTime_Local)
+                    {
+                        double TickFraction = (double)(NewDateTime.Ticks - mssem.StartDateAndTime_Local.Ticks) / (double)TotalTicks;
+                        double PolValue = 0.0D;
+                        if (mssem.SourcePollutionEnd_MPN_100ml == mssem.SourcePollutionStart_MPN_100ml)
+                        {
+                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml;
+                        }
+                        else if (mssem.SourcePollutionEnd_MPN_100ml > mssem.SourcePollutionStart_MPN_100ml)
+                        {
+                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml - ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
+                        }
+                        else if (mssem.SourcePollutionEnd_MPN_100ml < mssem.SourcePollutionStart_MPN_100ml)
+                        {
+                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml + ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
+                        }
+                        PolFile.WriteItemTimeStepNext(0, new float[] { (float)PolValue });  // Pollution
+                    }
+                    else if (NewDateTime > mssem.EndDateAndTime_Local)
+                    {
+                        break;
+                    }
+                    NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
+                }
+            }
+
+            while (NewDateTime < EndDate)
+            {
+                PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
+                NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
+            }
+
+            PolFile.Close();
+
+            fiPol = new FileInfo(fiPol.FullName);
+
+            NotUsed = string.Format(TaskRunnerServiceRes.SavingSourcePolDFSOFileInDBSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SavingSourcePolDFSOFileInDBSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+            TVFileModel tvFileModelPolNew = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(fiPol.Directory + "\\", fiPol.Name);
+            if (!string.IsNullOrWhiteSpace(tvFileModelPolNew.Error))
+            {
+                if (!fiPol.Exists)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiPol.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiPol.FullName);
+                    return false;
+                }
+
+                TVItemModel tvItemFileModel = tvItemService.PostAddChildTVItemDB(mikeScenarioModel.MikeScenarioTVItemID, NewPolSourceFileName, TVTypeEnum.File);
+                if (!string.IsNullOrEmpty(tvItemFileModel.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, NewPolSourceFileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, NewPolSourceFileName);
+                    return false;
+                }
+
+                tvFileModelPolNew = new TVFileModel()
+                {
+                    TVFileTVItemID = tvItemFileModel.TVItemID,
+                    FilePurpose = FilePurposeEnum.MikeInput,
+                    Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
+                    Year = DateTime.Now.Year,
+                    FileDescription = "Mike Pollution File",
+                    FileType = tvFileService.GetFileType(fiPol.Extension),
+                    FileSize_kb = (int)(fiPol.Length / 1024),
+                    FileInfo = "Mike Scenario Documentation",
+                    FileCreatedDate_UTC = fiPol.CreationTime.ToUniversalTime(),
+                    ServerFileName = NewPolSourceFileName,
+                    ServerFilePath = fiPol.Directory + "\\",
+                };
+
+                TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelPolNew);
+                if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    return false;
+                }
+            }
+            else
+            {
+                tvFileModelPolNew.FilePurpose = FilePurposeEnum.MikeInput;
+                tvFileModelPolNew.FileDescription = "Mike Pollution File";
+                tvFileModelPolNew.FileType = tvFileService.GetFileType(fiPol.Extension);
+                tvFileModelPolNew.FileSize_kb = (int)(fiPol.Length / 1024);
+                tvFileModelPolNew.FileCreatedDate_UTC = fiPol.CreationTime.ToUniversalTime();
+                tvFileModelPolNew.ServerFileName = NewPolSourceFileName;
+                tvFileModelPolNew.ServerFilePath = fiPol.Directory + "\\";
+
+                TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelPolNew);
+                if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    return false;
+                }
+            }
+
+            return true;
+        }
         private void CreateWebTideDfs1Files(int MikeScenarioTVItemID)
         {
             string NotUsed = "";
@@ -1764,7 +2351,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         if (AllWLResults.Count > 0)
                         {
-                            if (!SetSurfaceElevation(pfsFile, (float)InitialWL.Average()))
+                            if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/INITIAL_CONDITIONS", (float)InitialWL.Average(), "surface_elevation_constant"))
                             {
                                 return;
                             }
@@ -2035,22 +2622,33 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fiBC = new FileInfo(tvFileService.ChoseEDriveOrCDrive(tvFileModelBC.ServerFilePath) + tvFileModelBC.ServerFileName);
 
-            string NewDecayFileName = "DecayFile.dfs0";
+            string NewDecayFileName = "Decay.dfs0";
 
-
-            //foreach (KeyValuePair<string, M21_3FMService.FemEngineHD.TRANSPORT_MODULE.DECAY.COMPONENT> kvp in m21_3fmInput.femEngineHD.transport_module.decay.component)
-            //{
-            if ((bool)mikeScenarioModel.DecayIsConstant)
+            if (mikeScenarioModel.DecayIsConstant)
             {
-                if (!SetTransport_ModuleDecayContinuous(pfsFile))
+                NotUsed = TaskRunnerServiceRes.SettingTransportModuleDecayContinuous;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportModuleDecayContinuous"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 34);
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1", 0D, "format"))
                 {
                     return;
                 }
-                if (!SetTransport_ModuleDecayContantValue(pfsFile, ((float)mikeScenarioModel.DecayFactor_per_day) / 24 / 3600))
+
+                NotUsed = TaskRunnerServiceRes.SettingTransportModuleDecayConstantValue;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportModuleDecayConstantValue"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 35);
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1", ((float)mikeScenarioModel.DecayFactor_per_day) / 24 / 3600, "constant_value"))
                 {
                     return;
                 }
-                if (!SetTransport_ModuleDecayFileName(pfsFile, @"||"))
+
+                NotUsed = TaskRunnerServiceRes.SettingTransportModuleDecayFileNameToEmpty;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportModuleDecayFileNameToEmpty"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 36);
+
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1", @"", "file_name"))
                 {
                     return;
                 }
@@ -2087,16 +2685,29 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else
             {
-                if (!SetTransport_ModuleDecayNotContinuous(pfsFile))
+                NotUsed = TaskRunnerServiceRes.SettingTransportModuleDecayNotContinuous;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportModuleDecayNotContinuous"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 34);
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1", 1 /* 0 = continuous, 1 = Not continuous*/, "format"))
                 {
                     return;
                 }
-                if (!SetTransport_ModuleDecayContantValue(pfsFile, ((float)mikeScenarioModel.DecayFactor_per_day) / 24 / 3600))
+
+                NotUsed = TaskRunnerServiceRes.SettingTransportModuleDecayConstantValue;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportModuleDecayConstantValue"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 35);
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1", ((float)mikeScenarioModel.DecayFactor_per_day) / 24 / 3600, "constant_value"))
                 {
                     return;
                 }
 
                 // creating the varying decay file
+
+                NotUsed = TaskRunnerServiceRes.CreatingFileDecayDotDFS0;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("CreatingFileDecayDotDFS0"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 36);
 
                 DfsFactory factory = new DfsFactory();
 
@@ -2180,6 +2791,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
 
+                NotUsed = string.Format(TaskRunnerServiceRes.StoringDecayFile_InDB, NewDecayFileName);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("StoringDecayFile_InDB", NewDecayFileName));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 37);
+
                 TVFileModel tvFileModelDecay = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(tvFileModelBC.ServerFilePath, NewDecayFileName);
                 if (!string.IsNullOrWhiteSpace(tvFileModelDecay.Error))
                 {
@@ -2234,12 +2849,15 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                if (!SetTransport_ModuleDecayFileName(pfsFile, @"|.\" + NewDecayFileName + "|"))
+                NotUsed = TaskRunnerServiceRes.SettingTransportModuleDecayFileName;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("SettingTransportModuleDecayFileName", NewDecayFileName));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 38);
+
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1", @"|.\" + NewDecayFileName + "|", "file_name"))
                 {
                     return;
                 }
             }
-            //}
         }
         private void DoSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, int LastSourceIndex)
         {
@@ -2280,6 +2898,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (pfsSectionSource == null)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.AddNewSource_Number_InM21FMOrM3MFFile, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("AddNewSource_Number_InM21FMOrM3MFFile", msm.MikeSourceTVText, msm.SourceNumberString));
+
                 string ret = AddNewSourceInPFS(pfsFile, msm.SourceNumberString, LastSourceIndex);
                 if (!string.IsNullOrWhiteSpace(ret))
                 {
@@ -2289,33 +2910,51 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            if (!SetTransport_ModuleSourceName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText))
+            NotUsed = string.Format(TaskRunnerServiceRes.SettingHydrodynamicModuleSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingHydrodynamicModuleSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+            if (!SetParameterString(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText, "Name"))
             {
                 return;
             }
 
-            if (!SetHydrodynamic_ModuleSourceInclude(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, msm.Include == true ? (int)1 : (int)0))
+            NotUsed = string.Format(TaskRunnerServiceRes.SettingHydrodynamicModuleSourceIncludeSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingHydrodynamicModuleSourceIncludeSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, msm.Include == true ? (int)1 : (int)0, "include"))
             {
                 return;
             }
+
+            NotUsed = string.Format(TaskRunnerServiceRes.SettingHydrodynamicModuleSourceCoordinatesSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingHydrodynamicModuleSourceCoordinatesSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
             Coord coord = new Coord() { Lat = (float)mapInfoPointModelSourceList[0].Lat, Lng = (float)mapInfoPointModelSourceList[0].Lng, Ordinal = 0 };
-            if (!SetHydrodynamic_ModuleSourceCoordinates(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, coord))
+            if (!SetParameterCoordinates(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, coord, "coordinates"))
             {
                 return;
             }
 
             string NewPolSourceFileName = tvItemLanguageModelSourceName.TVText + "_Pol.dfs0";
-            FileInfo fi = new FileInfo(fiBC.Directory + "\\" + NewPolSourceFileName);
+            FileInfo fiPol = new FileInfo(fiBC.Directory + "\\" + NewPolSourceFileName);
 
-            if (msm.IsContinuous)
+            string NewFlowSourceFileName = tvItemLanguageModelSourceName.TVText + "_Flow.dfs0";
+            FileInfo fiFlow = new FileInfo(fiBC.Directory + "\\" + NewFlowSourceFileName);
+
+            if (msm.IsContinuous && !msm.UseHydrometric)
             {
-                if (!SetTransport_ModuleSourceFormat(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + @"/COMPONENT_1", 0 /* continuoues */))
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleSourceFormatSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleSourceFormatSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + @"/COMPONENT_1", 0 /* continuoues */, "format"))
                 {
                     return;
                 }
 
-                if (!SetTransport_ModuleSourceName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText))
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterString(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString, tvItemLanguageModelSourceName.TVText, "Name"))
                 {
                     return;
                 }
@@ -2329,22 +2968,34 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
 
-                if (!SetHydrodynamic_ModuleSourceConstantValue(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, (float)(mikeSourceStartEndModel.SourceFlowStart_m3_day / 24 / 3600)))
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingHydrodynamicModuleSourceConstantValueSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingHydrodynamicModuleSourceConstantValueSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, (float)(mikeSourceStartEndModel.SourceFlowStart_m3_day / 24 / 3600), "constant_value"))
                 {
                     return;
                 }
 
-                if (!SetTransport_ModuleSourceConstantValue(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + "/COMPONENT_1", (float)mikeSourceStartEndModel.SourcePollutionStart_MPN_100ml))
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleSourceConstantValueSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleSourceConstantValueSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + "/COMPONENT_1", (float)mikeSourceStartEndModel.SourcePollutionStart_MPN_100ml, "constant_value"))
                 {
                     return;
                 }
 
-                if (!SetHydrodynamic_ModuleSourceTemperatureConstantValue(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/" + msm.SourceNumberString + "/TEMPERATURE", (float)(mikeSourceStartEndModel.SourceTemperatureStart_C)))
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleTemperatureConstantValueSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleTemperatureConstantValueSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/" + msm.SourceNumberString + "/TEMPERATURE", (float)(mikeSourceStartEndModel.SourceTemperatureStart_C), "constant_value"))
                 {
                     return;
                 }
 
-                if (!SetHydrodynamic_ModuleSourceSalinityConstantValue(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/" + msm.SourceNumberString + "/SALINITY", (float)(mikeSourceStartEndModel.SourceSalinityStart_PSU)))
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleSalinityConstantValueSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleSalinityConstantValueSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/" + msm.SourceNumberString + "/SALINITY", (float)(mikeSourceStartEndModel.SourceSalinityStart_PSU), "constant_value"))
                 {
                     return;
                 }
@@ -2365,12 +3016,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         try
                         {
-                            fi.Delete();
+                            fiPol.Delete();
                         }
                         catch (Exception ex)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiPol.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiPol.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
                             return;
                         }
 
@@ -2381,195 +3032,42 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else
             {
-                if (!SetTransport_ModuleSourceFormat(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + @"/COMPONENT_1", 1 /* not continuoues */))
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleSourceFormatSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleSourceFormatSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + @"/COMPONENT_1", 1 /* not continuoues */, "format"))
                 {
                     return;
                 }
 
-                MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-                List<MikeSourceStartEndModel> mikeSourceStartEndModelList = mikeSourceStartEndService.GetMikeSourceStartEndModelListWithMikeSourceIDDB(msm.MikeSourceID);
+                NotUsed = string.Format(TaskRunnerServiceRes.CreatingSourcePolDFSOFileSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("CreatingSourcePolDFSOFileSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-                DfsFactory factory = new DfsFactory();
-
-                IDfsFile dfsOldFile = DfsFileFactory.DfsGenericOpen(fiBC.FullName);
-
-                DfsBuilder dfsNewFile = DfsBuilder.Create(tvItemLanguageModelSourceName.TVText + " - Pol", dfsOldFile.FileInfo.ApplicationTitle + tvItemLanguageModelSourceName.TVText + " - Pol", dfsOldFile.FileInfo.ApplicationVersion);
-
-                double PolStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
-
-                DateTime? dateTimeTemp = GetStartTime(pfsFile);
-                if (dateTimeTemp == null)
+                if (!CreatePolSource(pfsFile, msm, fiBC, mikeScenarioModel, fiPol, tvItemLanguageModelSourceName, NewPolSourceFileName, tvItemService, tvFileService))
                 {
                     return;
                 }
 
-                int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
-                if (NumberOfTimeSteps == null)
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleSourceFileNameSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleSourceFileNameSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + "/COMPONENT_1", @".\" + NewPolSourceFileName, "file_name"))
                 {
                     return;
                 }
 
-                int? TimeStepInterval = GetTimeStepInterval(pfsFile);
-                if (TimeStepInterval == null)
+                NotUsed = string.Format(TaskRunnerServiceRes.CreatingSourceFlowDFSOFileSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("CreatingSourceFlowDFSOFileSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
+
+                if (!CreateFlowSource(pfsFile, msm, fiBC, mikeScenarioModel, fiFlow, tvItemLanguageModelSourceName, NewFlowSourceFileName, tvItemService, tvFileService))
                 {
                     return;
                 }
 
-                DateTime StartDate = ((DateTime)dateTimeTemp).AddHours(-1);
-                DateTime EndDate = ((DateTime)dateTimeTemp).AddSeconds((int)NumberOfTimeSteps * (int)TimeStepInterval).AddHours(1);
+                NotUsed = string.Format(TaskRunnerServiceRes.SettingHydrodynamicModuleSourceFileNameSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingHydrodynamicModuleSourceFileNameSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-                dfsNewFile.SetDataType(1);
-                dfsNewFile.SetGeographicalProjection(dfsOldFile.FileInfo.Projection);
-                dfsNewFile.SetTemporalAxis(factory.CreateTemporalEqCalendarAxis(eumUnit.eumUsec, StartDate, 0, PolStepsInMinutes * 60));
-                dfsNewFile.SetItemStatisticsType(StatType.RegularStat);
-
-                DfsDynamicItemBuilder item = dfsNewFile.CreateDynamicItemBuilder();
-                item.Set(NewPolSourceFileName, eumQuantity.Create(eumItem.eumIBacteriaConc, eumUnit.eumUPer100ml), DfsSimpleType.Float);
-                item.SetValueType(DataValueType.Instantaneous);
-                item.SetAxis(factory.CreateAxisEqD0());
-                item.SetReferenceCoordinates(1f, 2f, 3f);
-                dfsNewFile.AddDynamicItem(item.GetDynamicItemInfo());
-
-                dfsOldFile.Close();
-
-                string[] NewFileErrors = dfsNewFile.Validate();
-                StringBuilder sbErr = new StringBuilder();
-                foreach (string s in NewFileErrors)
-                {
-                    sbErr.AppendLine(s);
-                }
-
-                if (NewFileErrors.Count() > 0)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, sbErr.ToString());
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, sbErr.ToString());
-                    return;
-                }
-
-                dfsNewFile.CreateFile(fi.FullName);
-                IDfsFile PolFile = dfsNewFile.GetFile();
-
-                DateTime NewDateTime = StartDate;
-
-                foreach (MikeSourceStartEndModel mssem in mikeSourceStartEndModelList)
-                {
-                    while (NewDateTime < (DateTime)mssem.StartDateAndTime_Local)
-                    {
-                        PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
-                        NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
-                    }
-
-                    long TotalTicks = mssem.EndDateAndTime_Local.Ticks - mssem.StartDateAndTime_Local.Ticks;
-                    while (NewDateTime < EndDate)
-                    {
-                        if (NewDateTime < mssem.StartDateAndTime_Local)
-                        {
-                            PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
-                        }
-                        else if (NewDateTime >= mssem.StartDateAndTime_Local && NewDateTime <= mssem.EndDateAndTime_Local)
-                        {
-                            double TickFraction = (double)(NewDateTime.Ticks - mssem.StartDateAndTime_Local.Ticks) / (double)TotalTicks;
-                            double PolValue = 0.0D;
-                            if (mssem.SourcePollutionEnd_MPN_100ml == mssem.SourcePollutionStart_MPN_100ml)
-                            {
-                                PolValue = (double)mssem.SourcePollutionStart_MPN_100ml;
-                            }
-                            else if (mssem.SourcePollutionEnd_MPN_100ml > mssem.SourcePollutionStart_MPN_100ml)
-                            {
-                                PolValue = (double)mssem.SourcePollutionStart_MPN_100ml - ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
-                            }
-                            else if (mssem.SourcePollutionEnd_MPN_100ml < mssem.SourcePollutionStart_MPN_100ml)
-                            {
-                                PolValue = (double)mssem.SourcePollutionStart_MPN_100ml + ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
-                            }
-                            PolFile.WriteItemTimeStepNext(0, new float[] { (float)PolValue });  // Pollution
-                        }
-                        else if (NewDateTime > mssem.EndDateAndTime_Local)
-                        {
-                            break;
-                        }
-                        NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
-                    }
-                }
-
-                while (NewDateTime < EndDate)
-                {
-                    PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
-                    NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
-                }
-
-                PolFile.Close();
-
-                fi = new FileInfo(fi.FullName);
-
-                TVFileModel tvFileModelPolNew = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(fi.Directory + "\\", fi.Name);
-                if (!string.IsNullOrWhiteSpace(tvFileModelPolNew.Error))
-                {
-                    if (!fi.Exists)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fi.FullName);
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fi.FullName);
-                        return;
-                    }
-
-                    TVItemModel tvItemFileModel = tvItemService.PostAddChildTVItemDB(mikeScenarioModel.MikeScenarioTVItemID, NewPolSourceFileName, TVTypeEnum.File);
-                    if (!string.IsNullOrEmpty(tvItemFileModel.Error))
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, NewPolSourceFileName);
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, NewPolSourceFileName);
-                        return;
-                    }
-
-                    tvFileModelPolNew = new TVFileModel()
-                    {
-                        TVFileTVItemID = tvItemFileModel.TVItemID,
-                        FilePurpose = FilePurposeEnum.MikeInput,
-                        Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
-                        Year = DateTime.Now.Year,
-                        FileDescription = "Mike Pollution File",
-                        FileType = tvFileService.GetFileType(fi.Extension),
-                        FileSize_kb = (int)(fi.Length / 1024),
-                        FileInfo = "Mike Scenario Documentation",
-                        FileCreatedDate_UTC = fi.CreationTime.ToUniversalTime(),
-                        ServerFileName = NewPolSourceFileName,
-                        ServerFilePath = fi.Directory + "\\",
-                    };
-
-                    TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelPolNew);
-                    if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                        return;
-                    }
-                }
-                else
-                {
-                    tvFileModelPolNew.FilePurpose = FilePurposeEnum.MikeInput;
-                    tvFileModelPolNew.FileDescription = "Mike Pollution File";
-                    tvFileModelPolNew.FileType = tvFileService.GetFileType(fi.Extension);
-                    tvFileModelPolNew.FileSize_kb = (int)(fi.Length / 1024);
-                    tvFileModelPolNew.FileCreatedDate_UTC = fi.CreationTime.ToUniversalTime();
-                    tvFileModelPolNew.ServerFileName = NewPolSourceFileName;
-                    tvFileModelPolNew.ServerFilePath = fi.Directory + "\\";
-
-                    TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelPolNew);
-                    if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                        return;
-                    }
-                }
-
-                //string TempPath = GetFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_2", "file_name");
-                //if (string.IsNullOrWhiteSpace(TempPath))
-                //{
-                //    return;
-                //}
-                //TempPath = TempPath.Substring(0, TempPath.LastIndexOf("\\") + 1);
-
-                if (!SetTransport_ModuleSourceFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + "/COMPONENT_1", @".\" + NewPolSourceFileName))
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, @".\" + NewPolSourceFileName, "file_name"))
                 {
                     return;
                 }
@@ -2629,6 +3127,10 @@ namespace CSSPWebToolsTaskRunner.Services
             foreach (MikeSourceModel msm in mikeSourceModelList.OrderBy(c => c.SourceNumberString))
             {
                 SourceCount += 1;
+
+                NotUsed = string.Format(TaskRunnerServiceRes.DoingSource_, msm.MikeSourceTVText);
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("DoingSource_", msm.MikeSourceTVText));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 46 + SourceCount);
 
                 DoSource(pfsFile, msm, fiBC, mikeScenarioModel, LastSourceIndex);
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -2808,7 +3310,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     fi = new FileInfo(fiOld.DirectoryName + @"\" + FileName);
 
-                    if (!SetFileName(pfsFile, "FemEngineHD/DOMAIN", @".\" + fi.Name))
+                    if (!SetParameterFileName(pfsFile, "FemEngineHD/DOMAIN", @".\" + fi.Name, "file_name"))
                     {
                         return;
                     }
@@ -2834,7 +3336,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             fi = new FileInfo(fiOld.DirectoryName + @"\" + FileName);
 
-                            if (!SetFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_" + i.ToString(), @".\" + fi.Name))
+                            if (!SetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_" + i.ToString(), @".\" + fi.Name, "file_name"))
                             {
                                 return;
                             }
@@ -2879,7 +3381,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
                 fi = new FileInfo(fiOld.DirectoryName + @"\" + ResultRootFolder + @"\" + fiOld.Name + @" - Result Files\" + FileName);
-                if (!SetFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", @".\" + fi.Name))
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", @".\" + fi.Name, "file_name"))
                 {
                     return;
                 }
@@ -2892,7 +3394,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
                 fi = new FileInfo(fiOld.DirectoryName + @"\" + ResultRootFolder + @"\" + fiOld.Name + @" - Result Files\" + FileName);
-                if (!SetFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", @".\" + fi.Name))
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", @".\" + fi.Name, "file_name"))
                 {
                     return;
                 }
@@ -4193,9 +4695,6 @@ namespace CSSPWebToolsTaskRunner.Services
             TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            NotUsed = TaskRunnerServiceRes.SavingScenarioFiles;
-            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SavingScenarioFiles"));
-
             DfsuFile dfsuFile = null;
             if (MikeScenarioTVItemID == 0)
             {
@@ -4204,8 +4703,8 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            NotUsed = TaskRunnerServiceRes.CreatingAllInputFiles;
-            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("CreatingAllInputFiles"));
+            NotUsed = TaskRunnerServiceRes.ReadingUserInput;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("ReadingUserInput"));
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
             MikeScenarioService mikeScenarioService = new MikeScenarioService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -4234,6 +4733,15 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
+            NotUsed = TaskRunnerServiceRes.TweakScenarioStartTimeToHave60PercHighTideAndFalling;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("TweakScenarioStartTimeToHave60PercHighTideAndFalling"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+
+            if (!TweakScenarioStartTimeToHave60PercHighTideAndFalling(mikeScenarioModel))
+            {
+                return;
+            }
+
             string ServerPath = tvFileService.GetServerFilePath(MikeScenarioTVItemID);
 
             FileInfo fiM21_M3 = new FileInfo(ServerPath + tvFileModelM21_3FM.ServerFileName);
@@ -4247,6 +4755,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (mikeScenarioModel.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null && mikeScenarioModel.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID > 0)
             {
+                NotUsed = TaskRunnerServiceRes.CreatingSalinityAndTemperatureInitialConditionsFiles;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("CreatingSalinityAndTemperatureInitialConditionsFiles"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 15);
+
                 if (!string.IsNullOrWhiteSpace(CreateInititalConditionFileSalAndTempFromTVFileItemID(MikeScenarioTVItemID, (int)mikeScenarioModel.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID, fiM21_M3)))
                 {
                     return;
@@ -4261,15 +4773,27 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TimeSpan timeSpan = new TimeSpan(((DateTime)mikeScenarioModel.MikeScenarioEndDateTime_Local).Ticks - ((DateTime)mikeScenarioModel.MikeScenarioStartDateTime_Local).Ticks);
 
-            if (!SetTimeStart(pfsFile, (DateTime)mikeScenarioModel.MikeScenarioStartDateTime_Local))
+            NotUsed = TaskRunnerServiceRes.SettingStartTimeInM21FMOrM3FMFile;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingStartTimeInM21FMOrM3FMFile"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 17);
+
+            if (!SetParameterTimeStart(pfsFile, "FemEngineHD/TIME", (DateTime)mikeScenarioModel.MikeScenarioStartDateTime_Local, "start_time"))
             {
                 return;
             }
 
-            if (!SetNumberOfTimeSteps(pfsFile, (int)(timeSpan.Days * 24 * 60 + timeSpan.Hours * 60 + timeSpan.Minutes)))
+            NotUsed = TaskRunnerServiceRes.SettingNumberOfTimeStepsInM21FMOrM3FMFile;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingNumberOfTimeStepsInM21FMOrM3FMFile"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 20);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/TIME", (int)(timeSpan.Days * 24 * 60 + timeSpan.Hours * 60 + timeSpan.Minutes), "number_of_time_steps"))
             {
                 return;
             }
+
+            NotUsed = TaskRunnerServiceRes.GettingApproximateSizeOfHydrodynamicResultFile;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("GettingApproximateSizeOfHydrodynamicResultFile"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 21);
 
             //string DfsuFileName = fiM21_M3.FullName;
 
@@ -4323,6 +4847,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
+            NotUsed = TaskRunnerServiceRes.GettingApproximateSizeOfTransportResultFile;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("GettingApproximateSizeOfTransportResultFile"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 23);
 
             // try transport module result file
             FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
@@ -4397,8 +4924,22 @@ namespace CSSPWebToolsTaskRunner.Services
 
             dfsuFile.Close();
 
-            pfsFile.Write(fiM21_M3.FullName);
-            pfsFile.Close();
+            try
+            {
+                NotUsed = TaskRunnerServiceRes.PartialSaveOfM21FMOrM3FMFile;
+                _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("PartialSaveOfM21FMOrM3FMFile"));
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 25);
+
+                pfsFile.Write(fiM21_M3.FullName);
+                pfsFile.Close();
+            }
+            catch (Exception ex)
+            {
+                string InnerException = ex.InnerException != null ? $" InnerException: { ex.InnerException.Message }" : "";
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotWriteFile_Error_, $"[{ fiM21_M3.FullName }]", $"{ ex.Message } { InnerException }");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotWriteFile_Error_", $"[{ fiM21_M3.FullName }]", $"{ ex.Message } { InnerException }");
+                return;
+            }
 
             if (tvFileModelM21_3FM.ServerFileName.Replace(".m21fm", "").Replace(".m3fm", "") != tvItemLangModelMikeScenario.TVText)
             {
@@ -4439,22 +4980,38 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            if (!SetHydrodynamic_ModuleOutputLastTimeStep(pfsFile, (int)NumberOfTimeSteps2))
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicOutputLastTimeStep;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicOutputLastTimeStep"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 27);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", (int)NumberOfTimeSteps2, "last_time_step"))
             {
                 return;
             }
 
-            if (!SetHydrodynamic_ModuleOutputTimeStepFrequency(pfsFile, (int)mikeScenarioModel.ResultFrequency_min))
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicOutputTimeStepFrequency;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicOutputTimeStepFrequency"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 28);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", (int)mikeScenarioModel.ResultFrequency_min, "time_step_frequency"))
             {
                 return;
             }
 
-            if (!SetTransport_ModuleOutputLastTimeStep(pfsFile, (int)NumberOfTimeSteps2))
+            NotUsed = TaskRunnerServiceRes.SettingTransportOutputLastTimeStep;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportOutputLastTimeStep"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 29);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", (int)NumberOfTimeSteps2, "last_time_step"))
             {
                 return;
             }
 
-            if (!SetTransport_ModuleOutputTimeStepFrequency(pfsFile, (int)mikeScenarioModel.ResultFrequency_min))
+            NotUsed = TaskRunnerServiceRes.SettingTransportOutputTimeStepFrequency;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportOutputTimeStepFrequency"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 30);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", (int)mikeScenarioModel.ResultFrequency_min, "time_step_frequency"))
             {
                 return;
             }
@@ -4463,15 +5020,27 @@ namespace CSSPWebToolsTaskRunner.Services
             mikeScenarioModel.MikeScenarioExecutionTime_min = null;
 
 
-            if (!SetHydrodynamic_ModuleWindSpeed(pfsFile, (float)mikeScenarioModel.WindSpeed_km_h / (float)3.6))
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleWindSpeed;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleWindSpeed"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 31);
+
+            if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING", (float)mikeScenarioModel.WindSpeed_km_h / (float)3.6, "constant_speed"))
             {
                 return;
             }
 
-            if (!SetHydrodynamic_ModuleWindDirection(pfsFile, (float)mikeScenarioModel.WindDirection_deg))
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleWindDirection;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleWindDirection"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 32);
+
+            if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING", (float)mikeScenarioModel.WindDirection_deg, "constant_direction"))
             {
                 return;
             }
+
+            NotUsed = TaskRunnerServiceRes.DoingDecay;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("DoingDecay"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 33);
 
             DoDecay(pfsFile, fiM21_M3, mikeScenarioModel, tvFileModelM21_3FM);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -4483,22 +5052,95 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            if (!SetTransport_ModuleLastTimeStep(pfsFile, (int)NumberOfTimeSteps3))
+            NotUsed = TaskRunnerServiceRes.SettingTransportModuleLastTimeStep;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportModuleLastTimeStep"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 39);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", (int)NumberOfTimeSteps3, "last_time_step"))
             {
                 return;
             }
 
-            if (!SetTransport_ModuleTimeStepFrequency(pfsFile, (int)mikeScenarioModel.ResultFrequency_min))
+            NotUsed = TaskRunnerServiceRes.SettingTransportModuleTimeStepFrequency;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingTransportModuleTimeStepFrequency"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 40);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", (int)mikeScenarioModel.ResultFrequency_min, "time_step_frequency"))
             {
                 return;
             }
 
-            if (!SetHydrodynamic_ModuleSalinity(pfsFile, (float)mikeScenarioModel.AmbientSalinity_PSU))
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleSalinity;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleSalinity"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 41);
+
+            if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/DENSITY", (float)mikeScenarioModel.AmbientSalinity_PSU, "salinity_reference"))
             {
                 return;
             }
 
-            if (!SetHydrodynamic_ModuleManning(pfsFile, (float)mikeScenarioModel.ManningNumber))
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleTemperature;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleTemperature"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 42);
+
+            if (!SetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DENSITY", (float)mikeScenarioModel.AmbientSalinity_PSU, "temperature_reference"))
+            {
+                return;
+            }
+
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleManning;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleManning"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 43);
+
+            if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BED_RESISTANCE/MANNING_NUMBER", (float)mikeScenarioModel.ManningNumber, "constant_value"))
+            {
+                return;
+            }
+
+            string TempFileName = "";
+            string SalFileName = "";
+            int format = 0;
+            if (mikeScenarioModel.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null)
+            {
+                TempFileName = @".\temperature.dfsu";
+                SalFileName = @".\salinity.dfsu";
+                format = 2;
+
+            }
+
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleInitialConditionTemperatureFileName;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleInitialConditionTemperatureFileName"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 43);
+
+            if (!SetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/INITIAL_CONDITIONS/TEMPERATURE", TempFileName, "file_name"))
+            {
+                return;
+            }
+
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleInitialConditionTemperatureFormat;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleInitialConditionTemperatureFormat"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 43);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/INITIAL_CONDITIONS/TEMPERATURE", format, "format"))
+            {
+                return;
+            }
+
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleInitialConditionSalinityFileName;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleInitialConditionSalinityFileName"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 43);
+
+            if (!SetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/INITIAL_CONDITIONS/SALINITY", SalFileName, "file_name"))
+            {
+                return;
+            }
+
+
+            NotUsed = TaskRunnerServiceRes.SettingHydrodynamicModuleInitialConditionSalinityFormat;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleInitialConditionSalinityFormat"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 43);
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/INITIAL_CONDITIONS/SALINITY", format, "format"))
             {
                 return;
             }
@@ -4524,7 +5166,21 @@ namespace CSSPWebToolsTaskRunner.Services
                 // do something
             }
 
+            NotUsed = TaskRunnerServiceRes.UpdatingMikeScenarioInfoInDB;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("UpdatingMikeScenarioInfoInDB"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 44);
+
             MikeScenarioModel mikeScenarioModelRet = mikeScenarioService.PostUpdateMikeScenarioDB(mikeScenarioModel);
+            if (!string.IsNullOrWhiteSpace(mikeScenarioModelRet.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.MikeScenario, mikeScenarioModelRet.Error);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.MikeScenario, mikeScenarioModelRet.Error);
+                return;
+            }
+
+            NotUsed = TaskRunnerServiceRes.DoingSources;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("DoingSources"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 45);
 
             DoSources(pfsFile, fiM21_M3, mikeScenarioModel, MikeScenarioTVItemID, tvFileModelM21_3FM);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -4548,6 +5204,10 @@ namespace CSSPWebToolsTaskRunner.Services
             StreamWriter sw = fiLog.CreateText();
             sw.Write("empty log");
             sw.Close();
+
+            NotUsed = TaskRunnerServiceRes.CreatingALogFileIfItDoesNotYetExist;
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("CreatingALogFileIfItDoesNotYetExist"));
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 80);
 
             // does the log file exist if not create it
             TVFileModel tvFileModelLog = tvFileService.GetTVFileModelWithTVItemIDAndTVFileTypeLogDB(MikeScenarioTVItemID);
@@ -4590,226 +5250,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
             }
-
         }
-
-        public string CreateInititalConditionFileSalAndTempFromTVFileItemID(int MikeScenarioTVItemID, int useSalinityAndTemperatureInitialConditionFromTVFileTVItemID, FileInfo fiM21_M3)
-        {
-            string NotUsed = "";
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
-            string DFSUFileName = "";
-            TVFileModel tvFileModelUseDFSUFile = tvFileService.GetTVFileModelWithTVFileTVItemIDDB(useSalinityAndTemperatureInitialConditionFromTVFileTVItemID);
-            if (string.IsNullOrWhiteSpace(tvFileModelUseDFSUFile.Error))
-            {
-                DFSUFileName = tvFileModelUseDFSUFile.ServerFilePath + tvFileModelUseDFSUFile.ServerFileName;
-            }
-
-            List<string> ParamTypeList = new List<string>() { "Salinity", "Temperature" };
-            foreach (string ParamType in ParamTypeList)
-            {
-                DfsuFile dfsuFile;
-                try
-                {
-                    dfsuFile = DfsuFile.Open(DFSUFileName);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotOpenFile_Error_, DFSUFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotOpenFile_Error_", DFSUFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
-                    return NotUsed;
-                }
-
-                DfsuDynamicItemInfo itemInfoParam = null;
-                foreach (DfsuDynamicItemInfo itemInfo in dfsuFile.ItemInfo)
-                {
-                    if (ParamType == "Salinity")
-                    {
-                        if (itemInfo.Quantity.Item == eumItem.eumISalinity)
-                        {
-                            itemInfoParam = itemInfo;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (itemInfo.Quantity.Item == eumItem.eumITemperature)
-                        {
-                            itemInfoParam = itemInfo;
-                            break;
-                        }
-                    }
-                }
-
-                DfsuBuilder dfsBuilder = DfsuBuilder.Create(DfsuFileType.Dfsu2D);
-                dfsBuilder.ApplicationTitle = dfsuFile.ApplicationTitle;
-                dfsBuilder.ApplicationVersion = dfsuFile.ApplicationVersion;
-                dfsBuilder.FileTitle = dfsuFile.FileTitle;
-                dfsBuilder.SetNodeIds(dfsuFile.NodeIds);
-                dfsBuilder.SetElementIds(dfsuFile.ElementIds);
-                dfsBuilder.SetProjection(dfsuFile.Projection);
-                dfsBuilder.SetNodes(dfsuFile.X, dfsuFile.Y, dfsuFile.Z, dfsuFile.Code);
-                dfsBuilder.SetElements(dfsuFile.ElementTable);
-
-                dfsBuilder.SetTimeInfo(dfsuFile.StartDateTime.AddSeconds((dfsuFile.NumberOfTimeSteps - 1) * dfsuFile.TimeStepInSeconds), dfsuFile.TimeStepInSeconds);
-                dfsBuilder.AddDynamicItem(itemInfoParam.Name, itemInfoParam.Quantity);
-
-                string ParamDfsuFileName = (ParamType == "Salinity" ? fiM21_M3.FullName.Replace(fiM21_M3.Name, "Salinity.dfsu") : fiM21_M3.FullName.Replace(fiM21_M3.Name, "Temperature.dfsu"));
-                DfsuFile dfsuFileParam = null;
-                try
-                {
-                    dfsuFileParam = dfsBuilder.CreateFile(ParamDfsuFileName);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
-                    return NotUsed;
-                }
-
-                IDfsItemData itemData = dfsuFile.ReadItemTimeStep(itemInfoParam.ItemNumber, dfsuFile.NumberOfTimeSteps - 1);
-
-                try
-                {
-                    dfsuFileParam.WriteItemTimeStep(1, 0, 0, itemData.Data);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", ParamDfsuFileName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
-                    return NotUsed;
-                }
-
-                dfsuFileParam.Close();
-
-                dfsuFile.Close();
-
-                FileInfo fiParam = new FileInfo(ParamDfsuFileName);
-
-                if (!fiParam.Exists)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ParamDfsuFileName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ParamDfsuFileName);
-                    return NotUsed;
-                }
-
-                TVItemModel tvItemModelMikeScenario = tvItemService.GetTVItemModelWithTVItemIDDB(MikeScenarioTVItemID);
-                if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, MikeScenarioTVItemID.ToString());
-                    return NotUsed;
-                }
-
-                TVItemModel tvItemModelFileParam = null;
-                List<TVItemModel> tvItemModelFileList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(MikeScenarioTVItemID, TVTypeEnum.File);
-                foreach (TVItemModel tvItemModelFile in tvItemModelFileList)
-                {
-                    if (ParamType == "Salinity")
-                    {
-                        if (tvItemModelFile.TVText.ToLower().EndsWith("salinity.dfsu"))
-                        {
-                            tvItemModelFileParam = tvItemModelFile;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (tvItemModelFile.TVText.ToLower().EndsWith("temperature.dfsu"))
-                        {
-                            tvItemModelFileParam = tvItemModelFile;
-                            break;
-                        }
-                    }
-                }
-
-                if (tvItemModelFileParam == null)
-                {
-                    TVItemModel tvItemModelRet = tvItemService.PostAddChildTVItemDB(MikeScenarioTVItemID, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"), TVTypeEnum.File);
-                    if (!string.IsNullOrWhiteSpace(tvItemModelRet.Error))
-                    {
-                        // already exist
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, "MikeScenario", TaskRunnerServiceRes.TVText, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, "MikeScenario", TaskRunnerServiceRes.TVText, (ParamType == "Salinity" ? "Salinity.dfsu" : "Temperature.dfsu"));
-                        return NotUsed;
-                    }
-
-                    TVFileModel tvFileModelNew = new TVFileModel()
-                    {
-                        ClientFilePath = "",
-                        FileDescription = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
-                        FileInfo = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
-                        FileCreatedDate_UTC = fiParam.CreationTimeUtc,
-                        FileSize_kb = (int)(fiParam.Length / 1024),
-                        Language = LanguageEnum.enAndfr,
-                        Year = DateTime.Now.Year,
-                        FromWater = null,
-                        FilePurpose = FilePurposeEnum.MikeInput,
-                        FileType = FileTypeEnum.DFSU,
-                        ServerFileName = fiParam.Name,
-                        ServerFilePath = fiParam.DirectoryName + @"\",
-                        TVFileTVItemID = tvItemModelRet.TVItemID,
-                    };
-
-                    TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
-                    if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                        return NotUsed;
-                    }
-
-                }
-                else
-                {
-                    TVFileModel tvFileModelSal = tvFileService.GetTVFileModelWithTVFileTVItemIDDB(tvItemModelFileParam.TVItemID);
-                    if (string.IsNullOrWhiteSpace(tvFileModelSal.Error))
-                    {
-                        tvFileModelSal.FileSize_kb = (int)(fiParam.Length / 1024);
-
-                        TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelSal);
-                        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                            return NotUsed;
-                        }
-                    }
-                    else
-                    {
-                        TVFileModel tvFileModelNew = new TVFileModel()
-                        {
-                            ClientFilePath = "",
-                            FileDescription = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
-                            FileInfo = "Mike Scenario " + (ParamType == "Salinity" ? "Salinity" : "Temperature") + " DFSU file",
-                            FileCreatedDate_UTC = fiParam.CreationTimeUtc,
-                            FileSize_kb = (int)(fiParam.Length / 1024),
-                            Language = LanguageEnum.enAndfr,
-                            Year = DateTime.Now.Year,
-                            FromWater = null,
-                            FilePurpose = FilePurposeEnum.MikeInput,
-                            FileType = FileTypeEnum.DFSU,
-                            ServerFileName = fiParam.Name,
-                            ServerFilePath = fiParam.DirectoryName + @"\",
-                            TVFileTVItemID = tvItemModelFileParam.TVItemID,
-                        };
-
-                        TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelNew);
-                        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-                            return NotUsed;
-                        }
-                    }
-                }
-            }
-
-            return "";
-        }
-
-        private bool SetFileName(PFSFile pfsFile, string Path, string FileName)
+        private bool SetParameterFileName(PFSFile pfsFile, string Path, string FileName, string Keyword)
         {
             string NotUsed = "";
             PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
@@ -4822,7 +5264,7 @@ namespace CSSPWebToolsTaskRunner.Services
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionSource.GetKeyword("file_name");
+                keyword = pfsSectionSource.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -4849,10 +5291,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool SetNumberOfTimeSteps(PFSFile pfsFile, int NewNumberOfTimeSteps)
+        private bool SetParameterInt(PFSFile pfsFile, string Path, int value, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle("FemEngineHD/TIME");
+            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(Path);
 
             if (pfsSectionTime == null)
             {
@@ -4862,7 +5304,7 @@ namespace CSSPWebToolsTaskRunner.Services
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionTime.GetKeyword("number_of_time_steps");
+                keyword = pfsSectionTime.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -4877,7 +5319,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 try
                 {
                     keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(NewNumberOfTimeSteps, 1);
+                    param = keyword.InsertNewParameterInt(value, 1);
                 }
                 catch (Exception ex)
                 {
@@ -4889,90 +5331,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool SetHydrodynamic_ModuleOutputLastTimeStep(PFSFile pfsFile, int NewNumberOfTimeSteps)
+        private bool SetParameterDouble(PFSFile pfsFile, string Path, double value, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionOutput = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1");
-
-            if (pfsSectionOutput == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionOutput.GetKeyword("last_time_step");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(NewNumberOfTimeSteps, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleOutputTimeStepFrequency(PFSFile pfsFile, int ResultFrequency_min)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionOutput = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1");
-
-            if (pfsSectionOutput == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionOutput.GetKeyword("time_step_frequency");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(ResultFrequency_min, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleWindSpeed(PFSFile pfsFile, float WindSpeed)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionWindForcing = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING");
+            PFSSection pfsSectionWindForcing = pfsFile.GetSectionFromHandle(Path);
 
             if (pfsSectionWindForcing == null)
             {
@@ -4982,7 +5344,7 @@ namespace CSSPWebToolsTaskRunner.Services
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionWindForcing.GetKeyword("constant_speed");
+                keyword = pfsSectionWindForcing.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -4997,7 +5359,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 try
                 {
                     keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(WindSpeed, 1);
+                    param = keyword.InsertNewParameterDouble(value, 1);
                 }
                 catch (Exception ex)
                 {
@@ -5009,167 +5371,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool SetHydrodynamic_ModuleWindDirection(PFSFile pfsFile, float WindDirection)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionWindForcing = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING");
-
-            if (pfsSectionWindForcing == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionWindForcing.GetKeyword("constant_direction");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(WindDirection, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleTemperature(PFSFile pfsFile, float Temperature)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionDensity = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/DENSITY");
-
-            if (pfsSectionDensity == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionDensity.GetKeyword("temperature_reference");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(Temperature, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleSalinity(PFSFile pfsFile, float Salinity)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionDensity = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/DENSITY");
-
-            if (pfsSectionDensity == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionDensity.GetKeyword("salinity_reference");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(Salinity, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleManning(PFSFile pfsFile, float ManningNumber)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionDensity = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/BED_RESISTANCE/MANNING_NUMBER");
-
-            if (pfsSectionDensity == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionDensity.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(ManningNumber, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleSourceInclude(PFSFile pfsFile, string Path, int include)
+        private bool SetParameterCoordinates(PFSFile pfsFile, string Path, Coord coord, string Keyword)
         {
             string NotUsed = "";
             PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
@@ -5182,127 +5384,7 @@ namespace CSSPWebToolsTaskRunner.Services
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionSource.GetKeyword("include");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(include, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleSourceTemperatureConstantValue(PFSFile pfsFile, string Path, float ConstantValue)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-
-            if (pfsSectionSource == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSource.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(ConstantValue, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleSourceSalinityConstantValue(PFSFile pfsFile, string Path, float ConstantValue)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-
-            if (pfsSectionSource == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSource.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(ConstantValue, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetHydrodynamic_ModuleSourceCoordinates(PFSFile pfsFile, string Path, Coord coord)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-
-            if (pfsSectionSource == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSource.GetKeyword("coordinates");
+                keyword = pfsSectionSource.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -5332,9 +5414,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
+
             return true;
         }
-        private bool SetHydrodynamic_ModuleSourceConstantValue(PFSFile pfsFile, string Path, float ConstantValue)
+        private bool SetParameterString(PFSFile pfsFile, string Path, string value, string Keyword)
         {
             string NotUsed = "";
             PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
@@ -5347,7 +5430,7 @@ namespace CSSPWebToolsTaskRunner.Services
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionSource.GetKeyword("constant_value");
+                keyword = pfsSectionSource.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -5362,7 +5445,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 try
                 {
                     keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(ConstantValue, 1);
+                    param = keyword.InsertNewParameterString(value, 1);
                 }
                 catch (Exception ex)
                 {
@@ -5374,50 +5457,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool SetSurfaceElevation(PFSFile pfsFile, float NewSurfaceElevation)
+        private bool SetParameterTimeStart(PFSFile pfsFile, string Path, DateTime NewDateTime, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionSurfaceElevation = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/INITIAL_CONDITIONS");
-
-            if (pfsSectionSurfaceElevation == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSurfaceElevation.GetKeyword("surface_elevation_constant");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(NewSurfaceElevation, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTimeStart(PFSFile pfsFile, DateTime NewDateTime)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle("FemEngineHD/TIME");
+            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(Path);
 
             if (pfsSectionTime == null)
             {
@@ -5427,7 +5470,7 @@ namespace CSSPWebToolsTaskRunner.Services
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionTime.GetKeyword("start_time");
+                keyword = pfsSectionTime.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -5464,482 +5507,130 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool SetTransport_ModuleDecayContantValue(PFSFile pfsFile, float DecayConstantValue)
+        private bool TweakScenarioStartTimeToHave60PercHighTideAndFalling(MikeScenarioModel mikeScenarioModel)
         {
             string NotUsed = "";
-            PFSSection pfsSectionDecay = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1");
-
-            if (pfsSectionDecay == null)
+            MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            List<MikeBoundaryConditionModel> mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(mikeScenarioModel.MikeScenarioTVItemID, TVTypeEnum.MikeBoundaryConditionWebTide);
+            if (mbcModelList.Count == 0)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_StartingWith_, TaskRunnerServiceRes.MIKEBoundaryCondition, TaskRunnerServiceRes.TVItemID, mikeScenarioModel.MikeScenarioTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_StartingWith_", TaskRunnerServiceRes.MIKEBoundaryCondition, TaskRunnerServiceRes.TVItemID, mikeScenarioModel.MikeScenarioTVItemID.ToString());
                 return false;
             }
 
-            PFSKeyword keyword = null;
-            try
+            MikeBoundaryConditionModel mbcm = mbcModelList.Where(c => c.MikeBoundaryConditionLevelOrVelocity == MikeBoundaryConditionLevelOrVelocityEnum.Level && c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide).FirstOrDefault();
+            if (mbcm == null)
             {
-                keyword = pfsSectionDecay.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MIKEBoundaryCondition, TaskRunnerServiceRes.MikeBoundaryConditionLevelOrVelocity + "," + TaskRunnerServiceRes.TVType, MikeBoundaryConditionLevelOrVelocityEnum.Level.ToString() + "," + TVTypeEnum.MikeBoundaryConditionWebTide.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MIKEBoundaryCondition, TaskRunnerServiceRes.MikeBoundaryConditionLevelOrVelocity + "," + TaskRunnerServiceRes.TVType, MikeBoundaryConditionLevelOrVelocityEnum.Level.ToString() + "," + TVTypeEnum.MikeBoundaryConditionWebTide.ToString());
                 return false;
             }
 
-            if (keyword != null)
+            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            List<MapInfoPointModel> mapInfoPointList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionWebTide, MapInfoDrawTypeEnum.Polyline);
+            if (mapInfoPointList.Count > 0)
             {
-                PFSParameter param = null;
-                try
+                List<WaterLevelResult> WLResults = null;
+
+                GoogleTimeZoneJSON googleTimeZoneJSON = new GoogleTimeZoneJSON();
+                using (WebClient webClient = new WebClient() { Encoding = Encoding.UTF8 })
                 {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(DecayConstantValue, 1);
+                    WebProxy webProxy = new WebProxy();
+                    webClient.Proxy = webProxy;
+
+                    webClient.UseDefaultCredentials = true;
+
+                    var json_data = string.Empty;
+                    // attempt to download JSON data as a string
+                    try
+                    {
+                        DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
+                        TimeSpan span = (mikeScenarioModel.MikeScenarioStartDateTime_Local - epoch);
+                        string timeStamp = ((long)Convert.ToDouble(span.TotalSeconds)).ToString();
+                        string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
+                            mapInfoPointList[0].Lat.ToString("F5") + "," + mapInfoPointList[0].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
+                        byte[] responseBytes = webClient.DownloadData(url);
+                        json_data = Encoding.UTF8.GetString(responseBytes);
+                    }
+                    catch (Exception)
+                    {
+                        json_data = "Error";
+                    }
+                    JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
+                    {
+                        DateTimeZoneHandling = DateTimeZoneHandling.Local
+                    };
+                    googleTimeZoneJSON = JsonConvert.DeserializeObject<GoogleTimeZoneJSON>(json_data, jsonSerializerSettings);
                 }
-                catch (Exception ex)
+
+                float offset = (float)((googleTimeZoneJSON.rawOffset + googleTimeZoneJSON.dstOffset) / 3600.0f);
+
+                string offsetText = offset.ToString("F1");
+                if (offsetText.EndsWith("0"))
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
+                    offsetText = offsetText.Substring(0, offsetText.Length - 2);
                 }
-            }
 
-            return true;
-        }
-        private bool SetTransport_ModuleDecayContinuous(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionDecay = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1");
-
-            if (pfsSectionDecay == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionDecay.GetKeyword("format");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
+                TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                TideModel tideModel = new TideModel(tvFileService.ChoseEDriveOrCDrive(tvFileService.BasePath), mbcm.WebTideDataSet)
                 {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(0 /* 0 = continuous, 1 = Not continuous*/, 1);
-                }
-                catch (Exception ex)
+                    StartDate = mikeScenarioModel.MikeScenarioStartDateTime_Local.AddHours(-offset - 24),
+                    EndDate = mikeScenarioModel.MikeScenarioEndDateTime_Local.AddHours(-offset),
+                    Lng = (double)mapInfoPointList[0].Lng,
+                    Lat = (double)mapInfoPointList[0].Lat,
+                    Steps_min = 60,
+                    DoWaterLevels = true,
+                };
+                WLResults = tidesAndCurrentsService.GetTides(tideModel);
+                if (WLResults != null)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
+                    foreach (WaterLevelResult wlr in WLResults)
+                    {
+                        wlr.Date = wlr.Date.AddHours(offset);
+                    }
                 }
-            }
 
-            return true;
-        }
-        private bool SetTransport_ModuleDecayFileName(PFSFile pfsFile, string DecayFileName)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionDecay = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1");
-
-            if (pfsSectionDecay == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionDecay.GetKeyword("file_name");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
+                if (WLResults.Count > 0)
                 {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterString(DecayFileName, 1);
+                    DateTime StartTime = mikeScenarioModel.MikeScenarioStartDateTime_Local;
+                    double Max = -1000;
+                    double Min = 1000;
+                    foreach (WaterLevelResult wl in WLResults)
+                    {
+                        if (Max < wl.WaterLevel)
+                        {
+                            Max = wl.WaterLevel;
+                        }
+                        if (Min > wl.WaterLevel)
+                        {
+                            Min = wl.WaterLevel;
+                        }
+                    }
+
+                    double Perc60Value = (Max + Min) / 0.6D;
+
+                    DateTime NewStartDate = mikeScenarioModel.MikeScenarioStartDateTime_Local;
+
+                    for (int i = 1, count = WLResults.Count; i < count; i++)
+                    {
+                        if (WLResults[i].Date >= NewStartDate)
+                        {
+                            if (WLResults[i - 1].WaterLevel > WLResults[i].WaterLevel)
+                            {
+                                if (WLResults[i - 1].WaterLevel >= Perc60Value && WLResults[i].WaterLevel <= Perc60Value)
+                                {
+                                    mikeScenarioModel.MikeScenarioStartDateTime_Local = WLResults[i].Date;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
                 }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
 
-            return true;
-        }
-        private bool SetTransport_ModuleDecayNotContinuous(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionDecay = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1");
 
-            if (pfsSectionDecay == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionDecay.GetKeyword("format");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(1 /* 0 = continuous, 1 = Not continuous*/, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleLastTimeStep(PFSFile pfsFile, int LastTimeStep)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionTransportOutput = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1");
-
-            if (pfsSectionTransportOutput == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionTransportOutput.GetKeyword("last_time_step");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(LastTimeStep, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleSourceName(PFSFile pfsFile, string Path, string Name)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-
-            if (pfsSectionSource == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSource.GetKeyword("Name");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterString(Name, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleOutputLastTimeStep(PFSFile pfsFile, int NewNumberOfTimeSteps)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionOutput = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1");
-
-            if (pfsSectionOutput == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionOutput.GetKeyword("last_time_step");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(NewNumberOfTimeSteps, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleOutputTimeStepFrequency(PFSFile pfsFile, int ResultFrequency_min)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionOutput = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1");
-
-            if (pfsSectionOutput == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionOutput.GetKeyword("time_step_frequency");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(ResultFrequency_min, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleSourceFormat(PFSFile pfsFile, string Path, int format)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-
-            if (pfsSectionSource == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSource.GetKeyword("format");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(format, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleSourceConstantValue(PFSFile pfsFile, string Path, float ConstantValue)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-
-            if (pfsSectionSource == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSource.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterDouble(ConstantValue, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleSourceFileName(PFSFile pfsFile, string Path, string NewFileName)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-
-            if (pfsSectionSource == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSource.GetKeyword("file_name");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterFileName(NewFileName, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        private bool SetTransport_ModuleTimeStepFrequency(PFSFile pfsFile, int TimeStepFrequency)
-        {
-            string NotUsed = "";
-            PFSSection pfsSectionTransportOutput = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1");
-
-            if (pfsSectionTransportOutput == null)
-            {
-                return false;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionTransportOutput.GetKeyword("time_step_frequency");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return false;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    keyword.DeleteParameter(1);
-                    param = keyword.InsertNewParameterInt(TimeStepFrequency, 1);
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
             }
 
             return true;

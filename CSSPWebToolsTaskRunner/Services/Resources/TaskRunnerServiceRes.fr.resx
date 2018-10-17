@@ -1611,4 +1611,160 @@
   <data name="KMZClassViewCheck" xml:space="preserve">
     <value>KMZ Class View Check (fr)</value>
   </data>
+  <data name="AddNewSource_Number_InM21FMOrM3MFFile" xml:space="preserve">
+    <value>Add new source [{0}] number [{1}] in .m21fm or .m3fm (fr)</value>
+  </data>
+  <data name="CreatingALogFileIfItDoesNotYetExist" xml:space="preserve">
+    <value>Creating a log file if it does not yet exist (fr)</value>
+  </data>
+  <data name="CreatingFileDecayDotDFS0" xml:space="preserve">
+    <value>Creating file Decay.dfs0 (fr)</value>
+  </data>
+  <data name="CreatingSalinityAndTemperatureInitialConditionsFiles" xml:space="preserve">
+    <value>Creating salinity and temperature initial conditions files (fr)</value>
+  </data>
+  <data name="CreatingSinusoidalDecayFile" xml:space="preserve">
+    <value>Creating sinusoidal decay file (fr)</value>
+  </data>
+  <data name="CreatingSourceFlowDFSOFileSourceName_Number_" xml:space="preserve">
+    <value>Saving source flow .dfs0 file in DB source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="CreatingSourcePolDFSOFileSourceName_Number_" xml:space="preserve">
+    <value>Creating source pollution .dfs0 file source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="DoingDecay" xml:space="preserve">
+    <value>Doing decay (fr)</value>
+  </data>
+  <data name="DoingSources" xml:space="preserve">
+    <value>Doing sources (fr)</value>
+  </data>
+  <data name="DoingSource_" xml:space="preserve">
+    <value>Doing source {0} (fr)</value>
+  </data>
+  <data name="GettingApproximateSizeOfHydrodynamicResultFile" xml:space="preserve">
+    <value>Getting approximate size of hydrodynamic result file (fr)</value>
+  </data>
+  <data name="GettingApproximateSizeOfTransportResultFile" xml:space="preserve">
+    <value>Getting approximate size of transport result file (fr)</value>
+  </data>
+  <data name="PartialSaveOfM21FMOrM3FMFile" xml:space="preserve">
+    <value>Partial save of .m21fm or .m3fm file (fr)</value>
+  </data>
+  <data name="ReadingUserInput" xml:space="preserve">
+    <value>Reading user input (fr)</value>
+  </data>
+  <data name="SavingSourceFlowDFSOFileInDBSourceName_Number_" xml:space="preserve">
+    <value>Saving source flow .dfs0 file in DB source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SavingSourcePolDFSOFileInDBSourceName_Number_" xml:space="preserve">
+    <value>Saving source pollution .dfs0 file in DB source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleInitialConditionSalinityFileName" xml:space="preserve">
+    <value>Setting hydrodynamic module initial condition salinity file name (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleInitialConditionSalinityFormat" xml:space="preserve">
+    <value>Setting hydrodynamic module initial condition salinity format (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleInitialConditionTemperatureFileName" xml:space="preserve">
+    <value>Setting hydrodynamic module initial condition temperature file name (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleInitialConditionTemperatureFormat" xml:space="preserve">
+    <value>Setting hydrodynamic module initial condition temperature format (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleManning" xml:space="preserve">
+    <value>Setting hydrodynamic module manning (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleSalinity" xml:space="preserve">
+    <value>Setting hydrodynamic module salinity (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModulesourceConstantValueSourceName_Number_" xml:space="preserve">
+    <value>Setting hydrodynamic module source constant value source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleSourceCoordinatesSourceName_Number_" xml:space="preserve">
+    <value>Setting transport module source coordinates source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleSourceFileNameSourceName_Number_" xml:space="preserve">
+    <value>Setting hydrodynamic module source file name source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleSourceIncludeSourceName_Number_" xml:space="preserve">
+    <value>Setting hydrodynamic module source include source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleSourceName_Number_" xml:space="preserve">
+    <value>Setting hydrodynamic module source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleTemperature" xml:space="preserve">
+    <value>Setting hydrodynamic module temperature (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleWindDirection" xml:space="preserve">
+    <value>Setting hydrodynamic module wind direction (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleWindSpeed" xml:space="preserve">
+    <value>Setting hydrodynamic module wind speed (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicOutputLastTimeStep" xml:space="preserve">
+    <value>Setting hydrodynamic output last time step (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicOutputTimeStepFrequency" xml:space="preserve">
+    <value>Setting hydrodynamic output time step frequency (fr)</value>
+  </data>
+  <data name="SettingNumberOfTimeStepsInM21FMOrM3FMFile" xml:space="preserve">
+    <value>Setting number of time steps in .m21fm or .m3fm file (fr)</value>
+  </data>
+  <data name="SettingStartTimeInM21FMOrM3FMFile" xml:space="preserve">
+    <value>Setting start time in .m21fm or .m3fm file (fr)</value>
+  </data>
+  <data name="SettingTransportModuleDecayConstantValue" xml:space="preserve">
+    <value>Setting transport module decay constant value (fr)</value>
+  </data>
+  <data name="SettingTransportModuleDecayContinuous" xml:space="preserve">
+    <value>Setting transport module decay continuous (fr)</value>
+  </data>
+  <data name="SettingTransportModuleDecayFileName" xml:space="preserve">
+    <value>Setting transport module decay file name (fr)</value>
+  </data>
+  <data name="SettingTransportModuleDecayFileNameToEmpty" xml:space="preserve">
+    <value>Setting transport module decay file name to empty (fr)</value>
+  </data>
+  <data name="SettingTransportModuleDecayNotContinuous" xml:space="preserve">
+    <value>Setting transport module decay not continuous (fr)</value>
+  </data>
+  <data name="SettingTransportModuleLastTimeStep" xml:space="preserve">
+    <value>Setting transport module last time step (fr)</value>
+  </data>
+  <data name="SettingTransportModuleSalinityConstantValueSourceName_Number_" xml:space="preserve">
+    <value>Setting transport module salinity constant value source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingTransportModuleSourceConstantValueSourceName_Number_" xml:space="preserve">
+    <value>Setting transport module source constant value source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingTransportModuleSourceFileNameSourceName_Number_" xml:space="preserve">
+    <value>Setting transport module source file name source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingTransportModuleSourceFormatSourceName_Number_" xml:space="preserve">
+    <value>Setting transport module source format source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingTransportModuleSourceName_Number_" xml:space="preserve">
+    <value>Setting transport module source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingTransportModuleTemperatureConstantValueSourceName_Number_" xml:space="preserve">
+    <value>Setting transport module temperature constant value source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="SettingTransportModuleTimeStepFrequency" xml:space="preserve">
+    <value>Setting transport module time step frequency (fr)</value>
+  </data>
+  <data name="SettingTransportOutputLastTimeStep" xml:space="preserve">
+    <value>Setting transport output last time step (fr)</value>
+  </data>
+  <data name="SettingTransportOutputTimeStepFrequency" xml:space="preserve">
+    <value>Setting transport output time step frequency (fr)</value>
+  </data>
+  <data name="StoringDecayFile_InDB" xml:space="preserve">
+    <value>Storing decay file [{0}] in DB (fr)</value>
+  </data>
+  <data name="TweakScenarioStartTimeToHave60PercHighTideAndFalling" xml:space="preserve">
+    <value>Tweak scenario start time to have 60 % high tide and falling (fr)</value>
+  </data>
+  <data name="UpdatingMikeScenarioInfoInDB" xml:space="preserve">
+    <value>Updating mike scenario info in DB (fr)</value>
+  </data>
 </root>
