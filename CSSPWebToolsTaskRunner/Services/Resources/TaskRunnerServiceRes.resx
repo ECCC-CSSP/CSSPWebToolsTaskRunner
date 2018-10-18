@@ -1665,6 +1665,9 @@
   <data name="GettingApproximateSizeOfTransportResultFile" xml:space="preserve">
     <value>Getting approximate size of transport result file</value>
   </data>
+  <data name="HydrometricTVItemID" xml:space="preserve">
+    <value>HydrometricTVItemID</value>
+  </data>
   <data name="PartialSaveOfM21FMOrM3FMFile" xml:space="preserve">
     <value>Partial save of .m21fm or .m3fm file</value>
   </data>

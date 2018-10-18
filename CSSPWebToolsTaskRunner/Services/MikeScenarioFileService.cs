@@ -360,20 +360,20 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
             // updating rest of new MikeScenario
-            DateTime? dateTimeTemp = GetStartTime(pfsFile);
+            DateTime? dateTimeTemp = GetParameterStartTime(pfsFile, "FemEngineHD/TIME", "start_time");
             if (dateTimeTemp == null)
             {
                 pfsFile.Close();
                 return;
             }
             mikeScenarioModel.MikeScenarioStartDateTime_Local = (DateTime)dateTimeTemp;
-            int? TimeStepInterval = GetTimeStepInterval(pfsFile);
+            int? TimeStepInterval = GetParameterInt(pfsFile, "FemEngineHD/TIME", "time_step_interval");
             if (TimeStepInterval == null)
             {
                 pfsFile.Close();
                 return;
             }
-            int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
+            int? NumberOfTimeSteps = GetParameterInt(pfsFile, "FemEngineHD/TIME", "number_of_time_steps");
             if (NumberOfTimeSteps == null)
             {
                 pfsFile.Close();
@@ -418,7 +418,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             // should only have 1 output file for hydrodynamic and 1 output file for transport
-            int? NumberOfOutputs = GetNumberOfOutputs(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS");
+            int? NumberOfOutputs = GetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS", "number_of_outputs");
 
             if (NumberOfOutputs == null)
             {
@@ -451,20 +451,20 @@ namespace CSSPWebToolsTaskRunner.Services
             // Creating MikeParameters associated with the scenario
             // _______________________________________
 
-            float? WindConstantSpeed = GetWindConstantSpeed(pfsFile);
+            float? WindConstantSpeed = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING", "constant_speed");
             if (WindConstantSpeed == null)
             {
                 pfsFile.Close();
                 return;
             }
 
-            float? WindConstantDirection = GetWindConstantDirection(pfsFile);
+            float? WindConstantDirection = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING", "constant_direction");
             if (WindConstantDirection == null)
             {
                 pfsFile.Close();
                 return;
             }
-            float? DecayValue = GetTransportModuleDecay(pfsFile);
+            float? DecayValue = (float?)GetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1", "constant_value");
             if (DecayValue == null)
             {
                 pfsFile.Close();
@@ -476,7 +476,7 @@ namespace CSSPWebToolsTaskRunner.Services
             mikeScenarioModel.DecayFactor_per_day = (float)DecayValue * 3600 * 24;
             mikeScenarioModel.DecayIsConstant = true;
 
-            int? TimeStepFrequency = GetTimeStepFrequency(pfsFile);
+            int? TimeStepFrequency = GetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "time_step_frequency");
             if (TimeStepFrequency == null)
             {
                 pfsFile.Close();
@@ -484,7 +484,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             mikeScenarioModel.ResultFrequency_min = (int)TimeStepFrequency;
 
-            float? AmbientTemperature = GetTemperatureReference(pfsFile);
+            float? AmbientTemperature = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/DENSITY", "temperature_reference");
             if (AmbientTemperature == null)
             {
                 pfsFile.Close();
@@ -492,7 +492,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             mikeScenarioModel.AmbientTemperature_C = (float)AmbientTemperature;
 
-            float? AmbientSalinity = GetSalinityReference(pfsFile);
+            float? AmbientSalinity = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/DENSITY", "salinity_reference");
             if (AmbientSalinity == null)
             {
                 pfsFile.Close();
@@ -500,7 +500,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             mikeScenarioModel.AmbientSalinity_PSU = (float)AmbientSalinity;
 
-            float? ManningNumber = GetManningNumber(pfsFile);
+            float? ManningNumber = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BED_RESISTANCE/MANNING_NUMBER", "constant_value");
             if (ManningNumber == null)
             {
                 pfsFile.Close();
@@ -551,7 +551,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 }
 
-                string SourceName = GetSourceName(pfsSectionSource);
+                string SourceName = GetParameterString(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/SOURCE_" + i.ToString(), "Name");
                 TVItemModel tvItemMikeSource = tvItemService.PostAddChildTVItemDB(tvItemModelMikeScenario.TVItemID, SourceName, TVTypeEnum.MikeSource);
 
                 MikeSourceModel mikeSourceModelNew = new MikeSourceModel();
@@ -559,7 +559,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 mikeSourceModelNew.SourceNumberString = "SOURCE_" + i.ToString();
                 mikeSourceModelNew.MikeSourceTVItemID = tvItemMikeSource.TVItemID;
 
-                int? SourceIncluded = GetSourceIncluded(pfsSectionSource);
+                int? SourceIncluded = (int?)GetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/SOURCE_" + i.ToString(), "include");
                 if (SourceIncluded == null)
                 {
                     pfsFile.Close();
@@ -584,7 +584,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 MikeSourceStartEndModel mikeSourceStartEndModelNew = new MikeSourceStartEndModel();
 
-                float? SourceFlow = GetSourceFlow(pfsSectionSource);
+                float? SourceFlow = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/SOURCE_" + i.ToString(), "constant_value");
                 if (SourceFlow == null)
                 {
                     pfsFile.Close();
@@ -594,7 +594,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 mikeSourceStartEndModelNew.SourceFlowStart_m3_day = (float)SourceFlow * 24 * 3600;
                 mikeSourceStartEndModelNew.SourceFlowEnd_m3_day = (float)SourceFlow * 24 * 3600;
 
-                Coord SourceCoord = GetSourceCoord(pfsSectionSource);
+                Coord SourceCoord = GetParameterCoord(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/SOURCE_" + i.ToString(), "coordinates");
                 if (SourceCoord.Lat == 0.0f || SourceCoord.Lng == 0.0f)
                 {
                     pfsFile.Close();
@@ -614,7 +614,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 }
 
-                float? SourcePollution = GetSourcePollution(pfsSectionSourceTransport);
+                float? SourcePollution = (float?)GetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/SOURCE_" + i.ToString() + "/COMPONENT_1", "constant_value");
                 if (SourcePollution == null)
                 {
                     pfsFile.Close();
@@ -623,7 +623,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 mikeSourceStartEndModelNew.SourcePollutionStart_MPN_100ml = (int)SourcePollution;
                 mikeSourceStartEndModelNew.SourcePollutionEnd_MPN_100ml = (int)SourcePollution;
 
-                int? SourcePollutionContinuous = GetSourcePollutionContinuous(pfsSectionSourceTransport);
+                int? SourcePollutionContinuous = GetParameterInt(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/SOURCE_" + i.ToString() + "/COMPONENT_1", "format");
                 if (SourcePollutionContinuous == null)
                 {
                     pfsFile.Close();
@@ -661,7 +661,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 }
 
-                float? SourceTemperature = GetSourceTemperature(pfsSectionSourceTemperature);
+                float? SourceTemperature = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/SOURCE_" + i.ToString() + "/TEMPERATURE", "constant_value");
                 if (SourceTemperature == null)
                 {
                     pfsFile.Close();
@@ -677,7 +677,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     break;
                 }
 
-                float? SourceSalinity = GetSourceSalinity(pfsSectionSourceSalinity);
+                float? SourceSalinity = (float?)GetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TEMPERATURE_SALINITY_MODULE/SOURCES/SOURCE_" + i.ToString() + "/Salinity", "constant_value");
                 if (SourceSalinity == null)
                 {
                     pfsFile.Close();
@@ -1516,35 +1516,38 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return;
         }
-        private bool CreateFlowSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, FileInfo fiFlow, TVItemLanguageModel tvItemLanguageModelSourceName, string NewFlowSourceFileName, TVItemService tvItemService, TVFileService tvFileService)
+        private bool CreateDischargeSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, FileInfo fiDischarge, TVItemLanguageModel tvItemLanguageModelSourceName, string NewFlowSourceFileName, TVItemService tvItemService, TVFileService tvFileService)
         {
             string NotUsed = "";
 
-
             MikeSourceStartEndService mikeSourceStartEndService = new MikeSourceStartEndService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            HydrometricSiteService hydrometricSiteService = new HydrometricSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            HydrometricDataValueService hydrometricDataValueService = new HydrometricDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            MWQMRunService mwqmRunService = new MWQMRunService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
             List<MikeSourceStartEndModel> mikeSourceStartEndModelList = mikeSourceStartEndService.GetMikeSourceStartEndModelListWithMikeSourceIDDB(msm.MikeSourceID);
 
             DfsFactory factory = new DfsFactory();
 
             IDfsFile dfsOldFile = DfsFileFactory.DfsGenericOpen(fiBC.FullName);
 
-            DfsBuilder dfsNewFile = DfsBuilder.Create(tvItemLanguageModelSourceName.TVText + " - Flow", dfsOldFile.FileInfo.ApplicationTitle + tvItemLanguageModelSourceName.TVText + " - Flow", dfsOldFile.FileInfo.ApplicationVersion);
+            DfsBuilder dfsNewFile = DfsBuilder.Create(tvItemLanguageModelSourceName.TVText + " - Discharge", dfsOldFile.FileInfo.ApplicationTitle + tvItemLanguageModelSourceName.TVText + " - Discharge", dfsOldFile.FileInfo.ApplicationVersion);
 
-            double FlowStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
+            double DischargeStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
 
-            DateTime? dateTimeTemp = GetStartTime(pfsFile);
+            DateTime? dateTimeTemp = GetParameterStartTime(pfsFile, "FemEngineHD/TIME", "start_time");
             if (dateTimeTemp == null)
             {
                 return false;
             }
 
-            int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
+            int? NumberOfTimeSteps = GetParameterInt(pfsFile, "FemEngineHD/TIME", "number_of_time_steps");
             if (NumberOfTimeSteps == null)
             {
                 return false;
             }
 
-            int? TimeStepInterval = GetTimeStepInterval(pfsFile);
+            int? TimeStepInterval = GetParameterInt(pfsFile, "FemEngineHD/TIME", "time_step_interval");
             if (TimeStepInterval == null)
             {
                 return false;
@@ -1555,11 +1558,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
             dfsNewFile.SetDataType(1);
             dfsNewFile.SetGeographicalProjection(dfsOldFile.FileInfo.Projection);
-            dfsNewFile.SetTemporalAxis(factory.CreateTemporalEqCalendarAxis(eumUnit.eumUsec, StartDate, 0, FlowStepsInMinutes * 60));
+            dfsNewFile.SetTemporalAxis(factory.CreateTemporalEqCalendarAxis(eumUnit.eumUsec, StartDate, 0, DischargeStepsInMinutes * 60));
             dfsNewFile.SetItemStatisticsType(StatType.RegularStat);
 
             DfsDynamicItemBuilder item = dfsNewFile.CreateDynamicItemBuilder();
-            item.Set(NewFlowSourceFileName, eumQuantity.Create(eumItem.eumIDischarge, eumUnit.eumUConcNonDimM3PerSec), DfsSimpleType.Float);
+            item.Set(NewFlowSourceFileName, eumQuantity.Create(eumItem.eumIDischarge, eumUnit.eumUm3PerSec), DfsSimpleType.Float);
             item.SetValueType(DataValueType.Instantaneous);
             item.SetAxis(factory.CreateAxisEqD0());
             item.SetReferenceCoordinates(1f, 2f, 3f);
@@ -1576,77 +1579,174 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (NewFileErrors.Count() > 0)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fiFlow.FullName, sbErr.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fiFlow.FullName, sbErr.ToString());
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fiDischarge.FullName, sbErr.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fiDischarge.FullName, sbErr.ToString());
                 return false;
             }
 
-            dfsNewFile.CreateFile(fiFlow.FullName);
-            IDfsFile FlowFile = dfsNewFile.GetFile();
+            dfsNewFile.CreateFile(fiDischarge.FullName);
+            IDfsFile DischargeFile = dfsNewFile.GetFile();
 
             DateTime NewDateTime = StartDate;
 
-            foreach (MikeSourceStartEndModel mssem in mikeSourceStartEndModelList.OrderBy(c => c.StartDateAndTime_Local))
+            if (msm.UseHydrometric)
             {
-                while (NewDateTime < (DateTime)mssem.StartDateAndTime_Local)
+                DateTime RunDate = new DateTime();
+
+                if (mikeScenarioModel.ForSimulatingMWQMRunTVItemID == null || mikeScenarioModel.ForSimulatingMWQMRunTVItemID == 0)
                 {
-                    FlowFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Flow
-                    NewDateTime = NewDateTime.AddSeconds(FlowStepsInMinutes * 60);
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MWQMRun, TaskRunnerServiceRes.MWQMRunTVItemID, mikeScenarioModel.ForSimulatingMWQMRunTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MWQMRun, TaskRunnerServiceRes.MWQMRunTVItemID, mikeScenarioModel.ForSimulatingMWQMRunTVItemID.ToString());
+                    return false;
                 }
 
-                long TotalTicks = mssem.EndDateAndTime_Local.Ticks - mssem.StartDateAndTime_Local.Ticks;
+                MWQMRunModel mwqmRunModel = mwqmRunService.GetMWQMRunModelWithMWQMRunTVItemIDDB((int)mikeScenarioModel.ForSimulatingMWQMRunTVItemID);
+                if (!string.IsNullOrWhiteSpace(mwqmRunModel.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.MWQMRun, TaskRunnerServiceRes.MWQMRunTVItemID, mikeScenarioModel.ForSimulatingMWQMRunTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.MWQMRun, TaskRunnerServiceRes.MWQMRunTVItemID, mikeScenarioModel.ForSimulatingMWQMRunTVItemID.ToString());
+                    return false;
+                }
+
+                RunDate = mwqmRunModel.DateTime_Local;
+
+                if (msm.HydrometricTVItemID == null || msm.HydrometricTVItemID == 0)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricTVItemID, msm.HydrometricTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricTVItemID, msm.HydrometricTVItemID.ToString());
+                    return false;
+                }
+
+                HydrometricSiteModel hydrometricSiteModel = hydrometricSiteService.GetHydrometricSiteModelWithHydrometricSiteTVItemIDDB((int)msm.HydrometricTVItemID);
+                if (!string.IsNullOrWhiteSpace(hydrometricSiteModel.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricTVItemID, msm.HydrometricTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricTVItemID, msm.HydrometricTVItemID.ToString());
+                    return false;
+                }
+
+                List<HydrometricDataValueModel> hydrometricDataValueModelList = hydrometricDataValueService.GetHydrometricDataValueModelListWithHydrometricSiteIDAroundRunDateDB(hydrometricSiteModel.HydrometricSiteTVItemID, RunDate).OrderBy(c => c.DateTime_Local).ToList();
+                if (hydrometricDataValueModelList.Count != 10)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricTVItemID, msm.HydrometricTVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.HydrometricSite, TaskRunnerServiceRes.HydrometricTVItemID, msm.HydrometricTVItemID.ToString());
+                    return false;
+                }
+
+                for (int i = 0, count = hydrometricDataValueModelList.Count - 1; i < count; i++)
+                {
+                    DateTime StartDateAndTime_Local = hydrometricDataValueModelList[i].DateTime_Local;
+                    DateTime EndDateAndTime_Local = hydrometricDataValueModelList[i + 1].DateTime_Local;
+
+                    while (NewDateTime < StartDateAndTime_Local)
+                    {
+                        DischargeFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Discharge
+                        NewDateTime = NewDateTime.AddSeconds(DischargeStepsInMinutes * 60);
+                    }
+
+                    long TotalTicks = EndDateAndTime_Local.Ticks - StartDateAndTime_Local.Ticks;
+                    while (NewDateTime < EndDate)
+                    {
+                        if (NewDateTime < StartDateAndTime_Local)
+                        {
+                            DischargeFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Discharge
+                        }
+                        else if (NewDateTime >= StartDateAndTime_Local && NewDateTime <= EndDateAndTime_Local)
+                        {
+                            double TickFraction = (double)(NewDateTime.Ticks - StartDateAndTime_Local.Ticks) / (double)TotalTicks;
+                            double DischargeValue = 0.0D;
+                            if (hydrometricDataValueModelList[i + 1].Discharge_m3_s == hydrometricDataValueModelList[i].Discharge_m3_s)
+                            {
+                                DischargeValue = (double)hydrometricDataValueModelList[i].Discharge_m3_s;
+                            }
+                            else if (hydrometricDataValueModelList[i + 1].Discharge_m3_s > hydrometricDataValueModelList[i].Discharge_m3_s)
+                            {
+                                DischargeValue = (double)hydrometricDataValueModelList[i].Discharge_m3_s - ((double)(hydrometricDataValueModelList[i + 1].Discharge_m3_s - hydrometricDataValueModelList[i].Discharge_m3_s) * TickFraction);
+                            }
+                            else if (hydrometricDataValueModelList[i + 1].Discharge_m3_s < hydrometricDataValueModelList[i].Discharge_m3_s)
+                            {
+                                DischargeValue = (double)hydrometricDataValueModelList[i].Discharge_m3_s + ((double)(hydrometricDataValueModelList[i + 1].Discharge_m3_s - hydrometricDataValueModelList[i].Discharge_m3_s) * TickFraction);
+                            }
+                            DischargeFile.WriteItemTimeStepNext(0, new float[] { (float)DischargeValue });  // Discharge
+                        }
+                        else if (NewDateTime > EndDateAndTime_Local)
+                        {
+                            break;
+                        }
+                        NewDateTime = NewDateTime.AddSeconds(DischargeStepsInMinutes * 60);
+                    }
+                }
+
                 while (NewDateTime < EndDate)
                 {
-                    if (NewDateTime < mssem.StartDateAndTime_Local)
+                    DischargeFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Discharge
+                    NewDateTime = NewDateTime.AddSeconds(DischargeStepsInMinutes * 60);
+                }
+            }
+            else
+            {
+                foreach (MikeSourceStartEndModel mssem in mikeSourceStartEndModelList.OrderBy(c => c.StartDateAndTime_Local))
+                {
+                    while (NewDateTime < (DateTime)mssem.StartDateAndTime_Local)
                     {
-                        FlowFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Flow
+                        DischargeFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Discharge
+                        NewDateTime = NewDateTime.AddSeconds(DischargeStepsInMinutes * 60);
                     }
-                    else if (NewDateTime >= mssem.StartDateAndTime_Local && NewDateTime <= mssem.EndDateAndTime_Local)
+
+                    long TotalTicks = mssem.EndDateAndTime_Local.Ticks - mssem.StartDateAndTime_Local.Ticks;
+                    while (NewDateTime < EndDate)
                     {
-                        double TickFraction = (double)(NewDateTime.Ticks - mssem.StartDateAndTime_Local.Ticks) / (double)TotalTicks;
-                        double PolValue = 0.0D;
-                        if (mssem.SourcePollutionEnd_MPN_100ml == mssem.SourcePollutionStart_MPN_100ml)
+                        if (NewDateTime < mssem.StartDateAndTime_Local)
                         {
-                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml;
+                            DischargeFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Discharge
                         }
-                        else if (mssem.SourcePollutionEnd_MPN_100ml > mssem.SourcePollutionStart_MPN_100ml)
+                        else if (NewDateTime >= mssem.StartDateAndTime_Local && NewDateTime <= mssem.EndDateAndTime_Local)
                         {
-                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml - ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
+                            double TickFraction = (double)(NewDateTime.Ticks - mssem.StartDateAndTime_Local.Ticks) / (double)TotalTicks;
+                            double DischargeValue = 0.0D;
+                            if (mssem.SourceFlowEnd_m3_day == mssem.SourceFlowStart_m3_day)
+                            {
+                                DischargeValue = (double)mssem.SourceFlowStart_m3_day;
+                            }
+                            else if (mssem.SourceFlowEnd_m3_day > mssem.SourceFlowStart_m3_day)
+                            {
+                                DischargeValue = (double)mssem.SourceFlowStart_m3_day - ((double)(mssem.SourceFlowEnd_m3_day - mssem.SourceFlowStart_m3_day) * TickFraction);
+                            }
+                            else if (mssem.SourceFlowEnd_m3_day < mssem.SourceFlowStart_m3_day)
+                            {
+                                DischargeValue = (double)mssem.SourceFlowStart_m3_day + ((double)(mssem.SourceFlowEnd_m3_day - mssem.SourceFlowStart_m3_day) * TickFraction);
+                            }
+                            DischargeFile.WriteItemTimeStepNext(0, new float[] { (float)DischargeValue });  // Discharge
                         }
-                        else if (mssem.SourcePollutionEnd_MPN_100ml < mssem.SourcePollutionStart_MPN_100ml)
+                        else if (NewDateTime > mssem.EndDateAndTime_Local)
                         {
-                            PolValue = (double)mssem.SourcePollutionStart_MPN_100ml + ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
+                            break;
                         }
-                        FlowFile.WriteItemTimeStepNext(0, new float[] { (float)PolValue });  // Flow
+                        NewDateTime = NewDateTime.AddSeconds(DischargeStepsInMinutes * 60);
                     }
-                    else if (NewDateTime > mssem.EndDateAndTime_Local)
-                    {
-                        break;
-                    }
-                    NewDateTime = NewDateTime.AddSeconds(FlowStepsInMinutes * 60);
+                }
+
+                while (NewDateTime < EndDate)
+                {
+                    DischargeFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Discharge
+                    NewDateTime = NewDateTime.AddSeconds(DischargeStepsInMinutes * 60);
                 }
             }
 
-            while (NewDateTime < EndDate)
-            {
-                FlowFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Flow
-                NewDateTime = NewDateTime.AddSeconds(FlowStepsInMinutes * 60);
-            }
+            DischargeFile.Close();
 
-            FlowFile.Close();
-
-            fiFlow = new FileInfo(fiFlow.FullName);
+            fiDischarge = new FileInfo(fiDischarge.FullName);
 
             NotUsed = string.Format(TaskRunnerServiceRes.SavingSourceFlowDFSOFileInDBSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SavingSourceFlowDFSOFileInDBSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-            TVFileModel tvFileModelPolNew = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(fiFlow.Directory + "\\", fiFlow.Name);
+            TVFileModel tvFileModelPolNew = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(fiDischarge.Directory + "\\", fiDischarge.Name);
             if (!string.IsNullOrWhiteSpace(tvFileModelPolNew.Error))
             {
-                if (!fiFlow.Exists)
+                if (!fiDischarge.Exists)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFlow.FullName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiFlow.FullName);
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiDischarge.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiDischarge.FullName);
                     return false;
                 }
 
@@ -1664,13 +1764,13 @@ namespace CSSPWebToolsTaskRunner.Services
                     FilePurpose = FilePurposeEnum.MikeInput,
                     Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
                     Year = DateTime.Now.Year,
-                    FileDescription = "Mike Pollution File",
-                    FileType = tvFileService.GetFileType(fiFlow.Extension),
-                    FileSize_kb = (int)(fiFlow.Length / 1024),
+                    FileDescription = "Mike Discharge File",
+                    FileType = tvFileService.GetFileType(fiDischarge.Extension),
+                    FileSize_kb = (int)(fiDischarge.Length / 1024),
                     FileInfo = "Mike Scenario Documentation",
-                    FileCreatedDate_UTC = fiFlow.CreationTime.ToUniversalTime(),
+                    FileCreatedDate_UTC = fiDischarge.CreationTime.ToUniversalTime(),
                     ServerFileName = NewFlowSourceFileName,
-                    ServerFilePath = fiFlow.Directory + "\\",
+                    ServerFilePath = fiDischarge.Directory + "\\",
                 };
 
                 TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelPolNew);
@@ -1685,11 +1785,11 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 tvFileModelPolNew.FilePurpose = FilePurposeEnum.MikeInput;
                 tvFileModelPolNew.FileDescription = "Mike Pollution File";
-                tvFileModelPolNew.FileType = tvFileService.GetFileType(fiFlow.Extension);
-                tvFileModelPolNew.FileSize_kb = (int)(fiFlow.Length / 1024);
-                tvFileModelPolNew.FileCreatedDate_UTC = fiFlow.CreationTime.ToUniversalTime();
+                tvFileModelPolNew.FileType = tvFileService.GetFileType(fiDischarge.Extension);
+                tvFileModelPolNew.FileSize_kb = (int)(fiDischarge.Length / 1024);
+                tvFileModelPolNew.FileCreatedDate_UTC = fiDischarge.CreationTime.ToUniversalTime();
                 tvFileModelPolNew.ServerFileName = NewFlowSourceFileName;
-                tvFileModelPolNew.ServerFilePath = fiFlow.Directory + "\\";
+                tvFileModelPolNew.ServerFilePath = fiDischarge.Directory + "\\";
 
                 TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelPolNew);
                 if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
@@ -1917,7 +2017,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return "";
         }
-        private bool CreatePolSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, FileInfo fiPol, TVItemLanguageModel tvItemLanguageModelSourceName, string NewPolSourceFileName, TVItemService tvItemService, TVFileService tvFileService)
+        private bool CreatePollutionConcentrationSource(PFSFile pfsFile, MikeSourceModel msm, FileInfo fiBC, MikeScenarioModel mikeScenarioModel, FileInfo fiPolConc, TVItemLanguageModel tvItemLanguageModelSourceName, string NewPolSourceFileName, TVItemService tvItemService, TVFileService tvFileService)
         {
             string NotUsed = "";
 
@@ -1929,23 +2029,23 @@ namespace CSSPWebToolsTaskRunner.Services
 
             IDfsFile dfsOldFile = DfsFileFactory.DfsGenericOpen(fiBC.FullName);
 
-            DfsBuilder dfsNewFile = DfsBuilder.Create(tvItemLanguageModelSourceName.TVText + " - Pol", dfsOldFile.FileInfo.ApplicationTitle + tvItemLanguageModelSourceName.TVText + " - Pol", dfsOldFile.FileInfo.ApplicationVersion);
+            DfsBuilder dfsNewFile = DfsBuilder.Create(tvItemLanguageModelSourceName.TVText + " - Pollution Concentration", dfsOldFile.FileInfo.ApplicationTitle + tvItemLanguageModelSourceName.TVText + " - Pollution Concentration", dfsOldFile.FileInfo.ApplicationVersion);
 
-            double PolStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
+            double PolConcStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
 
-            DateTime? dateTimeTemp = GetStartTime(pfsFile);
+            DateTime? dateTimeTemp = GetParameterStartTime(pfsFile, "FemEngineHD/TIME", "start_time");
             if (dateTimeTemp == null)
             {
                 return false;
             }
 
-            int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
+            int? NumberOfTimeSteps = GetParameterInt(pfsFile, "FemEngineHD/TIME", "number_of_time_steps");
             if (NumberOfTimeSteps == null)
             {
                 return false;
             }
 
-            int? TimeStepInterval = GetTimeStepInterval(pfsFile);
+            int? TimeStepInterval = GetParameterInt(pfsFile, "FemEngineHD/TIME", "time_step_interval");
             if (TimeStepInterval == null)
             {
                 return false;
@@ -1956,7 +2056,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             dfsNewFile.SetDataType(1);
             dfsNewFile.SetGeographicalProjection(dfsOldFile.FileInfo.Projection);
-            dfsNewFile.SetTemporalAxis(factory.CreateTemporalEqCalendarAxis(eumUnit.eumUsec, StartDate, 0, PolStepsInMinutes * 60));
+            dfsNewFile.SetTemporalAxis(factory.CreateTemporalEqCalendarAxis(eumUnit.eumUsec, StartDate, 0, PolConcStepsInMinutes * 60));
             dfsNewFile.SetItemStatisticsType(StatType.RegularStat);
 
             DfsDynamicItemBuilder item = dfsNewFile.CreateDynamicItemBuilder();
@@ -1977,13 +2077,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (NewFileErrors.Count() > 0)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fiPol.FullName, sbErr.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fiPol.FullName, sbErr.ToString());
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fiPolConc.FullName, sbErr.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fiPolConc.FullName, sbErr.ToString());
                 return false;
             }
 
-            dfsNewFile.CreateFile(fiPol.FullName);
-            IDfsFile PolFile = dfsNewFile.GetFile();
+            dfsNewFile.CreateFile(fiPolConc.FullName);
+            IDfsFile PolConcFile = dfsNewFile.GetFile();
 
             DateTime NewDateTime = StartDate;
 
@@ -1991,8 +2091,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 while (NewDateTime < (DateTime)mssem.StartDateAndTime_Local)
                 {
-                    PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
-                    NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
+                    PolConcFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution Concentration
+                    NewDateTime = NewDateTime.AddSeconds(PolConcStepsInMinutes * 60);
                 }
 
                 long TotalTicks = mssem.EndDateAndTime_Local.Ticks - mssem.StartDateAndTime_Local.Ticks;
@@ -2000,7 +2100,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     if (NewDateTime < mssem.StartDateAndTime_Local)
                     {
-                        PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
+                        PolConcFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution Concentration
                     }
                     else if (NewDateTime >= mssem.StartDateAndTime_Local && NewDateTime <= mssem.EndDateAndTime_Local)
                     {
@@ -2018,36 +2118,36 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             PolValue = (double)mssem.SourcePollutionStart_MPN_100ml + ((double)(mssem.SourcePollutionEnd_MPN_100ml - mssem.SourcePollutionStart_MPN_100ml) * TickFraction);
                         }
-                        PolFile.WriteItemTimeStepNext(0, new float[] { (float)PolValue });  // Pollution
+                        PolConcFile.WriteItemTimeStepNext(0, new float[] { (float)PolValue });  // Pollution Concentration
                     }
                     else if (NewDateTime > mssem.EndDateAndTime_Local)
                     {
                         break;
                     }
-                    NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
+                    NewDateTime = NewDateTime.AddSeconds(PolConcStepsInMinutes * 60);
                 }
             }
 
             while (NewDateTime < EndDate)
             {
-                PolFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution
-                NewDateTime = NewDateTime.AddSeconds(PolStepsInMinutes * 60);
+                PolConcFile.WriteItemTimeStepNext(0, new float[] { 0f });  // Pollution Concentration
+                NewDateTime = NewDateTime.AddSeconds(PolConcStepsInMinutes * 60);
             }
 
-            PolFile.Close();
+            PolConcFile.Close();
 
-            fiPol = new FileInfo(fiPol.FullName);
+            fiPolConc = new FileInfo(fiPolConc.FullName);
 
             NotUsed = string.Format(TaskRunnerServiceRes.SavingSourcePolDFSOFileInDBSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SavingSourcePolDFSOFileInDBSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-            TVFileModel tvFileModelPolNew = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(fiPol.Directory + "\\", fiPol.Name);
+            TVFileModel tvFileModelPolNew = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(fiPolConc.Directory + "\\", fiPolConc.Name);
             if (!string.IsNullOrWhiteSpace(tvFileModelPolNew.Error))
             {
-                if (!fiPol.Exists)
+                if (!fiPolConc.Exists)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiPol.FullName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiPol.FullName);
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiPolConc.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiPolConc.FullName);
                     return false;
                 }
 
@@ -2066,12 +2166,12 @@ namespace CSSPWebToolsTaskRunner.Services
                     Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
                     Year = DateTime.Now.Year,
                     FileDescription = "Mike Pollution File",
-                    FileType = tvFileService.GetFileType(fiPol.Extension),
-                    FileSize_kb = (int)(fiPol.Length / 1024),
+                    FileType = tvFileService.GetFileType(fiPolConc.Extension),
+                    FileSize_kb = (int)(fiPolConc.Length / 1024),
                     FileInfo = "Mike Scenario Documentation",
-                    FileCreatedDate_UTC = fiPol.CreationTime.ToUniversalTime(),
+                    FileCreatedDate_UTC = fiPolConc.CreationTime.ToUniversalTime(),
                     ServerFileName = NewPolSourceFileName,
-                    ServerFilePath = fiPol.Directory + "\\",
+                    ServerFilePath = fiPolConc.Directory + "\\",
                 };
 
                 TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelPolNew);
@@ -2085,12 +2185,12 @@ namespace CSSPWebToolsTaskRunner.Services
             else
             {
                 tvFileModelPolNew.FilePurpose = FilePurposeEnum.MikeInput;
-                tvFileModelPolNew.FileDescription = "Mike Pollution File";
-                tvFileModelPolNew.FileType = tvFileService.GetFileType(fiPol.Extension);
-                tvFileModelPolNew.FileSize_kb = (int)(fiPol.Length / 1024);
-                tvFileModelPolNew.FileCreatedDate_UTC = fiPol.CreationTime.ToUniversalTime();
+                tvFileModelPolNew.FileDescription = "Mike Pollution Concentration File";
+                tvFileModelPolNew.FileType = tvFileService.GetFileType(fiPolConc.Extension);
+                tvFileModelPolNew.FileSize_kb = (int)(fiPolConc.Length / 1024);
+                tvFileModelPolNew.FileCreatedDate_UTC = fiPolConc.CreationTime.ToUniversalTime();
                 tvFileModelPolNew.ServerFileName = NewPolSourceFileName;
-                tvFileModelPolNew.ServerFilePath = fiPol.Directory + "\\";
+                tvFileModelPolNew.ServerFilePath = fiPolConc.Directory + "\\";
 
                 TVFileModel tvFileModelRet = tvFileService.PostUpdateTVFileDB(tvFileModelPolNew);
                 if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
@@ -2182,7 +2282,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
 
                 List<OtherFileInfo> FileList = new List<OtherFileInfo>();
-                string FileName = GetFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/" + mbcm.MikeBoundaryConditionCode, "file_name");
+                string FileName = GetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/" + mbcm.MikeBoundaryConditionCode, "file_name");
                 FileInfo fiBC = new FileInfo(FileName);
 
                 List<MapInfoPointModel> mapInfoPointModelBC = new List<MapInfoPointModel>();
@@ -2220,19 +2320,19 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 double WebTideStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
 
-                DateTime? dateTimeTemp = GetStartTime(pfsFile);
+                DateTime? dateTimeTemp = GetParameterStartTime(pfsFile, "FemEngineHD/TIME", "start_time");
                 if (dateTimeTemp == null)
                 {
                     return;
                 }
 
-                int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
+                int? NumberOfTimeSteps = GetParameterInt(pfsFile, "FemEngineHD/TIME", "number_of_time_steps");
                 if (NumberOfTimeSteps == null)
                 {
                     return;
                 }
 
-                int? TimeStepInterval = GetTimeStepInterval(pfsFile);
+                int? TimeStepInterval = GetParameterInt(pfsFile, "FemEngineHD/TIME", "time_step_interval");
                 if (TimeStepInterval == null)
                 {
                     return;
@@ -2599,7 +2699,7 @@ namespace CSSPWebToolsTaskRunner.Services
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             string BCFileName = "";
 
-            BCFileName = GetFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_2", "file_name");
+            BCFileName = GetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_2", "file_name");
             if (string.IsNullOrWhiteSpace(BCFileName))
             {
                 NotUsed = TaskRunnerServiceRes.CouldNotFindABoundaryConditionWithFileNameInM21_3FM;
@@ -2719,19 +2819,19 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 double DecayStepsInMinutes = ((double)((IDfsEqCalendarAxis)((dfsOldFile.FileInfo).TimeAxis)).TimeStep / 60);
 
-                DateTime? DateTimeTemp = GetStartTime(pfsFile);
+                DateTime? DateTimeTemp = GetParameterStartTime(pfsFile, "FemEngineHD/TIME", "start_time");
                 if (DateTimeTemp == null)
                 {
                     return;
                 }
 
-                int? NumberOfTimeSteps = GetNumberOfTimeSteps(pfsFile);
+                int? NumberOfTimeSteps = GetParameterInt(pfsFile, "FemEngineHD/TIME", "number_of_time_steps");
                 if (NumberOfTimeSteps == null)
                 {
                     return;
                 }
 
-                int? TimeStepInterval = GetTimeStepInterval(pfsFile);
+                int? TimeStepInterval = GetParameterInt(pfsFile, "FemEngineHD/TIME", "time_step_interval");
                 if (TimeStepInterval == null)
                 {
                     return;
@@ -2935,11 +3035,11 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            string NewPolSourceFileName = tvItemLanguageModelSourceName.TVText + "_Pol.dfs0";
-            FileInfo fiPol = new FileInfo(fiBC.Directory + "\\" + NewPolSourceFileName);
+            string NewPolConcSourceFileName = tvItemLanguageModelSourceName.TVText + "_PollutionConcentration.dfs0";
+            FileInfo fiPolConc = new FileInfo(fiBC.Directory + "\\" + NewPolConcSourceFileName);
 
-            string NewFlowSourceFileName = tvItemLanguageModelSourceName.TVText + "_Flow.dfs0";
-            FileInfo fiFlow = new FileInfo(fiBC.Directory + "\\" + NewFlowSourceFileName);
+            string NewDischargeSourceFileName = tvItemLanguageModelSourceName.TVText + "_Discharge.dfs0";
+            FileInfo fiDischarge = new FileInfo(fiBC.Directory + "\\" + NewDischargeSourceFileName);
 
             if (msm.IsContinuous && !msm.UseHydrometric)
             {
@@ -3004,7 +3104,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 foreach (TVFileModel tvFileModel in tvFileModelList)
                 {
-                    if (tvFileModel.ServerFileName == NewPolSourceFileName)
+                    if (tvFileModel.ServerFileName == NewPolConcSourceFileName)
                     {
                         TVFileModel tvFileModelRet = tvFileService.PostDeleteTVFileWithTVItemIDDB(tvFileModel.TVFileTVItemID);
                         if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
@@ -3016,12 +3116,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         try
                         {
-                            fiPol.Delete();
+                            fiPolConc.Delete();
                         }
                         catch (Exception ex)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiPol.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiPol.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiPolConc.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiPolConc.FullName, ex.Message + " - " + (ex.InnerException != null ? ex.InnerException.Message : ""));
                             return;
                         }
 
@@ -3043,7 +3143,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 NotUsed = string.Format(TaskRunnerServiceRes.CreatingSourcePolDFSOFileSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
                 _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("CreatingSourcePolDFSOFileSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-                if (!CreatePolSource(pfsFile, msm, fiBC, mikeScenarioModel, fiPol, tvItemLanguageModelSourceName, NewPolSourceFileName, tvItemService, tvFileService))
+                if (!CreatePollutionConcentrationSource(pfsFile, msm, fiBC, mikeScenarioModel, fiPolConc, tvItemLanguageModelSourceName, NewPolConcSourceFileName, tvItemService, tvFileService))
                 {
                     return;
                 }
@@ -3051,7 +3151,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 NotUsed = string.Format(TaskRunnerServiceRes.SettingTransportModuleSourceFileNameSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
                 _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingTransportModuleSourceFileNameSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-                if (!SetParameterFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + "/COMPONENT_1", @".\" + NewPolSourceFileName, "file_name"))
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/SOURCES/" + msm.SourceNumberString + "/COMPONENT_1", @".\" + NewPolConcSourceFileName, "file_name"))
                 {
                     return;
                 }
@@ -3059,7 +3159,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 NotUsed = string.Format(TaskRunnerServiceRes.CreatingSourceFlowDFSOFileSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
                 _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("CreatingSourceFlowDFSOFileSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-                if (!CreateFlowSource(pfsFile, msm, fiBC, mikeScenarioModel, fiFlow, tvItemLanguageModelSourceName, NewFlowSourceFileName, tvItemService, tvFileService))
+                if (!CreateDischargeSource(pfsFile, msm, fiBC, mikeScenarioModel, fiDischarge, tvItemLanguageModelSourceName, NewDischargeSourceFileName, tvItemService, tvFileService))
                 {
                     return;
                 }
@@ -3067,7 +3167,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 NotUsed = string.Format(TaskRunnerServiceRes.SettingHydrodynamicModuleSourceFileNameSourceName_Number_, msm.MikeSourceTVText, msm.SourceNumberString);
                 _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat2List("SettingHydrodynamicModuleSourceFileNameSourceName_Number_", msm.MikeSourceTVText, msm.SourceNumberString));
 
-                if (!SetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, @".\" + NewPolSourceFileName, "file_name"))
+                if (!SetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/SOURCES/" + msm.SourceNumberString, @".\" + NewPolConcSourceFileName, "file_name"))
                 {
                     return;
                 }
@@ -3079,7 +3179,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            string BCFileName = GetFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_2", "file_name");
+            string BCFileName = GetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_2", "file_name");
 
             if (string.IsNullOrWhiteSpace(BCFileName))
             {
@@ -3305,7 +3405,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                string FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/DOMAIN", "file_name");
+                string FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/DOMAIN", "file_name");
                 if (!string.IsNullOrWhiteSpace(FileName))
                 {
                     fi = new FileInfo(fiOld.DirectoryName + @"\" + FileName);
@@ -3331,7 +3431,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             break;
                         }
-                        FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_" + i.ToString(), "file_name");
+                        FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/CODE_" + i.ToString(), "file_name");
                         if (!string.IsNullOrWhiteSpace(FileName))
                         {
                             fi = new FileInfo(fiOld.DirectoryName + @"\" + FileName);
@@ -3368,14 +3468,14 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                string ResultRootFolder = GetSystemResultRootFolder(pfsFile);
+                string ResultRootFolder = GetParameterString(pfsFile, "SYSTEM", "ResultRootFolder");
                 if (string.IsNullOrWhiteSpace(ResultRootFolder))
                 {
                     return;
                 }
 
                 // already verified if the number of output is 1
-                string FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+                string FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
                 if (string.IsNullOrWhiteSpace(FileName))
                 {
                     return;
@@ -3388,7 +3488,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 AddFileToFileNameList(ServerPath, fi.FullName, FileNameList, true);
 
                 // already verified if the number of output is 1
-                FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+                FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
                 if (string.IsNullOrWhiteSpace(FileName))
                 {
                     return;
@@ -3408,7 +3508,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
         }
-        private string GetFileName(PFSFile pfsFile, string Path, string Keyword)
+        private string GetParameterFileName(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
             string FileName = "";
@@ -3446,7 +3546,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return FileName;
         }
-        private string GetFileNameOnlyText(PFSFile pfsFile, string Path, string Keyword)
+        private string GetParameterFileNameOnlyText(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
             string FileName = "";
@@ -3484,11 +3584,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return FileName;
         }
-        private float? GetManningNumber(PFSFile pfsFile)
+        private double? GetParameterDouble(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
-            float? MannningNumber = null;
-            PFSSection pfsSectionManningNumber = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/BED_RESISTANCE/MANNING_NUMBER");
+            double? MannningNumber = null;
+            PFSSection pfsSectionManningNumber = pfsFile.GetSectionFromHandle(Path);
 
             if (pfsSectionManningNumber == null)
             {
@@ -3498,7 +3598,7 @@ namespace CSSPWebToolsTaskRunner.Services
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionManningNumber.GetKeyword("constant_value");
+                keyword = pfsSectionManningNumber.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -3513,7 +3613,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 try
                 {
                     param = keyword.GetParameter(1);
-                    MannningNumber = (float)param.ToDouble();
+                    MannningNumber = param.ToDouble();
                 }
                 catch (Exception ex)
                 {
@@ -3674,7 +3774,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             pfsFile.Close();
         }
-        private int? GetNumberOfOutputs(PFSFile pfsFile, string Path)
+        private int? GetParameterInt(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
             int? NumberOfOutputs = null;
@@ -3686,7 +3786,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 PFSKeyword keyword = null;
                 try
                 {
-                    keyword = pfsSectionOutputs.GetKeyword("number_of_outputs");
+                    keyword = pfsSectionOutputs.GetKeyword(Keyword);
                 }
                 catch (Exception ex)
                 {
@@ -3712,364 +3812,98 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return NumberOfOutputs;
         }
-        private int? GetNumberOfTimeSteps(PFSFile pfsFile)
+        private Coord GetParameterCoord(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
-            int? numberOfTimeSteps = null;
+            Coord SourceCoord = new Coord() { Lat = 0.0f, Lng = 0.0f, Ordinal = 0 };
+            PFSKeyword pfsKeywordCoord = null;
 
-            string SectionTime = "";
-
-            SectionTime = "FemEngineHD/TIME";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(SectionTime);
-
-            if (pfsSectionTime != null)
+            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
+            if (pfsSectionSource != null)
             {
-                PFSKeyword keyword = null;
                 try
                 {
-                    keyword = pfsSectionTime.GetKeyword("number_of_time_steps");
+                    pfsKeywordCoord = pfsSectionSource.GetKeyword(Keyword);
                 }
                 catch (Exception ex)
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return numberOfTimeSteps;
+                    return SourceCoord;
                 }
 
-                if (keyword != null)
+                if (pfsKeywordCoord != null)
                 {
                     try
                     {
-                        numberOfTimeSteps = keyword.GetParameter(1).ToInt();
+                        float Lng = (float)pfsKeywordCoord.GetParameter(1).ToDouble();
+                        float Lat = (float)pfsKeywordCoord.GetParameter(2).ToDouble();
+                        SourceCoord = new Coord() { Lat = (float)Lat, Lng = (float)Lng, Ordinal = 0 };
                     }
                     catch (Exception ex)
                     {
                         NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                         _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return numberOfTimeSteps;
+                        return SourceCoord;
                     }
-                }
-            }
-
-            return numberOfTimeSteps;
-        }
-        private float? GetSalinityReference(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            float? Salinity = null;
-            PFSSection pfsSectionSalinity = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/DENSITY");
-
-            if (pfsSectionSalinity == null)
-            {
-                return Salinity;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSalinity.GetKeyword("salinity_reference");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return Salinity;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    param = keyword.GetParameter(1);
-                    Salinity = (float)param.ToDouble();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return Salinity;
-                }
-            }
-
-            return Salinity;
-        }
-        private Coord GetSourceCoord(PFSSection pfsSectionSource)
-        {
-            string NotUsed = "";
-            Coord SourceCoord = null;
-            PFSKeyword pfsKeywordCoord = null;
-            try
-            {
-                pfsKeywordCoord = pfsSectionSource.GetKeyword("coordinates");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return SourceCoord;
-            }
-
-            if (pfsKeywordCoord != null)
-            {
-                try
-                {
-                    float Lng = (float)pfsKeywordCoord.GetParameter(1).ToDouble();
-                    float Lat = (float)pfsKeywordCoord.GetParameter(2).ToDouble();
-                    SourceCoord = new Coord() { Lat = (float)Lat, Lng = (float)Lng, Ordinal = 0 };
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return SourceCoord;
                 }
             }
 
             return SourceCoord;
         }
-        private float? GetSourceFlow(PFSSection pfsSectionSource)
-        {
-            string NotUsed = "";
-            float? SourceFlow = null;
-            PFSKeyword pfsKeywordFlow = null;
-            try
-            {
-                pfsKeywordFlow = pfsSectionSource.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return SourceFlow;
-            }
-
-            if (pfsKeywordFlow != null)
-            {
-                try
-                {
-                    SourceFlow = (float)pfsKeywordFlow.GetParameter(1).ToDouble();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return SourceFlow;
-                }
-            }
-
-            return SourceFlow;
-        }
-        private int? GetSourceIncluded(PFSSection pfsSectionSource)
-        {
-            string NotUsed = "";
-            int? SourceIncluded = null;
-            PFSKeyword pfsKeywordInculde = null;
-            try
-            {
-                pfsKeywordInculde = pfsSectionSource.GetKeyword("include");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return SourceIncluded;
-            }
-
-            if (pfsKeywordInculde != null)
-            {
-                try
-                {
-                    SourceIncluded = pfsKeywordInculde.GetParameter(1).ToInt();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return SourceIncluded;
-                }
-            }
-
-            return SourceIncluded;
-        }
-        private string GetSourceName(PFSSection pfsSectionSource)
+        private string GetParameterString(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
             string Name = "";
             PFSKeyword pfsKeywordName = null;
-            try
-            {
-                pfsKeywordName = pfsSectionSource.GetKeyword("Name");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return Name;
-            }
 
-            if (pfsKeywordName != null)
+            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
+
+            if (pfsSectionSource != null)
             {
                 try
                 {
-                    Name = pfsKeywordName.GetParameter(1).ToString();
+                    pfsKeywordName = pfsSectionSource.GetKeyword(Keyword);
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return Name;
                 }
-            }
 
-            if (Name.StartsWith("'"))
-            {
-                Name = Name.Substring(1);
-            }
-            if (Name.EndsWith("'"))
-            {
-                Name = Name.Substring(0, Name.Length - 1);
+                if (pfsKeywordName != null)
+                {
+                    try
+                    {
+                        Name = pfsKeywordName.GetParameter(1).ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return Name;
+                    }
+                }
+
+                if (Name.StartsWith("'"))
+                {
+                    Name = Name.Substring(1);
+                }
+                if (Name.EndsWith("'"))
+                {
+                    Name = Name.Substring(0, Name.Length - 1);
+                }
             }
 
             return Name;
         }
-        private int? GetSourcePollution(PFSSection pfsSectionSourceTransport)
-        {
-            string NotUsed = "";
-            int? SourcePollution = null;
-            PFSKeyword pfsKeywordPollution = null;
-            try
-            {
-                pfsKeywordPollution = pfsSectionSourceTransport.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return SourcePollution;
-            }
-
-            if (pfsKeywordPollution != null)
-            {
-                try
-                {
-                    SourcePollution = (int)pfsKeywordPollution.GetParameter(1).ToInt();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return SourcePollution;
-                }
-            }
-
-            return SourcePollution;
-        }
-        private int? GetSourcePollutionContinuous(PFSSection pfsSectionSourceTransport)
-        {
-            string NotUsed = "";
-            int? SourcePollutionContinuous = null;
-            PFSKeyword pfsKeywordPollutionContinuous = null;
-            try
-            {
-                pfsKeywordPollutionContinuous = pfsSectionSourceTransport.GetKeyword("format");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return SourcePollutionContinuous;
-            }
-
-            if (pfsKeywordPollutionContinuous != null)
-            {
-                try
-                {
-                    SourcePollutionContinuous = (int)pfsKeywordPollutionContinuous.GetParameter(1).ToInt();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return SourcePollutionContinuous;
-                }
-            }
-
-            return SourcePollutionContinuous;
-        }
-        private float? GetSourceSalinity(PFSSection pfsSectionSourceSalinity)
-        {
-            string NotUsed = "";
-            float? SourceSalinity = null;
-            PFSKeyword pfsKeywordSalinity = null;
-            try
-            {
-                pfsKeywordSalinity = pfsSectionSourceSalinity.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return SourceSalinity;
-            }
-
-            if (pfsKeywordSalinity != null)
-            {
-                try
-                {
-                    SourceSalinity = (float)pfsKeywordSalinity.GetParameter(1).ToDouble();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return SourceSalinity;
-                }
-            }
-
-            return SourceSalinity;
-        }
-        private float? GetSourceTemperature(PFSSection pfsSectionSourceTemperature)
-        {
-            string NotUsed = "";
-            float? SourceTemperature = null;
-            PFSKeyword pfsKeywordTemperature = null;
-            try
-            {
-                pfsKeywordTemperature = pfsSectionSourceTemperature.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return SourceTemperature;
-            }
-
-            if (pfsKeywordTemperature != null)
-            {
-                try
-                {
-                    SourceTemperature = (float)pfsKeywordTemperature.GetParameter(1).ToDouble();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return SourceTemperature;
-                }
-            }
-
-            return SourceTemperature;
-        }
-        private DateTime? GetStartTime(PFSFile pfsFile)
+        private DateTime? GetParameterStartTime(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
             DateTime? dateTime = null;
 
-            string SectionTime = "";
-
-            SectionTime = "FemEngineHD/TIME";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(SectionTime);
+            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(Path);
 
             if (pfsSectionTime != null)
             {
@@ -4107,290 +3941,6 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             return dateTime;
-        }
-        private string GetSystemResultRootFolder(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            string ResultRootFolder = null;
-            PFSSection pfsSectionSystem = pfsFile.GetSectionFromHandle("SYSTEM");
-
-            if (pfsSectionSystem == null)
-            {
-                return ResultRootFolder;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionSystem.GetKeyword("ResultRootFolder");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return ResultRootFolder;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    param = keyword.GetParameter(1);
-                    ResultRootFolder = param.ToString();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return ResultRootFolder;
-                }
-            }
-
-            return ResultRootFolder;
-        }
-        private float? GetTemperatureReference(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            float? Temperature = null;
-            PFSSection pfsSectionTemperature = pfsFile.GetSectionFromHandle("FemEngineHD/HYDRODYNAMIC_MODULE/DENSITY");
-
-            if (pfsSectionTemperature == null)
-            {
-                return Temperature;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionTemperature.GetKeyword("temperature_reference");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return Temperature;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    param = keyword.GetParameter(1);
-                    Temperature = (float)param.ToDouble();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return Temperature;
-                }
-            }
-
-            return Temperature;
-        }
-        private int? GetTimeStepFrequency(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            int? TimeStepFrequency = null;
-
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1");
-
-            if (pfsSectionTime != null)
-            {
-                PFSKeyword keyword = null;
-                try
-                {
-                    keyword = pfsSectionTime.GetKeyword("time_step_frequency");
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return TimeStepFrequency;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        TimeStepFrequency = keyword.GetParameter(1).ToInt();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return TimeStepFrequency;
-                    }
-                }
-            }
-
-            return TimeStepFrequency;
-        }
-        private int? GetTimeStepInterval(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            int? timeStepInterval = null;
-
-            string SectionTime = "";
-
-            SectionTime = "FemEngineHD/TIME";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(SectionTime);
-
-            if (pfsSectionTime != null)
-            {
-                PFSKeyword keyword = null;
-                try
-                {
-                    keyword = pfsSectionTime.GetKeyword("time_step_interval");
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return timeStepInterval;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        timeStepInterval = keyword.GetParameter(1).ToInt();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return timeStepInterval;
-                    }
-                }
-            }
-
-            return timeStepInterval;
-        }
-        private float? GetTransportModuleDecay(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            float? DecayValue = null;
-            PFSSection pfsSectionDecayComponent = pfsFile.GetSectionFromHandle("FemEngineHD/TRANSPORT_MODULE/DECAY/COMPONENT_1");
-
-            if (pfsSectionDecayComponent == null)
-            {
-                return DecayValue;
-            }
-
-            PFSKeyword keyword = null;
-            try
-            {
-                keyword = pfsSectionDecayComponent.GetKeyword("constant_value");
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                return DecayValue;
-            }
-
-            if (keyword != null)
-            {
-                PFSParameter param = null;
-                try
-                {
-                    param = keyword.GetParameter(1);
-                    DecayValue = (float)param.ToDouble();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return DecayValue;
-                }
-            }
-
-            return DecayValue;
-        }
-        private float? GetWindConstantDirection(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            float? windConstantDirection = null;
-
-            string SectionWindForcing = "";
-
-            SectionWindForcing = "FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(SectionWindForcing);
-
-            if (pfsSectionTime != null)
-            {
-                PFSKeyword keyword = null;
-                try
-                {
-                    keyword = pfsSectionTime.GetKeyword("constant_direction");
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return windConstantDirection;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        windConstantDirection = (float)keyword.GetParameter(1).ToDouble();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return windConstantDirection;
-                    }
-                }
-            }
-
-            return windConstantDirection;
-        }
-        private float? GetWindConstantSpeed(PFSFile pfsFile)
-        {
-            string NotUsed = "";
-            float? windConstantSpeed = null;
-
-            string SectionWindForcing = "";
-
-            SectionWindForcing = "FemEngineHD/HYDRODYNAMIC_MODULE/WIND_FORCING";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(SectionWindForcing);
-
-            if (pfsSectionTime != null)
-            {
-                PFSKeyword keyword = null;
-                try
-                {
-                    keyword = pfsSectionTime.GetKeyword("constant_speed");
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return windConstantSpeed;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        windConstantSpeed = (float)keyword.GetParameter(1).ToDouble();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return windConstantSpeed;
-                    }
-                }
-            }
-
-            return windConstantSpeed;
         }
         private bool IsEachSourceContinuous(PFSFile pfsFile)
         {
@@ -4620,7 +4170,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            string FileNameTemp = GetFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string FileNameTemp = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
             if (string.IsNullOrWhiteSpace(FileNameTemp))
             {
                 return;
@@ -4631,7 +4181,7 @@ namespace CSSPWebToolsTaskRunner.Services
             FileInfo fiServer = new FileInfo(tvFileService.GetServerFilePath(MikeScenarioTVItemID) + "\\" + fi.Name);
             string ServerHydroName = tvFileService.ChoseEDriveOrCDrive(fiServer.FullName);
 
-            string FileNameTemp2 = GetFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string FileNameTemp2 = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
             if (string.IsNullOrWhiteSpace(FileNameTemp2))
             {
                 return;
@@ -4797,7 +4347,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             //string DfsuFileName = fiM21_M3.FullName;
 
-            string FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
 
             FileInfo fiDfsu = new FileInfo(ServerPath + FileName);
 
@@ -4852,7 +4402,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 23);
 
             // try transport module result file
-            FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
 
             FileInfo fiDfsuTrans = new FileInfo(ServerPath + FileName);
 
@@ -4891,7 +4441,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (!TransExist)
             {
-                FileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUT/OUTPUT_1", "file_name");
+                FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUT/OUTPUT_1", "file_name");
 
                 fiDfsu = new FileInfo(ServerPath + FileName);
 
@@ -4974,7 +4524,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fiM21_M3 = new FileInfo(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
 
-            int? NumberOfTimeSteps2 = GetNumberOfTimeSteps(pfsFile);
+            int? NumberOfTimeSteps2 = GetParameterInt(pfsFile, "FemEngineHD/TIME", "number_of_time_steps");
             if (NumberOfTimeSteps2 == null)
             {
                 return;
@@ -5046,7 +4596,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            int? NumberOfTimeSteps3 = GetNumberOfTimeSteps(pfsFile);
+            int? NumberOfTimeSteps3 = GetParameterInt(pfsFile, "FemEngineHD/TIME", "number_of_time_steps");
             if (NumberOfTimeSteps3 == null)
             {
                 return;

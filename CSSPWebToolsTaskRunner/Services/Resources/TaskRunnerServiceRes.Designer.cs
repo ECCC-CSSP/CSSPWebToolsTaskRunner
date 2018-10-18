@@ -1987,6 +1987,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HydrometricTVItemID.
+        /// </summary>
+        public static string HydrometricTVItemID {
+            get {
+                return ResourceManager.GetString("HydrometricTVItemID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID.
         /// </summary>
         public static string ID {
