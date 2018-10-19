@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using CSSPWebToolsTaskRunner.Services;
 using System.Security.Principal;
 using CSSPWebToolsTaskRunner.Services.Resources;
@@ -17,7 +17,7 @@ using System.Globalization;
 using System.Net;
 using System.Collections.Specialized;
 using System.Net.Mail;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 using System.IO;
 using System.Transactions;
 using CSSPModelsDLL.Models;
@@ -2586,7 +2586,7 @@ namespace CSSPWebToolsTaskRunner
 
         //private void button1_Click(object sender, EventArgs e)
         //{
-        //    using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+        //    using (CSSPDBEntities db = new CSSPDBEntities())
         //    {
         //        List<TVFile> tvFileList = (from c in db.TVFiles
         //                                   where c.FileType == (int)FileTypeEnum.M21FM

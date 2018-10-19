@@ -15,9 +15,9 @@ using System.Xml;
 using System.Threading;
 using DHI.Generic.MikeZero.DFS;
 using DHI.Generic.MikeZero;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL;
+using CSSPDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using System.Data.OleDb;
@@ -277,7 +277,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@" </Style>");
 
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -506,7 +506,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 sb.AppendLine($@"					<outerBoundaryIs>");
                 sb.AppendLine($@"						<LinearRing>");
                 sb.AppendLine($@"							<coordinates>");
-                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                using (CSSPDBEntities db = new CSSPDBEntities())
                 {
                     List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelSS.TVItemID, TVTypeEnum.Subsector, MapInfoDrawTypeEnum.Polygon);
 
@@ -1010,7 +1010,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 sb.AppendLine($@"					<outerBoundaryIs>");
                 sb.AppendLine($@"						<LinearRing>");
                 sb.AppendLine($@"							<coordinates>");
-                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                using (CSSPDBEntities db = new CSSPDBEntities())
                 {
                     List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelSS.TVItemID, TVTypeEnum.Subsector, MapInfoDrawTypeEnum.Polygon);
 
@@ -1164,7 +1164,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     sb.AppendLine($@"			    	<styleUrl>#s_ylw-pushpin</styleUrl>");
                     sb.AppendLine($@"			    	<Point>");
                     sb.AppendLine($@"		    			<coordinates>");
-                    using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                    using (CSSPDBEntities db = new CSSPDBEntities())
                     {
                         List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModel.TVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
 
@@ -1199,7 +1199,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     sb.AppendLine($@"			    	<styleUrl>#msn_placemark_square</styleUrl>");
                     sb.AppendLine($@"			    	<Point>");
                     sb.AppendLine($@"		    			<coordinates>");
-                    using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                    using (CSSPDBEntities db = new CSSPDBEntities())
                     {
                         List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModel.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
 
@@ -1247,7 +1247,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 sb.AppendLine($@"			                	<styleUrl>#sn_shaded_dot</styleUrl>");
                                 sb.AppendLine($@"			                	<Point>");
                                 sb.AppendLine($@"		                			<coordinates>");
-                                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                                using (CSSPDBEntities db = new CSSPDBEntities())
                                 {
                                     foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
                                     {

@@ -10,12 +10,12 @@ using System.Transactions;
 using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using System.Net;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Enums;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 using System.Xml;
 using System.Drawing;
 
@@ -671,7 +671,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"	</Style>");
 
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages

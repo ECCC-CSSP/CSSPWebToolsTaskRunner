@@ -8,13 +8,13 @@ using CSSPWebToolsTaskRunner.Services.Resources;
 using CSSPWebToolsTaskRunner;
 using System.Transactions;
 using System.Text;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using System.Threading;
 using System.Globalization;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -148,7 +148,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -313,7 +313,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                using (CSSPDBEntities db = new CSSPDBEntities())
                 {
                     var tvItemProv = (from c in db.TVItems
                                       from cl in db.TVItemLanguages
@@ -474,7 +474,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -548,7 +548,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
-                        using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+                        using (CSSPDBEntities db2 = new CSSPDBEntities())
                         {
                             List<MWQMSample> sampleList = (from c in db2.MWQMSamples
                                                            where c.MWQMSiteTVItemID == mwqmSite.t.TVItemID
@@ -654,7 +654,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                using (CSSPDBEntities db = new CSSPDBEntities())
                 {
                     var tvItemProv = (from c in db.TVItems
                                       from cl in db.TVItemLanguages
@@ -728,7 +728,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                         {
-                            using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+                            using (CSSPDBEntities db2 = new CSSPDBEntities())
                             {
                                 List<MWQMSample> sampleList = (from c in db2.MWQMSamples
                                                                where c.MWQMSiteTVItemID == mwqmSite.t.TVItemID

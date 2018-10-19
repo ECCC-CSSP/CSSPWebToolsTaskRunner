@@ -8,12 +8,12 @@ using CSSPWebToolsTaskRunner.Services.Resources;
 using CSSPWebToolsTaskRunner;
 using System.Transactions;
 using System.Text;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Services;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -409,7 +409,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             // Doing Sheet #1
             int rowCount = 1;
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -511,7 +511,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             rowCount = 1;
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -585,7 +585,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
-                        using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+                        using (CSSPDBEntities db2 = new CSSPDBEntities())
                         {
                             List<MWQMSample> sampleList = (from c in db2.MWQMSamples
                                                            where c.MWQMSiteTVItemID == mwqmSite.t.TVItemID
@@ -699,7 +699,7 @@ namespace CSSPWebToolsTaskRunner.Services
         //    xlWorksheet.Cells[1, 3].Value = "Lng";
 
         //    int rowCount = 1;
-        //    using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+        //    using (CSSPDBEntities db = new CSSPDBEntities())
         //    {
         //        var tvItemProv = (from c in db.TVItems
         //                          from cl in db.TVItemLanguages
@@ -953,7 +953,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sb.AppendLine("Muni,LSName,Lat,Lng,PercFlow,OutLat,OutLng,AlarmSystemType,CanOverFlow,Address,CSSPUrl,Comment");
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -1132,7 +1132,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sb.AppendLine("Subsector,SiteName,SiteDesc,Lat,Lng,CurrentClass,Letter,Color,GMean,Median,P90,PercOver43,CSSPUrl");
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -1294,7 +1294,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sb.AppendLine("Municipality,Lat,Lng,CSSPUrl");
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -1432,7 +1432,7 @@ namespace CSSPWebToolsTaskRunner.Services
             //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl");
             sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,ObsDate,CSSPUrl");
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
@@ -1945,7 +1945,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sb.AppendLine("Municipality,WWTPName,Lat,Lng,OutLat,OutLng,CanOverflow,AlarmSystemType,FacilityType,AerationType,DisinfectionType,CollectionSystemType,AverageFlowInM3PerD,PeakFlowInM3PerD,Address,CSSPUrl,Comment");
 
-            using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db = new CSSPDBEntities())
             {
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages

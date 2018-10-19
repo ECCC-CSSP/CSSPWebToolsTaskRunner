@@ -8,13 +8,13 @@ using CSSPWebToolsTaskRunner.Services.Resources;
 using CSSPWebToolsTaskRunner;
 using System.Transactions;
 using System.Text;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPEnumsDLL.Services;
 using CSSPModelsDLL.Models;
 using System.Windows.Forms;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 //using System.Web.Helpers;
 
 namespace CSSPWebToolsTaskRunner.Services
@@ -72,7 +72,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<TVItemLanguage> municipalityList = new List<TVItemLanguage>();
             List<TVItemLanguage> contactList = new List<TVItemLanguage>();
 
-            using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db2 = new CSSPDBEntities())
             {
                 addressList = (from c in db2.Addresses
                                from a in TVItemIDCivicAddressList

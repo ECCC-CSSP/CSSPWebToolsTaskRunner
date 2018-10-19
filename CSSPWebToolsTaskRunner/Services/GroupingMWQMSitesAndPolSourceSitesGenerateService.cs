@@ -10,12 +10,12 @@ using System.Transactions;
 using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using System.Net;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Enums;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 using System.Xml;
 
 namespace CSSPWebToolsTaskRunner.Services
@@ -274,7 +274,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<TVItem> tvItemMWQMSiteList = new List<TVItem>();
             List<TVItem> tvItemPSSList = new List<TVItem>();
             List<TVItem> tvItemInfraList = new List<TVItem>();
-            using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+            using (CSSPDBEntities db2 = new CSSPDBEntities())
             {
                 tvItemMWQMSiteList = (from c in db2.TVItems
                                       where c.TVPath.StartsWith(tvItemModelProv.TVPath + "p")
@@ -317,7 +317,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<MWQMSitePolSourceSiteModel> mwqmSitePolSourceSiteModelExistList = new List<MWQMSitePolSourceSiteModel>();
 
                 List<TVItem> tvItemMWQMSiteSubsectorList = new List<TVItem>();
-                using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+                using (CSSPDBEntities db2 = new CSSPDBEntities())
                 {
                     tvItemMWQMSiteSubsectorList = (from c in db2.TVItems
                                                    where c.TVPath.StartsWith(tvItemModelSS.TVPath + "p")
@@ -346,7 +346,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     List<MapInfo> mapInfoPSSList2 = new List<MapInfo>();
                     List<MapInfo> mapInfoInfraList2 = new List<MapInfo>();
 
-                    using (CSSPWebToolsDBEntities db2 = new CSSPWebToolsDBEntities())
+                    using (CSSPDBEntities db2 = new CSSPDBEntities())
                     {
 
                         var mapInfoMWQMSiteList = (from c in db2.MapInfos

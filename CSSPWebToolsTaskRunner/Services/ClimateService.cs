@@ -10,12 +10,12 @@ using System.Transactions;
 using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
-using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using System.Net;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Enums;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 using System.Data.OleDb;
 
 namespace CSSPWebToolsTaskRunner.Services
@@ -553,7 +553,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
 
                 List<MWQMRun> mwqmRunList = new List<MWQMRun>();
-                using (CSSPWebToolsDBEntities db = new CSSPWebToolsDBEntities())
+                using (CSSPDBEntities db = new CSSPDBEntities())
                 {
                     mwqmRunList = (from c in db.MWQMRuns
                                    where c.SubsectorTVItemID == tvItemModel.TVItemID

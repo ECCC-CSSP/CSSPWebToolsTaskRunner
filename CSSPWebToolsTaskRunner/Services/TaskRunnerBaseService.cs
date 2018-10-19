@@ -1,5 +1,5 @@
-﻿using CSSPWebToolsDBDLL.Models;
-using CSSPWebToolsDBDLL.Services;
+﻿using CSSPDBDLL.Models;
+using CSSPDBDLL.Services;
 using CSSPWebToolsTaskRunner.Services.Resources;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using WQMS.RTNotifiers;
-using CSSPWebToolsDBDLL;
+using CSSPDBDLL;
 using CSSPFCFormWriterDLL.Services;
 using CSSPReportWriterHelperDLL.Services;
 
