@@ -1130,7 +1130,7 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Subsector,SiteName,SiteDesc,Lat,Lng,CurrentClass,Letter,Color,GMean,Median,P90,PercOver43,CSSPUrl");
+            sb.AppendLine("Subsector,SiteName,SiteDesc,Lat,Lng,CurrentClass,Letter,Color,AsOf,StatPeriod,GMean,Median,P90,PercOver43,CSSPUrl");
 
             using (CSSPDBEntities db = new CSSPDBEntities())
             {
@@ -1244,12 +1244,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         string CC = (mwqmSite.s.MWQMSiteLatestClassification != 0 ? _BaseEnumService.GetEnumText_MWQMSiteLatestClassificationEnum((MWQMSiteLatestClassificationEnum)mwqmSite.s.MWQMSiteLatestClassification) : "");
                         string L = (tvItemMoreInfoMWQMSiteModel != null ? tvItemMoreInfoMWQMSiteModel.Letter : "");
                         string COL = (tvItemMoreInfoMWQMSiteModel != null ? tvItemMoreInfoMWQMSiteModel.Coloring : "");
+                        string AsOf = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.LastSampleDate != null ? ((DateTime)tvItemMoreInfoMWQMSiteModel.LastSampleDate).ToString("yyyy MMM dd") : "");
+                        string StatPeriod = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.LastSampleDate != null ? (tvItemMoreInfoMWQMSiteModel.StatMinYear > 0 ? (tvItemMoreInfoMWQMSiteModel.StatMinYear.ToString() + " - " + tvItemMoreInfoMWQMSiteModel.StatMaxYear.ToString()) : "") : "");
                         string GM = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.GeoMean != null ? ((double)tvItemMoreInfoMWQMSiteModel.GeoMean).ToString("F1") : "");
                         string MED = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.Median != null ? ((double)tvItemMoreInfoMWQMSiteModel.Median).ToString("F1") : "");
                         string P90 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.P90 != null ? ((double)tvItemMoreInfoMWQMSiteModel.P90).ToString("F1") : "");
                         string PO43 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.PercOver43 != null ? ((double)tvItemMoreInfoMWQMSiteModel.PercOver43).ToString("F1") : "");
                         string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + mwqmSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
-                        sb.AppendLine($"{SS},{MS},{DESC},{Lat},{Lng},{CC},{L},{COL},{GM},{MED},{P90},{PO43},{URL}".Replace("\r", "   ").Replace("\n", " ").Replace("empty", "").Replace("Empty", ""));
+                        sb.AppendLine($"{SS},{MS},{DESC},{Lat},{Lng},{CC},{L},{COL},{AsOf},{StatPeriod},{GM},{MED},{P90},{PO43},{URL}".Replace("\r", "   ").Replace("\n", " ").Replace("empty", "").Replace("Empty", ""));
                     }
                 }
             }
