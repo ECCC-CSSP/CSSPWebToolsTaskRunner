@@ -682,101 +682,109 @@ namespace CSSPWebToolsTaskRunner.Services
             List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Climate, SubsectorTVItemID);
             List<int> ClimateSiteTVItemID = new List<int>();
 
-            appTaskModel.PercentCompleted = 5;
-            appTaskService.PostUpdateAppTask(appTaskModel);
+            //appTaskModel.PercentCompleted = 5;
+            //appTaskService.PostUpdateAppTask(appTaskModel);
 
             int Count = 0;
             int TotalCount = mwqmRunModelList.Count() * useOfSiteModelList.Count();
-            foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
+            if (mwqmRunModelList.Count() > 0)
             {
-
-                int EndYear = (useOfSiteModel.EndYear == null ? CurrentYear : (int)useOfSiteModel.EndYear);
-                if (Year >= useOfSiteModel.StartYear && Year <= EndYear)
+                foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
                 {
-                    ClimateSiteModel climateSiteModel = climateSiteService.GetClimateSiteModelWithClimateSiteTVItemIDDB(useOfSiteModel.SiteTVItemID);
-                    if (!string.IsNullOrWhiteSpace(climateSiteModel.Error))
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.ClimateSite, TaskRunnerServiceRes.ClimateSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.ClimateSite, TaskRunnerServiceRes.ClimateSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
-                        return;
-                    }
 
-                    string httpStrDaily = "";
-
-                    using (WebClient webClient = new WebClient())
+                    int EndYear = (useOfSiteModel.EndYear == null ? CurrentYear : (int)useOfSiteModel.EndYear);
+                    if (Year >= useOfSiteModel.StartYear && Year <= EndYear)
                     {
-                        WebProxy webProxy = new WebProxy();
-                        webClient.Proxy = webProxy;
-                        string url = string.Format(UrlToGetClimateSiteDataForRunsOfYear, climateSiteModel.ECDBID, Year);
-                        httpStrDaily = webClient.DownloadString(new Uri(url));
-                        if (httpStrDaily.Length > 0)
+                        ClimateSiteModel climateSiteModel = climateSiteService.GetClimateSiteModelWithClimateSiteTVItemIDDB(useOfSiteModel.SiteTVItemID);
+                        if (!string.IsNullOrWhiteSpace(climateSiteModel.Error))
                         {
-                            if (httpStrDaily.Substring(0, "\"Station Name".Length) == "\"Station Name")
-                            {
-                                httpStrDaily = httpStrDaily.Replace("\"", "").Replace("\n", "\r\n");
-                            }
-                        }
-                        else
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.ClimateSite, TaskRunnerServiceRes.ClimateSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.ClimateSite, TaskRunnerServiceRes.ClimateSiteTVItemID, useOfSiteModel.SiteTVItemID.ToString());
                             return;
                         }
-                    }
 
-                    foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList)
-                    {
-                        DateTime RunDate = new DateTime(mwqmRunModel.DateTime_Local.Year, mwqmRunModel.DateTime_Local.Month, mwqmRunModel.DateTime_Local.Day);
-                        DateTime RunDateMinus10 = RunDate.AddDays(-10);
+                        string httpStrDaily = "";
 
-                        DateTime ClimateStartDate = new DateTime(climateSiteModel.DailyStartDate_Local.Value.Year, climateSiteModel.DailyStartDate_Local.Value.Month, climateSiteModel.DailyStartDate_Local.Value.Day);
-                        DateTime ClimateEndDate = new DateTime(climateSiteModel.DailyEndDate_Local.Value.Year, climateSiteModel.DailyEndDate_Local.Value.Month, climateSiteModel.DailyEndDate_Local.Value.Day);
-
-                        Count += 1;
-
-                        appTaskModel.PercentCompleted = 100 * Count / TotalCount;
-                        appTaskService.PostUpdateAppTask(appTaskModel);
-
-                        if (ClimateStartDate <= RunDate && ClimateEndDate >= RunDate)
+                        using (WebClient webClient = new WebClient())
                         {
-                            UpdateDailyValuesForClimateSiteTVItemID(climateSiteModel, httpStrDaily, RunDateMinus10, RunDate, new List<DateTime>() { RunDate });
-                            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                            WebProxy webProxy = new WebProxy();
+                            webClient.Proxy = webProxy;
+                            string url = string.Format(UrlToGetClimateSiteDataForRunsOfYear, climateSiteModel.ECDBID, Year);
+                            httpStrDaily = webClient.DownloadString(new Uri(url));
+                            if (httpStrDaily.Length > 0)
                             {
+                                if (httpStrDaily.Substring(0, "\"Station Name".Length) == "\"Station Name")
+                                {
+                                    httpStrDaily = httpStrDaily.Replace("\"", "").Replace("\n", "\r\n");
+                                }
+                            }
+                            else
+                            {
+                                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
                                 return;
                             }
                         }
 
-                        if (RunDate.Year != RunDateMinus10.Year)
+                        foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList)
                         {
-                            string httpStrDaily2 = "";
+                            DateTime RunDate = new DateTime(mwqmRunModel.DateTime_Local.Year, mwqmRunModel.DateTime_Local.Month, mwqmRunModel.DateTime_Local.Day);
+                            DateTime RunDateMinus10 = RunDate.AddDays(-10);
 
-                            using (WebClient webClient2 = new WebClient())
+                            if (climateSiteModel.DailyStartDate_Local == null)
                             {
-                                WebProxy webProxy2 = new WebProxy();
-                                webClient2.Proxy = webProxy2;
-                                string url2 = string.Format(UrlToGetClimateSiteDataForRunsOfYear, climateSiteModel.ECDBID, RunDateMinus10.Year);
-                                httpStrDaily2 = webClient2.DownloadString(new Uri(url2));
-                                if (httpStrDaily2.Length > 0)
+                                continue;
+                            }
+
+                            DateTime ClimateStartDate = new DateTime(climateSiteModel.DailyStartDate_Local.Value.Year, climateSiteModel.DailyStartDate_Local.Value.Month, climateSiteModel.DailyStartDate_Local.Value.Day);
+                            DateTime ClimateEndDate = new DateTime(climateSiteModel.DailyEndDate_Local.Value.Year, climateSiteModel.DailyEndDate_Local.Value.Month, climateSiteModel.DailyEndDate_Local.Value.Day);
+
+                            Count += 1;
+
+                            appTaskModel.PercentCompleted = 100 * Count / TotalCount;
+                            appTaskService.PostUpdateAppTask(appTaskModel);
+
+                            if (ClimateStartDate <= RunDate && ClimateEndDate >= RunDate)
+                            {
+                                UpdateDailyValuesForClimateSiteTVItemID(climateSiteModel, httpStrDaily, RunDateMinus10, RunDate, new List<DateTime>() { RunDate });
+                                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                                 {
-                                    if (httpStrDaily2.Substring(0, "\"Station Name".Length) == "\"Station Name")
-                                    {
-                                        httpStrDaily2 = httpStrDaily2.Replace("\"", "").Replace("\n", "\r\n");
-                                    }
-                                }
-                                else
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url2);
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url2);
                                     return;
                                 }
                             }
 
-                            UpdateDailyValuesForClimateSiteTVItemID(climateSiteModel, httpStrDaily2, RunDateMinus10, RunDate, new List<DateTime>() { RunDateMinus10 });
-                            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                            if (RunDate.Year != RunDateMinus10.Year)
                             {
-                                return;
-                            }
+                                string httpStrDaily2 = "";
 
+                                using (WebClient webClient2 = new WebClient())
+                                {
+                                    WebProxy webProxy2 = new WebProxy();
+                                    webClient2.Proxy = webProxy2;
+                                    string url2 = string.Format(UrlToGetClimateSiteDataForRunsOfYear, climateSiteModel.ECDBID, RunDateMinus10.Year);
+                                    httpStrDaily2 = webClient2.DownloadString(new Uri(url2));
+                                    if (httpStrDaily2.Length > 0)
+                                    {
+                                        if (httpStrDaily2.Substring(0, "\"Station Name".Length) == "\"Station Name")
+                                        {
+                                            httpStrDaily2 = httpStrDaily2.Replace("\"", "").Replace("\n", "\r\n");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url2);
+                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url2);
+                                        return;
+                                    }
+                                }
+
+                                UpdateDailyValuesForClimateSiteTVItemID(climateSiteModel, httpStrDaily2, RunDateMinus10, RunDate, new List<DateTime>() { RunDateMinus10 });
+                                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                                {
+                                    return;
+                                }
+
+                            }
                         }
                     }
                 }
@@ -1114,8 +1122,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     EndMonthlyYear = EndMonthlyYear.Replace(@"\", "").Replace(@"""", "");
                 }
 
-                if (!(Province == "BRITISH COLUMBIA" 
-                    || Province == "NEW BRUNSWICK" 
+                if (!(Province == "BRITISH COLUMBIA"
+                    || Province == "NEW BRUNSWICK"
                     || Province == "NEWFOUNDLAND"
                     || Province == "NOVA SCOTIA"
                     || Province == "PRINCE EDWARD ISLAND"
@@ -2748,27 +2756,20 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
                         }
                     }
-                    if (countLine == 6)
-                    {
-                        // would get the Elevation
-                    }
-                    if (countLine == 7)
+                    if (countLine == 6 || countLine == 7)
                     {
                         LookupTxt = "Climate Identifier";
-                        if (lineValueArr[0] != LookupTxt)
+                        if (lineValueArr[0] == LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-                            return;
-                        }
-                        if (lineValueArr[1].Length > 0)
-                        {
-                            LookupTxt = climateSiteModel.ClimateID;
-                            if (lineValueArr[1] != climateSiteModel.ClimateID)
+                            if (lineValueArr[1].Length > 0)
                             {
-                                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-                                return;
+                                LookupTxt = climateSiteModel.ClimateID;
+                                if (lineValueArr[1] != climateSiteModel.ClimateID)
+                                {
+                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                                    return;
+                                }
                             }
                         }
                     }
@@ -3054,27 +3055,21 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
                         }
                     }
-                    if (countLine == 6)
+                    if (countLine == 6 || countLine == 7)
                     {
-                        // would read the Elevation
-                    }
-                    if (countLine == 7)
-                    {
+                        // it might be at line 6 or line 7
                         LookupTxt = "Climate Identifier";
-                        if (lineValueArr[0] != LookupTxt)
+                        if (lineValueArr[0] == LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-                            return;
-                        }
-                        if (lineValueArr[1].Length > 0)
-                        {
-                            LookupTxt = climateSiteModel.ClimateID;
-                            if (lineValueArr[1] != climateSiteModel.ClimateID)
+                            if (lineValueArr[1].Length > 0)
                             {
-                                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-                                return;
+                                LookupTxt = climateSiteModel.ClimateID;
+                                if (lineValueArr[1] != climateSiteModel.ClimateID)
+                                {
+                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                                    return;
+                                }
                             }
                         }
                     }
