@@ -4399,6 +4399,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stats .csv file.
+        /// </summary>
+        public static string StatsCSVFile {
+            get {
+                return ResourceManager.GetString("StatsCSVFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stats .kml file.
+        /// </summary>
+        public static string StatsKMLFile {
+            get {
+                return ResourceManager.GetString("StatsKMLFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Steps.
         /// </summary>
         public static string Steps {

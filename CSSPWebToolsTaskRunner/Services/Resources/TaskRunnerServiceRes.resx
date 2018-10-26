@@ -1788,4 +1788,10 @@
   <data name="UpdatingMikeScenarioInfoInDB" xml:space="preserve">
     <value>Updating mike scenario info in DB</value>
   </data>
+  <data name="StatsCSVFile" xml:space="preserve">
+    <value>Stats .csv file</value>
+  </data>
+  <data name="StatsKMLFile" xml:space="preserve">
+    <value>Stats .kml file</value>
+  </data>
 </root>
