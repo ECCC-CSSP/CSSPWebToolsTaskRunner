@@ -1710,7 +1710,7 @@ namespace CSSPWebToolsTaskRunner.Services
             tvFileModelNew.FileInfo = "Statistics CSV file";
             tvFileModelNew.FilePurpose = FilePurposeEnum.Information;
             tvFileModelNew.FileSize_kb = (int)(fi.Length / 1024);
-            tvFileModelNew.FileType = FileTypeEnum.KML;
+            tvFileModelNew.FileType = FileTypeEnum.CSV;
             tvFileModelNew.FromWater = false;
             tvFileModelNew.Language = LanguageEnum.en;
             tvFileModelNew.Parameters = "";
