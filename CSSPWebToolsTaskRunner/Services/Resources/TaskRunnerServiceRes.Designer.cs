@@ -853,6 +853,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find PFSSection with path [{0}].
+        /// </summary>
+        public static string CouldNotFindPFSSectionWithPath_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindPFSSectionWithPath_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find polygon for subsector {0}.
         /// </summary>
         public static string CouldNotFindPolygonForSubsector_ {

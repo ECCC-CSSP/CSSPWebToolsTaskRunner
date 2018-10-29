@@ -3513,34 +3513,38 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             string FileName = "";
 
-            PFSSection pfsSectionFileName = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionFileName != null)
+            if (pfsSection == null)
             {
-                PFSKeyword keyword = null;
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            PFSKeyword keyword = null;
+            try
+            {
+                keyword = pfsSection.GetKeyword(Keyword);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return FileName;
+            }
+
+            if (keyword != null)
+            {
                 try
                 {
-                    keyword = pfsSectionFileName.GetKeyword(Keyword);
+                    FileName = keyword.GetParameter(1).ToFileNamePath();
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return FileName;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        FileName = keyword.GetParameter(1).ToFileNamePath();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return FileName;
-                    }
                 }
             }
 
@@ -3551,34 +3555,38 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             string FileName = "";
 
-            PFSSection pfsSectionFileName = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionFileName != null)
+            if (pfsSection == null)
             {
-                PFSKeyword keyword = null;
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            PFSKeyword keyword = null;
+            try
+            {
+                keyword = pfsSection.GetKeyword(Keyword);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return FileName;
+            }
+
+            if (keyword != null)
+            {
                 try
                 {
-                    keyword = pfsSectionFileName.GetKeyword(Keyword);
+                    FileName = keyword.GetParameter(1).ToString();
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return FileName;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        FileName = keyword.GetParameter(1).ToString();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return FileName;
-                    }
                 }
             }
 
@@ -3588,17 +3596,19 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
             double? MannningNumber = null;
-            PFSSection pfsSectionManningNumber = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionManningNumber == null)
+            if (pfsSection == null)
             {
-                return MannningNumber;
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
             }
 
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionManningNumber.GetKeyword(Keyword);
+                keyword = pfsSection.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -3779,34 +3789,38 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             int? NumberOfOutputs = null;
 
-            PFSSection pfsSectionOutputs = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionOutputs != null)
+            if (pfsSection == null)
             {
-                PFSKeyword keyword = null;
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            PFSKeyword keyword = null;
+            try
+            {
+                keyword = pfsSection.GetKeyword(Keyword);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return NumberOfOutputs;
+            }
+
+            if (keyword != null)
+            {
                 try
                 {
-                    keyword = pfsSectionOutputs.GetKeyword(Keyword);
+                    NumberOfOutputs = keyword.GetParameter(1).ToInt();
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return NumberOfOutputs;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        NumberOfOutputs = keyword.GetParameter(1).ToInt();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return NumberOfOutputs;
-                    }
                 }
             }
 
@@ -3818,34 +3832,39 @@ namespace CSSPWebToolsTaskRunner.Services
             Coord SourceCoord = new Coord() { Lat = 0.0f, Lng = 0.0f, Ordinal = 0 };
             PFSKeyword pfsKeywordCoord = null;
 
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
-            if (pfsSectionSource != null)
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
+
+            if (pfsSection == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            try
+            {
+                pfsKeywordCoord = pfsSection.GetKeyword(Keyword);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return SourceCoord;
+            }
+
+            if (pfsKeywordCoord != null)
             {
                 try
                 {
-                    pfsKeywordCoord = pfsSectionSource.GetKeyword(Keyword);
+                    float Lng = (float)pfsKeywordCoord.GetParameter(1).ToDouble();
+                    float Lat = (float)pfsKeywordCoord.GetParameter(2).ToDouble();
+                    SourceCoord = new Coord() { Lat = (float)Lat, Lng = (float)Lng, Ordinal = 0 };
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return SourceCoord;
-                }
-
-                if (pfsKeywordCoord != null)
-                {
-                    try
-                    {
-                        float Lng = (float)pfsKeywordCoord.GetParameter(1).ToDouble();
-                        float Lat = (float)pfsKeywordCoord.GetParameter(2).ToDouble();
-                        SourceCoord = new Coord() { Lat = (float)Lat, Lng = (float)Lng, Ordinal = 0 };
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return SourceCoord;
-                    }
                 }
             }
 
@@ -3857,43 +3876,47 @@ namespace CSSPWebToolsTaskRunner.Services
             string Name = "";
             PFSKeyword pfsKeywordName = null;
 
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionSource != null)
+            if (pfsSection == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            try
+            {
+                pfsKeywordName = pfsSection.GetKeyword(Keyword);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return Name;
+            }
+
+            if (pfsKeywordName != null)
             {
                 try
                 {
-                    pfsKeywordName = pfsSectionSource.GetKeyword(Keyword);
+                    Name = pfsKeywordName.GetParameter(1).ToString();
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return Name;
                 }
+            }
 
-                if (pfsKeywordName != null)
-                {
-                    try
-                    {
-                        Name = pfsKeywordName.GetParameter(1).ToString();
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return Name;
-                    }
-                }
-
-                if (Name.StartsWith("'"))
-                {
-                    Name = Name.Substring(1);
-                }
-                if (Name.EndsWith("'"))
-                {
-                    Name = Name.Substring(0, Name.Length - 1);
-                }
+            if (Name.StartsWith("'"))
+            {
+                Name = Name.Substring(1);
+            }
+            if (Name.EndsWith("'"))
+            {
+                Name = Name.Substring(0, Name.Length - 1);
             }
 
             return Name;
@@ -3903,40 +3926,44 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             DateTime? dateTime = null;
 
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionTime != null)
+            if (pfsSection == null)
             {
-                PFSKeyword keyword = null;
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            PFSKeyword keyword = null;
+            try
+            {
+                keyword = pfsSection.GetKeyword("start_time");
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return dateTime;
+            }
+
+            if (keyword != null)
+            {
                 try
                 {
-                    keyword = pfsSectionTime.GetKeyword("start_time");
+                    int Year = keyword.GetParameter(1).ToInt();
+                    int Month = keyword.GetParameter(2).ToInt();
+                    int Day = keyword.GetParameter(3).ToInt();
+                    int Hour = keyword.GetParameter(4).ToInt();
+                    int Minute = keyword.GetParameter(5).ToInt();
+                    int Second = keyword.GetParameter(6).ToInt();
+                    dateTime = new DateTime(Year, Month, Day, Hour, Minute, Second);
                 }
                 catch (Exception ex)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
                     return dateTime;
-                }
-
-                if (keyword != null)
-                {
-                    try
-                    {
-                        int Year = keyword.GetParameter(1).ToInt();
-                        int Month = keyword.GetParameter(2).ToInt();
-                        int Day = keyword.GetParameter(3).ToInt();
-                        int Hour = keyword.GetParameter(4).ToInt();
-                        int Minute = keyword.GetParameter(5).ToInt();
-                        int Second = keyword.GetParameter(6).ToInt();
-                        dateTime = new DateTime(Year, Month, Day, Hour, Minute, Second);
-                    }
-                    catch (Exception ex)
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return dateTime;
-                    }
                 }
             }
 
@@ -4633,7 +4660,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("SettingHydrodynamicModuleTemperature"));
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 42);
 
-            if (!SetParameterDouble(pfsFile, "FemEngineHD/TRANSPORT_MODULE/DENSITY", (float)mikeScenarioModel.AmbientSalinity_PSU, "temperature_reference"))
+            if (!SetParameterDouble(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/DENSITY", (float)mikeScenarioModel.AmbientTemperature_C, "temperature_reference"))
             {
                 return;
             }
@@ -4740,14 +4767,27 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                pfsFile.Write(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
+                pfsFile.Write(fiM21_M3.FullName);
+                pfsFile.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // nothing
+                string InnerException = ex.InnerException != null ? $" InnerException: { ex.InnerException.Message }" : "";
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotWriteFile_Error_, $"[{ fiM21_M3.FullName }]", $"{ ex.Message } { InnerException }");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotWriteFile_Error_", $"[{ fiM21_M3.FullName }]", $"{ ex.Message } { InnerException }");
+                return;
             }
-            pfsFile.Close();
-            FixPFSFileSystemPart(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
+
+            //try
+            //{
+            //    pfsFile.Write(ServerPath + mikeScenarioModel.MikeScenarioTVText + fiM21_M3.Extension);
+            //}
+            //catch (Exception)
+            //{
+            //    // nothing
+            //}
+            //pfsFile.Close();
+            FixPFSFileSystemPart(fiM21_M3.FullName);
 
             FileInfo fiLog = new FileInfo(fiM21_M3.FullName.Replace(".m21fm", ".log").Replace(".m3fm", ".log"));
 
@@ -4804,17 +4844,19 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool SetParameterFileName(PFSFile pfsFile, string Path, string FileName, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionSource == null)
+            if (pfsSection == null)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
                 return false;
             }
 
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionSource.GetKeyword(Keyword);
+                keyword = pfsSection.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -4844,17 +4886,19 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool SetParameterInt(PFSFile pfsFile, string Path, int value, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionTime == null)
+            if (pfsSection == null)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
                 return false;
             }
 
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionTime.GetKeyword(Keyword);
+                keyword = pfsSection.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -4884,17 +4928,19 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool SetParameterDouble(PFSFile pfsFile, string Path, double value, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionWindForcing = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionWindForcing == null)
+            if (pfsSection == null)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
                 return false;
             }
 
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionWindForcing.GetKeyword(Keyword);
+                keyword = pfsSection.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -4924,17 +4970,19 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool SetParameterCoordinates(PFSFile pfsFile, string Path, Coord coord, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionSource == null)
+            if (pfsSection == null)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
                 return false;
             }
 
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionSource.GetKeyword(Keyword);
+                keyword = pfsSection.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -4970,17 +5018,19 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool SetParameterString(PFSFile pfsFile, string Path, string value, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionSource = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionSource == null)
+            if (pfsSection == null)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
                 return false;
             }
 
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionSource.GetKeyword(Keyword);
+                keyword = pfsSection.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {
@@ -5010,17 +5060,19 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool SetParameterTimeStart(PFSFile pfsFile, string Path, DateTime NewDateTime, string Keyword)
         {
             string NotUsed = "";
-            PFSSection pfsSectionTime = pfsFile.GetSectionFromHandle(Path);
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
 
-            if (pfsSectionTime == null)
+            if (pfsSection == null)
             {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
                 return false;
             }
 
             PFSKeyword keyword = null;
             try
             {
-                keyword = pfsSectionTime.GetKeyword(Keyword);
+                keyword = pfsSection.GetKeyword(Keyword);
             }
             catch (Exception ex)
             {

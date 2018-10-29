@@ -1776,4 +1776,7 @@
   <data name="StatsKMLFile" xml:space="preserve">
     <value>Stats document .kml</value>
   </data>
+  <data name="CouldNotFindPFSSectionWithPath_" xml:space="preserve">
+    <value>Could not find PFSSection with path [{0}] (fr)</value>
+  </data>
 </root>
