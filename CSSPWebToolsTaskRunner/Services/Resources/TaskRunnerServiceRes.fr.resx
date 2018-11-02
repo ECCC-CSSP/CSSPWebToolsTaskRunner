@@ -1779,4 +1779,52 @@
   <data name="CouldNotFindPFSSectionWithPath_" xml:space="preserve">
     <value>Could not find PFSSection with path [{0}] (fr)</value>
   </data>
+  <data name="SettingHydrodynamicModuleSourceFormatSourceName_Number_" xml:space="preserve">
+    <value>Setting hydrodynamic module source format source name [{0}] number [{1}] (fr)</value>
+  </data>
+  <data name="DoingPrecipitationFile" xml:space="preserve">
+    <value>Doing precipitation file (fr)</value>
+  </data>
+  <data name="CreatingFilePrecipitationDotDFS0" xml:space="preserve">
+    <value>Creating file precipitation .dfs0 (fr)</value>
+  </data>
+  <data name="OneOfRainValueForRunDate_RunTVItemID_HasNoData" xml:space="preserve">
+    <value>One of rain value for run date [{0}] and run TVItemID [{1}] has no data (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleSpecificPrecipitation" xml:space="preserve">
+    <value>Setting hydrodynamic module specific precipitation (fr)</value>
+  </data>
+  <data name="SettingTransportModulePrecipitationFileName" xml:space="preserve">
+    <value>Setting transport module precipitation file name (fr)</value>
+  </data>
+  <data name="StoringPrecipitationFile_InDB" xml:space="preserve">
+    <value>Storing precipitation file [{0}] in DB (fr)</value>
+  </data>
+  <data name="TVFilePrecipitationNew" xml:space="preserve">
+    <value>TVFilePrecipitationNew</value>
+  </data>
+  <data name="SettingHydrodynamicModulePrecipitationFormat" xml:space="preserve">
+    <value>Setting hydrodynamic module precipitation format (fr)</value>
+  </data>
+  <data name="NoDFSUFileFound" xml:space="preserve">
+    <value>No .dfsu file found (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingFileNameArea" xml:space="preserve">
+    <value>Setting hydrodynamic module decoupling file_name_area (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingFileNameFlux" xml:space="preserve">
+    <value>Setting hydrodynamic module decoupling file_name_flux (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingLastTimeStep" xml:space="preserve">
+    <value>Setting hydrodynamic module decoupling last_time_step (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingSpecificationFile" xml:space="preserve">
+    <value>Setting hydrodynamic module decoupling specification_file (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingTimeStepFrequency" xml:space="preserve">
+    <value>Setting hydrodynamic module decoupling time_step_frequency (fr)</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingType" xml:space="preserve">
+    <value>Setting hydrodynamic module decoupling type (fr)</value>
+  </data>
 </root>

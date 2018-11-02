@@ -1132,6 +1132,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating file precipitation .dfs0.
+        /// </summary>
+        public static string CreatingFilePrecipitationDotDFS0 {
+            get {
+                return ResourceManager.GetString("CreatingFilePrecipitationDotDFS0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating salinity and temperature initial conditions files.
         /// </summary>
         public static string CreatingSalinityAndTemperatureInitialConditionsFiles {
@@ -1344,6 +1353,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string DoingDecay {
             get {
                 return ResourceManager.GetString("DoingDecay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing precipitation file.
+        /// </summary>
+        public static string DoingPrecipitationFile {
+            get {
+                return ResourceManager.GetString("DoingPrecipitationFile", resourceCulture);
             }
         }
         
@@ -3058,6 +3076,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No .dfsu file found.
+        /// </summary>
+        public static string NoDFSUFileFound {
+            get {
+                return ResourceManager.GetString("NoDFSUFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No municipality within subsector.
         /// </summary>
         public static string NoMunicipalityWithinSubsector {
@@ -3243,6 +3270,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NumberTextIsRequired {
             get {
                 return ResourceManager.GetString("NumberTextIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One of rain value for run date [{0}] and run TVItemID [{1}] has no data.
+        /// </summary>
+        public static string OneOfRainValueForRunDate_RunTVItemID_HasNoData {
+            get {
+                return ResourceManager.GetString("OneOfRainValueForRunDate_RunTVItemID_HasNoData", resourceCulture);
             }
         }
         
@@ -3868,6 +3904,60 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module decoupling file_name_area.
+        /// </summary>
+        public static string SettingHydrodynamicModuleDecouplingFileNameArea {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleDecouplingFileNameArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module decoupling file_name_flux.
+        /// </summary>
+        public static string SettingHydrodynamicModuleDecouplingFileNameFlux {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleDecouplingFileNameFlux", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module decoupling last_time_step.
+        /// </summary>
+        public static string SettingHydrodynamicModuleDecouplingLastTimeStep {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleDecouplingLastTimeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module decoupling specification_file.
+        /// </summary>
+        public static string SettingHydrodynamicModuleDecouplingSpecificationFile {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleDecouplingSpecificationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module decoupling time_step_frequency.
+        /// </summary>
+        public static string SettingHydrodynamicModuleDecouplingTimeStepFrequency {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleDecouplingTimeStepFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module decoupling type.
+        /// </summary>
+        public static string SettingHydrodynamicModuleDecouplingType {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleDecouplingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setting hydrodynamic module initial condition salinity file name.
         /// </summary>
         public static string SettingHydrodynamicModuleInitialConditionSalinityFileName {
@@ -3913,6 +4003,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module precipitation format.
+        /// </summary>
+        public static string SettingHydrodynamicModulePrecipitationFormat {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModulePrecipitationFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setting hydrodynamic module salinity.
         /// </summary>
         public static string SettingHydrodynamicModuleSalinity {
@@ -3949,6 +4048,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module source format source name [{0}] number [{1}].
+        /// </summary>
+        public static string SettingHydrodynamicModuleSourceFormatSourceName_Number_ {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSourceFormatSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setting hydrodynamic module source include source name [{0}] number [{1}].
         /// </summary>
         public static string SettingHydrodynamicModuleSourceIncludeSourceName_Number_ {
@@ -3963,6 +4071,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SettingHydrodynamicModuleSourceName_Number_ {
             get {
                 return ResourceManager.GetString("SettingHydrodynamicModuleSourceName_Number_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting hydrodynamic module specific precipitation.
+        /// </summary>
+        public static string SettingHydrodynamicModuleSpecificPrecipitation {
+            get {
+                return ResourceManager.GetString("SettingHydrodynamicModuleSpecificPrecipitation", resourceCulture);
             }
         }
         
@@ -4080,6 +4197,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SettingTransportModuleLastTimeStep {
             get {
                 return ResourceManager.GetString("SettingTransportModuleLastTimeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting transport module precipitation file name.
+        /// </summary>
+        public static string SettingTransportModulePrecipitationFileName {
+            get {
+                return ResourceManager.GetString("SettingTransportModulePrecipitationFileName", resourceCulture);
             }
         }
         
@@ -4453,6 +4579,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Storing precipitation file [{0}] in DB.
+        /// </summary>
+        public static string StoringPrecipitationFile_InDB {
+            get {
+                return ResourceManager.GetString("StoringPrecipitationFile_InDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Study Area.
         /// </summary>
         public static string StudyArea {
@@ -4719,6 +4854,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string TVFileM21_3FM {
             get {
                 return ResourceManager.GetString("TVFileM21_3FM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVFilePrecipitationNew.
+        /// </summary>
+        public static string TVFilePrecipitationNew {
+            get {
+                return ResourceManager.GetString("TVFilePrecipitationNew", resourceCulture);
             }
         }
         
