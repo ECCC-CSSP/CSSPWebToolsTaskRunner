@@ -5249,93 +5249,115 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
 
-            //FileInfo fiDecoupled = new FileInfo(fiM21_M3.FullName.Replace(".m21fm", "_Decoupled.m21fm").Replace(".m3fm", "_Decoupled.m3fm"));
+            FileInfo fiDecoupled = new FileInfo(fiM21_M3.FullName.Replace(".m21fm", "_Decoupled.m21fm").Replace(".m3fm", "_Decoupled.m3fm"));
 
-            //if (!fiDecoupled.Exists)
-            //{
-            //    try
-            //    {
-            //        File.Copy(fiM21_M3.FullName, fiDecoupled.FullName, true);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        string InnerException = " InnerException: " + (ex.InnerException != null ? ex.InnerException.Message : "");
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCopyFile_To_Error_, fiM21_M3.FullName, fiDecoupled.FullName, $"{ ex.Message }{ InnerException }");
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotCopyFile_To_Error_", fiM21_M3.FullName, fiDecoupled.FullName, $"{ ex.Message }{ InnerException }");
-            //        return;
-            //    }
-            //}
+            if (!fiDecoupled.Exists)
+            {
+                try
+                {
+                    File.Copy(fiM21_M3.FullName, fiDecoupled.FullName, true);
+                }
+                catch (Exception ex)
+                {
+                    string InnerException = " InnerException: " + (ex.InnerException != null ? ex.InnerException.Message : "");
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCopyFile_To_Error_, fiM21_M3.FullName, fiDecoupled.FullName, $"{ ex.Message }{ InnerException }");
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotCopyFile_To_Error_", fiM21_M3.FullName, fiDecoupled.FullName, $"{ ex.Message }{ InnerException }");
+                    return;
+                }
+            }
 
             string ServerPath = tvFileService.GetServerFilePath(MikeScenarioTVItemID);
             string ServerFileName = fiM21_M3.Name.Replace(".m21fm", "").Replace(".m3fm", "");
 
-            //TVFileModel tvFileModelDecoupled = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, ServerFileName + "_Decoupled" + fiM21_M3.Extension);
-            //if (!string.IsNullOrWhiteSpace(tvFileModelDecoupled.Error))
-            //{
-            //    fiDecoupled = new FileInfo(fiDecoupled.FullName);
-            //    if (!fiDecoupled.Exists)
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiDecoupled.FullName);
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiDecoupled.FullName);
-            //        return;
-            //    }
+            TVFileModel tvFileModelDecoupled = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, ServerFileName + "_Decoupled" + fiM21_M3.Extension);
+            if (!string.IsNullOrWhiteSpace(tvFileModelDecoupled.Error))
+            {
+                fiDecoupled = new FileInfo(fiDecoupled.FullName);
+                if (!fiDecoupled.Exists)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiDecoupled.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiDecoupled.FullName);
+                    return;
+                }
 
-            //    TVItemModel tvItemFileModel = tvItemService.PostAddChildTVItemDB(MikeScenarioTVItemID, fiDecoupled.Name, TVTypeEnum.File);
-            //    if (!string.IsNullOrEmpty(tvItemFileModel.Error))
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fiDecoupled.Name);
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fiDecoupled.Name);
-            //        return;
-            //    }
+                TVItemModel tvItemFileModel = tvItemService.PostAddChildTVItemDB(MikeScenarioTVItemID, fiDecoupled.Name, TVTypeEnum.File);
+                if (!string.IsNullOrEmpty(tvItemFileModel.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fiDecoupled.Name);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fiDecoupled.Name);
+                    return;
+                }
 
-            //    tvFileModelDecoupled = new TVFileModel()
-            //    {
-            //        TVFileTVItemID = tvItemFileModel.TVItemID,
-            //        FilePurpose = FilePurposeEnum.MikeInput,
-            //        Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
-            //        Year = DateTime.Now.Year,
-            //        FileDescription = "Mike Decoupled File " + fiDecoupled.Extension,
-            //        FileType = tvFileService.GetFileType(fiDecoupled.Extension),
-            //        FileSize_kb = (int)(fiDecoupled.Length / 1024),
-            //        FileInfo = "Mike Scenario Documentation",
-            //        FileCreatedDate_UTC = fiDecoupled.CreationTime.ToUniversalTime(),
-            //        ServerFileName = fiDecoupled.Name,
-            //        ServerFilePath = fiDecoupled.Directory + "\\",
-            //    };
+                tvFileModelDecoupled = new TVFileModel()
+                {
+                    TVFileTVItemID = tvItemFileModel.TVItemID,
+                    FilePurpose = FilePurposeEnum.MikeInput,
+                    Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language,
+                    Year = DateTime.Now.Year,
+                    FileDescription = "Mike Decoupled File " + fiDecoupled.Extension,
+                    FileType = tvFileService.GetFileType(fiDecoupled.Extension),
+                    FileSize_kb = (int)(fiDecoupled.Length / 1024),
+                    FileInfo = "Mike Scenario Documentation",
+                    FileCreatedDate_UTC = fiDecoupled.CreationTime.ToUniversalTime(),
+                    ServerFileName = fiDecoupled.Name,
+                    ServerFilePath = fiDecoupled.Directory + "\\",
+                };
 
-            //    TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelDecoupled);
-            //    if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
-            //        return;
-            //    }
-            //}
+                TVFileModel tvFileModelRet = tvFileService.PostAddTVFileDB(tvFileModelDecoupled);
+                if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.TVFile, tvFileModelRet.Error);
+                    return;
+                }
+            }
 
-            //tvFileModelDecoupled = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, ServerFileName + "_Decoupled" + fiM21_M3.Extension);
-            //if (!string.IsNullOrWhiteSpace(tvFileModelDecoupled.Error))
-            //{
-            //    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.ServerFileName, ServerPath, ServerFileName + "_Decoupled" + fiM21_M3.Extension);
-            //    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.ServerFileName, ServerPath + ServerFileName + "_Decoupled" + fiM21_M3.Extension);
-            //    return;
-            //}
+            tvFileModelDecoupled = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, ServerFileName + "_Decoupled" + fiM21_M3.Extension);
+            if (!string.IsNullOrWhiteSpace(tvFileModelDecoupled.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.ServerFileName, ServerPath, ServerFileName + "_Decoupled" + fiM21_M3.Extension);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.ServerFileName, ServerPath + ServerFileName + "_Decoupled" + fiM21_M3.Extension);
+                return;
+            }
 
-            //PFSFile pfsFile = new PFSFile(fiDecoupled.FullName);
+            PFSFile pfsFile = new PFSFile(fiDecoupled.FullName);
 
-            //if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/Decoupling", 1, "type"))
-            //{
-            //    return;
-            //}
+            if (!SetParameterInt(pfsFile, "FemEngineHD/MODULE_SELECTION", 1, "mode_of_hydrodynamic_module"))
+            {
+                return;
+            }
 
-            //try
-            //{
-            //    pfsFile.Write(fiM21_M3.FullName);
-            //}
-            //catch (Exception)
-            //{
-            //    // nothing
-            //}
-            //pfsFile.Close();
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE", 1, "mode"))
+            {
+                return;
+            }
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/TIME", 10, "time_step_factor"))
+            {
+                return;
+            }
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/DECOUPLING", 0, "type"))
+            {
+                return;
+            }
+
+            if (!SetParameterInt(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", 0, "include"))
+            {
+                return;
+            }
+
+            try
+            {
+                pfsFile.Write(fiDecoupled.FullName);
+            }
+            catch (Exception)
+            {
+                // nothing
+            }
+            pfsFile.Close();
+
+            FixPFSFileSystemPart(fiDecoupled.FullName);
 
             FileInfo fiDecouplingArea = new FileInfo(fiM21_M3.FullName.Replace(".m21fm", "_DecouplingArea.dfsu").Replace(".m3fm", "_DecouplingArea.dfsu"));
             FileInfo fiDecouplingFlux = new FileInfo(fiM21_M3.FullName.Replace(".m21fm", "_DecouplingFlux.dfsu").Replace(".m3fm", "_DecouplingFlux.dfsu"));
