@@ -3289,7 +3289,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         xlApp.Selection.Interior.Color = Coloring;
 
                     }
-                    if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 10)
+                    if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 4)
                     {
                         int MWQMSampleCount = mwqmSampleAnalysisForSiteModelToUseList.Count;
                         int? MaxYear = mwqmSampleAnalysisForSiteModelToUseList[0].SampleDateTime_Local.Year;
@@ -3490,7 +3490,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                          where c.MWQMRunTVItemID == mwqmSampleAnalysisModel.MWQMRunTVItemID
                                          select c.ColNumber).FirstOrDefault();
 
-                        if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 10)
+                        if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 4)
                         {
                             List<double> SampleList = (from c in mwqmSampleAnalysisForSiteModelToUseList
                                                        select (c.FecCol_MPN_100ml == 1 ? 1.9D : (double)c.FecCol_MPN_100ml)).ToList<double>();

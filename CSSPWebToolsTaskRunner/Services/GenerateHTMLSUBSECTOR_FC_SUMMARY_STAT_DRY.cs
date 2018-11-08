@@ -462,7 +462,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         sbTemp.AppendLine(@"        </tr>");
                     }
-                    if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 10)
+                    if (mwqmSampleAnalysisForSiteModelToUseList.Count >= 4)
                     {
                         int MWQMSampleCount = mwqmSampleAnalysisForSiteModelToUseList.Count;
                         int? MaxYear = mwqmSampleAnalysisForSiteModelToUseList[0].SampleDateTime_Local.Year;
