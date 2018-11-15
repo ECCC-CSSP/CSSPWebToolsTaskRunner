@@ -1852,6 +1852,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ForSimulatingMWQMRunTVItemID.
+        /// </summary>
+        public static string ForSimulatingMWQMRunTVItemID {
+            get {
+                return ResourceManager.GetString("ForSimulatingMWQMRunTVItemID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From.
         /// </summary>
         public static string From {
@@ -2676,6 +2685,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MikeScenarioMesh {
             get {
                 return ResourceManager.GetString("MikeScenarioMesh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MikeScenarioResult.
+        /// </summary>
+        public static string MikeScenarioResult {
+            get {
+                return ResourceManager.GetString("MikeScenarioResult", resourceCulture);
             }
         }
         

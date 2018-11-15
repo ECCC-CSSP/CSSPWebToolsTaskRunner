@@ -18,6 +18,7 @@ using DHI.Generic.MikeZero.DFS.dfsu;
 using DHI.PFS;
 using DHI.Generic.MikeZero.DFS;
 using DHI.Generic.MikeZero;
+using System.Drawing;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -1025,6 +1026,103 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
+        public List<ElementLayer> GetElementSurrondingEachPoint(List<ElementLayer> ElementLayerList, List<Node> Nodes)
+        {
+            List<ElementLayer> AllElementList = new List<ElementLayer>();
+
+            foreach (ElementLayer el in ElementLayerList)
+            {
+                float XMin = (from a in el.Element.NodeList
+                              select a.X).Min();
+                float YMin = (from a in el.Element.NodeList
+                              select a.Y).Min();
+                float XMax = (from a in el.Element.NodeList
+                              select a.X).Max();
+                float YMax = (from a in el.Element.NodeList
+                              select a.Y).Max();
+
+                foreach (Node n in Nodes)
+                {
+                    if ((n.X > XMin && n.X < XMax) && (n.Y > YMin && n.Y < YMax))
+                    {
+                        Point p = new Point((int)(n.X * 10000000), (int)(n.Y * 10000000));
+                        if (el.Element.Type == 21 || el.Element.Type == 32)
+                        {
+                            Point[] poly =
+                            {
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                           };
+
+                            if (PointInPolygon(p, poly))
+                            {
+                                AllElementList.Add(el);
+                            }
+                        }
+                        else if (el.Element.Type == 25 || el.Element.Type == 33)
+                        {
+                            Point[] poly =
+                            {
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[3].X*10000000), Y = (int)(el.Element.NodeList[3].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                           };
+                            if (PointInPolygon(p, poly))
+                            {
+                                AllElementList.Add(el);
+                            }
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+
+            return AllElementList;
+        }
+        private bool PointInPolygon(Point p, Point[] poly)
+        {
+            Point p1, p2;
+            bool inside = false;
+            if (poly.Length < 3)
+            {
+                return inside;
+            }
+
+            Point oldPoint = new Point(poly[poly.Length - 1].X, poly[poly.Length - 1].Y);
+
+            for (int i = 0; i < poly.Length; i++)
+            {
+                Point newPoint = new Point(poly[i].X, poly[i].Y);
+
+                if (newPoint.X > oldPoint.X)
+                {
+                    p1 = oldPoint;
+                    p2 = newPoint;
+                }
+                else
+                {
+                    p1 = newPoint;
+                    p2 = oldPoint;
+                }
+
+                if ((newPoint.X < p.X) == (p.X <= oldPoint.X) && ((long)p.Y - (long)p1.Y) * (long)(p2.X - p1.X) < ((long)p2.Y - (long)p1.Y) * (long)(p.X - p1.X))
+                {
+                    inside = !inside;
+                }
+
+                oldPoint = newPoint;
+
+            }
+            return inside;
+        }
+
         private bool FillVectors21_32(Element el, List<Element> UniqueElementList, float ContourValue)
         {
             string NotUsed = "";

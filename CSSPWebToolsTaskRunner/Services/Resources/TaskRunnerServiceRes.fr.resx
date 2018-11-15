@@ -1827,4 +1827,10 @@
   <data name="SettingHydrodynamicModuleDecouplingType" xml:space="preserve">
     <value>Setting hydrodynamic module decoupling type (fr)</value>
   </data>
+  <data name="ForSimulatingMWQMRunTVItemID" xml:space="preserve">
+    <value>ForSimulatingMWQMRunTVItemID</value>
+  </data>
+  <data name="MikeScenarioResult" xml:space="preserve">
+    <value>MikeScenarioResult</value>
+  </data>
 </root>
