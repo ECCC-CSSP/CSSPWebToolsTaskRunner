@@ -983,7 +983,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
         }
-        public void MikeScenarioResultCreateAndSave()
+        public void MikeScenarioPrepareResults()
         {
             MikeScenarioService mikeScenarioService = new MikeScenarioService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
@@ -4788,17 +4788,57 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MWQMSiteModel> mwqmSiteModelList = mwqmSiteService.GetMWQMSiteModelListWithSubsectorTVItemIDDB(mwqmRunModel.SubsectorTVItemID);
             List<MWQMSampleModel> mwqmSampleModelList = mwqmSampleService.GetMWQMSampleModelListWithMWQMRunTVItemIDDB(mwqmRunModel.MWQMRunTVItemID);
 
+            List<TVLocation> tvLocationList = new List<TVLocation>();
+
+            List<TVItemModel> tvItemModelList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(mwqmRunModel.SubsectorTVItemID, TVTypeEnum.MWQMSite);
+
+            foreach (TVItemModel tvItemModel in tvItemModelList)
+            {
+                TVLocation tvlNew = new TVLocation();
+                tvlNew.TVItemID = tvItemModel.TVItemID;
+                tvlNew.TVText = tvItemModel.TVText;
+                tvlNew.TVType = tvItemModel.TVType;
+                tvlNew.SubTVType = TVTypeEnum.MWQMSite;
+
+                mapInfoService.GetMWQMSiteMapInfoStatDB(tvItemModel.TVItemID, tvlNew, 30);
+
+                List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModel.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
+                if (mapInfoPointModelList.Count > 0)
+                {
+                    MapObj mapObj = new MapObj();
+                    mapObj.MapInfoID = mapInfoPointModelList[0].MapInfoID;
+                    mapObj.MapInfoDrawType = MapInfoDrawTypeEnum.Point;
+
+                    List<Coord> coordList = new List<Coord>();
+
+                    foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+                    {
+                        coordList.Add(new Coord() { Lat = (float)mapInfoPointModel.Lat, Lng = (float)mapInfoPointModel.Lng, Ordinal = mapInfoPointModel.Ordinal });
+                    }
+
+                    mapObj.CoordList = coordList;
+                    tvlNew.MapObjList.Add(mapObj);
+                }
+
+                tvLocationList.Add(tvlNew);
+            }
+
             foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelList.OrderBy(c => c.MWQMSiteTVText))
             {
                 List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mwqmSiteModel.MWQMSiteTVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
                 if (mapInfoPointModelList.Count > 0)
                 {
+                    TVLocation tvLocation = (from c in tvLocationList
+                                             where c.TVItemID == mwqmSiteModel.MWQMSiteTVItemID
+                                             select c).FirstOrDefault();
+
                     MWQMSampleModel mwqmSampleModel = (from c in mwqmSampleModelList
                                                        where c.MWQMSiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID
                                                        select c).FirstOrDefault();
 
                     if (mwqmSampleModel == null)
                     {
+
                         MIKEMWQMSiteResult mikeMWQMSiteResult = new MIKEMWQMSiteResult()
                         {
                             MWQMSiteTVItemID = mwqmSiteModel.MWQMSiteTVItemID,
@@ -4806,6 +4846,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             Lat = (float)(mapInfoPointModelList[0].Lat),
                             Lng = (float)(mapInfoPointModelList[0].Lng),
                             NoSample = true,
+                            TVLocation = tvLocation,
                         };
 
                         mikeResult.MIKEMWQMSiteResultList.Add(mikeMWQMSiteResult);
@@ -4819,6 +4860,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             Lat = (float)(mapInfoPointModelList[0].Lat),
                             Lng = (float)(mapInfoPointModelList[0].Lng),
                             NoSample = false,
+                            TVLocation = tvLocation,
                             FC = mwqmSampleModel.FecCol_MPN_100ml,
                             Salinity = (mwqmSampleModel.Salinity_PPT == null ? -1 : (float)mwqmSampleModel.Salinity_PPT),
                             Temperature = (mwqmSampleModel.WaterTemp_C == null ? -1 : (float)mwqmSampleModel.WaterTemp_C),

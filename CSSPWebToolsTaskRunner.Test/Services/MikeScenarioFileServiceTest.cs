@@ -81,7 +81,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
         #region Functions public
         [TestMethod]
-        public void MikeScenarioFileService_MikeScenarioResultCreateAndSave_Test()
+        public void MikeScenarioFileService_MikeScenarioPrepareResults_Test()
         {
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
@@ -96,7 +96,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                     AppTaskID = 100000,
                     TVItemID = MikeScenarioTVItemID,
                     TVItemID2 = MikeScenarioTVItemID,
-                    AppTaskCommand = AppTaskCommandEnum.MikeScenarioResultCreateAndSave,
+                    AppTaskCommand = AppTaskCommandEnum.MikeScenarioPrepareResults,
                     AppTaskStatus = AppTaskStatusEnum.Created,
                     PercentCompleted = 1,
                     Parameters = Parameters,
@@ -126,7 +126,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 taskRunnerBaseService._BWObj = bwObj;
 
                 MikeScenarioFileService _MikeScenarioFileService = new MikeScenarioFileService(taskRunnerBaseService);
-                _MikeScenarioFileService.MikeScenarioResultCreateAndSave();
+                _MikeScenarioFileService.MikeScenarioPrepareResults();
                 Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
 
                 break;

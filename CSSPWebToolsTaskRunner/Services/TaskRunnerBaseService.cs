@@ -361,12 +361,12 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case AppTaskCommandEnum.MikeScenarioResultCreateAndSave:
+                case AppTaskCommandEnum.MikeScenarioPrepareResults:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
                         AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
                         MikeScenarioFileService mikeScenarioFileService = new MikeScenarioFileService(_TaskRunnerBaseService);
-                        mikeScenarioFileService.MikeScenarioResultCreateAndSave();
+                        mikeScenarioFileService.MikeScenarioPrepareResults();
                         if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                         {
                             appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
