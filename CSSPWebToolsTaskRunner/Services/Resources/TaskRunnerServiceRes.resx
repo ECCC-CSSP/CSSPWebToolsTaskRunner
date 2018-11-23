@@ -1851,4 +1851,40 @@
   <data name="MikeScenarioResult" xml:space="preserve">
     <value>MikeScenarioResult</value>
   </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Authors</value>
+  </data>
+  <data name="CouldNotFindYearSpecificReportSection" xml:space="preserve">
+    <value>Could not find year specific report section</value>
+  </data>
+  <data name="InformationAboveWasWrittenFor" xml:space="preserve">
+    <value>Information above was written for</value>
+  </data>
+  <data name="InformationBelowWasWrittenFor" xml:space="preserve">
+    <value>Information below was written for</value>
+  </data>
+  <data name="NoReportSectionFound" xml:space="preserve">
+    <value>No report section found</value>
+  </data>
+  <data name="PleaseAddReportSectionForSpecificYear" xml:space="preserve">
+    <value>Please add report section for specific year</value>
+  </data>
+  <data name="PleaseModifyIfNeeded" xml:space="preserve">
+    <value>Please modify if needed</value>
+  </data>
+  <data name="ReEvaluation" xml:space="preserve">
+    <value>Re-Evaluation</value>
+  </data>
+  <data name="ReEvaluationReport" xml:space="preserve">
+    <value>Re-Evaluation Report</value>
+  </data>
+  <data name="ReportID" xml:space="preserve">
+    <value>Report ID</value>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Staff</value>
+  </data>
+  <data name="SWCP" xml:space="preserve">
+    <value>SWCP</value>
+  </data>
 </root>

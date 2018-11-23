@@ -1833,4 +1833,40 @@
   <data name="MikeScenarioResult" xml:space="preserve">
     <value>MikeScenarioResult</value>
   </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Authors (fr)</value>
+  </data>
+  <data name="CouldNotFindYearSpecificReportSection" xml:space="preserve">
+    <value>Could not find year specific report section (fr)</value>
+  </data>
+  <data name="InformationAboveWasWrittenFor" xml:space="preserve">
+    <value>Information above was written for (fr)</value>
+  </data>
+  <data name="InformationBelowWasWrittenFor" xml:space="preserve">
+    <value>Information below was written for (fr)</value>
+  </data>
+  <data name="NoReportSectionFound" xml:space="preserve">
+    <value>No report section found (fr)</value>
+  </data>
+  <data name="PleaseAddReportSectionForSpecificYear" xml:space="preserve">
+    <value>Please add report section for specific year (fr)</value>
+  </data>
+  <data name="PleaseModifyIfNeeded" xml:space="preserve">
+    <value>Please modify if needed (fr)</value>
+  </data>
+  <data name="ReEvaluation" xml:space="preserve">
+    <value>Re-Evaluation (fr)</value>
+  </data>
+  <data name="ReEvaluationReport" xml:space="preserve">
+    <value>Re-Evaluation Report (fr)</value>
+  </data>
+  <data name="ReportID" xml:space="preserve">
+    <value>Report ID (fr)</value>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Staff (fr)</value>
+  </data>
+  <data name="SWCP" xml:space="preserve">
+    <value>SWCP (fr)</value>
+  </data>
 </root>

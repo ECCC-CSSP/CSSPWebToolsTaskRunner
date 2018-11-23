@@ -45,240 +45,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        //private bool GenerateHTMLSubsectorTestObjectsDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorFCSummaryStatDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorMapActivePolSourceSitesDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorMapMWQMSitesDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorRE_EVALUATIONCoverPageDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorPollutionSourceSitesDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorMWQMSitesDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorReEvaluationDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-        //private bool GenerateHTMLSubsectorAnnualReviewDocx()
-        //{
-        //    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
-
-        //    if (!GetTopHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateSectionsRecursiveDocx(new ReportSectionModel()))
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GenerateObjects())
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!GetBottomHTML())
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
 
         private bool GenerateSectionsRecursiveDocx(ReportSectionModel reportSectionModel)
         {
@@ -294,7 +60,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (reportSectionModelList.Count == 0)
             {
-                sb.AppendLine("No ReportSectionModel found");
+                sb.AppendLine(TaskRunnerServiceRes.NoReportSectionFound);
             }
             else
             {
@@ -307,18 +73,23 @@ namespace CSSPWebToolsTaskRunner.Services
                         ReportSectionModel reportSectionModelUnderOrEqualYear = reportSectionModelYearsList.Where(c => c.Year <= Year).OrderByDescending(c => c.Year).FirstOrDefault();
                         if (reportSectionModelUnderOrEqualYear != null)
                         {
+                            sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWasWrittenFor } { reportSectionModelUnderOrEqualYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                             sb.Append(reportSectionModelUnderOrEqualYear.ReportSectionText);
+                            sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWasWrittenFor } { reportSectionModelUnderOrEqualYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                         }
                         else
                         {
                             ReportSectionModel reportSectionModelOverYear = reportSectionModelYearsList.Where(c => c.Year > Year).OrderByDescending(c => c.Year).FirstOrDefault();
                             if (reportSectionModelOverYear != null)
                             {
+                                sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWasWrittenFor } { reportSectionModelOverYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                                 sb.Append(reportSectionModelOverYear.ReportSectionText);
+                                sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWasWrittenFor } { reportSectionModelOverYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                             }
                             else
                             {
-                                sb.AppendLine("Error should have found TVItemID and Year specific ReportSectionModel");
+
+                                sb.AppendLine($"<p> { TaskRunnerServiceRes.CouldNotFindYearSpecificReportSection }</p>");
                             }
                         }
                     }

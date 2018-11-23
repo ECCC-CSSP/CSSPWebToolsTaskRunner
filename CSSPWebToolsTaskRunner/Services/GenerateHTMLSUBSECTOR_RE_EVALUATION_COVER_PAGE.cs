@@ -118,10 +118,15 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 SubsectorShort = tvItemModelSubsector.TVText.Substring(0, Pos).Trim();
                 SubsectorEndPart = tvItemModelSubsector.TVText.Substring(Pos).Trim();
+                if (SubsectorEndPart.StartsWith("("))
+                {
+                    SubsectorEndPart = SubsectorEndPart.Substring(1);
+                }
+                if (SubsectorEndPart.EndsWith(")"))
+                {
+                    SubsectorEndPart = SubsectorEndPart.Substring(0, SubsectorEndPart.Length - 1);
+                }
             }
-
-            string NamesOfAuthors = "Name of authors";
-            string ReportDateText = DateTime.Now.ToString("MMMM yyyy");
 
             Percent = 30;
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
@@ -144,22 +149,27 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"   <br />");
             sbTemp.AppendLine($@"   <blockquote>");
             sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.MarineWaterQualityReEvaluationReport }</strong></p>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;"">");
+            sbTemp.AppendLine($@"           <strong>{ TaskRunnerServiceRes.ShellfishWaterClassificationProgram } ({ TaskRunnerServiceRes.SWCP }) </strong>");
+            sbTemp.AppendLine($@"       </p>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;"">");
+            sbTemp.AppendLine($@"           <strong>{ TaskRunnerServiceRes.ReEvaluationReport }</strong>");
+            sbTemp.AppendLine($@"       </p>");
             sbTemp.AppendLine($@"       <hr />");
             sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ tvItemModelProvince.TVText } { TaskRunnerServiceRes.ShellfishGrowingArea}</strong></p>");
             sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ SubsectorShort }</strong></p>");
             sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ SubsectorEndPart }</strong></p>");
             sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ NamesOfAuthors }</strong></p>");
+            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Authors }:</strong> { tvItemModelProvince.TVText } { TaskRunnerServiceRes.SWCP } { TaskRunnerServiceRes.Staff }</p>");
             sbTemp.AppendLine($@"       <hr />");
             sbTemp.AppendLine($@"   </blockquote>");
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 sbTemp.AppendLine($@"   <p>&nbsp;</p>");
             }
-            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ShellfishWaterClassificationProgram }</strong></p>");
-            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Report } </strong><span>_______________________</span></p>");
-            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;""><strong>{ ReportDateText }</strong></p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;"">");
+            sbTemp.AppendLine($@"       <strong>{ TaskRunnerServiceRes.ReportID }:</strong> { TaskRunnerServiceRes.ReEvaluation } ({ SubsectorShort }) { DateTime.Now.ToString("MMMM") } { Year }");
+            sbTemp.AppendLine($@"   </p>");
             sbTemp.AppendLine($@" </div>");
             sbTemp.AppendLine($@" <div class=""textAlignRight"">|||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,22|||</div>");
 

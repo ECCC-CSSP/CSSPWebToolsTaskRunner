@@ -340,6 +340,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authors.
+        /// </summary>
+        public static string Authors {
+            get {
+                return ResourceManager.GetString("Authors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average Decay Factor.
         /// </summary>
         public static string AverageDecayFactor {
@@ -876,6 +885,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotFindTVItemRoot {
             get {
                 return ResourceManager.GetString("CouldNotFindTVItemRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find year specific report section.
+        /// </summary>
+        public static string CouldNotFindYearSpecificReportSection {
+            get {
+                return ResourceManager.GetString("CouldNotFindYearSpecificReportSection", resourceCulture);
             }
         }
         
@@ -2059,6 +2077,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Information above was written for.
+        /// </summary>
+        public static string InformationAboveWasWrittenFor {
+            get {
+                return ResourceManager.GetString("InformationAboveWasWrittenFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information below was written for.
+        /// </summary>
+        public static string InformationBelowWasWrittenFor {
+            get {
+                return ResourceManager.GetString("InformationBelowWasWrittenFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Infrastructures.
         /// </summary>
         public static string Infrastructures {
@@ -3121,6 +3157,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No report section found.
+        /// </summary>
+        public static string NoReportSectionFound {
+            get {
+                return ResourceManager.GetString("NoReportSectionFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal run completion.
         /// </summary>
         public static string NormalRunCompletion {
@@ -3445,11 +3490,29 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please add report section for specific year.
+        /// </summary>
+        public static string PleaseAddReportSectionForSpecificYear {
+            get {
+                return ResourceManager.GetString("PleaseAddReportSectionForSpecificYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter a valid [{0}]..
         /// </summary>
         public static string PleaseEnterAValid_ {
             get {
                 return ResourceManager.GetString("PleaseEnterAValid_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please modify if needed.
+        /// </summary>
+        public static string PleaseModifyIfNeeded {
+            get {
+                return ResourceManager.GetString("PleaseModifyIfNeeded", resourceCulture);
             }
         }
         
@@ -3670,11 +3733,38 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Re-Evaluation.
+        /// </summary>
+        public static string ReEvaluation {
+            get {
+                return ResourceManager.GetString("ReEvaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Re-Evaluation Report.
+        /// </summary>
+        public static string ReEvaluationReport {
+            get {
+                return ResourceManager.GetString("ReEvaluationReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report.
         /// </summary>
         public static string Report {
             get {
                 return ResourceManager.GetString("Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report ID.
+        /// </summary>
+        public static string ReportID {
+            get {
+                return ResourceManager.GetString("ReportID", resourceCulture);
             }
         }
         
@@ -4462,6 +4552,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Staff.
+        /// </summary>
+        public static string Staff {
+            get {
+                return ResourceManager.GetString("Staff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Date.
         /// </summary>
         public static string StartDate {
@@ -4647,6 +4746,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SummaryStatisticsOfFCDensities {
             get {
                 return ResourceManager.GetString("SummaryStatisticsOfFCDensities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SWCP.
+        /// </summary>
+        public static string SWCP {
+            get {
+                return ResourceManager.GetString("SWCP", resourceCulture);
             }
         }
         
