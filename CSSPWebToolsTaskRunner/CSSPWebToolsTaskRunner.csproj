@@ -178,6 +178,8 @@
     <Compile Include="Services\DocxService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_CSSP_LOGO.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_ECCC_AND_SWCP_LOGO.cs" />
     <Compile Include="Services\HydrometricService.cs" />
     <Compile Include="Services\GroupingMWQMSitesAndPolSourceSitesGenerateService.cs" />
     <Compile Include="Services\ClassificationGenerateService.cs" />

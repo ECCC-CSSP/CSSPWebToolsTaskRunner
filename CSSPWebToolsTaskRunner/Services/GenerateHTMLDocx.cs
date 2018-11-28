@@ -66,39 +66,49 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 foreach (ReportSectionModel reportSectionModelTemp in reportSectionModelList)
                 {
-                    List<ReportSectionModel> reportSectionModelYearsList = _ReportSectionService.GetReportSectionModelListWithTemplateReportSectionIDDB(reportSectionModelTemp.ReportSectionID).ToList();
-
-                    if (reportSectionModelYearsList.Count > 0)
+                    if (reportSectionModelTemp.Year != null && reportSectionModelTemp.Year != Year)
                     {
-                        ReportSectionModel reportSectionModelUnderOrEqualYear = reportSectionModelYearsList.Where(c => c.Year <= Year).OrderByDescending(c => c.Year).FirstOrDefault();
-                        if (reportSectionModelUnderOrEqualYear != null)
-                        {
-                            sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWasWrittenFor } { reportSectionModelUnderOrEqualYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
-                            sb.Append(reportSectionModelUnderOrEqualYear.ReportSectionText);
-                            sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWasWrittenFor } { reportSectionModelUnderOrEqualYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
-                        }
-                        else
-                        {
-                            ReportSectionModel reportSectionModelOverYear = reportSectionModelYearsList.Where(c => c.Year > Year).OrderByDescending(c => c.Year).FirstOrDefault();
-                            if (reportSectionModelOverYear != null)
-                            {
-                                sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWasWrittenFor } { reportSectionModelOverYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
-                                sb.Append(reportSectionModelOverYear.ReportSectionText);
-                                sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWasWrittenFor } { reportSectionModelOverYear.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
-                            }
-                            else
-                            {
-
-                                sb.AppendLine($"<p> { TaskRunnerServiceRes.CouldNotFindYearSpecificReportSection }</p>");
-                            }
-                        }
+                        sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWasWrittenFor } { reportSectionModelTemp.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                        sb.Append(reportSectionModelTemp.ReportSectionText);
+                        sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWasWrittenFor } { reportSectionModelTemp.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                     }
                     else
                     {
                         sb.Append(reportSectionModelTemp.ReportSectionText);
                     }
 
-                    List<ReportSectionModel> reportSectionModelChildrenList = _ReportSectionService.GetReportSectionModelListWithParentReportSectionIDDB(reportSectionModelTemp.ReportSectionID).OrderBy(c => c.Ordinal).ToList();
+                    List<ReportSectionModel> reportSectionModelAllChildrenList = _ReportSectionService.GetReportSectionModelListWithParentReportSectionIDDB(reportSectionModelTemp.ReportSectionID).OrderBy(c => c.Ordinal).ToList();
+
+                    ReportSectionModel reportSectionModelNonStaticChild = (from c in reportSectionModelAllChildrenList
+                                                                           where c.TVItemID == TVItemID
+                                                                           && c.Year != null
+                                                                           && c.Year <= Year
+                                                                           orderby c.Year descending
+                                                                           select c).FirstOrDefault();
+
+                    List<ReportSectionModel> reportSectionModelAllStaticChildrenList = (from c in reportSectionModelAllChildrenList
+                                                                                        where c.TVItemID == null
+                                                                                        && c.Year == null
+                                                                                        select c).ToList();
+
+                    List<ReportSectionModel> reportSectionModelChildrenList = new List<ReportSectionModel>();
+
+                    int Ordinal = 0;
+                    if (reportSectionModelNonStaticChild != null)
+                    {
+                        Ordinal = reportSectionModelNonStaticChild.Ordinal;
+                        reportSectionModelChildrenList.Add(reportSectionModelNonStaticChild);
+                    }
+
+                    foreach (ReportSectionModel reportSectionModelNoYear in reportSectionModelAllStaticChildrenList)
+                    {
+                        if (Ordinal > 0 && reportSectionModelNoYear.Ordinal == Ordinal)
+                        {
+                            continue;
+                        }
+
+                        reportSectionModelChildrenList.Add(reportSectionModelNoYear);
+                    }
 
                     foreach (ReportSectionModel reportSectionModelChild in reportSectionModelChildrenList)
                     {

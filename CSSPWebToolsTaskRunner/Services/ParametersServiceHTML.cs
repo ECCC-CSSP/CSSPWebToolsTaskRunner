@@ -359,6 +359,22 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_ECCC_AND_SWCP_LOGO:
+                                {
+                                    GenerateHTMLSUBSECTOR_ECCC_AND_SWCP_LOGO(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_CSSP_LOGO:
+                                {
+                                    GenerateHTMLSUBSECTOR_CSSP_LOGO(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
                             default:
                                 {
                                     sb.Insert(EndPos, "Tag not recognised");

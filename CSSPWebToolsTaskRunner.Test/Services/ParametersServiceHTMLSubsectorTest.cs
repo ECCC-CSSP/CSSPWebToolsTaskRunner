@@ -10,7 +10,7 @@ using System.Transactions;
 using Microsoft.QualityTools.Testing.Fakes;
 using System.IO;
 using System.Web.Mvc;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPWebToolsTaskRunner.Services.Resources;
@@ -36,6 +36,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         private TVFileService _TVFileService { get; set; }
         private MapInfoService _MapInfoService { get; set; }
         private ReportTypeService _ReportTypeService { get; set; }
+        private ReportSectionService _ReportSectionService { get; set; }
         //private HtmlService htmlService { get; set; }
         /// <summary>
         ///Gets or sets the test context which provides
@@ -83,6 +84,76 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         #endregion Initialize and Cleanup
 
         #region Functions public
+        [TestMethod]
+        public void PublicGenerateHTMLSUBSECTOR_GenerateSectionsRecursiveDocx_Test()
+        {
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                ReportSectionModel reportSectionModel = _ReportSectionService.GetReportSectionModelWithReportSectionIDDB(95);
+                Assert.IsNotNull(reportSectionModel);
+
+                int SubsectorTVItemID = 635;
+                int ReportTypeID = 32;
+                int Year = 2018;
+
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\_GenerateSectionsRecursiveDocx_" + LanguageRequest.ToString() + ".html");
+                StringBuilder sbHTML = new StringBuilder();
+                string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
+                ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 10000,
+                    TVItemID = SubsectorTVItemID,
+                    TVItemID2 = SubsectorTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+                ParametersService parameterService = new ParametersService(taskRunnerBaseService);
+                parameterService.fi = fi;
+                parameterService.sb = sbHTML;
+                parameterService.Parameters = Parameters;
+                parameterService.reportTypeModel = reportTypeModel;
+                parameterService.TVItemID = SubsectorTVItemID;
+                parameterService.Year = Year;
+                StringBuilder sbTemp = new StringBuilder();
+               // bool retBool = parameterService.GenerateSectionsRecursiveDocx(reportSectionModel);
+                //Assert.AreEqual(true, retBool);
+
+                StreamWriter sw = fi.CreateText();
+                sw.Write(sbTemp.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+        }
         [TestMethod]
         public void DrawPolSourceSitesPoints_test()
         {
@@ -637,6 +708,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             _TVFileService = new TVFileService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
             _MapInfoService = new MapInfoService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
             _ReportTypeService = new ReportTypeService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
+            _ReportSectionService = new ReportSectionService(LanguageRequest, csspWebToolsTaskRunner._TaskRunnerBaseService._User);
         }
         #endregion Functions private
 

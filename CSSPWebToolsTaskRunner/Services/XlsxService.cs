@@ -506,7 +506,7 @@ namespace CSSPWebToolsTaskRunner.Services
             xlWorksheet2.Cells[1, 3].Value = "FC_MPN_CF_NPP";
             xlWorksheet2.Cells[1, 4].Value = "Temp_°C";
             xlWorksheet2.Cells[1, 5].Value = "Sal_PPT_PPM";
-            xlWorksheet2.Cells[1, 6].Value = "pH";
+            //xlWorksheet2.Cells[1, 6].Value = "pH";
             //xlWorksheet2.Cells[1, 7].Value = "Depth_Profondeur_m";
 
             rowCount = 1;
@@ -600,8 +600,8 @@ namespace CSSPWebToolsTaskRunner.Services
                                 string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
                                 string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
                                 string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
-                                string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
-                                string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
+                                //string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
+                                //string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
 
                                 rowCount += 1;
                                 xlWorksheet2.Cells[rowCount, 1].Value = MS;
@@ -609,7 +609,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 xlWorksheet2.Cells[rowCount, 3].Value = FC;
                                 xlWorksheet2.Cells[rowCount, 4].Value = Temp;
                                 xlWorksheet2.Cells[rowCount, 5].Value = Sal;
-                                xlWorksheet2.Cells[rowCount, 6].Value = pH;
+                                //xlWorksheet2.Cells[rowCount, 6].Value = pH;
                                 //xlWorksheet2.Cells[rowCount, 7].Value = Depth;
                             }
                         }

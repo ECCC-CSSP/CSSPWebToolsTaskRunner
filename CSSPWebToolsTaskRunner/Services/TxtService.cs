@@ -284,6 +284,8 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
+            sb.AppendLine("Prov,Site_ID,Lat,Long");
+
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
             {
@@ -296,8 +298,6 @@ namespace CSSPWebToolsTaskRunner.Services
                         break;
                     }
                 }
-
-                sb.AppendLine("Prov,Site_ID,Lat,Long");
 
                 if (fi.Exists)
                 {
@@ -458,7 +458,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_0/00,pH"); //,Depth/Profondeur");
+            sb.AppendLine("Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_PPT_PPM"); //,Depth/Profondeur");
 
             if (fi.Exists)
             {
@@ -563,9 +563,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                 string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",",".")));
                                 string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",",".") : "");
                                 string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",",".") : "");
-                                string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",",".") : "");
-                                string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",",".") : "");
-                                sb.AppendLine($"{MS},{D},{FC},{Temp},{Sal},{pH}"); //,{Depth}");
+                                //string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",",".") : "");
+                                //string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",",".") : "");
+                                sb.AppendLine($"{MS},{D},{FC},{Temp},{Sal}"); //,{pH},{Depth}");
                             }
                         }
                     }
@@ -624,6 +624,8 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
+            sb.AppendLine("Prov,Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_PPT_PPM"); //,Depth/Profondeur");
+
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
             {
@@ -637,8 +639,6 @@ namespace CSSPWebToolsTaskRunner.Services
                         break;
                     }
                 }
-
-                sb.AppendLine("Prov,Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_0/00,pH"); //,Depth/Profondeur");
 
                 if (fi.Exists)
                 {
@@ -743,9 +743,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                     string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
                                     string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
                                     string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
-                                    string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
-                                    string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
-                                    sb.AppendLine($"{ProvInit},{MS},{D},{FC},{Temp},{Sal},{pH}"); //,{Depth}");
+                                    //string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
+                                    //string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
+                                    sb.AppendLine($"{ProvInit},{MS},{D},{FC},{Temp},{Sal}"); //,{pH},{Depth}");
                                 }
                             }
                         }
