@@ -1110,10 +1110,16 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fi = new FileInfo(BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
-            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
-            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
-            sw.Write(sb.ToString());
-            sw.Close();
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
         }
         private void CreateMonitoringSitesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
@@ -1274,10 +1280,30 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fi = new FileInfo(BasePath + @"MonitoringSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
-            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
-            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
-            sw.Write(sb.ToString());
-            sw.Close();
+            try
+            {
+                //byte[] bytes = Encoding.Default.GetBytes(sb.ToString());
+                //string myString = Encoding.UTF8.GetString(bytes);
+
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
+
+            //Microsoft.Office.Interop.Excel._Application appExcel = new Microsoft.Office.Interop.Excel.Application();
+            //appExcel.Visible = false;
+            //appExcel.DisplayAlerts = false;
+            //Microsoft.Office.Interop.Excel.Workbook xlWorkbook = appExcel.Workbooks.Open(fi.FullName);
+            //Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            //string NewDocxFileName = fi.FullName.Replace("_.csv", ".csv");
+            //appExcel.ActiveWorkbook.SaveAs(NewDocxFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlCSVWindows);
+            //xlWorkbook.Close();
+            //appExcel.Quit();
+
         }
         private void CreateMunicipalitiesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
@@ -1409,10 +1435,16 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fi = new FileInfo(BasePath + @"Municipalities_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
-            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
-            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
-            sw.Write(sb.ToString());
-            sw.Close();
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
         }
         private void CreatePollutionSourceSitesDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
@@ -1925,10 +1957,16 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fi = new FileInfo(BasePath + @"PollutionSourceSites_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
-            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
-            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
-            sw.Write(sb.ToString());
-            sw.Close();
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
         }
         private void CreateWWTPsDocumentForArcGIS(int ProvinceTVItemID, int count, int TotalCount, bool Active)
         {
@@ -2109,10 +2147,16 @@ namespace CSSPWebToolsTaskRunner.Services
 
             fi = new FileInfo(BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
-            Encoding eAnsi = System.Text.Encoding.GetEncoding(1252);
-            StreamWriter sw = new StreamWriter(fi.FullName, true, eAnsi);
-            sw.Write(sb.ToString());
-            sw.Close();
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
         }
 
         public void ExportEmailDistributionLists()

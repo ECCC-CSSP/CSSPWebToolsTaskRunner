@@ -231,12 +231,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
-
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
 
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.CSVOfMWQMSites, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -397,12 +401,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
-
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
 
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.CSVOfMWQMSites, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
@@ -572,13 +580,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
-
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
-
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MWQMSamplingPlanAutoGenerate, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
@@ -753,12 +764,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            UnicodeEncoding encoding = new UnicodeEncoding();
-
-            FileStream fs = fi.Create();
-            byte[] bytes = encoding.GetBytes(sb.ToString());
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Close();
+            try
+            {
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateFile_Error_, fi.FullName, ex.Message);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateFile_Error_", fi.FullName, ex.Message);
+                return;
+            }
 
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.MWQMSamplingPlanAutoGenerate, FilePurposeEnum.OpenData);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
