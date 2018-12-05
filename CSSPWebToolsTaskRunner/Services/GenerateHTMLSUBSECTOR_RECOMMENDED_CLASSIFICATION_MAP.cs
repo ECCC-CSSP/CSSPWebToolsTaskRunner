@@ -20,13 +20,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLMUNICIPALITY_CONTACTS(StringBuilder sbTemp)
+        private bool GenerateHTMLSUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP(StringBuilder sbTemp)
         {
             int Percent = 10;
             string NotUsed = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_FC_TABLE.ToString()));
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -49,7 +49,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 foreach (TVItemModel tvItemModel in tvItemModelListMunicipality)
                 {
-                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } contacts </h3");
+                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } SUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP</h3");
 
                     sbTemp.AppendLine($@"<p>{ TaskRunnerServiceRes.NotImplementedYet }</p>");
 
@@ -66,9 +66,9 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLMUNICIPALITY_CONTACTS(StringBuilder sbTemp)
+        public bool PublicGenerateHTMLSUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLMUNICIPALITY_CONTACTS(sbTemp);
+            bool retBool = GenerateHTMLSUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP(sbTemp);
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sbTemp.ToString());

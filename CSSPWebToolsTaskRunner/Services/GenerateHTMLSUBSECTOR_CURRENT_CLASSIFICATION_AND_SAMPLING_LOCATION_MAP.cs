@@ -20,13 +20,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLMUNICIPALITY_INFRASTRUCTURE_DETAIL(StringBuilder sbTemp)
+        private bool GenerateHTMLSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP(StringBuilder sbTemp)
         {
             int Percent = 10;
             string NotUsed = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_FC_TABLE.ToString()));
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -42,15 +42,14 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string ServerPath = _TVFileService.GetServerFilePath(tvItemModelSubsector.TVItemID);
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
-
+            List<TVItemModel> tvItemModelListMWQMSites = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite).Where(c => c.IsActive == true).ToList();
             List<TVItemModel> tvItemModelListMunicipality = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Municipality).Where(c => c.IsActive == true).ToList();
 
             if (tvItemModelListMunicipality.Count > 0)
             {
                 foreach (TVItemModel tvItemModel in tvItemModelListMunicipality)
                 {
-                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } infrastructure detail</h3");
+                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP</h3");
 
                     sbTemp.AppendLine($@"<p>{ TaskRunnerServiceRes.NotImplementedYet }</p>");
 
@@ -67,9 +66,9 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLMUNICIPALITY_INFRASTRUCTURE_DETAIL(StringBuilder sbTemp)
+        public bool PublicGenerateHTMLSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLMUNICIPALITY_INFRASTRUCTURE_DETAIL(sbTemp);
+            bool retBool = GenerateHTMLSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP(sbTemp);
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sbTemp.ToString());

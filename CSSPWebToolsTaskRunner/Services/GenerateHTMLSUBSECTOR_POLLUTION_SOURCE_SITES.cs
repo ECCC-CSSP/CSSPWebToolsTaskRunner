@@ -30,10 +30,6 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES.ToString()));
 
-            if (!GetTopHTML())
-            {
-                return false;
-            }
 
             //sbTemp.AppendLine("<h2>SUBSECTOR_POLLUTION_SOURCE_SITES - Not implemented</h2>");
 
@@ -136,10 +132,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
 
-            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
-            sbTemp.AppendLine("");
-            sbTemp.AppendLine($@"<h1 style=""text-align: center"">{ tvItemModelSubsector.TVText }</h1>");
-            sbTemp.AppendLine($@"<h2 style=""text-align: center"">{ TaskRunnerServiceRes.ActivePollutionSourceSites }</h2>");
+            //sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
+            //sbTemp.AppendLine("");
+            //sbTemp.AppendLine($@"<h1 style=""text-align: center"">{ tvItemModelSubsector.TVText }</h1>");
+            //sbTemp.AppendLine($@"<h2 style=""text-align: center"">{ TaskRunnerServiceRes.ActivePollutionSourceSites }</h2>");
             foreach (TVItemModel tvItemModelPSSActive in tvItemModelListPolSourceSite.Where(c => c.IsActive == true))
             {
 
@@ -309,13 +305,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     sbTemp.AppendLine($@"</div>");
                     sbTemp.AppendLine($@"<hr />");
                 }
-            }
-
-            sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
-
-            if (!GetBottomHTML())
-            {
-                return false;
             }
 
             Percent = 98;

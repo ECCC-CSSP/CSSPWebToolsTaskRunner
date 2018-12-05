@@ -20,13 +20,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLMUNICIPALITY_MAP_INFRASTRUCTURE(StringBuilder sbTemp)
+        private bool GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL(StringBuilder sbTemp)
         {
             int Percent = 10;
             string NotUsed = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_FC_TABLE.ToString()));
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -50,7 +50,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 foreach (TVItemModel tvItemModel in tvItemModelListMunicipality)
                 {
-                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } map of infrastructure</h3");
+                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL</h3");
 
                     sbTemp.AppendLine($@"<p>{ TaskRunnerServiceRes.NotImplementedYet }</p>");
 
@@ -67,9 +67,9 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLMUNICIPALITY_MAP_INFRASTRUCTURE(StringBuilder sbTemp)
+        public bool PublicGenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLMUNICIPALITY_MAP_INFRASTRUCTURE(sbTemp);
+            bool retBool = GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL(sbTemp);
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sbTemp.ToString());

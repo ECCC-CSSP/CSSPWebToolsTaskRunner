@@ -1243,7 +1243,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         TVItemMoreInfoMWQMSiteModel tvItemMoreInfoMWQMSiteModel = _TVItemService.GetTVItemMoreInfoMWQMSiteTVItemIDDB(mwqmSite.t.TVItemID, 30);
 
                         string SS = tvItemSS.tl.TVText.Replace(",", "_");
-                        string MS = mwqmSite.tl.TVText.Replace(",", "_");
+                        string MS = "S" + mwqmSite.tl.TVText.Replace(",", "_");
                         string DESC = mwqmSite.s.MWQMSiteDescription.Replace(",", "_").Replace("\r", "   ").Replace("\n", "  ");
                         string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F5") : "");
                         string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F5") : "");
@@ -1282,9 +1282,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                //byte[] bytes = Encoding.Default.GetBytes(sb.ToString());
-                //string myString = Encoding.UTF8.GetString(bytes);
-
                 File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
             }
             catch (Exception ex)
@@ -1581,7 +1578,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     foreach (var polSourceSite in PollutionSourceSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
                         string SS = tvItemSS.tl.TVText.Replace(",", "_");
-                        string PSS = (polSourceSite.pss != null && polSourceSite.pss.Site != null ? polSourceSite.pss.Site.ToString().Replace(",", "_") : "");
+                        string PSS = "P" + (polSourceSite.pss != null && polSourceSite.pss.Site != null ? polSourceSite.pss.Site.ToString().Replace(",", "_") : "");
                         string OBSDate = (polSourceSite.pso != null && polSourceSite.pso.pso.ObservationDate_Local != null ? polSourceSite.pso.pso.ObservationDate_Local.ToString("yyyy-MM-dd") : "");
                         string PSTVT = polSourceSite.tl.TVText;
                         string[] PSArr = PSTVT.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();

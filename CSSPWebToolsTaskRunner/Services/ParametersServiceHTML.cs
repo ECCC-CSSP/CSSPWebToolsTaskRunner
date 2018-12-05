@@ -335,25 +335,25 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.MUNICIPALITY_MAP_INFRASTRUCTURE:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE:
                                 {
-                                    GenerateHTMLMUNICIPALITY_MAP_INFRASTRUCTURE(sbTemp);
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.MUNICIPALITY_CONTACTS:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_CONTACTS:
                                 {
-                                    GenerateHTMLMUNICIPALITY_CONTACTS(sbTemp);
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_CONTACTS(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.MUNICIPALITY_INFRASTRUCTURE_DETAIL:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL:
                                 {
-                                    GenerateHTMLMUNICIPALITY_INFRASTRUCTURE_DETAIL(sbTemp);
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -370,6 +370,54 @@ namespace CSSPWebToolsTaskRunner.Services
                             case ReportGenerateObjectsKeywordEnum.SUBSECTOR_CSSP_LOGO:
                                 {
                                     GenerateHTMLSUBSECTOR_CSSP_LOGO(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT:
+                                {
+                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP:
+                                {
+                                    GenerateHTMLSUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP:
+                                {
+                                    GenerateHTMLSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_WWTP_COLLECTION_SYSTEM_MAP:
+                                {
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_WWTP_COLLECTION_SYSTEM_MAP(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP:
+                                {
+                                    GenerateHTMLSUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP:
+                                {
+                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -406,18 +454,28 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    border: 1px solid black;");
             sb.AppendLine(@"    text-align: center;");
             sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"    border-collapse: collapse;");
             sb.AppendLine(@"}");
             sb.AppendLine(@"table.DataAvailabilityTableClass {");
             sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
             sb.AppendLine(@"    border: 1px solid black;");
             sb.AppendLine(@"    text-align: center;");
             sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"    border-collapse: collapse;");
             sb.AppendLine(@"}");
             sb.AppendLine(@"table.FCSalTempDataTableClass {");
             sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
             sb.AppendLine(@"    border: 1px solid black;");
             sb.AppendLine(@"    text-align: center;");
             sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"    border-collapse: collapse;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"table.PolSourceSiteCompact {");
+            sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"    border: 1px solid black;");
+            sb.AppendLine(@"    text-align: left;");
+            sb.AppendLine(@"    width: 100%;");
+            sb.AppendLine(@"    border-collapse: collapse;");
             sb.AppendLine(@"}");
             sb.AppendLine(@".textGreen {");
             sb.AppendLine(@"    color: green;");
@@ -459,6 +517,13 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"}");
             sb.AppendLine(@".leftBorder {");
             sb.AppendLine(@"    border-left: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".allBorders {");
+            sb.AppendLine(@"    border: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".allBordersNoWrap {");
+            sb.AppendLine(@"    border: 1px solid black;");
+            sb.AppendLine(@"    white-space: nowrap;");
             sb.AppendLine(@"}");
             sb.AppendLine(@".rightBorder {");
             sb.AppendLine(@"    border-right: 1px solid black;");

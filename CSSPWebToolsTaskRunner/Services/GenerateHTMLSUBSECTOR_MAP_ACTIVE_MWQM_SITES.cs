@@ -30,10 +30,6 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MAP_ACTIVE_MWQM_SITES.ToString()));
 
-            if (!GetTopHTML())
-            {
-                return false;
-            }
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // TVItemID and Year alrady loaded
@@ -80,11 +76,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             Percent = 70;
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            if (!GetBottomHTML())
-            {
-                return false;
-            }
 
             return true;
         }

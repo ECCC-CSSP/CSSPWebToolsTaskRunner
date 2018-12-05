@@ -351,7 +351,22 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
+            CreateDocxWithHTMLDoREPORT_YEARTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
             CreateDocxWithHTMLDoPAGE_BREAKTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoLANDSCAPETag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoPORTRAITTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
@@ -677,6 +692,60 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             }
         }
+        private void CreateDocxWithHTMLDoLANDSCAPETag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||LANDSCAPE|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                appWord.Selection.Find.MatchWildcards = true;
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Delete();
+
+                    appWord.Selection.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                    appWord.Selection.PageSetup.SectionStart = WdSectionStart.wdSectionNewPage;
+                    appWord.Selection.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoPORTRAITTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||PORTRAIT|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                appWord.Selection.Find.MatchWildcards = true;
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Delete();
+
+                    appWord.Selection.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                    appWord.Selection.PageSetup.SectionStart = WdSectionStart.wdSectionNewPage;
+                    appWord.Selection.PageSetup.Orientation = WdOrientation.wdOrientPortrait;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
         private void CreateDocxWithHTMLDoPROVINCE_NAMETag(Application appWord, Document document)
         {
             string PROVINCE_NAME = "ERROR: PROVINCE_NAME";
@@ -928,7 +997,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            // turn all |||SUBSECTOR_NAME_TEXT||| into word page break
             string SearchMarker = "|||SUBSECTOR_NAME_TEXT|||";
             bool Found = true;
             while (Found)
@@ -938,6 +1006,30 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
                     appWord.Selection.Text = SUBSECTOR_NAME_TEXT;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoREPORT_YEARTag(Application appWord, Document document)
+        {
+            string REPORT_YEAR = Year.ToString();
+
+            string SearchMarker = "|||REPORT_YEAR|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = REPORT_YEAR;
                 }
                 else
                 {
