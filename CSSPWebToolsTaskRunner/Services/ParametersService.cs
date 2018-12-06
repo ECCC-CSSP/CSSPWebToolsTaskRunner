@@ -705,6 +705,13 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     appWord.Selection.Delete();
 
+                    appWord.Selection.Find.MatchWildcards = false;
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+
                     appWord.Selection.InsertBreak(WdBreakType.wdSectionBreakNextPage);
                     appWord.Selection.PageSetup.SectionStart = WdSectionStart.wdSectionNewPage;
                     appWord.Selection.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
@@ -731,6 +738,13 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
                     appWord.Selection.Delete();
+
+                    appWord.Selection.Find.MatchWildcards = false;
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
 
                     appWord.Selection.InsertBreak(WdBreakType.wdSectionBreakNextPage);
                     appWord.Selection.PageSetup.SectionStart = WdSectionStart.wdSectionNewPage;

@@ -24,43 +24,60 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             int Percent = 10;
             string NotUsed = "";
+            string HideVerticalScale = "";
+            string HideHorizontalScale = "";
+            string HideNorthArrow = "";
+            string HideSubsectorName = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            // TVItemID and Year already loaded
+            // TVItemID and Year alrady loaded
 
-            TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
-            if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
+            HideVerticalScale = GetParameters("HideVerticalScale", ParamValueList);
+            HideHorizontalScale = GetParameters("HideHorizontalScale", ParamValueList);
+            HideNorthArrow = GetParameters("HideNorthArrow", ParamValueList);
+            HideSubsectorName = GetParameters("HideSubsectorName", ParamValueList);
+
+            string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
+
+            GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService, HideVerticalScale, HideHorizontalScale, HideNorthArrow, HideSubsectorName);
+
+            DirectoryInfo di = new DirectoryInfo(googleMapToPNG.DirName);
+
+            if (!di.Exists)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                return false;
-            }
-
-            string ServerPath = _TVFileService.GetServerFilePath(tvItemModelSubsector.TVItemID);
-
-            List<TVItemModel> tvItemModelListMWQMSites = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite).Where(c => c.IsActive == true).ToList();
-            List<TVItemModel> tvItemModelListMunicipality = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Municipality).Where(c => c.IsActive == true).ToList();
-
-            if (tvItemModelListMunicipality.Count > 0)
-            {
-                foreach (TVItemModel tvItemModel in tvItemModelListMunicipality)
+                try
                 {
-                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } SUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP</h3");
-
-                    sbTemp.AppendLine($@"<p>{ TaskRunnerServiceRes.NotImplementedYet }</p>");
-
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return false;
                 }
             }
-            else
+
+            Percent = 40;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+
+            if (!googleMapToPNG.CreateSubsectorGoogleMapPNGForMWQMSites(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, "hybrid"))
             {
-                sbTemp.AppendLine($@"<p style=""font-size: 2em;"">{ TaskRunnerServiceRes.NoMunicipalityWithinSubsector }</p>");
+                string Error = _TaskRunnerBaseService._BWObj.TextLanguageList[(_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? 1 : 0)].Text;
+
+                sbTemp.AppendLine($@"<h1>{ Error }</h1>");
             }
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 80);
+            sbTemp.AppendLine($@"<div>|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||</div>");
+            sbTemp.AppendLine($@"<div>|||FigureCaption|: { TaskRunnerServiceRes.MWQMSitesApproximateLocation }|||</div>");
+
+            Percent = 70;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             return true;
         }

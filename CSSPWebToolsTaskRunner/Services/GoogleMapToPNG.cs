@@ -125,14 +125,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             CoordMap coordMap = GetMapCoordinateWhileGettingGooglePNG(MinLat, MaxLat, MinLng, MaxLng);
 
-            //int a = 234;
-
-            //CoordMap coordMap = new CoordMap()
-            //{
-            //    NorthEast = new Coord() { Lat = 46.5364151f, Lng = -64.55215f, Ordinal = 0 },
-            //    SouthWest = new Coord() { Lat = 46.23907f, Lng = -64.99161f, Ordinal = 0 },
-            //};
-
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 20);
 
             if (!DrawSubsectorPolSourceSites(coordMap, tvItemModelSubsector, mapInfoPointModelSubsectorList, mapInfoPointModelPolSourceSiteList, tvItemModelPolSourceSiteList))

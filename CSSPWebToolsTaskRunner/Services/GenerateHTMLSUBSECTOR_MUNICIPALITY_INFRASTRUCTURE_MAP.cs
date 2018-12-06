@@ -20,13 +20,13 @@ namespace CSSPWebToolsTaskRunner.Services
 {
     public partial class ParametersService
     {
-        private bool GenerateHTMLSUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE(StringBuilder sbTemp)
+        private bool GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP(StringBuilder sbTemp)
         {
             int Percent = 10;
             string NotUsed = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE.ToString()));
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -67,9 +67,9 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // for testing only can comment out when test is completed
-        public bool PublicGenerateHTMLSUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE(StringBuilder sbTemp)
+        public bool PublicGenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP(StringBuilder sbTemp)
         {
-            bool retBool = GenerateHTMLSUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE(sbTemp);
+            bool retBool = GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP(sbTemp);
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sbTemp.ToString());

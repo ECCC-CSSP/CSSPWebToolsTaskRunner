@@ -239,30 +239,6 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MAP_ACTIVE_MWQM_SITES:
-                                {
-                                    GenerateHTMLSUBSECTOR_MAP_ACTIVE_MWQM_SITES(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MAP_ACTIVE_POL_SOURCE_SITES:
-                                {
-                                    GenerateHTMLSUBSECTOR_MAP_ACTIVE_POL_SOURCE_SITES(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES:
-                                {
-                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
                             case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_DATA_AVAILABILITY:
                                 {
                                     GenerateHTMLSUBSECTOR_MWQM_SITES_DATA_AVAILABILITY(sbTemp);
@@ -271,9 +247,25 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_INFORMATION:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR:
                                 {
-                                    GenerateHTMLSUBSECTOR_MWQM_SITES_INFORMATION(sbTemp);
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR(sbTemp);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR:
+                                {
+                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -303,25 +295,17 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES:
                                 {
-                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_RUNS_BY_YEAR(sbTemp);
+                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT:
                                 {
-                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SAMPLES_BY_YEAR(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR:
-                                {
-                                    GenerateHTMLSUBSECTOR_MWQM_SITES_NUMBER_OF_SITES_BY_YEAR(sbTemp);
+                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -335,9 +319,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP:
                                 {
-                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_MAP_INFRASTRUCTURE(sbTemp);
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -375,14 +359,6 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT:
-                                {
-                                    GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_SITES_COMPACT(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
                             case ReportGenerateObjectsKeywordEnum.SUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP:
                                 {
                                     GenerateHTMLSUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP(sbTemp);
@@ -394,14 +370,6 @@ namespace CSSPWebToolsTaskRunner.Services
                             case ReportGenerateObjectsKeywordEnum.SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP:
                                 {
                                     GenerateHTMLSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_WWTP_COLLECTION_SYSTEM_MAP:
-                                {
-                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_WWTP_COLLECTION_SYSTEM_MAP(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
