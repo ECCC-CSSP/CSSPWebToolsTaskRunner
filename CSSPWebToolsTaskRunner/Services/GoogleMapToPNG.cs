@@ -192,6 +192,47 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
+        public bool CreateSubsectorGoogleMapPNGForSubsectorOnly(int SubsectorTVItemID, string MapType)
+        {
+            string NotUsed = "";
+            this.MapType = MapType;
+
+            TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(SubsectorTVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.SubsectorTVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.SubsectorTVItemID);
+                return false;
+            }
+
+            List<MapInfoPointModel> mapInfoPointModelSubsectorList = _MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(SubsectorTVItemID, TVTypeEnum.Subsector, MapInfoDrawTypeEnum.Polygon);
+            if (mapInfoPointModelSubsectorList.Count == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPolygonForSubsector_, tvItemModelSubsector.TVText);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPolygonForSubsector_", tvItemModelSubsector.TVText);
+                return false;
+            }
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+
+            double MaxLat = mapInfoPointModelSubsectorList.Select(c => c.Lat).Max();
+            double MinLat = mapInfoPointModelSubsectorList.Select(c => c.Lat).Min();
+            double MaxLng = mapInfoPointModelSubsectorList.Select(c => c.Lng).Max();
+            double MinLng = mapInfoPointModelSubsectorList.Select(c => c.Lng).Min();
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 15);
+
+            CoordMap coordMap = GetMapCoordinateWhileGettingGooglePNG(MinLat, MaxLat, MinLng, MaxLng);
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 20);
+
+            if (!DrawSubsectorOnly(coordMap, tvItemModelSubsector, mapInfoPointModelSubsectorList))
+            {
+                return false;
+            }
+
+            return true;
+        }
         #endregion Functions public
 
         #region Functions private
@@ -1263,6 +1304,70 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
+        private bool DrawSubsectorOnly(CoordMap coordMap, TVItemModel tvItemModelSubsector, List<MapInfoPointModel> mapInfoPointModelSubsectorList)
+        {
+            string NotUsed = "";
+
+            if (!GetInset(coordMap.NorthEast, coordMap.SouthWest))
+            {
+                return false;
+            }
+
+            try
+            {
+                using (Bitmap targetAll = new Bitmap(DirName + FileNameFull))
+                {
+                    using (Graphics g = Graphics.FromImage(targetAll))
+                    {
+                        using (Bitmap targetImg = new Bitmap(DirName + FileNameInsetFinal))
+                        {
+                            g.DrawImage(targetImg, new Point(0, 0));
+                        }
+
+                        if (!DrawImageBorder(g))
+                        {
+                            return false;
+                        }
+
+                        if (!DrawSubsectorPolygon(g, coordMap, mapInfoPointModelSubsectorList))
+                        {
+                            return false;
+                        }
+
+                        if (!DrawTitles(g, tvItemModelSubsector.TVText, ""))
+                        {
+                            return false;
+                        }
+
+                        if (!DrawNorthArrow(g, coordMap))
+                        {
+                            return false;
+                        }
+
+                        if (!DrawHorizontalScale(g, coordMap))
+                        {
+                            return false;
+                        }
+
+                        if (!DrawVerticalScale(g, coordMap))
+                        {
+                            return false;
+                        }
+
+                    }
+
+                    targetAll.Save(DirName + FileNameFull.Replace(".png", "Annotated.png"), ImageFormat.Png);
+                }
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_ImageError_, TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreate_ImageError_", TaskRunnerServiceRes.Annotated, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
+                return false;
+            }
+
+            return true;
+        }
         private bool DrawSubsectorPolygon(Graphics g, CoordMap coordMap, List<MapInfoPointModel> mapInfoPointModelSubsectorList)
         {
             string NotUsed = "";
@@ -1829,8 +1934,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             CoordMap coordMap = new CoordMap();
 
-            double ExtraLat = (MaxLat - MinLat) * 0.05D;
-            double ExtraLng = (MaxLng - MinLng) * 0.05D;
+            double ExtraLat = (MaxLat - MinLat) * 0.02D;
+            double ExtraLng = (MaxLng - MinLng) * 0.02D;
 
             Coord coordNE = new Coord() { Lat = (float)(MaxLat + ExtraLat), Lng = (float)(MaxLng + ExtraLng), Ordinal = 0 };
             Coord coordSW = new Coord() { Lat = (float)(MinLat - ExtraLat), Lng = (float)(MinLng - ExtraLng), Ordinal = 0 };
@@ -1849,7 +1954,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 Coord coord = new Coord() { Lat = (float)CenterLat, Lng = (float)CenterLng, Ordinal = 0 };
                 CoordMap coordMapTemp = _MapInfoService.GetBounds(coord, Zoom, GoogleImageWidth, GoogleImageHeight);
                 deltaLng = Math.Abs((CenterLng - coordMapTemp.SouthWest.Lng) * 2);
-                deltaLat = Math.Abs((CenterLat - coordMapTemp.SouthWest.Lat) * 2) - (Math.Abs((CenterLat - coordMapTemp.SouthWest.Lat) * 2) * GoogleLogoHeight / GoogleImageHeight);
+                deltaLat = Math.Abs((CenterLat - coordMapTemp.SouthWest.Lat) * 2) - ((Math.Abs((CenterLat - coordMapTemp.SouthWest.Lat) * 2) * GoogleLogoHeight / GoogleImageHeight)/2);
 
                 coordMap = _MapInfoService.GetBounds(new Coord() { Lat = (float)CenterLat, Lng = (float)CenterLng, Ordinal = 0 }, Zoom, GoogleImageWidth, GoogleImageHeight);
                 CoordMap NewcoordMapTemp = _MapInfoService.GetBounds(new Coord() { Lat = (float)CenterLat, Lng = (float)(CenterLng + deltaLng), Ordinal = 0 }, Zoom, GoogleImageWidth, GoogleImageHeight);

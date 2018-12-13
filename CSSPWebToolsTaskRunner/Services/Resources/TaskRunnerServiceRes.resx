@@ -1857,11 +1857,11 @@
   <data name="CouldNotFindYearSpecificReportSection" xml:space="preserve">
     <value>Could not find year specific report section</value>
   </data>
-  <data name="InformationAboveWasWrittenFor" xml:space="preserve">
-    <value>Information above was written for</value>
+  <data name="InformationAboveWrittenFor" xml:space="preserve">
+    <value>Information above written for</value>
   </data>
-  <data name="InformationBelowWasWrittenFor" xml:space="preserve">
-    <value>Information below was written for</value>
+  <data name="InformationBelowWrittenFor" xml:space="preserve">
+    <value>Information below written for</value>
   </data>
   <data name="NoReportSectionFound" xml:space="preserve">
     <value>No report section found</value>
@@ -1886,5 +1886,20 @@
   </data>
   <data name="SWCP" xml:space="preserve">
     <value>SWCP</value>
+  </data>
+  <data name="CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations" xml:space="preserve">
+    <value>Current Shellfish Growing Area Classification and Water Quality Sampling Site Locations</value>
+  </data>
+  <data name="LocationOfSurveyArea" xml:space="preserve">
+    <value>Location of survey area</value>
+  </data>
+  <data name="PollutionSourceLocation" xml:space="preserve">
+    <value>Pollution Source Location</value>
+  </data>
+  <data name="RecommendedShellfishGrowingAreaClassification" xml:space="preserve">
+    <value>Recommended Shellfish Growing Area Classification</value>
+  </data>
+  <data name="UploadYourFileNamed_ToReplaceTheImageBelow" xml:space="preserve">
+    <value>Upload your file named [{0}] to replace the image below</value>
   </data>
 </root>

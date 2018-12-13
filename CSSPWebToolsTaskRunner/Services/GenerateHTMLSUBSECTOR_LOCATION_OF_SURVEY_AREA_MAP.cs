@@ -45,36 +45,81 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
-            GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService, HideVerticalScale, HideHorizontalScale, HideNorthArrow, HideSubsectorName);
-
-            DirectoryInfo di = new DirectoryInfo(googleMapToPNG.DirName);
-
-            if (!di.Exists)
+            List<TVFileModel> tvFileModelList = _TVFileService.GetTVFileModelListWithParentTVItemIDDB(TVItemID).OrderByDescending(c => c.ServerFileName).ToList();
+            string FileFoundName = "";
+            string StartText = "Location_of_Survey_Area_Map_";
+            bool FileExist = false;
+            int FileYear = 0;
+            foreach (TVFileModel tvFileModel in tvFileModelList)
             {
-                try
+                if (tvFileModel.ServerFileName.StartsWith(StartText) && tvFileModel.ServerFileName.EndsWith(".png"))
                 {
-                    di.Create();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
+                    string YearTxt = tvFileModel.ServerFileName;
+                    YearTxt = YearTxt.Replace(StartText, "");
+                    YearTxt = YearTxt.Replace(".png", "");
+
+                    if (int.TryParse(YearTxt, out FileYear))
+                    {
+                        if (Year >= FileYear)
+                        {
+                            FileFoundName = tvFileModel.ServerFilePath + tvFileModel.ServerFileName;
+                            FileExist = true;
+                            break;
+                        }
+                    }
                 }
             }
 
-            Percent = 40;
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
-
-            if (!googleMapToPNG.CreateSubsectorGoogleMapPNGForMWQMSites(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, "hybrid"))
+            if (FileExist)
             {
-                string Error = _TaskRunnerBaseService._BWObj.TextLanguageList[(_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? 1 : 0)].Text;
-
-                sbTemp.AppendLine($@"<h1>{ Error }</h1>");
+                if (Year == FileYear)
+                {
+                    sbTemp.AppendLine($@"<div>|||Image|FileName,{ FileFoundName }|width,600|height,440|||</div>");
+                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 1.0: { TaskRunnerServiceRes.LocationOfSurveyArea }|||</div>");
+                }
+                else
+                {
+                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWrittenFor } { FileYear } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                    sbTemp.AppendLine($@"<div>|||Image|FileName,{ FileFoundName }|width,600|height,440|||</div>");
+                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 1.0: { TaskRunnerServiceRes.LocationOfSurveyArea }|||</div>");
+                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWrittenFor } { FileYear } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                }
             }
+            else
+            {
+                sbTemp.AppendLine($@"<p>{ string.Format(TaskRunnerServiceRes.UploadYourFileNamed_ToReplaceTheImageBelow, StartText + Year.ToString() + ".png") }</p>");
 
-            sbTemp.AppendLine($@"<div>|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,490|height,460|||</div>");
-            sbTemp.AppendLine($@"<div>|||FigureCaption|: { TaskRunnerServiceRes.MWQMSitesApproximateLocation }|||</div>");
+                GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService, HideVerticalScale, HideHorizontalScale, HideNorthArrow, HideSubsectorName);
+
+                DirectoryInfo di = new DirectoryInfo(googleMapToPNG.DirName);
+
+                if (!di.Exists)
+                {
+                    try
+                    {
+                        di.Create();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return false;
+                    }
+                }
+
+                Percent = 40;
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+
+                if (!googleMapToPNG.CreateSubsectorGoogleMapPNGForSubsectorOnly(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, "hybrid"))
+                {
+                    string Error = _TaskRunnerBaseService._BWObj.TextLanguageList[(_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? 1 : 0)].Text;
+
+                    sbTemp.AppendLine($@"<h1>{ Error }</h1>");
+                }
+
+                sbTemp.AppendLine($@"<div>|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,400|height,400|||</div>");
+                sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 1.0: { TaskRunnerServiceRes.LocationOfSurveyArea }|||</div>");
+            }
 
             Percent = 70;
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);

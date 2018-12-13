@@ -1240,6 +1240,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Shellfish Growing Area Classification and Water Quality Sampling Site Locations.
+        /// </summary>
+        public static string CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations {
+            get {
+                return ResourceManager.GetString("CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current URL Not The Same In Document Completed Event.
         /// </summary>
         public static string CurrentURLNotTheSameInDocumentCompletedEvent {
@@ -2077,20 +2086,20 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Information above was written for.
+        ///   Looks up a localized string similar to Information above written for.
         /// </summary>
-        public static string InformationAboveWasWrittenFor {
+        public static string InformationAboveWrittenFor {
             get {
-                return ResourceManager.GetString("InformationAboveWasWrittenFor", resourceCulture);
+                return ResourceManager.GetString("InformationAboveWrittenFor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Information below was written for.
+        ///   Looks up a localized string similar to Information below written for.
         /// </summary>
-        public static string InformationBelowWasWrittenFor {
+        public static string InformationBelowWrittenFor {
             get {
-                return ResourceManager.GetString("InformationBelowWasWrittenFor", resourceCulture);
+                return ResourceManager.GetString("InformationBelowWrittenFor", resourceCulture);
             }
         }
         
@@ -2343,6 +2352,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string LocalTime {
             get {
                 return ResourceManager.GetString("LocalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location of survey area.
+        /// </summary>
+        public static string LocationOfSurveyArea {
+            get {
+                return ResourceManager.GetString("LocationOfSurveyArea", resourceCulture);
             }
         }
         
@@ -3580,6 +3598,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pollution Source Location.
+        /// </summary>
+        public static string PollutionSourceLocation {
+            get {
+                return ResourceManager.GetString("PollutionSourceLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pollution Source Sites.
         /// </summary>
         public static string PollutionSourceSites {
@@ -3720,6 +3747,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ReadingUserInput {
             get {
                 return ResourceManager.GetString("ReadingUserInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recommended Shellfish Growing Area Classification.
+        /// </summary>
+        public static string RecommendedShellfishGrowingAreaClassification {
+            get {
+                return ResourceManager.GetString("RecommendedShellfishGrowingAreaClassification", resourceCulture);
             }
         }
         
@@ -5124,6 +5160,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string UploadClientPath {
             get {
                 return ResourceManager.GetString("UploadClientPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload your file named [{0}] to replace the image below.
+        /// </summary>
+        public static string UploadYourFileNamed_ToReplaceTheImageBelow {
+            get {
+                return ResourceManager.GetString("UploadYourFileNamed_ToReplaceTheImageBelow", resourceCulture);
             }
         }
         

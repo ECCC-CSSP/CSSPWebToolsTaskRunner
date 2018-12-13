@@ -607,12 +607,19 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         else if (textFound.StartsWith("|||FigureCaption|"))
                         {
-
                             appWord.Selection.Text = "";
 
                             textFound = textFound.Substring("|||FigureCaption|".Length).Replace("|||", "");
 
-                            appWord.Selection.Range.InsertCaption("Figure", textFound);
+                            appWord.Selection.Range.InsertCaption("Figure", "", false, null, true);
+
+                            appWord.Selection.HomeKey();
+                            appWord.Selection.Text = textFound;
+                            appWord.Selection.EndKey();
+                            appWord.Selection.MoveLeft(Extend: true);
+                            appWord.Selection.Font.Color = WdColor.wdColorWhite;
+                            appWord.Selection.MoveRight();
+                            appWord.Selection.MoveDown();
                         }
                     }
                 }

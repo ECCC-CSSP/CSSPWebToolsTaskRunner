@@ -24,43 +24,105 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             int Percent = 10;
             string NotUsed = "";
+            string HideVerticalScale = "";
+            string HideHorizontalScale = "";
+            string HideNorthArrow = "";
+            string HideSubsectorName = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP.ToString()));
 
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            // TVItemID and Year already loaded
+            // TVItemID and Year alrady loaded
 
-            TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
-            if (!string.IsNullOrWhiteSpace(tvItemModelSubsector.Error))
+            HideVerticalScale = GetParameters("HideVerticalScale", ParamValueList);
+            HideHorizontalScale = GetParameters("HideHorizontalScale", ParamValueList);
+            HideNorthArrow = GetParameters("HideNorthArrow", ParamValueList);
+            HideSubsectorName = GetParameters("HideSubsectorName", ParamValueList);
+
+            string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
+
+            List<TVFileModel> tvFileModelList = _TVFileService.GetTVFileModelListWithParentTVItemIDDB(TVItemID).OrderByDescending(c => c.ServerFileName).ToList();
+            string FileFoundName = "";
+            string StartText = "Current_Classification_And_Sampling_Location_Map_";
+            bool FileExist = false;
+            int FileYear = 0;
+            foreach (TVFileModel tvFileModel in tvFileModelList)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                return false;
+                if (tvFileModel.ServerFileName.StartsWith(StartText) && tvFileModel.ServerFileName.EndsWith(".png"))
+                {
+                    string YearTxt = tvFileModel.ServerFileName;
+                    YearTxt = YearTxt.Replace(StartText, "");
+                    YearTxt = YearTxt.Replace(".png", "");
+
+                    if (int.TryParse(YearTxt, out FileYear))
+                    {
+                        if (Year >= FileYear)
+                        {
+                            FileFoundName = tvFileModel.ServerFilePath + tvFileModel.ServerFileName;
+                            FileExist = true;
+                            break;
+                        }
+                    }
+                }
             }
 
-            string ServerPath = _TVFileService.GetServerFilePath(tvItemModelSubsector.TVItemID);
-
-            List<TVItemModel> tvItemModelListMWQMSites = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite).Where(c => c.IsActive == true).ToList();
-            List<TVItemModel> tvItemModelListMunicipality = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Municipality).Where(c => c.IsActive == true).ToList();
-
-            if (tvItemModelListMunicipality.Count > 0)
+            if (FileExist)
             {
-                foreach (TVItemModel tvItemModel in tvItemModelListMunicipality)
+                if (Year == FileYear)
                 {
-                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText } SUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP</h3");
-
-                    sbTemp.AppendLine($@"<p>{ TaskRunnerServiceRes.NotImplementedYet }</p>");
-
+                    sbTemp.AppendLine($@"<div>|||Image|FileName,{ FileFoundName }|width,600|height,440|||</div>");
+                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 1.1: { TaskRunnerServiceRes.CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations }|||</div>");
+                }
+                else
+                {
+                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWrittenFor } { FileYear } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                    sbTemp.AppendLine($@"<div>|||Image|FileName,{ FileFoundName }|width,600|height,440|||</div>");
+                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 1.1: { TaskRunnerServiceRes.CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations }|||</div>");
+                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWrittenFor } { FileYear } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                 }
             }
             else
             {
-                sbTemp.AppendLine($@"<p style=""font-size: 2em;"">{ TaskRunnerServiceRes.NoMunicipalityWithinSubsector }</p>");
+                sbTemp.AppendLine($@"<p>{ string.Format(TaskRunnerServiceRes.UploadYourFileNamed_ToReplaceTheImageBelow, StartText + Year.ToString() + ".png") }</p>");
+
+                GoogleMapToPNG googleMapToPNG = new GoogleMapToPNG(_TaskRunnerBaseService, HideVerticalScale, HideHorizontalScale, HideNorthArrow, HideSubsectorName);
+
+                DirectoryInfo di = new DirectoryInfo(googleMapToPNG.DirName);
+
+                if (!di.Exists)
+                {
+                    try
+                    {
+                        di.Create();
+                    }
+                    catch (Exception ex)
+                    {
+                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                        return false;
+                    }
+                }
+
+                Percent = 40;
+                _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
+
+                if (!googleMapToPNG.CreateSubsectorGoogleMapPNGForMWQMSites(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, "hybrid"))
+                {
+                    string Error = _TaskRunnerBaseService._BWObj.TextLanguageList[(_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr ? 1 : 0)].Text;
+
+                    sbTemp.AppendLine($@"<h1>{ Error }</h1>");
+                }
+
+                sbTemp.AppendLine($@"<div>|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,400|height,400|||</div>");
+                sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 1.1: { TaskRunnerServiceRes.CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations }|||</div>");
             }
 
-            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 80);
+            Percent = 70;
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             return true;
         }

@@ -131,7 +131,6 @@ namespace CSSPWebToolsTaskRunner.Services
             Percent = 30;
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
-            sbTemp.AppendLine($@" <p>&nbsp;</p>");
             sbTemp.AppendLine($@" <table>");
             sbTemp.AppendLine($@"    <tr> ");
             sbTemp.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,45|height,20|||</td> ");
@@ -163,7 +162,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Authors }:</strong> { tvItemModelProvince.TVText } { TaskRunnerServiceRes.SWCP } { TaskRunnerServiceRes.Staff }</p>");
             sbTemp.AppendLine($@"       <hr />");
             sbTemp.AppendLine($@"   </blockquote>");
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 sbTemp.AppendLine($@"   <p>&nbsp;</p>");
             }

@@ -68,9 +68,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     if (reportSectionModelTemp.Year != null && reportSectionModelTemp.Year != Year)
                     {
-                        sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWasWrittenFor } { reportSectionModelTemp.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                        sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWrittenFor } { reportSectionModelTemp.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                         sb.Append(reportSectionModelTemp.ReportSectionText);
-                        sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWasWrittenFor } { reportSectionModelTemp.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                        sb.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWrittenFor } { reportSectionModelTemp.Year } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
                     }
                     else
                     {

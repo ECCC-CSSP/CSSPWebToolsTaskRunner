@@ -788,7 +788,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     sbTemp.AppendLine(@"        <tr>");
                     sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
                     sbTemp.AppendLine($@"<div>|||Image|FileName,{ fiImage.FullName }|width,460|height,90|||</div>");
-                    sbTemp.AppendLine($@"<div>|||FigureCaption|: { TaskRunnerServiceRes.NumberOfRunsUsedByYear } --- { AllWetDry } --- ({ Year }) --- { RunText }|||</div>");
+                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 6.2: { TaskRunnerServiceRes.NumberOfRunsUsedByYear }|||</div>"); // --- { AllWetDry } --- ({ Year }) --- { RunText }|||</div>");
                     sbTemp.AppendLine(@"            </td>");
                     sbTemp.AppendLine(@"        </tr>");
                 }
