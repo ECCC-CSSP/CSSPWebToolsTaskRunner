@@ -46,6 +46,9 @@ namespace CSSPWebToolsTaskRunner.Services
         private MWQMSiteService _MWQMSiteService { get; set; }
         private InfrastructureService _InfrastructureService { get; set; }
         private MWQMSampleService _MWQMSampleService { get; set; }
+        private UseOfSiteService _UseOfSiteService { get; set; }
+        private ClimateSiteService _ClimateSiteService { get; set; }
+        private ClimateDataValueService _ClimateDataValueService { get; set; }
         private BaseEnumService _BaseEnumService { get; set; }
         public FileInfo fi { get; set; }
         public ReportTypeModel reportTypeModel { get; set; }
@@ -103,7 +106,9 @@ namespace CSSPWebToolsTaskRunner.Services
             _MWQMSampleService = new MWQMSampleService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
             _InfrastructureService = new InfrastructureService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-
+            _UseOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _ClimateSiteService = new ClimateSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _ClimateDataValueService = new ClimateDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             RunSiteInfoList = new List<RunSiteInfo>();
         }
         #endregion Constructors
@@ -482,7 +487,8 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
-                    appWord.Selection.Font.Size = 14;
+                    appWord.Selection.Font.Name = "Arial";
+                    appWord.Selection.Font.Size = 12;
                     appWord.Selection.Text = TaskRunnerServiceRes.ListOfFigures;
                     appWord.Selection.Start = appWord.Selection.End;
                     appWord.Selection.InsertParagraph();
@@ -517,7 +523,8 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
-                    appWord.Selection.Font.Size = 14;
+                    appWord.Selection.Font.Name = "Arial";
+                    appWord.Selection.Font.Size = 12;
                     appWord.Selection.Text = TaskRunnerServiceRes.ListOfTables;
                     appWord.Selection.Start = appWord.Selection.End;
                     appWord.Selection.InsertParagraph();
@@ -603,7 +610,15 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             textFound = textFound.Substring("|||TableCaption|".Length).Replace("|||", "");
 
-                            appWord.Selection.Range.InsertCaption("Table", textFound);
+                            appWord.Selection.Range.InsertCaption("Table", "", false, null, true);
+
+                            appWord.Selection.HomeKey();
+                            appWord.Selection.Text = textFound;
+                            appWord.Selection.EndKey();
+                            appWord.Selection.MoveLeft(Extend: true);
+                            appWord.Selection.Font.Color = WdColor.wdColorWhite;
+                            appWord.Selection.MoveRight();
+                            appWord.Selection.MoveDown();
                         }
                         else if (textFound.StartsWith("|||FigureCaption|"))
                         {

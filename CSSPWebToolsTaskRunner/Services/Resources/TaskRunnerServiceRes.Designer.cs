@@ -223,6 +223,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to above.
+        /// </summary>
+        public static string Above {
+            get {
+                return ResourceManager.GetString("Above", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active MWQM sites.
         /// </summary>
         public static string ActiveMWQMSites {
@@ -313,6 +322,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appendix.
+        /// </summary>
+        public static string Appendix {
+            get {
+                return ResourceManager.GetString("Appendix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Area file auto generate.
         /// </summary>
         public static string AreaFileAutoGenerate {
@@ -399,6 +417,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string BedResistanceType {
             get {
                 return ResourceManager.GetString("BedResistanceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to below.
+        /// </summary>
+        public static string Below {
+            get {
+                return ResourceManager.GetString("Below", resourceCulture);
             }
         }
         
@@ -1254,6 +1281,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CurrentURLNotTheSameInDocumentCompletedEvent {
             get {
                 return ResourceManager.GetString("CurrentURLNotTheSameInDocumentCompletedEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data used for statistics.
+        /// </summary>
+        public static string DataUsedForStatistics {
+            get {
+                return ResourceManager.GetString("DataUsedForStatistics", resourceCulture);
             }
         }
         

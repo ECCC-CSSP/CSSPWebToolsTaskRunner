@@ -1902,4 +1902,16 @@
   <data name="UploadYourFileNamed_ToReplaceTheImageBelow" xml:space="preserve">
     <value>Upload your file named [{0}] to replace the image below</value>
   </data>
+  <data name="Above" xml:space="preserve">
+    <value>above</value>
+  </data>
+  <data name="Appendix" xml:space="preserve">
+    <value>Appendix</value>
+  </data>
+  <data name="Below" xml:space="preserve">
+    <value>below</value>
+  </data>
+  <data name="DataUsedForStatistics" xml:space="preserve">
+    <value>Data used for statistics</value>
+  </data>
 </root>

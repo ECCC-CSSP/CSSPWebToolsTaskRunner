@@ -1881,4 +1881,16 @@
   <data name="RecommendedShellfishGrowingAreaClassification" xml:space="preserve">
     <value>Recommended Shellfish Growing Area Classification (fr)</value>
   </data>
+  <data name="Above" xml:space="preserve">
+    <value>above (fr)</value>
+  </data>
+  <data name="Appendix" xml:space="preserve">
+    <value>Appendice</value>
+  </data>
+  <data name="Below" xml:space="preserve">
+    <value>below (fr)</value>
+  </data>
+  <data name="DataUsedForStatistics" xml:space="preserve">
+    <value>Data used for statistics (fr)</value>
+  </data>
 </root>

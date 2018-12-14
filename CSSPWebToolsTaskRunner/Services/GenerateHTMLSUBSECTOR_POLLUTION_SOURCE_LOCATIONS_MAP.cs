@@ -79,10 +79,10 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
                 else
                 {
-                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationBelowWrittenFor } { FileYear } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.From } { FileYear } { TaskRunnerServiceRes.Report }. ({ TaskRunnerServiceRes.Below })</p>");
                     sbTemp.AppendLine($@"<div>|||Image|FileName,{ FileFoundName }|width,600|height,440|||</div>");
                     sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 4.3: { TaskRunnerServiceRes.PollutionSourceLocation }|||</div>");
-                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.InformationAboveWrittenFor } { FileYear } { TaskRunnerServiceRes.Report }. { TaskRunnerServiceRes.PleaseModifyIfNeeded }</p>");
+                    sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.From } { FileYear } { TaskRunnerServiceRes.Report }. ({ TaskRunnerServiceRes.Above })</p>");
                 }
             }
             else
