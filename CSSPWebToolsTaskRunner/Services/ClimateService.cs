@@ -679,7 +679,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(SubsectorTVItemID).Where(c => c.DateTime_Local.Year == Year).OrderBy(c => c.DateTime_Local).ToList();
 
             // need to get all climate sites for this particular subsector and run
-            List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Climate, SubsectorTVItemID);
+            List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithTVTypeAndSubsectorTVItemIDDB(TVTypeEnum.ClimateSite, SubsectorTVItemID);
             List<int> ClimateSiteTVItemID = new List<int>();
 
             //appTaskModel.PercentCompleted = 5;
@@ -2573,7 +2573,7 @@ namespace CSSPWebToolsTaskRunner.Services
         //                {
         //                    SiteTVItemID = climateSiteModel.ClimateSiteTVItemID,
         //                    SubsectorTVItemID = tvItemModelSubsector.TVItemID,
-        //                    SiteType = SiteTypeEnum.Climate,
+        //                    TVType = TVTypeEnum.ClimateSite,
         //                    Ordinal = 0, // will be replaced 
         //                    StartYear = year,
         //                    EndYear = year,
@@ -2582,7 +2582,7 @@ namespace CSSPWebToolsTaskRunner.Services
         //                    UseEquation = false,
         //                };
 
-        //                List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithSiteTypeAndSubsectorTVItemIDDB(SiteTypeEnum.Climate, tvItemModelSubsector.TVItemID);
+        //                List<UseOfSiteModel> useOfSiteModelList = useOfSiteService.GetUseOfSiteModelListWithTVTypeAndSubsectorTVItemIDDB(TVTypeEnum.ClimateSite, tvItemModelSubsector.TVItemID);
         //                bool hasUpdated = false;
         //                foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
         //                {

@@ -48,7 +48,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MWQMSiteModel> mwqmSiteModelList = _MWQMSiteService.GetMWQMSiteModelListWithSubsectorTVItemIDDB(TVItemID);
             List<MWQMRunModel> mwqmRunModelList = _MWQMRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(TVItemID);
             List<MWQMSampleModel> mwqmSampleModelList = _MWQMSampleService.GetMWQMSampleModelListWithSubsectorTVItemIDDB(TVItemID);
-            List<UseOfSiteModel> useOfSiteModelList = _UseOfSiteService.GetUseOfSiteModelListWithSubsectorTVItemIDDB(TVItemID).Where(c => c.SiteType == SiteTypeEnum.Climate).ToList();
+            List<UseOfSiteModel> useOfSiteModelList = _UseOfSiteService.GetUseOfSiteModelListWithSubsectorTVItemIDDB(TVItemID).Where(c => c.TVType == TVTypeEnum.ClimateSite).ToList();
 
             List<ClimateSiteModel> climateSiteModelList = new List<ClimateSiteModel>();
             List<ClimateDataValueModel> climateDataValueModelList = new List<ClimateDataValueModel>();
