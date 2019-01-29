@@ -341,7 +341,15 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     labSheetDetailModelNew.DailyDuplicateRLog = null;
                 }
-                labSheetDetailModelNew.DailyDuplicatePrecisionCriteria = float.Parse(labSheetA1Sheet.DailyDuplicatePrecisionCriteria);
+                if (float.TryParse(labSheetA1Sheet.DailyDuplicatePrecisionCriteria, out tempFloat))
+                {
+                    labSheetDetailModelNew.DailyDuplicatePrecisionCriteria = float.Parse(labSheetA1Sheet.DailyDuplicatePrecisionCriteria);
+                }
+                else
+                {
+                    labSheetDetailModelNew.DailyDuplicatePrecisionCriteria = null;
+                }
+                //labSheetDetailModelNew.DailyDuplicatePrecisionCriteria = float.Parse(labSheetA1Sheet.DailyDuplicatePrecisionCriteria);
                 labSheetDetailModelNew.DailyDuplicateAcceptable = (labSheetA1Sheet.DailyDuplicateAcceptableOrUnacceptable == "Acceptable" ? true : false);
                 tempFloat = 0.0f;
                 if (float.TryParse(labSheetA1Sheet.IntertechDuplicateRLog, out tempFloat))
@@ -352,7 +360,15 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     labSheetDetailModelNew.IntertechDuplicateRLog = null;
                 }
-                labSheetDetailModelNew.IntertechDuplicatePrecisionCriteria = float.Parse(labSheetA1Sheet.IntertechDuplicatePrecisionCriteria);
+                if (float.TryParse(labSheetA1Sheet.IntertechDuplicatePrecisionCriteria, out tempFloat))
+                {
+                    labSheetDetailModelNew.IntertechDuplicatePrecisionCriteria = float.Parse(labSheetA1Sheet.IntertechDuplicatePrecisionCriteria);
+                }
+                else
+                {
+                    labSheetDetailModelNew.IntertechDuplicatePrecisionCriteria = null;
+                }
+                //labSheetDetailModelNew.IntertechDuplicatePrecisionCriteria = float.Parse(labSheetA1Sheet.IntertechDuplicatePrecisionCriteria);
                 labSheetDetailModelNew.IntertechDuplicateAcceptable = (labSheetA1Sheet.IntertechDuplicateAcceptableOrUnacceptable == "Acceptable" ? true : false);
                 labSheetDetailModelNew.IntertechReadAcceptable = (labSheetA1Sheet.IntertechReadAcceptableOrUnacceptable == "Acceptable" ? true : false);
             }
