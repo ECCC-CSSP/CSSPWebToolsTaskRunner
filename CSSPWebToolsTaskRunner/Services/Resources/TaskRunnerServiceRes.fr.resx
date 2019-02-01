@@ -1893,4 +1893,7 @@
   <data name="DataUsedForStatistics" xml:space="preserve">
     <value>Data used for statistics (fr)</value>
   </data>
+  <data name="ExcelCouldNotCreateThe2WorksheetsRequired" xml:space="preserve">
+    <value>Excel could not create the 2 worksheets required (fr)</value>
+  </data>
 </root>

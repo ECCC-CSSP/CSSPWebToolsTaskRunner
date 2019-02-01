@@ -1492,6 +1492,10 @@ namespace CSSPWebToolsTaskRunner
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 3);
 
             CSSPEnumsDLL.Services.BaseEnumService _BaseEnumService = new CSSPEnumsDLL.Services.BaseEnumService(LanguageEnum.en);
+            if (wb.Worksheets.Count < 2)
+            {
+                wb.Worksheets.Add();
+            }
             Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[2];
             Microsoft.Office.Interop.Excel.Range range = ws.get_Range("A1:A1");
             if (ws == null)

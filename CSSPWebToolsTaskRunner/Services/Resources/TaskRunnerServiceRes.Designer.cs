@@ -1681,6 +1681,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excel could not create the 2 worksheets required.
+        /// </summary>
+        public static string ExcelCouldNotCreateThe2WorksheetsRequired {
+            get {
+                return ResourceManager.GetString("ExcelCouldNotCreateThe2WorksheetsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extra comment.
         /// </summary>
         public static string ExtraComment {

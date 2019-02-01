@@ -2530,7 +2530,21 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
 
-            CSSPEnumsDLL.Services.BaseEnumService _BaseEnumService = new CSSPEnumsDLL.Services.BaseEnumService(LanguageEnum.en);
+            BaseEnumService _BaseEnumService = new BaseEnumService(LanguageEnum.en);
+            if (wb.Worksheets.Count < 1)
+            {
+                wb.Worksheets.Add();
+            }
+            if (wb.Worksheets.Count < 2)
+            {
+                wb.Worksheets.Add();
+            }
+            if (wb.Worksheets.Count < 2)
+            {
+                NotUsed = TaskRunnerServiceRes.ExcelCouldNotCreateThe2WorksheetsRequired;
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("ExcelCouldNotCreateThe2WorksheetsRequired");
+                return;
+            }
             Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[1];
             if (ws == null)
             {
@@ -2733,6 +2747,10 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
             CSSPEnumsDLL.Services.BaseEnumService _BaseEnumService = new CSSPEnumsDLL.Services.BaseEnumService(LanguageEnum.en);
+            if (wb.Worksheets.Count < 2)
+            {
+                wb.Worksheets.Add();
+            }
             Microsoft.Office.Interop.Excel.Worksheet ws = (Microsoft.Office.Interop.Excel.Worksheet)wb.Worksheets[2];
             if (ws == null)
             {
@@ -3764,7 +3782,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
-                xlApp.Range["M16:M16"].Select();
+                xlApp.Range["M16"].Select();
                 xlApp.ActiveWindow.FreezePanes = true;
 
                 ws.Range["A1"].Select();
