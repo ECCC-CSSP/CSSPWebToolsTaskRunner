@@ -3782,6 +3782,9 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                 }
 
+                xlApp.Range["A1"].Select();
+                xlApp.ActiveWindow.FreezePanes = false;
+
                 xlApp.Range["M16"].Select();
                 xlApp.ActiveWindow.FreezePanes = true;
 
