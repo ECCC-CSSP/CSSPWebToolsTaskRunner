@@ -5614,7 +5614,7 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private void SaveDBInfoToMikeScenarioFile(int MikeScenarioTVItemID)
         {
-            bool IsUnderSubsector = false;
+            bool IsUnderMunicipality = false;
             string NotUsed = "";
             TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -5653,9 +5653,9 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 foreach (TVItemModel tvItemModelParent in tvItemModelParentList)
                 {
-                    if (tvItemModelParent.TVType == TVTypeEnum.Subsector)
+                    if (tvItemModelParent.TVType == TVTypeEnum.Municipality)
                     {
-                        IsUnderSubsector = true;
+                        IsUnderMunicipality = true;
                     }
                 }
             }
@@ -5990,7 +5990,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            if (!IsUnderSubsector)
+            if (!IsUnderMunicipality)
             {
 
                 NotUsed = TaskRunnerServiceRes.DoingPrecipitationFile;
@@ -6126,7 +6126,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageList("DoingSources"));
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 45);
 
-            DoSources(pfsFile, fiM21_M3, mikeScenarioModel, MikeScenarioTVItemID, tvFileModelM21_3FM, IsUnderSubsector);
+            DoSources(pfsFile, fiM21_M3, mikeScenarioModel, MikeScenarioTVItemID, tvFileModelM21_3FM, IsUnderMunicipality);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
             {
                 return;
