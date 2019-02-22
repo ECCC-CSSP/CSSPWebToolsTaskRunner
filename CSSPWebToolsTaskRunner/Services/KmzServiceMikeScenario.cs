@@ -55,173 +55,173 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Constructors
 
         #region Functions public
-        public void GenerateMikeScenarioBoundaryConditions(FileInfo fi)
-        {
-            string NotUsed = "";
+        //public void GenerateMikeScenarioBoundaryConditions(FileInfo fi)
+        //{
+        //    string NotUsed = "";
 
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
-            }
+        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+        //    }
+        //    else
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+        //    }
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
-            DirectoryInfo di = new DirectoryInfo(ServerFilePath);
-            if (!di.Exists)
-                di.Create();
-
-
-            if (fi.Exists)
-                fi.Delete();
-
-            FileInfo fiKML = new FileInfo(fi.FullName.Replace(".kmz", ".kml"));
-
-            if (fiKML.Exists)
-                fiKML.Delete();
-
-            StringBuilder sbKML = new StringBuilder();
-
-            sbKML.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
-            sbKML.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
-            sbKML.AppendLine(@"<Document>");
-            sbKML.AppendLine(string.Format(@"<name>{0}</name>", fi.Name));
-
-            string[] Colors = { "ylw", "grn", "blue", "ltblu", "pink", "red" };
-
-            foreach (string color in Colors)
-            {
-                sbKML.AppendLine(string.Format(@"	<Style id=""sn_{0}-pushpin"">", color));
-                sbKML.AppendLine(@"		<IconStyle>");
-                sbKML.AppendLine(@"			<scale>1.1</scale>");
-                sbKML.AppendLine(@"			<Icon>");
-                sbKML.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
-                sbKML.AppendLine(@"			</Icon>");
-                sbKML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-                sbKML.AppendLine(@"		</IconStyle>");
-                sbKML.AppendLine(@"		<ListStyle>");
-                sbKML.AppendLine(@"		</ListStyle>");
-                sbKML.AppendLine(@"	</Style>");
-                sbKML.AppendLine(string.Format(@"	<StyleMap id=""msn_{0}-pushpin"">", color));
-                sbKML.AppendLine(@"		<Pair>");
-                sbKML.AppendLine(@"			<key>normal</key>");
-                sbKML.AppendLine(string.Format(@"			<styleUrl>#sn_{0}-pushpin</styleUrl>", color));
-                sbKML.AppendLine(@"		</Pair>");
-                sbKML.AppendLine(@"		<Pair>");
-                sbKML.AppendLine(@"			<key>highlight</key>");
-                sbKML.AppendLine(string.Format(@"			<styleUrl>#sh_{0}-pushpin</styleUrl>", color));
-                sbKML.AppendLine(@"		</Pair>");
-                sbKML.AppendLine(@"	</StyleMap>");
-                sbKML.AppendLine(string.Format(@"	<Style id=""sh_{0}-pushpin"">", color));
-                sbKML.AppendLine(@"		<IconStyle>");
-                sbKML.AppendLine(@"			<scale>1.3</scale>");
-                sbKML.AppendLine(@"			<Icon>");
-                sbKML.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
-                sbKML.AppendLine(@"			</Icon>");
-                sbKML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-                sbKML.AppendLine(@"		</IconStyle>");
-                sbKML.AppendLine(@"		<ListStyle>");
-                sbKML.AppendLine(@"		</ListStyle>");
-                sbKML.AppendLine(@"	</Style>");
-            }
-
-            sbKML.AppendLine(@"<Folder>");
-            sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + " (" + KmzServiceMikeScenarioRes.Mesh + @")</name>");
-
-            TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
-
-            MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            List<MikeBoundaryConditionModel> mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionMesh);
-
-            int countColor = 0;
-            foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
-            {
-                sbKML.AppendLine(@"<Folder>");
-                sbKML.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + " (" + mbcm.MikeBoundaryConditionCode + ") " + mbcm.MikeBoundaryConditionLength_m.ToString("F0") + " (m)</name>");
-
-                // drawing Boundary Nodes
-                List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionMesh, MapInfoDrawTypeEnum.Polyline);
-
-                sbKML.AppendLine(@"<Folder>");
-                sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + @"</name>");
-                sbKML.AppendLine(@"<open>1</open>");
-                foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
-                {
-                    sbKML.AppendLine(@"<Placemark>");
-                    sbKML.AppendLine(@"<name>" + mapInfoPointModel.Ordinal + "</name>");
-                    sbKML.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
-                    sbKML.AppendLine(@"<Point>");
-                    sbKML.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
-                    sbKML.AppendLine(@"</Point>");
-                    sbKML.AppendLine(@"</Placemark>");
-                }
-                sbKML.AppendLine(@"</Folder>");
-
-                sbKML.AppendLine(@"</Folder>");
-                countColor += 1;
-            }
-
-            sbKML.AppendLine(@"</Folder>");
-
-            sbKML.AppendLine(@"<Folder>");
-            sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + " (" + KmzServiceMikeScenarioRes.WebTide + @")</name>");
+        //    DirectoryInfo di = new DirectoryInfo(ServerFilePath);
+        //    if (!di.Exists)
+        //        di.Create();
 
 
-            mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionWebTide);
+        //    if (fi.Exists)
+        //        fi.Delete();
 
-            countColor = 0;
-            foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
-            {
-                sbKML.AppendLine(@"<Folder>");
-                sbKML.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + " (" + (mbcm.MikeBoundaryConditionLevelOrVelocity == MikeBoundaryConditionLevelOrVelocityEnum.Level ? KmzServiceMikeScenarioRes.WaterLevels : KmzServiceMikeScenarioRes.Currents) + ") " + mbcm.WebTideDataSet + " " + mbcm.NumberOfWebTideNodes + " " + KmzServiceMikeScenarioRes.Nodes + "</name>");
+        //    FileInfo fiKML = new FileInfo(fi.FullName.Replace(".kmz", ".kml"));
 
-                // drawing Boundary Nodes
-                List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionWebTide, MapInfoDrawTypeEnum.Polyline);
+        //    if (fiKML.Exists)
+        //        fiKML.Delete();
 
-                sbKML.AppendLine(@"<Folder>");
-                sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + @"</name>");
-                sbKML.AppendLine(@"<open>1</open>");
-                foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
-                {
-                    sbKML.AppendLine(@"<Placemark>");
-                    sbKML.AppendLine(@"<name>" + mapInfoPointModel.Ordinal + "</name>");
-                    sbKML.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
-                    sbKML.AppendLine(@"<Point>");
-                    sbKML.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
-                    sbKML.AppendLine(@"</Point>");
-                    sbKML.AppendLine(@"</Placemark>");
-                }
-                sbKML.AppendLine(@"</Folder>");
+        //    StringBuilder sbKML = new StringBuilder();
 
-                sbKML.AppendLine(@"</Folder>");
-                countColor += 1;
-            }
+        //    sbKML.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+        //    sbKML.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+        //    sbKML.AppendLine(@"<Document>");
+        //    sbKML.AppendLine(string.Format(@"<name>{0}</name>", fi.Name));
 
-            sbKML.AppendLine(@"</Folder>");
+        //    string[] Colors = { "ylw", "grn", "blue", "ltblu", "pink", "red" };
 
-            sbKML.AppendLine(@"</Document>");
-            sbKML.AppendLine(@"</kml>");
+        //    foreach (string color in Colors)
+        //    {
+        //        sbKML.AppendLine(string.Format(@"	<Style id=""sn_{0}-pushpin"">", color));
+        //        sbKML.AppendLine(@"		<IconStyle>");
+        //        sbKML.AppendLine(@"			<scale>1.1</scale>");
+        //        sbKML.AppendLine(@"			<Icon>");
+        //        sbKML.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
+        //        sbKML.AppendLine(@"			</Icon>");
+        //        sbKML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //        sbKML.AppendLine(@"		</IconStyle>");
+        //        sbKML.AppendLine(@"		<ListStyle>");
+        //        sbKML.AppendLine(@"		</ListStyle>");
+        //        sbKML.AppendLine(@"	</Style>");
+        //        sbKML.AppendLine(string.Format(@"	<StyleMap id=""msn_{0}-pushpin"">", color));
+        //        sbKML.AppendLine(@"		<Pair>");
+        //        sbKML.AppendLine(@"			<key>normal</key>");
+        //        sbKML.AppendLine(string.Format(@"			<styleUrl>#sn_{0}-pushpin</styleUrl>", color));
+        //        sbKML.AppendLine(@"		</Pair>");
+        //        sbKML.AppendLine(@"		<Pair>");
+        //        sbKML.AppendLine(@"			<key>highlight</key>");
+        //        sbKML.AppendLine(string.Format(@"			<styleUrl>#sh_{0}-pushpin</styleUrl>", color));
+        //        sbKML.AppendLine(@"		</Pair>");
+        //        sbKML.AppendLine(@"	</StyleMap>");
+        //        sbKML.AppendLine(string.Format(@"	<Style id=""sh_{0}-pushpin"">", color));
+        //        sbKML.AppendLine(@"		<IconStyle>");
+        //        sbKML.AppendLine(@"			<scale>1.3</scale>");
+        //        sbKML.AppendLine(@"			<Icon>");
+        //        sbKML.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
+        //        sbKML.AppendLine(@"			</Icon>");
+        //        sbKML.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //        sbKML.AppendLine(@"		</IconStyle>");
+        //        sbKML.AppendLine(@"		<ListStyle>");
+        //        sbKML.AppendLine(@"		</ListStyle>");
+        //        sbKML.AppendLine(@"	</Style>");
+        //    }
 
-            SaveInKMZFileStream(fi, fiKML, sbKML);
-            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-                return;
+        //    sbKML.AppendLine(@"<Folder>");
+        //    sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + " (" + KmzServiceMikeScenarioRes.Mesh + @")</name>");
 
-        }
+        //    TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        return;
+        //    }
+
+        //    MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    List<MikeBoundaryConditionModel> mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionMesh);
+
+        //    int countColor = 0;
+        //    foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
+        //    {
+        //        sbKML.AppendLine(@"<Folder>");
+        //        sbKML.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + " (" + mbcm.MikeBoundaryConditionCode + ") " + mbcm.MikeBoundaryConditionLength_m.ToString("F0") + " (m)</name>");
+
+        //        // drawing Boundary Nodes
+        //        List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionMesh, MapInfoDrawTypeEnum.Polyline);
+
+        //        sbKML.AppendLine(@"<Folder>");
+        //        sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + @"</name>");
+        //        sbKML.AppendLine(@"<open>1</open>");
+        //        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+        //        {
+        //            sbKML.AppendLine(@"<Placemark>");
+        //            sbKML.AppendLine(@"<name>" + mapInfoPointModel.Ordinal + "</name>");
+        //            sbKML.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
+        //            sbKML.AppendLine(@"<Point>");
+        //            sbKML.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
+        //            sbKML.AppendLine(@"</Point>");
+        //            sbKML.AppendLine(@"</Placemark>");
+        //        }
+        //        sbKML.AppendLine(@"</Folder>");
+
+        //        sbKML.AppendLine(@"</Folder>");
+        //        countColor += 1;
+        //    }
+
+        //    sbKML.AppendLine(@"</Folder>");
+
+        //    sbKML.AppendLine(@"<Folder>");
+        //    sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + " (" + KmzServiceMikeScenarioRes.WebTide + @")</name>");
+
+
+        //    mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionWebTide);
+
+        //    countColor = 0;
+        //    foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
+        //    {
+        //        sbKML.AppendLine(@"<Folder>");
+        //        sbKML.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + " (" + (mbcm.MikeBoundaryConditionLevelOrVelocity == MikeBoundaryConditionLevelOrVelocityEnum.Level ? KmzServiceMikeScenarioRes.WaterLevels : KmzServiceMikeScenarioRes.Currents) + ") " + mbcm.WebTideDataSet + " " + mbcm.NumberOfWebTideNodes + " " + KmzServiceMikeScenarioRes.Nodes + "</name>");
+
+        //        // drawing Boundary Nodes
+        //        List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionWebTide, MapInfoDrawTypeEnum.Polyline);
+
+        //        sbKML.AppendLine(@"<Folder>");
+        //        sbKML.AppendLine(@"<name>" + KmzServiceMikeScenarioRes.Nodes + @"</name>");
+        //        sbKML.AppendLine(@"<open>1</open>");
+        //        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+        //        {
+        //            sbKML.AppendLine(@"<Placemark>");
+        //            sbKML.AppendLine(@"<name>" + mapInfoPointModel.Ordinal + "</name>");
+        //            sbKML.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
+        //            sbKML.AppendLine(@"<Point>");
+        //            sbKML.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
+        //            sbKML.AppendLine(@"</Point>");
+        //            sbKML.AppendLine(@"</Placemark>");
+        //        }
+        //        sbKML.AppendLine(@"</Folder>");
+
+        //        sbKML.AppendLine(@"</Folder>");
+        //        countColor += 1;
+        //    }
+
+        //    sbKML.AppendLine(@"</Folder>");
+
+        //    sbKML.AppendLine(@"</Document>");
+        //    sbKML.AppendLine(@"</kml>");
+
+        //    SaveInKMZFileStream(fi, fiKML, sbKML);
+        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+        //        return;
+
+        //}
         public void GenerateMikeScenarioConcentrationAnimation(FileInfo fi)
         {
             string NotUsed = "";
@@ -5018,106 +5018,106 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             return inside;
         }
-        private void SaveInKMZFileStream(FileInfo fi, FileInfo fiKML, StringBuilder sbKML)
-        {
-            string NotUsed = "";
-            StreamWriter sr = fiKML.CreateText();
-            sr.Write(sbKML);
-            sr.Flush();
-            sr.Close();
+        //private void SaveInKMZFileStream(FileInfo fi, FileInfo fiKML, StringBuilder sbKML)
+        //{
+        //    string NotUsed = "";
+        //    StreamWriter sr = fiKML.CreateText();
+        //    sr.Write(sbKML);
+        //    sr.Flush();
+        //    sr.Close();
 
-            ProcessStartInfo pZip = new ProcessStartInfo();
-            pZip.Arguments = "a -tzip \"" + fi.FullName + "\" \"" + fiKML.FullName + "\"";
-            pZip.RedirectStandardInput = true;
-            pZip.UseShellExecute = false;
-            pZip.CreateNoWindow = true;
-            pZip.WindowStyle = ProcessWindowStyle.Hidden;
+        //    ProcessStartInfo pZip = new ProcessStartInfo();
+        //    pZip.Arguments = "a -tzip \"" + fi.FullName + "\" \"" + fiKML.FullName + "\"";
+        //    pZip.RedirectStandardInput = true;
+        //    pZip.UseShellExecute = false;
+        //    pZip.CreateNoWindow = true;
+        //    pZip.WindowStyle = ProcessWindowStyle.Hidden;
 
-            Process processZip = new Process();
-            processZip.StartInfo = pZip;
-            try
-            {
-                pZip.FileName = @"C:\Program Files\7-Zip\7z.exe";
-                processZip.Start();
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CompressKMLDidNotWorkWith7zError_, ex.Message);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CompressKMLDidNotWorkWith7zError_", ex.Message);
-                return;
-            }
+        //    Process processZip = new Process();
+        //    processZip.StartInfo = pZip;
+        //    try
+        //    {
+        //        pZip.FileName = @"C:\Program Files\7-Zip\7z.exe";
+        //        processZip.Start();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CompressKMLDidNotWorkWith7zError_, ex.Message);
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CompressKMLDidNotWorkWith7zError_", ex.Message);
+        //        return;
+        //    }
 
-            while (!processZip.HasExited)
-            {
-                // waiting for the processZip to finish then continue
-            }
+        //    while (!processZip.HasExited)
+        //    {
+        //        // waiting for the processZip to finish then continue
+        //    }
 
-            fiKML.Delete();
+        //    fiKML.Delete();
 
-            fi = new FileInfo(fi.FullName);
+        //    fi = new FileInfo(fi.FullName);
 
-            string DirText = (fi.Directory + @"\");
-            TVFileModel tvFileModel = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(DirText.Replace(@"C:\", @"E:\"), fi.Name);
-            if (!string.IsNullOrWhiteSpace(tvFileModel.Error))
-            {
-                TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-                if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                    return;
-                }
+        //    string DirText = (fi.Directory + @"\");
+        //    TVFileModel tvFileModel = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(DirText.Replace(@"C:\", @"E:\"), fi.Name);
+        //    if (!string.IsNullOrWhiteSpace(tvFileModel.Error))
+        //    {
+        //        TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //        if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+        //        {
+        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //            return;
+        //        }
 
-                TVItemModel tvItemFileModel = _TVItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelMikeScenario.TVItemID, fi.Name, TVTypeEnum.File);
-                if (!string.IsNullOrWhiteSpace(tvItemFileModel.Error))
-                {
-                    tvItemFileModel = _TVItemService.PostAddChildTVItemDB(tvItemModelMikeScenario.TVItemID, fi.Name, TVTypeEnum.File);
-                    if (!string.IsNullOrEmpty(tvItemFileModel.Error))
-                    {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
-                        return;
-                    }
-                }
+        //        TVItemModel tvItemFileModel = _TVItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelMikeScenario.TVItemID, fi.Name, TVTypeEnum.File);
+        //        if (!string.IsNullOrWhiteSpace(tvItemFileModel.Error))
+        //        {
+        //            tvItemFileModel = _TVItemService.PostAddChildTVItemDB(tvItemModelMikeScenario.TVItemID, fi.Name, TVTypeEnum.File);
+        //            if (!string.IsNullOrEmpty(tvItemFileModel.Error))
+        //            {
+        //                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
+        //                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
+        //                return;
+        //            }
+        //        }
 
-                TVFileModel tvFileModelNew = new TVFileModel();
-                tvFileModelNew.TVFileTVItemID = tvItemFileModel.TVItemID;
-                tvFileModelNew.FilePurpose = FilePurposeEnum.MikeResultKMZ;
-                tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
-                tvFileModelNew.Year = DateTime.Now.Year;
-                tvFileModelNew.FileDescription = null;
-                tvFileModelNew.FileType = _TVFileService.GetFileType(fi.Extension);
-                tvFileModelNew.FileSize_kb = (int)(fi.Length / 1024);
-                tvFileModelNew.FileInfo = "Mike Scenario Documentation";
-                tvFileModelNew.FileCreatedDate_UTC = DateTime.UtcNow;
-                tvFileModelNew.ServerFileName = fi.Name;
-                tvFileModelNew.ServerFilePath = (fi.Directory + @"\").Replace(@"C:\", @"E:\");
+        //        TVFileModel tvFileModelNew = new TVFileModel();
+        //        tvFileModelNew.TVFileTVItemID = tvItemFileModel.TVItemID;
+        //        tvFileModelNew.FilePurpose = FilePurposeEnum.MikeResultKMZ;
+        //        tvFileModelNew.Language = _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+        //        tvFileModelNew.Year = DateTime.Now.Year;
+        //        tvFileModelNew.FileDescription = null;
+        //        tvFileModelNew.FileType = _TVFileService.GetFileType(fi.Extension);
+        //        tvFileModelNew.FileSize_kb = (int)(fi.Length / 1024);
+        //        tvFileModelNew.FileInfo = "Mike Scenario Documentation";
+        //        tvFileModelNew.FileCreatedDate_UTC = DateTime.UtcNow;
+        //        tvFileModelNew.ServerFileName = fi.Name;
+        //        tvFileModelNew.ServerFilePath = (fi.Directory + @"\").Replace(@"C:\", @"E:\");
 
-                TVFileModel tvFileModelRet = _TVFileService.PostAddTVFileDB(tvFileModelNew);
-                if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
-                    return;
-                }
-            }
-            else
-            {
-                tvFileModel.FileSize_kb = (int)(fi.Length / 1024);
-                tvFileModel.FileCreatedDate_UTC = DateTime.UtcNow;
-                tvFileModel.LastUpdateDate_UTC = DateTime.UtcNow;
-                tvFileModel.LastUpdateContactTVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.LastUpdateContactTVItemID;
+        //        TVFileModel tvFileModelRet = _TVFileService.PostAddTVFileDB(tvFileModelNew);
+        //        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+        //        {
+        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
+        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
+        //            return;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        tvFileModel.FileSize_kb = (int)(fi.Length / 1024);
+        //        tvFileModel.FileCreatedDate_UTC = DateTime.UtcNow;
+        //        tvFileModel.LastUpdateDate_UTC = DateTime.UtcNow;
+        //        tvFileModel.LastUpdateContactTVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.LastUpdateContactTVItemID;
 
-                TVFileModel tvFileModelRet = _TVFileService.PostUpdateTVFileDB(tvFileModel);
-                if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
-                    return;
-                }
-            }
+        //        TVFileModel tvFileModelRet = _TVFileService.PostUpdateTVFileDB(tvFileModel);
+        //        if (!string.IsNullOrWhiteSpace(tvFileModelRet.Error))
+        //        {
+        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreate_For_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
+        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat4List("CouldNotCreate_For_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.MIKEScenarioDocumentation, TaskRunnerServiceRes.TVText, fi.Name);
+        //            return;
+        //        }
+        //    }
 
-        }
+        //}
         private void WriteKMLBottom(StringBuilder sbKML)
         {
             sbKML.AppendLine(@"</Document>");

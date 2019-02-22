@@ -142,49 +142,49 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
 
-            ProcessStartInfo pZip = new ProcessStartInfo();
-            pZip.Arguments = "a -tzip \"" + fi.FullName.Replace(".kml", ".kmz") + "\" \"" + fi.FullName + "\"";
-            pZip.RedirectStandardInput = true;
-            pZip.UseShellExecute = false;
-            pZip.CreateNoWindow = true;
-            pZip.WindowStyle = ProcessWindowStyle.Hidden;
+            //ProcessStartInfo pZip = new ProcessStartInfo();
+            //pZip.Arguments = "a -tzip \"" + fi.FullName.Replace(".kml", ".kmz") + "\" \"" + fi.FullName + "\"";
+            //pZip.RedirectStandardInput = true;
+            //pZip.UseShellExecute = false;
+            //pZip.CreateNoWindow = true;
+            //pZip.WindowStyle = ProcessWindowStyle.Hidden;
 
-            Process processZip = new Process();
-            processZip.StartInfo = pZip;
-            try
-            {
-                pZip.FileName = @"C:\Program Files\7-Zip\7z.exe";
-                processZip.Start();
-            }
-            catch (Exception ex)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CompressKMLDidNotWorkWith7zError_, ex.Message);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CompressKMLDidNotWorkWith7zError_", ex.Message);
-                return false;
-            }
+            //Process processZip = new Process();
+            //processZip.StartInfo = pZip;
+            //try
+            //{
+            //    pZip.FileName = @"C:\Program Files\7-Zip\7z.exe";
+            //    processZip.Start();
+            //}
+            //catch (Exception ex)
+            //{
+            //    NotUsed = string.Format(TaskRunnerServiceRes.CompressKMLDidNotWorkWith7zError_, ex.Message);
+            //    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CompressKMLDidNotWorkWith7zError_", ex.Message);
+            //    return false;
+            //}
 
-            while (!processZip.HasExited)
-            {
-                // waiting for the processZip to finish then continue
-            }
+            //while (!processZip.HasExited)
+            //{
+            //    // waiting for the processZip to finish then continue
+            //}
 
-            fi = new FileInfo(fi.FullName);
+            //fi = new FileInfo(fi.FullName);
 
-            if (fi.Exists)
-            {
-                try
-                {
-                    fi.Delete();
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                    return false;
-                }
-            }
+            //if (fi.Exists)
+            //{
+            //    try
+            //    {
+            //        //fi.Delete();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            //        return false;
+            //    }
+            //}
 
-            fi = new FileInfo(fi.FullName.Replace(".kml", ".kmz"));
+            //fi = new FileInfo(fi.FullName.Replace(".kml", ".kmz"));
 
             if (!fi.Exists)
             {
