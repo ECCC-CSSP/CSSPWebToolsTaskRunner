@@ -1049,7 +1049,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     if (polSourceObservationModelList.Count > 0)
                     {
-                        PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList.OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
+                        PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList
+                            .Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID)
+                            .OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
 
                         if (polSourceObservationModel != null)
                         {
