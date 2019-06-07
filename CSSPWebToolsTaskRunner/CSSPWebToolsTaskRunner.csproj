@@ -756,7 +756,6 @@
     <Content Include="HTMLPage1.html" />
     <Content Include="Services\HTMLPage1.html" />
     <Content Include="settings.ico" />
-    <None Include="XMLFile1.kml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WQMSRTNotifiers\WQMS.RTNotifiers\WQMS.RTNotifiers.csproj">
