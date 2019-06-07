@@ -1923,4 +1923,16 @@
   <data name="MIKECurrentsAnimation" xml:space="preserve">
     <value>MIKE Currents Animation</value>
   </data>
+  <data name="ErrorOccuredWhileCreatingXLSXDocument_" xml:space="preserve">
+    <value>Error occured while creating XLSX document {0}</value>
+  </data>
+  <data name="GoogleEarthMarker" xml:space="preserve">
+    <value>GoogleEarthMarker</value>
+  </data>
+  <data name="MIKEParameter" xml:space="preserve">
+    <value>MIKEParameter</value>
+  </data>
+  <data name="Error_WhileCreatingXLSXDocument_" xml:space="preserve">
+    <value>Error {0} while creating XLSX document {1}</value>
+  </data>
 </root>

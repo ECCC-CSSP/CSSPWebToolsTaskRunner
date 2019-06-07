@@ -1636,6 +1636,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error {0} while creating XLSX document {1}.
+        /// </summary>
+        public static string Error_WhileCreatingXLSXDocument_ {
+            get {
+                return ResourceManager.GetString("Error_WhileCreatingXLSXDocument_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error in index {0} {1} {2}..
         /// </summary>
         public static string ErrorInIndex___ {
@@ -1650,6 +1659,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ErrorOccuredWhileCreatingKMZDocument_ {
             get {
                 return ResourceManager.GetString("ErrorOccuredWhileCreatingKMZDocument_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured while creating XLSX document {0}.
+        /// </summary>
+        public static string ErrorOccuredWhileCreatingXLSXDocument_ {
+            get {
+                return ResourceManager.GetString("ErrorOccuredWhileCreatingXLSXDocument_", resourceCulture);
             }
         }
         
@@ -2010,6 +2028,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string GMean {
             get {
                 return ResourceManager.GetString("GMean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GoogleEarthMarker.
+        /// </summary>
+        public static string GoogleEarthMarker {
+            get {
+                return ResourceManager.GetString("GoogleEarthMarker", resourceCulture);
             }
         }
         
@@ -2703,6 +2730,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MIKEMesh {
             get {
                 return ResourceManager.GetString("MIKEMesh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKEParameter.
+        /// </summary>
+        public static string MIKEParameter {
+            get {
+                return ResourceManager.GetString("MIKEParameter", resourceCulture);
             }
         }
         

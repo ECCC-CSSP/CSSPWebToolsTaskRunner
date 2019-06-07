@@ -1121,8 +1121,8 @@ namespace CSSPWebToolsTaskRunner.Services
             appExcel.Visible = false;
             Microsoft.Office.Interop.Excel.Workbook xlWorkbook = appExcel.Workbooks.Open(fi.FullName);
             Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-            string NewDocxFileName = fi.FullName.Replace(".html", ".xlsx");
-            appExcel.ActiveWorkbook.SaveAs(NewDocxFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
+            string NewXlsxFileName = fi.FullName.Replace(".html", ".xlsx");
+            appExcel.ActiveWorkbook.SaveAs(NewXlsxFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
             xlWorkbook.Close();
             appExcel.Quit();
 
@@ -1142,7 +1142,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            fi = new FileInfo(NewDocxFileName);
+            fi = new FileInfo(NewXlsxFileName);
 
             TVItemModel tvItemModel = _TVItemService.PostAddChildTVItemDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi.Name.Replace(fi.Extension, ""), TVTypeEnum.File);
             if (!string.IsNullOrWhiteSpace(tvItemModel.Error))

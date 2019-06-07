@@ -753,6 +753,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HTMLPage1.html" />
     <Content Include="Services\HTMLPage1.html" />
     <Content Include="settings.ico" />
     <None Include="XMLFile1.kml" />
