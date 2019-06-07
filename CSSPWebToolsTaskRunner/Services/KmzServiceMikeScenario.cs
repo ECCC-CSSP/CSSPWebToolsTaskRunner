@@ -222,47 +222,47 @@ namespace CSSPWebToolsTaskRunner.Services
         //        return;
 
         //}
-        public void GenerateMikeScenarioConcentrationAnimation(FileInfo fi)
-        {
-            string NotUsed = "";
-            //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
+        //public void GenerateMikeScenarioConcentrationAnimation(FileInfo fi)
+        //{
+        //    string NotUsed = "";
+        //    //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
 
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
-            }
+        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+        //    }
+        //    else
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+        //    }
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
-            DirectoryInfo di = new DirectoryInfo(ServerFilePath);
-            if (!di.Exists)
-                di.Create();
+        //    DirectoryInfo di = new DirectoryInfo(ServerFilePath);
+        //    if (!di.Exists)
+        //        di.Create();
 
-            if (fi.Exists)
-                fi.Delete();
+        //    if (fi.Exists)
+        //        fi.Delete();
 
-            MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
+        //    MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        return;
+        //    }
 
 
-            StringBuilder sbKMZ = new StringBuilder();
+        //    StringBuilder sbKMZ = new StringBuilder();
 
-        }
+        //}
         //public void GenerateMikeScenarioConcentrationLimits(FileInfo fi)
         //{
         //    FileInfo fiDfsu;
@@ -1998,166 +1998,166 @@ namespace CSSPWebToolsTaskRunner.Services
         //        return;
 
         //}
-        public void GenerateMikeScenarioCurrentAnimation(FileInfo fi)
-        {
-            string NotUsed = "";
-            //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
+        //public void GenerateMikeScenarioCurrentAnimation(FileInfo fi)
+        //{
+        //    string NotUsed = "";
+        //    //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
 
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
-            }
+        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+        //    }
+        //    else
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+        //    }
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
-            DirectoryInfo di = new DirectoryInfo(ServerFilePath);
-            if (!di.Exists)
-                di.Create();
+        //    DirectoryInfo di = new DirectoryInfo(ServerFilePath);
+        //    if (!di.Exists)
+        //        di.Create();
 
-            if (fi.Exists)
-                fi.Delete();
+        //    if (fi.Exists)
+        //        fi.Delete();
 
-            MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
+        //    MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        return;
+        //    }
 
-            StringBuilder sbKMZ = new StringBuilder();
+        //    StringBuilder sbKMZ = new StringBuilder();
 
-        }
-        public void GenerateMikeScenarioCurrentMaximum(FileInfo fi)
-        {
-            string NotUsed = "";
-            //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
+        //}
+        //public void GenerateMikeScenarioCurrentMaximum(FileInfo fi)
+        //{
+        //    string NotUsed = "";
+        //    //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
 
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
-            }
+        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+        //    }
+        //    else
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+        //    }
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
-            DirectoryInfo di = new DirectoryInfo(ServerFilePath);
-            if (!di.Exists)
-                di.Create();
+        //    DirectoryInfo di = new DirectoryInfo(ServerFilePath);
+        //    if (!di.Exists)
+        //        di.Create();
 
-            if (fi.Exists)
-                fi.Delete();
+        //    if (fi.Exists)
+        //        fi.Delete();
 
-            MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
+        //    MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        return;
+        //    }
 
-            StringBuilder sbKMZ = new StringBuilder();
+        //    StringBuilder sbKMZ = new StringBuilder();
 
-        }
-        public void GenerateMikeScenarioMesh(FileInfo fi)
-        {
-            string NotUsed = "";
-            string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
+        //}
+        //public void GenerateMikeScenarioMesh(FileInfo fi)
+        //{
+        //    string NotUsed = "";
+        //    string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
 
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
-            }
+        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+        //    }
+        //    else
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+        //    }
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
-            DirectoryInfo di = new DirectoryInfo(ServerFilePath);
-            if (!di.Exists)
-                di.Create();
+        //    DirectoryInfo di = new DirectoryInfo(ServerFilePath);
+        //    if (!di.Exists)
+        //        di.Create();
 
-            if (fi.Exists)
-                fi.Delete();
+        //    if (fi.Exists)
+        //        fi.Delete();
 
-            MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
+        //    MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        return;
+        //    }
 
-            StringBuilder sbKMZ = new StringBuilder();
+        //    StringBuilder sbKMZ = new StringBuilder();
 
-        }
-        public void GenerateMikeScenarioStudyArea(FileInfo fi)
-        {
-            string NotUsed = "";
-            //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
+        //}
+        //public void GenerateMikeScenarioStudyArea(FileInfo fi)
+        //{
+        //    string NotUsed = "";
+        //    //string asliefj = _AppTaskService.GetAppTaskParamStr(_TaskRunnerBaseService._BWObj.appTaskModel.Parameters, "FileGeneratorType");
 
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
-            }
-            else
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
-            }
+        //    if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+        //    }
+        //    else
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+        //    }
 
-            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    string ServerFilePath = tvFileService.GetServerFilePath(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
 
-            DirectoryInfo di = new DirectoryInfo(ServerFilePath);
-            if (!di.Exists)
-                di.Create();
+        //    DirectoryInfo di = new DirectoryInfo(ServerFilePath);
+        //    if (!di.Exists)
+        //        di.Create();
 
-            if (fi.Exists)
-                fi.Delete();
+        //    if (fi.Exists)
+        //        fi.Delete();
 
-            MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
+        //    MikeScenarioModel SamplingPlanModel = _MikeScenarioService.GetMikeScenarioModelWithMikeScenarioTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    if (!string.IsNullOrWhiteSpace(SamplingPlanModel.Error))
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", ServiceRes.MikeScenario, ServiceRes.MikeScenarioTVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        return;
+        //    }
 
-            StringBuilder sbKMZ = new StringBuilder();
+        //    StringBuilder sbKMZ = new StringBuilder();
 
-        }
+        //}
         //public void CreateKMZResultFiles(KMZActionEnum kmzAction, DfsuFile dfsuFile, int MikeScenarioID, int TVFileID, string dfsParamItem /* ex: eumIuVelocity */, string ContourValueString, string SigmaLayerValuesString, string ZLayerValuesString, string DepthValuesString, string KMLTextPathForVector, int VectorSizeInMeterForEach10cm_s)
         //{
         //    string NotUsed = "";
@@ -3007,224 +3007,224 @@ namespace CSSPWebToolsTaskRunner.Services
         #endregion Functions public
 
         #region Functions private
-        private void DrawKMLContourPolygon(List<ContourPolygon> ContourPolygonList, DfsuFile dfsuFile, int ParamCount, StringBuilder sbStyleFeacalColiformContour, StringBuilder sbPlacemarkFeacalColiformContour)
-        {
-            int Count = 0;
-            float MaxXCoord = -180;
-            float MaxYCoord = -90;
-            float MinXCoord = 180;
-            float MinYCoord = 90;
-            sbPlacemarkFeacalColiformContour.AppendLine(@"<Folder>");
-            sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
-            sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
-            sbPlacemarkFeacalColiformContour.AppendLine(@"<TimeSpan>");
-            sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
-            sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds)));
-            sbPlacemarkFeacalColiformContour.AppendLine(@"</TimeSpan>");
-            foreach (ContourPolygon contourPolygon in ContourPolygonList)
-            {
-                Count += 1;
-                // draw the polygons
-                sbPlacemarkFeacalColiformContour.AppendLine(@"<Placemark>");
-                sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
-                sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<name>{0} {1}</name>", contourPolygon.ContourValue, TaskRunnerServiceRes.PollutionContour));
-                if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
-                {
-                    sbPlacemarkFeacalColiformContour.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
-                }
-                else if (contourPolygon.ContourValue >= 88)
-                {
-                    sbPlacemarkFeacalColiformContour.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
-                }
-                else
-                {
-                    sbPlacemarkFeacalColiformContour.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
-                }
+        //private void DrawKMLContourPolygon(List<ContourPolygon> ContourPolygonList, DfsuFile dfsuFile, int ParamCount, StringBuilder sbStyleFeacalColiformContour, StringBuilder sbPlacemarkFeacalColiformContour)
+        //{
+        //    int Count = 0;
+        //    float MaxXCoord = -180;
+        //    float MaxYCoord = -90;
+        //    float MinXCoord = 180;
+        //    float MinYCoord = 90;
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"<Folder>");
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
+        //    sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"<TimeSpan>");
+        //    sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
+        //    sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds)));
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"</TimeSpan>");
+        //    foreach (ContourPolygon contourPolygon in ContourPolygonList)
+        //    {
+        //        Count += 1;
+        //        // draw the polygons
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<Placemark>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<visibility>0</visibility>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(string.Format(@"<name>{0} {1}</name>", contourPolygon.ContourValue, TaskRunnerServiceRes.PollutionContour));
+        //        if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
+        //        {
+        //            sbPlacemarkFeacalColiformContour.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
+        //        }
+        //        else if (contourPolygon.ContourValue >= 88)
+        //        {
+        //            sbPlacemarkFeacalColiformContour.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
+        //        }
+        //        else
+        //        {
+        //            sbPlacemarkFeacalColiformContour.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
+        //        }
 
-                sbPlacemarkFeacalColiformContour.AppendLine(@"<Polygon>");
-                //sbPlacemarkFeacalColiformContour.AppendLine(@"<extrude>1</extrude>");
-                //sbPlacemarkFeacalColiformContour.AppendLine(@"<tessellate>1</tessellate>");
-                //sbPlacemarkFeacalColiformContour.AppendLine(@"<altitudeMode>absolute</altitudeMode>");
-                //sbPlacemarkFeacalColiformContour.AppendLine(@"<gx:drawOrder>" + contourPolygon.Layer +"</gx:drawOrder>"); 
-                sbPlacemarkFeacalColiformContour.AppendLine(@"<outerBoundaryIs>");
-                sbPlacemarkFeacalColiformContour.AppendLine(@"<LinearRing>");
-                sbPlacemarkFeacalColiformContour.AppendLine(@"<coordinates>");
-                foreach (Node node in contourPolygon.ContourNodeList)
-                {
-                    if (MaxXCoord < node.X) MaxXCoord = node.X;
-                    if (MaxYCoord < node.Y) MaxYCoord = node.Y;
-                    if (MinXCoord > node.X) MinXCoord = node.X;
-                    if (MinYCoord > node.Y) MinYCoord = node.Y;
-                    sbPlacemarkFeacalColiformContour.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
-                }
-                sbPlacemarkFeacalColiformContour.AppendLine(@"</coordinates>");
-                sbPlacemarkFeacalColiformContour.AppendLine(@"</LinearRing>");
-                sbPlacemarkFeacalColiformContour.AppendLine(@"</outerBoundaryIs>");
-                sbPlacemarkFeacalColiformContour.AppendLine(@"</Polygon>");
-                sbPlacemarkFeacalColiformContour.AppendLine(@"</Placemark>");
-            }
-            sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
-        }
-        private void DrawKMLContourStyle(StringBuilder sbStyleFeacalColiformContour, StringBuilder sbPlacemarkFeacalColiformContour)
-        {
-            sbStyleFeacalColiformContour.AppendLine(@"	<StyleMap id=""msn_ylw-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<key>normal</key>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sn_ylw-pushpin</styleUrl>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<key>highlight</key>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sh_ylw-pushpin</styleUrl>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</StyleMap>");
-            sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sn_ylw-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.1</scale>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
-            sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
-            sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sh_ylw-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.3</scale>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
-            sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<Polygon>");
+        //        //sbPlacemarkFeacalColiformContour.AppendLine(@"<extrude>1</extrude>");
+        //        //sbPlacemarkFeacalColiformContour.AppendLine(@"<tessellate>1</tessellate>");
+        //        //sbPlacemarkFeacalColiformContour.AppendLine(@"<altitudeMode>absolute</altitudeMode>");
+        //        //sbPlacemarkFeacalColiformContour.AppendLine(@"<gx:drawOrder>" + contourPolygon.Layer +"</gx:drawOrder>"); 
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<outerBoundaryIs>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<LinearRing>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"<coordinates>");
+        //        foreach (Node node in contourPolygon.ContourNodeList)
+        //        {
+        //            if (MaxXCoord < node.X) MaxXCoord = node.X;
+        //            if (MaxYCoord < node.Y) MaxYCoord = node.Y;
+        //            if (MinXCoord > node.X) MinXCoord = node.X;
+        //            if (MinYCoord > node.Y) MinYCoord = node.Y;
+        //            sbPlacemarkFeacalColiformContour.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + "," + node.Z.ToString().Replace(",", ".") + " ");
+        //        }
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"</coordinates>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"</LinearRing>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"</outerBoundaryIs>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"</Polygon>");
+        //        sbPlacemarkFeacalColiformContour.AppendLine(@"</Placemark>");
+        //    }
+        //    sbPlacemarkFeacalColiformContour.AppendLine(@"</Folder>");
+        //}
+        //private void DrawKMLContourStyle(StringBuilder sbStyleFeacalColiformContour, StringBuilder sbPlacemarkFeacalColiformContour)
+        //{
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<StyleMap id=""msn_ylw-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<key>normal</key>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sn_ylw-pushpin</styleUrl>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<key>highlight</key>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sh_ylw-pushpin</styleUrl>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</StyleMap>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sn_ylw-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.1</scale>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sh_ylw-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.3</scale>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
 
-            sbStyleFeacalColiformContour.AppendLine(@"	<StyleMap id=""msn_grn-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<key>normal</key>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sn_grn-pushpin</styleUrl>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<key>highlight</key>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sh_grn-pushpin</styleUrl>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</StyleMap>");
-            sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sn_grn-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.1</scale>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
-            sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sh_grn-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.3</scale>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<StyleMap id=""msn_grn-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<key>normal</key>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sn_grn-pushpin</styleUrl>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<key>highlight</key>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sh_grn-pushpin</styleUrl>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</StyleMap>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sn_grn-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.1</scale>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sh_grn-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.3</scale>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
 
-            sbStyleFeacalColiformContour.AppendLine(@"	<StyleMap id=""msn_blue-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<key>normal</key>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sn_blue-pushpin</styleUrl>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<key>highlight</key>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sh_blue-pushpin</styleUrl>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</StyleMap>");
-            sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sn_blue-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.1</scale>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
-            sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sh_blue-pushpin"">");
-            sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.3</scale>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
-            sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<StyleMap id=""msn_blue-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<key>normal</key>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sn_blue-pushpin</styleUrl>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<key>highlight</key>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<styleUrl>#sh_blue-pushpin</styleUrl>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</Pair>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</StyleMap>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sn_blue-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.1</scale>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	<Style id=""sh_blue-pushpin"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		<IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<scale>1.3</scale>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			</Icon>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"		</IconStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"      <LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"         <color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"       </LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"	</Style>");
 
-            sbStyleFeacalColiformContour.AppendLine(@"<Style id=""fc_LT14"">");
-            sbStyleFeacalColiformContour.AppendLine(@"<LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"</LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<PolyStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<color>6600ff00</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"<outline>1</outline>");
-            sbStyleFeacalColiformContour.AppendLine(@"</PolyStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<Style id=""fc_LT14"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<PolyStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<color>6600ff00</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<outline>1</outline>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</PolyStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</Style>");
 
-            sbStyleFeacalColiformContour.AppendLine(@"<Style id=""fc_14"">");
-            sbStyleFeacalColiformContour.AppendLine(@"<LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"</LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<PolyStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<color>66ff0000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"<outline>1</outline>");
-            sbStyleFeacalColiformContour.AppendLine(@"</PolyStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<Style id=""fc_14"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<PolyStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<color>66ff0000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<outline>1</outline>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</PolyStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</Style>");
 
-            sbStyleFeacalColiformContour.AppendLine(@"<Style id=""fc_88"">");
-            sbStyleFeacalColiformContour.AppendLine(@"<LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<color>ff000000</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"</LineStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<PolyStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"<color>660000ff</color>");
-            sbStyleFeacalColiformContour.AppendLine(@"<outline>1</outline>");
-            sbStyleFeacalColiformContour.AppendLine(@"</PolyStyle>");
-            sbStyleFeacalColiformContour.AppendLine(@"</Style>");
-        }
-        private void DrawKMLCurrentsStyle(StringBuilder sbStyleCurrentAnim)
-        {
-            sbStyleCurrentAnim.AppendLine(@"<Style id=""pink"">");
-            sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
-            sbStyleCurrentAnim.AppendLine(@"<color>ffff00ff</color>");
-            //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
-            sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
-            sbStyleCurrentAnim.AppendLine(@"</Style>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<Style id=""fc_88"">");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<color>ff000000</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</LineStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<PolyStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<color>660000ff</color>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"<outline>1</outline>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</PolyStyle>");
+        //    sbStyleFeacalColiformContour.AppendLine(@"</Style>");
+        //}
+        //private void DrawKMLCurrentsStyle(StringBuilder sbStyleCurrentAnim)
+        //{
+        //    sbStyleCurrentAnim.AppendLine(@"<Style id=""pink"">");
+        //    sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
+        //    sbStyleCurrentAnim.AppendLine(@"<color>ffff00ff</color>");
+        //    //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
+        //    sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
+        //    sbStyleCurrentAnim.AppendLine(@"</Style>");
 
-            sbStyleCurrentAnim.AppendLine(@"<Style id=""green"">");
-            sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
-            sbStyleCurrentAnim.AppendLine(@"<color>ff00ff00</color>");
-            //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
-            sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
-            sbStyleCurrentAnim.AppendLine(@"</Style>");
+        //    sbStyleCurrentAnim.AppendLine(@"<Style id=""green"">");
+        //    sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
+        //    sbStyleCurrentAnim.AppendLine(@"<color>ff00ff00</color>");
+        //    //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
+        //    sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
+        //    sbStyleCurrentAnim.AppendLine(@"</Style>");
 
-            sbStyleCurrentAnim.AppendLine(@"<Style id=""yellow"">");
-            sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
-            sbStyleCurrentAnim.AppendLine(@"<color>ff00ffff</color>");
-            //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
-            sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
-            sbStyleCurrentAnim.AppendLine(@"</Style>");
-        }
+        //    sbStyleCurrentAnim.AppendLine(@"<Style id=""yellow"">");
+        //    sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
+        //    sbStyleCurrentAnim.AppendLine(@"<color>ff00ffff</color>");
+        //    //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
+        //    sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
+        //    sbStyleCurrentAnim.AppendLine(@"</Style>");
+        //}
         //public void FillElementLayerList(DfsuFile dfsuFile, List<int> SigmaLayerValueList, List<Element> ElementList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
         //{
         //    string NotUsed = "";
@@ -3548,974 +3548,974 @@ namespace CSSPWebToolsTaskRunner.Services
         //        return;
         //    }
         //}
-        public void FillElementListAndNodeList(DfsuFile dfsuFile, List<Element> ElementList, List<Node> NodeList)
-        {
-            for (int i = 0; i < dfsuFile.NumberOfNodes; i++)
-            {
-                Node n = new Node()
-                {
-                    Code = dfsuFile.Code[i],
-                    ID = dfsuFile.NodeIds[i],
-                    X = (float)dfsuFile.X[i],
-                    Y = (float)dfsuFile.Y[i],
-                    Z = dfsuFile.Z[i],
-                    Value = 0,
-                    ConnectNodeList = new List<Node>(),
-                    ElementList = new List<Element>()
-                };
-                NodeList.Add(n);
-            }
-
-            for (int i = 0; i < dfsuFile.NumberOfElements; i++)
-            {
-                Element el = new Element()
-                {
-                    ID = dfsuFile.ElementIds[i],
-                    Type = dfsuFile.ElementType[i],
-                    Value = 0,
-                    NodeList = new List<Node>(),
-                    NumbOfNodes = 0
-                };
-                ElementList.Add(el);
-            }
-
-            for (int i = 0; i < dfsuFile.NumberOfElements; i++)
-            {
-                int CountNode = 0;
-                for (int j = 0; j < dfsuFile.ElementTable[i].Count(); j++)
-                {
-                    CountNode += 1;
-                    ElementList[i].NodeList.Add(NodeList[dfsuFile.ElementTable[i][j] - 1]);
-                    if (!NodeList[dfsuFile.ElementTable[i][j] - 1].ElementList.Contains(ElementList[i]))
-                    {
-                        NodeList[dfsuFile.ElementTable[i][j] - 1].ElementList.Add(ElementList[i]);
-                    }
-                    for (int k = 0; k < dfsuFile.ElementTable[i].Count(); k++)
-                    {
-                        if (k != j)
-                        {
-                            if (!NodeList[dfsuFile.ElementTable[i][j] - 1].ConnectNodeList.Contains(NodeList[dfsuFile.ElementTable[i][k] - 1]))
-                            {
-                                NodeList[dfsuFile.ElementTable[i][j] - 1].ConnectNodeList.Add(NodeList[dfsuFile.ElementTable[i][k] - 1]);
-                            }
-                        }
-                    }
-                }
-                ElementList[i].NumbOfNodes = CountNode;
-            }
-        }
-        private void FillVectors21_32(Element el, List<Element> UniqueElementList, float ContourValue, bool Is3D, bool IsTop)
-        {
-            string NotUsed = "";
-
-            Node Node0 = new Node();
-            Node Node1 = new Node();
-            Node Node2 = new Node();
-            if (Is3D && IsTop)
-            {
-                Node0 = el.NodeList[3];
-                Node1 = el.NodeList[4];
-                Node2 = el.NodeList[5];
-            }
-            else
-            {
-                Node0 = el.NodeList[0];
-                Node1 = el.NodeList[1];
-                Node2 = el.NodeList[2];
-            }
-
-            int ElemCount01 = (from el1 in UniqueElementList
-                               from el2 in Node0.ElementList
-                               from el3 in Node1.ElementList
-                               where el1 == el2 && el1 == el3
-                               select el1).Count();
-
-            int ElemCount02 = (from el1 in UniqueElementList
-                               from el2 in Node0.ElementList
-                               from el3 in Node2.ElementList
-                               where el1 == el2 && el1 == el3
-                               select el1).Count();
-
-            int ElemCount12 = (from el1 in UniqueElementList
-                               from el2 in Node1.ElementList
-                               from el3 in Node2.ElementList
-                               where el1 == el2 && el1 == el3
-                               select el1).Count();
-
-            if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue)
-            {
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
-                    BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
-                }
-                if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node2 });
-                    BackwardVector.Add(Node2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node0 });
-                }
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
-                    BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue)
-            {
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
-                    BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node2.ID).First();
-                if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue)
-            {
-                if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node2 });
-                    BackwardVector.Add(Node2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node0 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node2.ID).First();
-                if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node0 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue)
-            {
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
-                    BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node0.ID).First();
-                if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node0.ID).First();
-                if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node2 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue)
-            {
-                // no vector to create
-            }
-            else
-            {
-                NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
-                return;
-            }
-        }
-        private void FillVectors25_33(Element el, List<Element> UniqueElementList, float ContourValue, bool Is3D, bool IsTop)
-        {
-            string NotUsed = "";
-
-            Node Node0 = new Node();
-            Node Node1 = new Node();
-            Node Node2 = new Node();
-            Node Node3 = new Node();
-
-            if (Is3D && IsTop)
-            {
-                Node0 = el.NodeList[4];
-                Node1 = el.NodeList[5];
-                Node2 = el.NodeList[6];
-                Node3 = el.NodeList[7];
-            }
-            else
-            {
-                Node0 = el.NodeList[0];
-                Node1 = el.NodeList[1];
-                Node2 = el.NodeList[2];
-                Node3 = el.NodeList[3];
-            }
-
-            int ElemCount01 = (from el1 in UniqueElementList
-                               from el2 in Node0.ElementList
-                               from el3 in Node1.ElementList
-                               where el1 == el2 && el1 == el3
-                               select el1).Count();
-
-            int ElemCount03 = (from el1 in UniqueElementList
-                               from el2 in Node0.ElementList
-                               from el3 in Node3.ElementList
-                               where el1 == el2 && el1 == el3
-                               select el1).Count();
-
-            int ElemCount12 = (from el1 in UniqueElementList
-                               from el2 in Node1.ElementList
-                               from el3 in Node2.ElementList
-                               where el1 == el2 && el1 == el3
-                               select el1).Count();
-
-            int ElemCount23 = (from el1 in UniqueElementList
-                               from el2 in Node2.ElementList
-                               from el3 in Node3.ElementList
-                               where el1 == el2 && el1 == el3
-                               select el1).Count();
-
-            if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
-            {
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
-                    BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
-                }
-                if (Node0.Code != 0 && Node2.Code != 0 && ElemCount03 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node3 });
-                    BackwardVector.Add(Node3.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node0 });
-                }
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
-                    BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
-                }
-                if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
-                {
-                    ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
-                    BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
-            {
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
-                    BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
-                }
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
-                    BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
-                if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
-                if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
-            {
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
-                    BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
-                }
-                if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node3 });
-                    BackwardVector.Add(Node3.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node0 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
-                if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
-            {
-                if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node3 });
-                    BackwardVector.Add(Node3.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node0 });
-                }
-                if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
-                {
-                    ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
-                    BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
-                if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
-            {
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
-                    BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
-                }
-                if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
-                {
-                    ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
-                    BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
-                if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
-                if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
-            {
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
-                    BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
-                }
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
-                if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
-                if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node0 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-                Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
-                if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt3 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt3 });
-                        BackwardVector.Add(TempInt3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = Node2 });
-                    }
-
-
-                }
-                Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
-                if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt4 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt4 });
-                        BackwardVector.Add(TempInt4.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt3 != null && TempInt4 != null)
-                {
-                    ForwardVector.Add(TempInt3.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = TempInt4 });
-                    BackwardVector.Add(TempInt4.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = TempInt3 });
-                }
-
-            }
-            else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
-                if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
-                if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
-                if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-            }
-            else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
-                if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node3 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
-                if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-                Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
-                if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt3 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt3 });
-                        BackwardVector.Add(TempInt3.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = Node1 });
-                    }
-
-
-                }
-                Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt4 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt4 });
-                        BackwardVector.Add(TempInt4.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = Node1 });
-                    }
-                }
-
-                if (TempInt3 != null && TempInt4 != null)
-                {
-                    ForwardVector.Add(TempInt3.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = TempInt4 });
-                    BackwardVector.Add(TempInt4.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = TempInt3 });
-                }
-
-            }
-            else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
-                if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node3 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
-                if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-            }
-            else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
-                if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
-                if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node0.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node0 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-            }
-            else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
-                if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
-                if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-            }
-            else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
-                if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node2 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
-                if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-            }
-            else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
-            {
-                Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
-                if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
-                {
-                    if (TempInt1 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt1 });
-                        BackwardVector.Add(TempInt1.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node3 });
-                    }
-
-
-                }
-                Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
-                if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
-                {
-                    if (TempInt2 != null)
-                    {
-                        ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
-                        BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
-                    }
-                }
-
-                if (TempInt1 != null && TempInt2 != null)
-                {
-                    ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
-                    BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
-                }
-
-            }
-            else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
-            {
-                // no vector to create
-            }
-            else
-            {
-                NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
-                return;
-            }
-        }
-        public List<ElementLayer> GetElementSurrondingEachPoint(List<ElementLayer> ElementLayerList, List<Node> Nodes)
-        {
-            List<ElementLayer> AllElementList = new List<ElementLayer>();
-
-            foreach (ElementLayer el in ElementLayerList)
-            {
-                float XMin = (from a in el.Element.NodeList
-                              select a.X).Min();
-                float YMin = (from a in el.Element.NodeList
-                              select a.Y).Min();
-                float XMax = (from a in el.Element.NodeList
-                              select a.X).Max();
-                float YMax = (from a in el.Element.NodeList
-                              select a.Y).Max();
-
-                foreach (Node n in Nodes)
-                {
-                    if ((n.X > XMin && n.X < XMax) && (n.Y > YMin && n.Y < YMax))
-                    {
-                        Point p = new Point((int)(n.X * 10000000), (int)(n.Y * 10000000));
-                        if (el.Element.Type == 21 || el.Element.Type == 32)
-                        {
-                            Point[] poly = 
-                            { 
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
-                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) }, 
-                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) }, 
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
-                                           };
-
-                            if (PointInPolygon(p, poly))
-                            {
-                                AllElementList.Add(el);
-                            }
-                        }
-                        else if (el.Element.Type == 25 || el.Element.Type == 33)
-                        {
-                            Point[] poly = 
-                            { 
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
-                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) }, 
-                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) }, 
-                                new Point() { X = (int)(el.Element.NodeList[3].X*10000000), Y = (int)(el.Element.NodeList[3].Y*10000000) }, 
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
-                                           };
-                            if (PointInPolygon(p, poly))
-                            {
-                                AllElementList.Add(el);
-                            }
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                }
-            }
-
-            return AllElementList;
-        }
+        //public void FillElementListAndNodeList(DfsuFile dfsuFile, List<Element> ElementList, List<Node> NodeList)
+        //{
+        //    for (int i = 0; i < dfsuFile.NumberOfNodes; i++)
+        //    {
+        //        Node n = new Node()
+        //        {
+        //            Code = dfsuFile.Code[i],
+        //            ID = dfsuFile.NodeIds[i],
+        //            X = (float)dfsuFile.X[i],
+        //            Y = (float)dfsuFile.Y[i],
+        //            Z = dfsuFile.Z[i],
+        //            Value = 0,
+        //            ConnectNodeList = new List<Node>(),
+        //            ElementList = new List<Element>()
+        //        };
+        //        NodeList.Add(n);
+        //    }
+
+        //    for (int i = 0; i < dfsuFile.NumberOfElements; i++)
+        //    {
+        //        Element el = new Element()
+        //        {
+        //            ID = dfsuFile.ElementIds[i],
+        //            Type = dfsuFile.ElementType[i],
+        //            Value = 0,
+        //            NodeList = new List<Node>(),
+        //            NumbOfNodes = 0
+        //        };
+        //        ElementList.Add(el);
+        //    }
+
+        //    for (int i = 0; i < dfsuFile.NumberOfElements; i++)
+        //    {
+        //        int CountNode = 0;
+        //        for (int j = 0; j < dfsuFile.ElementTable[i].Count(); j++)
+        //        {
+        //            CountNode += 1;
+        //            ElementList[i].NodeList.Add(NodeList[dfsuFile.ElementTable[i][j] - 1]);
+        //            if (!NodeList[dfsuFile.ElementTable[i][j] - 1].ElementList.Contains(ElementList[i]))
+        //            {
+        //                NodeList[dfsuFile.ElementTable[i][j] - 1].ElementList.Add(ElementList[i]);
+        //            }
+        //            for (int k = 0; k < dfsuFile.ElementTable[i].Count(); k++)
+        //            {
+        //                if (k != j)
+        //                {
+        //                    if (!NodeList[dfsuFile.ElementTable[i][j] - 1].ConnectNodeList.Contains(NodeList[dfsuFile.ElementTable[i][k] - 1]))
+        //                    {
+        //                        NodeList[dfsuFile.ElementTable[i][j] - 1].ConnectNodeList.Add(NodeList[dfsuFile.ElementTable[i][k] - 1]);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        ElementList[i].NumbOfNodes = CountNode;
+        //    }
+        //}
+        //private void FillVectors21_32(Element el, List<Element> UniqueElementList, float ContourValue, bool Is3D, bool IsTop)
+        //{
+        //    string NotUsed = "";
+
+        //    Node Node0 = new Node();
+        //    Node Node1 = new Node();
+        //    Node Node2 = new Node();
+        //    if (Is3D && IsTop)
+        //    {
+        //        Node0 = el.NodeList[3];
+        //        Node1 = el.NodeList[4];
+        //        Node2 = el.NodeList[5];
+        //    }
+        //    else
+        //    {
+        //        Node0 = el.NodeList[0];
+        //        Node1 = el.NodeList[1];
+        //        Node2 = el.NodeList[2];
+        //    }
+
+        //    int ElemCount01 = (from el1 in UniqueElementList
+        //                       from el2 in Node0.ElementList
+        //                       from el3 in Node1.ElementList
+        //                       where el1 == el2 && el1 == el3
+        //                       select el1).Count();
+
+        //    int ElemCount02 = (from el1 in UniqueElementList
+        //                       from el2 in Node0.ElementList
+        //                       from el3 in Node2.ElementList
+        //                       where el1 == el2 && el1 == el3
+        //                       select el1).Count();
+
+        //    int ElemCount12 = (from el1 in UniqueElementList
+        //                       from el2 in Node1.ElementList
+        //                       from el3 in Node2.ElementList
+        //                       where el1 == el2 && el1 == el3
+        //                       select el1).Count();
+
+        //    if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
+        //            BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
+        //        }
+        //        if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node2 });
+        //            BackwardVector.Add(Node2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node0 });
+        //        }
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
+        //            BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
+        //            BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node2.ID).First();
+        //        if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node2 });
+        //            BackwardVector.Add(Node2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node0 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node2.ID).First();
+        //        if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node0 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue)
+        //    {
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
+        //            BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node0.ID).First();
+        //        if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node0.ID).First();
+        //        if (Node0.Code != 0 && Node2.Code != 0 && ElemCount02 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node2 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue)
+        //    {
+        //        // no vector to create
+        //    }
+        //    else
+        //    {
+        //        NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
+        //        return;
+        //    }
+        //}
+        //private void FillVectors25_33(Element el, List<Element> UniqueElementList, float ContourValue, bool Is3D, bool IsTop)
+        //{
+        //    string NotUsed = "";
+
+        //    Node Node0 = new Node();
+        //    Node Node1 = new Node();
+        //    Node Node2 = new Node();
+        //    Node Node3 = new Node();
+
+        //    if (Is3D && IsTop)
+        //    {
+        //        Node0 = el.NodeList[4];
+        //        Node1 = el.NodeList[5];
+        //        Node2 = el.NodeList[6];
+        //        Node3 = el.NodeList[7];
+        //    }
+        //    else
+        //    {
+        //        Node0 = el.NodeList[0];
+        //        Node1 = el.NodeList[1];
+        //        Node2 = el.NodeList[2];
+        //        Node3 = el.NodeList[3];
+        //    }
+
+        //    int ElemCount01 = (from el1 in UniqueElementList
+        //                       from el2 in Node0.ElementList
+        //                       from el3 in Node1.ElementList
+        //                       where el1 == el2 && el1 == el3
+        //                       select el1).Count();
+
+        //    int ElemCount03 = (from el1 in UniqueElementList
+        //                       from el2 in Node0.ElementList
+        //                       from el3 in Node3.ElementList
+        //                       where el1 == el2 && el1 == el3
+        //                       select el1).Count();
+
+        //    int ElemCount12 = (from el1 in UniqueElementList
+        //                       from el2 in Node1.ElementList
+        //                       from el3 in Node2.ElementList
+        //                       where el1 == el2 && el1 == el3
+        //                       select el1).Count();
+
+        //    int ElemCount23 = (from el1 in UniqueElementList
+        //                       from el2 in Node2.ElementList
+        //                       from el3 in Node3.ElementList
+        //                       where el1 == el2 && el1 == el3
+        //                       select el1).Count();
+
+        //    if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
+        //            BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
+        //        }
+        //        if (Node0.Code != 0 && Node2.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node3 });
+        //            BackwardVector.Add(Node3.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node0 });
+        //        }
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
+        //            BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
+        //        }
+        //        if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
+        //            BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
+        //            BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
+        //        }
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
+        //            BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+        //        if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+        //        if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
+        //            BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
+        //        }
+        //        if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node3 });
+        //            BackwardVector.Add(Node3.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node0 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+        //        if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node3 });
+        //            BackwardVector.Add(Node3.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node0 });
+        //        }
+        //        if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
+        //            BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+        //        if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            ForwardVector.Add(Node1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node2 });
+        //            BackwardVector.Add(Node2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node1 });
+        //        }
+        //        if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            ForwardVector.Add(Node2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = Node3 });
+        //            BackwardVector.Add(Node3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = Node2 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+        //        if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+        //        if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            ForwardVector.Add(Node0.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = Node1 });
+        //            BackwardVector.Add(Node1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = Node1, EndNode = Node0 });
+        //        }
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+        //        if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+        //        if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node0 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //        Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+        //        if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt3 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt3 });
+        //                BackwardVector.Add(TempInt3.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = Node2 });
+        //            }
+
+
+        //        }
+        //        Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+        //        if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt4 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt4 });
+        //                BackwardVector.Add(TempInt4.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt3 != null && TempInt4 != null)
+        //        {
+        //            ForwardVector.Add(TempInt3.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = TempInt4 });
+        //            BackwardVector.Add(TempInt4.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = TempInt3 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+        //        if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+        //        if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+        //        if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+        //        if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node3 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+        //        if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //        Node TempInt3 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+        //        if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt3 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt3 });
+        //                BackwardVector.Add(TempInt3.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = Node1 });
+        //            }
+
+
+        //        }
+        //        Node TempInt4 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt4 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt4 });
+        //                BackwardVector.Add(TempInt4.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = Node1 });
+        //            }
+        //        }
+
+        //        if (TempInt3 != null && TempInt4 != null)
+        //        {
+        //            ForwardVector.Add(TempInt3.ID.ToString() + "," + TempInt4.ID.ToString(), new Vector() { StartNode = TempInt3, EndNode = TempInt4 });
+        //            BackwardVector.Add(TempInt4.ID.ToString() + "," + TempInt3.ID.ToString(), new Vector() { StartNode = TempInt4, EndNode = TempInt3 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+        //        if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node3 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+        //        if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value >= ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node1.ID).First();
+        //        if (Node0.Code != 0 && Node1.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node0 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node0.ID * 100000 + Node3.ID).First();
+        //        if (Node0.Code != 0 && Node3.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node0.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node0, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node0.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node0 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value >= ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node0.ID).First();
+        //        if (Node1.Code != 0 && Node0.Code != 0 && ElemCount01 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node1 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node1.ID * 100000 + Node2.ID).First();
+        //        if (Node1.Code != 0 && Node2.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node1, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node1 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value >= ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node1.ID).First();
+        //        if (Node2.Code != 0 && Node1.Code != 0 && ElemCount12 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node2 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node2.ID * 100000 + Node3.ID).First();
+        //        if (Node2.Code != 0 && Node3.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node2.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node2, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node2.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node2 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value >= ContourValue)
+        //    {
+        //        Node TempInt1 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node0.ID).First();
+        //        if (Node3.Code != 0 && Node0.Code != 0 && ElemCount03 == 1)
+        //        {
+        //            if (TempInt1 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt1 });
+        //                BackwardVector.Add(TempInt1.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = Node3 });
+        //            }
+
+
+        //        }
+        //        Node TempInt2 = InterpolatedContourNodeList.Where(IntNode => IntNode.ID == Node3.ID * 100000 + Node2.ID).First();
+        //        if (Node3.Code != 0 && Node2.Code != 0 && ElemCount23 == 1)
+        //        {
+        //            if (TempInt2 != null)
+        //            {
+        //                ForwardVector.Add(Node3.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = Node3, EndNode = TempInt2 });
+        //                BackwardVector.Add(TempInt2.ID.ToString() + "," + Node3.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = Node3 });
+        //            }
+        //        }
+
+        //        if (TempInt1 != null && TempInt2 != null)
+        //        {
+        //            ForwardVector.Add(TempInt1.ID.ToString() + "," + TempInt2.ID.ToString(), new Vector() { StartNode = TempInt1, EndNode = TempInt2 });
+        //            BackwardVector.Add(TempInt2.ID.ToString() + "," + TempInt1.ID.ToString(), new Vector() { StartNode = TempInt2, EndNode = TempInt1 });
+        //        }
+
+        //    }
+        //    else if (Node0.Value < ContourValue && Node1.Value < ContourValue && Node2.Value < ContourValue && Node3.Value < ContourValue)
+        //    {
+        //        // no vector to create
+        //    }
+        //    else
+        //    {
+        //        NotUsed = TaskRunnerServiceRes.AllNodesAreSmallerThanContourValue;
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("AllNodesAreSmallerThanContourValue");
+        //        return;
+        //    }
+        //}
+        //public List<ElementLayer> GetElementSurrondingEachPoint(List<ElementLayer> ElementLayerList, List<Node> Nodes)
+        //{
+        //    List<ElementLayer> AllElementList = new List<ElementLayer>();
+
+        //    foreach (ElementLayer el in ElementLayerList)
+        //    {
+        //        float XMin = (from a in el.Element.NodeList
+        //                      select a.X).Min();
+        //        float YMin = (from a in el.Element.NodeList
+        //                      select a.Y).Min();
+        //        float XMax = (from a in el.Element.NodeList
+        //                      select a.X).Max();
+        //        float YMax = (from a in el.Element.NodeList
+        //                      select a.Y).Max();
+
+        //        foreach (Node n in Nodes)
+        //        {
+        //            if ((n.X > XMin && n.X < XMax) && (n.Y > YMin && n.Y < YMax))
+        //            {
+        //                Point p = new Point((int)(n.X * 10000000), (int)(n.Y * 10000000));
+        //                if (el.Element.Type == 21 || el.Element.Type == 32)
+        //                {
+        //                    Point[] poly = 
+        //                    { 
+        //                        new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
+        //                        new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) }, 
+        //                        new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) }, 
+        //                        new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
+        //                                   };
+
+        //                    if (PointInPolygon(p, poly))
+        //                    {
+        //                        AllElementList.Add(el);
+        //                    }
+        //                }
+        //                else if (el.Element.Type == 25 || el.Element.Type == 33)
+        //                {
+        //                    Point[] poly = 
+        //                    { 
+        //                        new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
+        //                        new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) }, 
+        //                        new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) }, 
+        //                        new Point() { X = (int)(el.Element.NodeList[3].X*10000000), Y = (int)(el.Element.NodeList[3].Y*10000000) }, 
+        //                        new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) }, 
+        //                                   };
+        //                    if (PointInPolygon(p, poly))
+        //                    {
+        //                        AllElementList.Add(el);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    return null;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return AllElementList;
+        //}
         //private StringBuilder GetModelAndSourceDesc(List<float> ContourValueList, int mikeScenarioID, PFSFile pfsFile)
         //{
         //    StringBuilder sbToReturn = new StringBuilder();
@@ -4685,339 +4685,339 @@ namespace CSSPWebToolsTaskRunner.Services
 
         //    return sbToReturn;
         //}
-        private string GetNodeSurroundingPolygon(Node node)
-        {
-            StringBuilder coordStr = new StringBuilder();
-            List<Node> ContourNodeList = new List<Node>();
-            Element LastElement = new Element();
-            Node LastNode = new Node();
-            Element FirstElement = new Element();
+        //private string GetNodeSurroundingPolygon(Node node)
+        //{
+        //    StringBuilder coordStr = new StringBuilder();
+        //    List<Node> ContourNodeList = new List<Node>();
+        //    Element LastElement = new Element();
+        //    Node LastNode = new Node();
+        //    Element FirstElement = new Element();
 
-            if (node.Code != 0)
-            {
-                ContourNodeList.Add(node);
+        //    if (node.Code != 0)
+        //    {
+        //        ContourNodeList.Add(node);
 
-                // get first element
-                bool ElementFound = false;
-                while (!ElementFound)
-                {
-                    List<Element> PotentialElemList = (from el in node.ElementList
-                                                       where ((el.NodeList[0] != node && el.NodeList[0].Code != 0)
-                                                       || (el.NodeList[1] != node && el.NodeList[1].Code != 0)
-                                                       || (el.NodeList[2] != node && el.NodeList[2].Code != 0))
-                                                       select el).ToList<Element>();
+        //        // get first element
+        //        bool ElementFound = false;
+        //        while (!ElementFound)
+        //        {
+        //            List<Element> PotentialElemList = (from el in node.ElementList
+        //                                               where ((el.NodeList[0] != node && el.NodeList[0].Code != 0)
+        //                                               || (el.NodeList[1] != node && el.NodeList[1].Code != 0)
+        //                                               || (el.NodeList[2] != node && el.NodeList[2].Code != 0))
+        //                                               select el).ToList<Element>();
 
-                    foreach (Element elem in PotentialElemList)
-                    {
-                        LastElement = elem;
+        //            foreach (Element elem in PotentialElemList)
+        //            {
+        //                LastElement = elem;
 
-                        foreach (Node n in LastElement.NodeList.Where(nn => nn != node))
-                        {
-                            if (n.Code != 0)
-                            {
-                                // check to see if the node and n are part of a single element
-                                List<Element> AllElem = (from el in node.ElementList
-                                                         where ((el.NodeList[0] == n)
-                                                         || (el.NodeList[1] == n)
-                                                         || (el.NodeList[2] == n))
-                                                         select el).ToList<Element>();
+        //                foreach (Node n in LastElement.NodeList.Where(nn => nn != node))
+        //                {
+        //                    if (n.Code != 0)
+        //                    {
+        //                        // check to see if the node and n are part of a single element
+        //                        List<Element> AllElem = (from el in node.ElementList
+        //                                                 where ((el.NodeList[0] == n)
+        //                                                 || (el.NodeList[1] == n)
+        //                                                 || (el.NodeList[2] == n))
+        //                                                 select el).ToList<Element>();
 
-                                if (AllElem.Count == 1)
-                                {
-                                    LastNode = n;
-                                    break;
-                                }
-                            }
-                        }
-                        if (LastNode.ID != 0)
-                        {
-                            break;
-                        }
-                    }
+        //                        if (AllElem.Count == 1)
+        //                        {
+        //                            LastNode = n;
+        //                            break;
+        //                        }
+        //                    }
+        //                }
+        //                if (LastNode.ID != 0)
+        //                {
+        //                    break;
+        //                }
+        //            }
 
-                    FirstElement = LastElement;
+        //            FirstElement = LastElement;
 
-                    if (LastElement.ID != 0 && LastNode.ID != 0)
-                    {
-                        ElementFound = true;
-                    }
-                }
+        //            if (LastElement.ID != 0 && LastNode.ID != 0)
+        //            {
+        //                ElementFound = true;
+        //            }
+        //        }
 
-                if (LastElement == null || LastNode == null)
-                {
-                    // this should not happen
-                    return "";
-                }
+        //        if (LastElement == null || LastNode == null)
+        //        {
+        //            // this should not happen
+        //            return "";
+        //        }
 
-                Node NewNode = new Node();
-                NewNode.ID = LastNode.ID + 1000000;
-                NewNode.X = (node.X + LastNode.X) / 2;
-                NewNode.Y = (node.Y + LastNode.Y) / 2;
-                ContourNodeList.Add(NewNode);
+        //        Node NewNode = new Node();
+        //        NewNode.ID = LastNode.ID + 1000000;
+        //        NewNode.X = (node.X + LastNode.X) / 2;
+        //        NewNode.Y = (node.Y + LastNode.Y) / 2;
+        //        ContourNodeList.Add(NewNode);
 
-                foreach (Node n in LastElement.NodeList.Where(nn => nn != node && nn != LastNode))
-                {
-                    LastNode = n;
-                    break;
-                }
+        //        foreach (Node n in LastElement.NodeList.Where(nn => nn != node && nn != LastNode))
+        //        {
+        //            LastNode = n;
+        //            break;
+        //        }
 
-                Node NewNode2 = new Node();
-                NewNode2.ID = LastNode.ID + 2000000;
-                NewNode2.X = (LastElement.NodeList[0].X + LastElement.NodeList[1].X + LastElement.NodeList[2].X) / 3;
-                NewNode2.Y = (LastElement.NodeList[0].Y + LastElement.NodeList[1].Y + LastElement.NodeList[2].Y) / 3;
-                ContourNodeList.Add(NewNode2);
+        //        Node NewNode2 = new Node();
+        //        NewNode2.ID = LastNode.ID + 2000000;
+        //        NewNode2.X = (LastElement.NodeList[0].X + LastElement.NodeList[1].X + LastElement.NodeList[2].X) / 3;
+        //        NewNode2.Y = (LastElement.NodeList[0].Y + LastElement.NodeList[1].Y + LastElement.NodeList[2].Y) / 3;
+        //        ContourNodeList.Add(NewNode2);
 
-            }
-            else
-            {
-                // Get first Element
-                LastElement = (from el in node.ElementList select el).FirstOrDefault<Element>();
+        //    }
+        //    else
+        //    {
+        //        // Get first Element
+        //        LastElement = (from el in node.ElementList select el).FirstOrDefault<Element>();
 
-                if (LastElement == null)
-                {
-                    // this should not happen
-                    return "";
-                }
+        //        if (LastElement == null)
+        //        {
+        //            // this should not happen
+        //            return "";
+        //        }
 
-                FirstElement = LastElement;
+        //        FirstElement = LastElement;
 
-                foreach (Node n in LastElement.NodeList.Where(nn => nn != node))
-                {
-                    LastNode = n;
-                    break;
-                }
+        //        foreach (Node n in LastElement.NodeList.Where(nn => nn != node))
+        //        {
+        //            LastNode = n;
+        //            break;
+        //        }
 
-                Node NewNode = new Node();
-                NewNode.ID = LastNode.ID + 2000000;
-                NewNode.X = (LastElement.NodeList[0].X + LastElement.NodeList[1].X + LastElement.NodeList[2].X) / 3;
-                NewNode.Y = (LastElement.NodeList[0].Y + LastElement.NodeList[1].Y + LastElement.NodeList[2].Y) / 3;
-                ContourNodeList.Add(NewNode);
-            }
+        //        Node NewNode = new Node();
+        //        NewNode.ID = LastNode.ID + 2000000;
+        //        NewNode.X = (LastElement.NodeList[0].X + LastElement.NodeList[1].X + LastElement.NodeList[2].X) / 3;
+        //        NewNode.Y = (LastElement.NodeList[0].Y + LastElement.NodeList[1].Y + LastElement.NodeList[2].Y) / 3;
+        //        ContourNodeList.Add(NewNode);
+        //    }
 
 
-            bool MoreNodes = true;
-            while (MoreNodes)
-            {
-                Element NextElement = (from el in node.ElementList
-                                       where el != LastElement
-                                       && ((el.NodeList[0] == LastNode)
-                                       || (el.NodeList[1] == LastNode)
-                                       || (el.NodeList[2] == LastNode))
-                                       select el).FirstOrDefault<Element>();
+        //    bool MoreNodes = true;
+        //    while (MoreNodes)
+        //    {
+        //        Element NextElement = (from el in node.ElementList
+        //                               where el != LastElement
+        //                               && ((el.NodeList[0] == LastNode)
+        //                               || (el.NodeList[1] == LastNode)
+        //                               || (el.NodeList[2] == LastNode))
+        //                               select el).FirstOrDefault<Element>();
 
-                if (NextElement == null)
-                {
-                    if (LastNode.Code != 0 && node.Code != 0)
-                    {
-                        Node NewNode2 = new Node();
-                        NewNode2.ID = LastNode.ID + 1000000;
-                        NewNode2.X = (node.X + LastNode.X) / 2;
-                        NewNode2.Y = (node.Y + LastNode.Y) / 2;
-                        ContourNodeList.Add(NewNode2);
+        //        if (NextElement == null)
+        //        {
+        //            if (LastNode.Code != 0 && node.Code != 0)
+        //            {
+        //                Node NewNode2 = new Node();
+        //                NewNode2.ID = LastNode.ID + 1000000;
+        //                NewNode2.X = (node.X + LastNode.X) / 2;
+        //                NewNode2.Y = (node.Y + LastNode.Y) / 2;
+        //                ContourNodeList.Add(NewNode2);
 
-                    }
-                    MoreNodes = false;
-                    break;
-                }
+        //            }
+        //            MoreNodes = false;
+        //            break;
+        //        }
 
-                LastElement = NextElement;
+        //        LastElement = NextElement;
 
-                if (FirstElement == LastElement)
-                {
-                    if (LastNode.Code != 0 && node.Code != 0)
-                    {
-                        Node NewNode2 = new Node();
-                        NewNode2.ID = LastNode.ID + 1000000;
-                        NewNode2.X = (node.X + LastNode.X) / 2;
-                        NewNode2.Y = (node.Y + LastNode.Y) / 2;
-                        ContourNodeList.Add(NewNode2);
+        //        if (FirstElement == LastElement)
+        //        {
+        //            if (LastNode.Code != 0 && node.Code != 0)
+        //            {
+        //                Node NewNode2 = new Node();
+        //                NewNode2.ID = LastNode.ID + 1000000;
+        //                NewNode2.X = (node.X + LastNode.X) / 2;
+        //                NewNode2.Y = (node.Y + LastNode.Y) / 2;
+        //                ContourNodeList.Add(NewNode2);
 
-                    }
-                    MoreNodes = false;
-                    break;
-                }
+        //            }
+        //            MoreNodes = false;
+        //            break;
+        //        }
 
-                foreach (Node n in LastElement.NodeList.Where(nn => nn != node && nn != LastNode))
-                {
-                    LastNode = n;
-                    break;
-                }
+        //        foreach (Node n in LastElement.NodeList.Where(nn => nn != node && nn != LastNode))
+        //        {
+        //            LastNode = n;
+        //            break;
+        //        }
 
-                Node NewNode = new Node();
-                NewNode.ID = LastNode.ID + 2000000;
-                NewNode.X = (LastElement.NodeList[0].X + LastElement.NodeList[1].X + LastElement.NodeList[2].X) / 3;
-                NewNode.Y = (LastElement.NodeList[0].Y + LastElement.NodeList[1].Y + LastElement.NodeList[2].Y) / 3;
-                ContourNodeList.Add(NewNode);
+        //        Node NewNode = new Node();
+        //        NewNode.ID = LastNode.ID + 2000000;
+        //        NewNode.X = (LastElement.NodeList[0].X + LastElement.NodeList[1].X + LastElement.NodeList[2].X) / 3;
+        //        NewNode.Y = (LastElement.NodeList[0].Y + LastElement.NodeList[1].Y + LastElement.NodeList[2].Y) / 3;
+        //        ContourNodeList.Add(NewNode);
 
-            }
+        //    }
 
-            ContourNodeList.Add(ContourNodeList[0]);
+        //    ContourNodeList.Add(ContourNodeList[0]);
 
-            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            if (mapInfoService.CalculateAreaOfPolygon(ContourNodeList) < 0)
-            {
-                ContourNodeList.Reverse();
-            }
+        //    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    if (mapInfoService.CalculateAreaOfPolygon(ContourNodeList) < 0)
+        //    {
+        //        ContourNodeList.Reverse();
+        //    }
 
-            foreach (Node n in ContourNodeList)
-            {
-                coordStr.Append(n.X.ToString().Replace(",", ".") + @"," + n.Y.ToString().Replace(",", ".") + ",0 ");
-            }
+        //    foreach (Node n in ContourNodeList)
+        //    {
+        //        coordStr.Append(n.X.ToString().Replace(",", ".") + @"," + n.Y.ToString().Replace(",", ".") + ",0 ");
+        //    }
 
-            return coordStr.ToString();
+        //    return coordStr.ToString();
 
-        }
-        private string GetSpaceBeforeCapital(string TextToParse)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(TextToParse[0]);
-            for (int i = 1; i < TextToParse.Count(); i++)
-            {
-                if (TextToParse[i] >= "A".ToCharArray()[0] && TextToParse[i] <= "Z".ToCharArray()[0])
-                {
-                    sb.Append(" " + TextToParse[i]);
-                }
-                else
-                {
-                    sb.Append(TextToParse[i]);
-                }
-            }
-            return sb.ToString();
-        }
-        private void InsertNewNodeInInterpolatedBathymetryContourNodeList(Node NodeLarge, Node NodeSmall, float ContourValue)
-        {
-            PolyPoint point = new PolyPoint();
-            point.XCoord = NodeSmall.X + (NodeLarge.X - NodeSmall.X) * (ContourValue - Math.Abs(NodeSmall.Z)) / (Math.Abs(NodeLarge.Z) - Math.Abs(NodeSmall.Z));
-            point.YCoord = NodeSmall.Y + (NodeLarge.Y - NodeSmall.Y) * (ContourValue - Math.Abs(NodeSmall.Z)) / (Math.Abs(NodeLarge.Z) - Math.Abs(NodeSmall.Z));
+        //}
+        //private string GetSpaceBeforeCapital(string TextToParse)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    sb.Append(TextToParse[0]);
+        //    for (int i = 1; i < TextToParse.Count(); i++)
+        //    {
+        //        if (TextToParse[i] >= "A".ToCharArray()[0] && TextToParse[i] <= "Z".ToCharArray()[0])
+        //        {
+        //            sb.Append(" " + TextToParse[i]);
+        //        }
+        //        else
+        //        {
+        //            sb.Append(TextToParse[i]);
+        //        }
+        //    }
+        //    return sb.ToString();
+        //}
+        //private void InsertNewNodeInInterpolatedBathymetryContourNodeList(Node NodeLarge, Node NodeSmall, float ContourValue)
+        //{
+        //    PolyPoint point = new PolyPoint();
+        //    point.XCoord = NodeSmall.X + (NodeLarge.X - NodeSmall.X) * (ContourValue - Math.Abs(NodeSmall.Z)) / (Math.Abs(NodeLarge.Z) - Math.Abs(NodeSmall.Z));
+        //    point.YCoord = NodeSmall.Y + (NodeLarge.Y - NodeSmall.Y) * (ContourValue - Math.Abs(NodeSmall.Z)) / (Math.Abs(NodeLarge.Z) - Math.Abs(NodeSmall.Z));
 
-            Node NewNode = new Node();
-            NewNode.ID = 100000 * NodeLarge.ID + NodeSmall.ID;
-            NewNode.X = point.XCoord;
-            NewNode.Y = point.YCoord;
-            NewNode.Value = ContourValue;
+        //    Node NewNode = new Node();
+        //    NewNode.ID = 100000 * NodeLarge.ID + NodeSmall.ID;
+        //    NewNode.X = point.XCoord;
+        //    NewNode.Y = point.YCoord;
+        //    NewNode.Value = ContourValue;
 
-            if (InterpolatedContourNodeList.Where(nn => nn.ID == NewNode.ID).Count() == 0)
-            {
-                InterpolatedContourNodeList.Add(NewNode);
-            }
-        }
-        private void InsertNewNodeInInterpolatedContourNodeList(DfsuFile dfsuFile, Node NodeLarge, Node NodeSmall, float ContourValue)
-        {
-            PolyPoint point = new PolyPoint();
-            point.XCoord = NodeSmall.X + (NodeLarge.X - NodeSmall.X) * (ContourValue - NodeSmall.Value) / (NodeLarge.Value - NodeSmall.Value);
-            point.YCoord = NodeSmall.Y + (NodeLarge.Y - NodeSmall.Y) * (ContourValue - NodeSmall.Value) / (NodeLarge.Value - NodeSmall.Value);
-            point.Z = dfsuFile.Z[NodeSmall.ID - 1] + (dfsuFile.Z[NodeLarge.ID - 1] - dfsuFile.Z[NodeSmall.ID - 1]) * (ContourValue - NodeSmall.Value) / (NodeLarge.Value - NodeSmall.Value);
+        //    if (InterpolatedContourNodeList.Where(nn => nn.ID == NewNode.ID).Count() == 0)
+        //    {
+        //        InterpolatedContourNodeList.Add(NewNode);
+        //    }
+        //}
+        //private void InsertNewNodeInInterpolatedContourNodeList(DfsuFile dfsuFile, Node NodeLarge, Node NodeSmall, float ContourValue)
+        //{
+        //    PolyPoint point = new PolyPoint();
+        //    point.XCoord = NodeSmall.X + (NodeLarge.X - NodeSmall.X) * (ContourValue - NodeSmall.Value) / (NodeLarge.Value - NodeSmall.Value);
+        //    point.YCoord = NodeSmall.Y + (NodeLarge.Y - NodeSmall.Y) * (ContourValue - NodeSmall.Value) / (NodeLarge.Value - NodeSmall.Value);
+        //    point.Z = dfsuFile.Z[NodeSmall.ID - 1] + (dfsuFile.Z[NodeLarge.ID - 1] - dfsuFile.Z[NodeSmall.ID - 1]) * (ContourValue - NodeSmall.Value) / (NodeLarge.Value - NodeSmall.Value);
 
-            Node NewNode = new Node();
-            NewNode.ID = 100000 * NodeLarge.ID + NodeSmall.ID;
-            NewNode.X = point.XCoord;
-            NewNode.Y = point.YCoord;
-            NewNode.Z = point.Z;
-            NewNode.Value = ContourValue;
+        //    Node NewNode = new Node();
+        //    NewNode.ID = 100000 * NodeLarge.ID + NodeSmall.ID;
+        //    NewNode.X = point.XCoord;
+        //    NewNode.Y = point.YCoord;
+        //    NewNode.Z = point.Z;
+        //    NewNode.Value = ContourValue;
 
-            if (InterpolatedContourNodeList.Where(nn => nn.ID == NewNode.ID).Count() == 0)
-            {
-                InterpolatedContourNodeList.Add(NewNode);
-            }
-        }
-        private List<ElementLayer> ParseKMLPath(string KMLTextPathForVector, List<ElementLayer> ElementLayerList)
-        {
-            string NotUsed = "";
+        //    if (InterpolatedContourNodeList.Where(nn => nn.ID == NewNode.ID).Count() == 0)
+        //    {
+        //        InterpolatedContourNodeList.Add(NewNode);
+        //    }
+        //}
+        //private List<ElementLayer> ParseKMLPath(string KMLTextPathForVector, List<ElementLayer> ElementLayerList)
+        //{
+        //    string NotUsed = "";
 
-            List<ElementLayer> AllElementList = new List<ElementLayer>();
-            List<Node> PathNodeList = new List<Node>();
+        //    List<ElementLayer> AllElementList = new List<ElementLayer>();
+        //    List<Node> PathNodeList = new List<Node>();
 
-            if (KMLTextPathForVector.Trim() == "")
-            {
-                foreach (ElementLayer el in ElementLayerList)
-                {
-                    AllElementList.Add(el);
-                }
-            }
-            else
-            {
-                try
-                {
-                    XmlReader reader = XmlReader.Create(new StringReader(KMLTextPathForVector));
-                    while (reader.Read())
-                    {
-                        if (reader.Name == "coordinates")
-                        {
-                            string AllCoordinates = reader.ReadElementContentAsString().Trim();
+        //    if (KMLTextPathForVector.Trim() == "")
+        //    {
+        //        foreach (ElementLayer el in ElementLayerList)
+        //        {
+        //            AllElementList.Add(el);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            XmlReader reader = XmlReader.Create(new StringReader(KMLTextPathForVector));
+        //            while (reader.Read())
+        //            {
+        //                if (reader.Name == "coordinates")
+        //                {
+        //                    string AllCoordinates = reader.ReadElementContentAsString().Trim();
 
-                            string[] xyzArray = AllCoordinates.Split(" ".ToCharArray()[0]);
-                            foreach (string xyz in xyzArray)
-                            {
-                                string[] xyzStr = xyz.Split(",".ToCharArray()[0]);
-                                if (xyzStr.Count() != 3)
-                                {
-                                    return null;
-                                }
-                                Node n = new Node();
-                                if (Thread.CurrentThread.CurrentCulture.Name == "fr-CA")
-                                {
-                                    n.X = float.Parse(xyzStr[0].Replace(".", ","));
-                                    n.Y = float.Parse(xyzStr[1].Replace(".", ","));
-                                }
-                                else
-                                {
-                                    n.X = float.Parse(xyzStr[0]);
-                                    n.Y = float.Parse(xyzStr[1]);
-                                }
+        //                    string[] xyzArray = AllCoordinates.Split(" ".ToCharArray()[0]);
+        //                    foreach (string xyz in xyzArray)
+        //                    {
+        //                        string[] xyzStr = xyz.Split(",".ToCharArray()[0]);
+        //                        if (xyzStr.Count() != 3)
+        //                        {
+        //                            return null;
+        //                        }
+        //                        Node n = new Node();
+        //                        if (Thread.CurrentThread.CurrentCulture.Name == "fr-CA")
+        //                        {
+        //                            n.X = float.Parse(xyzStr[0].Replace(".", ","));
+        //                            n.Y = float.Parse(xyzStr[1].Replace(".", ","));
+        //                        }
+        //                        else
+        //                        {
+        //                            n.X = float.Parse(xyzStr[0]);
+        //                            n.Y = float.Parse(xyzStr[1]);
+        //                        }
 
-                                PathNodeList.Add(n);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, "KMLPath" + ex.Message);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", "KMLPath" + ex.Message);
-                    return new List<ElementLayer>();
-                }
+        //                        PathNodeList.Add(n);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, "KMLPath" + ex.Message);
+        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", "KMLPath" + ex.Message);
+        //            return new List<ElementLayer>();
+        //        }
 
-                AllElementList = GetElementSurrondingEachPoint(ElementLayerList, PathNodeList);
-            }
+        //        AllElementList = GetElementSurrondingEachPoint(ElementLayerList, PathNodeList);
+        //    }
 
-            return AllElementList.Distinct().ToList();
-        }
-        private bool PointInPolygon(Point p, Point[] poly)
-        {
-            Point p1, p2;
-            bool inside = false;
-            if (poly.Length < 3)
-            {
-                return inside;
-            }
+        //    return AllElementList.Distinct().ToList();
+        //}
+        //private bool PointInPolygon(Point p, Point[] poly)
+        //{
+        //    Point p1, p2;
+        //    bool inside = false;
+        //    if (poly.Length < 3)
+        //    {
+        //        return inside;
+        //    }
 
-            Point oldPoint = new Point(poly[poly.Length - 1].X, poly[poly.Length - 1].Y);
+        //    Point oldPoint = new Point(poly[poly.Length - 1].X, poly[poly.Length - 1].Y);
 
-            for (int i = 0; i < poly.Length; i++)
-            {
-                Point newPoint = new Point(poly[i].X, poly[i].Y);
+        //    for (int i = 0; i < poly.Length; i++)
+        //    {
+        //        Point newPoint = new Point(poly[i].X, poly[i].Y);
 
-                if (newPoint.X > oldPoint.X)
-                {
-                    p1 = oldPoint;
-                    p2 = newPoint;
-                }
-                else
-                {
-                    p1 = newPoint;
-                    p2 = oldPoint;
-                }
+        //        if (newPoint.X > oldPoint.X)
+        //        {
+        //            p1 = oldPoint;
+        //            p2 = newPoint;
+        //        }
+        //        else
+        //        {
+        //            p1 = newPoint;
+        //            p2 = oldPoint;
+        //        }
 
-                if ((newPoint.X < p.X) == (p.X <= oldPoint.X) && ((long)p.Y - (long)p1.Y) * (long)(p2.X - p1.X) < ((long)p2.Y - (long)p1.Y) * (long)(p.X - p1.X))
-                {
-                    inside = !inside;
-                }
+        //        if ((newPoint.X < p.X) == (p.X <= oldPoint.X) && ((long)p.Y - (long)p1.Y) * (long)(p2.X - p1.X) < ((long)p2.Y - (long)p1.Y) * (long)(p.X - p1.X))
+        //        {
+        //            inside = !inside;
+        //        }
 
-                oldPoint = newPoint;
+        //        oldPoint = newPoint;
 
-            }
-            return inside;
-        }
+        //    }
+        //    return inside;
+        //}
         //private void SaveInKMZFileStream(FileInfo fi, FileInfo fiKML, StringBuilder sbKML)
         //{
         //    string NotUsed = "";
@@ -5118,332 +5118,332 @@ namespace CSSPWebToolsTaskRunner.Services
         //    }
 
         //}
-        private void WriteKMLBottom(StringBuilder sbKML)
-        {
-            sbKML.AppendLine(@"</Document>");
-            sbKML.AppendLine(@"</kml>");
-        }
-        private void WriteKMLBoundaryConditionNode(int MikeScenarioID, StringBuilder sbStyleBoundaryCondition, StringBuilder sbKMLBoundaryCondition)
-        {
-            string NotUsed = "";
-            string[] Colors = { "ylw", "grn", "blue", "ltblu", "pink", "red" };
+        //private void WriteKMLBottom(StringBuilder sbKML)
+        //{
+        //    sbKML.AppendLine(@"</Document>");
+        //    sbKML.AppendLine(@"</kml>");
+        //}
+        //private void WriteKMLBoundaryConditionNode(int MikeScenarioID, StringBuilder sbStyleBoundaryCondition, StringBuilder sbKMLBoundaryCondition)
+        //{
+        //    string NotUsed = "";
+        //    string[] Colors = { "ylw", "grn", "blue", "ltblu", "pink", "red" };
 
-            foreach (string color in Colors)
-            {
-                sbKMLBoundaryCondition.AppendLine(string.Format(@"	<Style id=""sn_{0}-pushpin"">", color));
-                sbKMLBoundaryCondition.AppendLine(@"		<IconStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"			<scale>1.1</scale>");
-                sbKMLBoundaryCondition.AppendLine(@"			<Icon>");
-                sbKMLBoundaryCondition.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
-                sbKMLBoundaryCondition.AppendLine(@"			</Icon>");
-                sbKMLBoundaryCondition.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-                sbKMLBoundaryCondition.AppendLine(@"		</IconStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"		<ListStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"		</ListStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"	</Style>");
-                sbKMLBoundaryCondition.AppendLine(string.Format(@"	<StyleMap id=""msn_{0}-pushpin"">", color));
-                sbKMLBoundaryCondition.AppendLine(@"		<Pair>");
-                sbKMLBoundaryCondition.AppendLine(@"			<key>normal</key>");
-                sbKMLBoundaryCondition.AppendLine(string.Format(@"			<styleUrl>#sn_{0}-pushpin</styleUrl>", color));
-                sbKMLBoundaryCondition.AppendLine(@"		</Pair>");
-                sbKMLBoundaryCondition.AppendLine(@"		<Pair>");
-                sbKMLBoundaryCondition.AppendLine(@"			<key>highlight</key>");
-                sbKMLBoundaryCondition.AppendLine(string.Format(@"			<styleUrl>#sh_{0}-pushpin</styleUrl>", color));
-                sbKMLBoundaryCondition.AppendLine(@"		</Pair>");
-                sbKMLBoundaryCondition.AppendLine(@"	</StyleMap>");
-                sbKMLBoundaryCondition.AppendLine(string.Format(@"	<Style id=""sh_{0}-pushpin"">", color));
-                sbKMLBoundaryCondition.AppendLine(@"		<IconStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"			<scale>1.3</scale>");
-                sbKMLBoundaryCondition.AppendLine(@"			<Icon>");
-                sbKMLBoundaryCondition.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
-                sbKMLBoundaryCondition.AppendLine(@"			</Icon>");
-                sbKMLBoundaryCondition.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-                sbKMLBoundaryCondition.AppendLine(@"		</IconStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"		<ListStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"		</ListStyle>");
-                sbKMLBoundaryCondition.AppendLine(@"	</Style>");
-            }
+        //    foreach (string color in Colors)
+        //    {
+        //        sbKMLBoundaryCondition.AppendLine(string.Format(@"	<Style id=""sn_{0}-pushpin"">", color));
+        //        sbKMLBoundaryCondition.AppendLine(@"		<IconStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<scale>1.1</scale>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<Icon>");
+        //        sbKMLBoundaryCondition.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
+        //        sbKMLBoundaryCondition.AppendLine(@"			</Icon>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //        sbKMLBoundaryCondition.AppendLine(@"		</IconStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"		<ListStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"		</ListStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"	</Style>");
+        //        sbKMLBoundaryCondition.AppendLine(string.Format(@"	<StyleMap id=""msn_{0}-pushpin"">", color));
+        //        sbKMLBoundaryCondition.AppendLine(@"		<Pair>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<key>normal</key>");
+        //        sbKMLBoundaryCondition.AppendLine(string.Format(@"			<styleUrl>#sn_{0}-pushpin</styleUrl>", color));
+        //        sbKMLBoundaryCondition.AppendLine(@"		</Pair>");
+        //        sbKMLBoundaryCondition.AppendLine(@"		<Pair>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<key>highlight</key>");
+        //        sbKMLBoundaryCondition.AppendLine(string.Format(@"			<styleUrl>#sh_{0}-pushpin</styleUrl>", color));
+        //        sbKMLBoundaryCondition.AppendLine(@"		</Pair>");
+        //        sbKMLBoundaryCondition.AppendLine(@"	</StyleMap>");
+        //        sbKMLBoundaryCondition.AppendLine(string.Format(@"	<Style id=""sh_{0}-pushpin"">", color));
+        //        sbKMLBoundaryCondition.AppendLine(@"		<IconStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<scale>1.3</scale>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<Icon>");
+        //        sbKMLBoundaryCondition.AppendLine(string.Format(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/{0}-pushpin.png</href>", color));
+        //        sbKMLBoundaryCondition.AppendLine(@"			</Icon>");
+        //        sbKMLBoundaryCondition.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //        sbKMLBoundaryCondition.AppendLine(@"		</IconStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"		<ListStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"		</ListStyle>");
+        //        sbKMLBoundaryCondition.AppendLine(@"	</Style>");
+        //    }
 
-            //UpdateTask(AppTaskID, "30 %");
+        //    //UpdateTask(AppTaskID, "30 %");
 
-            sbKMLBoundaryCondition.AppendLine(@"<Folder>");
-            sbKMLBoundaryCondition.AppendLine(@"<name>" + TaskRunnerServiceRes.MikeBoundaryConditionName + @"</name>");
-            sbKMLBoundaryCondition.AppendLine(@"<visibility>1</visibility>");
+        //    sbKMLBoundaryCondition.AppendLine(@"<Folder>");
+        //    sbKMLBoundaryCondition.AppendLine(@"<name>" + TaskRunnerServiceRes.MikeBoundaryConditionName + @"</name>");
+        //    sbKMLBoundaryCondition.AppendLine(@"<visibility>1</visibility>");
 
-            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            TVItemModel tvItemModelMikeScenario = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-            if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                return;
-            }
+        //    TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    TVItemModel tvItemModelMikeScenario = tvItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //    if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
+        //        return;
+        //    }
 
-            MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            List<MikeBoundaryConditionModel> mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionMesh);
+        //    MikeBoundaryConditionService mikeBoundaryConditionService = new MikeBoundaryConditionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //    List<MikeBoundaryConditionModel> mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionMesh);
 
-            int countColor = 0;
-            foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
-            {
-                sbKMLBoundaryCondition.AppendLine(@"<Folder>");
-                sbKMLBoundaryCondition.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + "</name>");
-                sbKMLBoundaryCondition.AppendLine(@"<visibility>1</visibility>");
-                sbKMLBoundaryCondition.AppendLine(@"<description><![CDATA[");
-                sbKMLBoundaryCondition.AppendLine(@"<ul>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionCode + @"</b>: " + mbcm.MikeBoundaryConditionCode + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionName + @"</b>: " + mbcm.MikeBoundaryConditionName + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLength + @"</b>: " + mbcm.MikeBoundaryConditionLength_m + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionFormat + @"</b>: " + mbcm.MikeBoundaryConditionFormat + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLevelOrVelocity + @"</b>: " + mbcm.MikeBoundaryConditionLevelOrVelocity + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.WebTideDataSet + @"</b>: " + mbcm.WebTideDataSet.ToString() + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.NumberOfWebTideNodes + @"</b>: " + mbcm.NumberOfWebTideNodes + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"</ul>");
-                sbKMLBoundaryCondition.AppendLine(@"]]></description>");
+        //    int countColor = 0;
+        //    foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
+        //    {
+        //        sbKMLBoundaryCondition.AppendLine(@"<Folder>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + "</name>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<visibility>1</visibility>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<description><![CDATA[");
+        //        sbKMLBoundaryCondition.AppendLine(@"<ul>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionCode + @"</b>: " + mbcm.MikeBoundaryConditionCode + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionName + @"</b>: " + mbcm.MikeBoundaryConditionName + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLength + @"</b>: " + mbcm.MikeBoundaryConditionLength_m + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionFormat + @"</b>: " + mbcm.MikeBoundaryConditionFormat + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLevelOrVelocity + @"</b>: " + mbcm.MikeBoundaryConditionLevelOrVelocity + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.WebTideDataSet + @"</b>: " + mbcm.WebTideDataSet.ToString() + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.NumberOfWebTideNodes + @"</b>: " + mbcm.NumberOfWebTideNodes + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"</ul>");
+        //        sbKMLBoundaryCondition.AppendLine(@"]]></description>");
 
-                // drawing Boundary Nodes
-                MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-                List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionMesh, MapInfoDrawTypeEnum.Polyline);
+        //        // drawing Boundary Nodes
+        //        MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //        List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionMesh, MapInfoDrawTypeEnum.Polyline);
 
-                sbKMLBoundaryCondition.AppendLine(@"<Folder>");
-                sbKMLBoundaryCondition.AppendLine(@"<name>" + TaskRunnerServiceRes.MikeBoundaryElementNodes + @"</name>");
-                sbKMLBoundaryCondition.AppendLine(@"<open>1</open>");
-                foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
-                {
-                    sbKMLBoundaryCondition.AppendLine(@"<Placemark>");
-                    sbKMLBoundaryCondition.AppendLine(@"<name>Node " + mapInfoPointModel.Ordinal + "</name>");
-                    sbKMLBoundaryCondition.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
-                    sbKMLBoundaryCondition.AppendLine(@"<Point>");
-                    sbKMLBoundaryCondition.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
-                    sbKMLBoundaryCondition.AppendLine(@"</Point>");
-                    sbKMLBoundaryCondition.AppendLine(@"</Placemark>");
-                }
-                sbKMLBoundaryCondition.AppendLine(@"</Folder>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<Folder>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<name>" + TaskRunnerServiceRes.MikeBoundaryElementNodes + @"</name>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<open>1</open>");
+        //        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+        //        {
+        //            sbKMLBoundaryCondition.AppendLine(@"<Placemark>");
+        //            sbKMLBoundaryCondition.AppendLine(@"<name>Node " + mapInfoPointModel.Ordinal + "</name>");
+        //            sbKMLBoundaryCondition.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
+        //            sbKMLBoundaryCondition.AppendLine(@"<Point>");
+        //            sbKMLBoundaryCondition.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
+        //            sbKMLBoundaryCondition.AppendLine(@"</Point>");
+        //            sbKMLBoundaryCondition.AppendLine(@"</Placemark>");
+        //        }
+        //        sbKMLBoundaryCondition.AppendLine(@"</Folder>");
 
-                sbKMLBoundaryCondition.AppendLine(@"</Folder>");
-                countColor += 1;
-            }
+        //        sbKMLBoundaryCondition.AppendLine(@"</Folder>");
+        //        countColor += 1;
+        //    }
 
-            mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionWebTide);
+        //    mbcModelList = mikeBoundaryConditionService.GetMikeBoundaryConditionModelListWithMikeScenarioTVItemIDAndTVTypeDB(tvItemModelMikeScenario.TVItemID, TVTypeEnum.MikeBoundaryConditionWebTide);
 
-            countColor = 0;
-            foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
-            {
-                sbKMLBoundaryCondition.AppendLine(@"<Folder>");
-                sbKMLBoundaryCondition.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + "</name>");
-                sbKMLBoundaryCondition.AppendLine(@"<visibility>1</visibility>");
-                sbKMLBoundaryCondition.AppendLine(@"<description><![CDATA[");
-                sbKMLBoundaryCondition.AppendLine(@"<ul>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionCode + @"</b>: " + mbcm.MikeBoundaryConditionCode + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionName + @"</b>: " + mbcm.MikeBoundaryConditionName + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLength + @"</b>: " + mbcm.MikeBoundaryConditionLength_m + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionFormat + @"</b>: " + mbcm.MikeBoundaryConditionFormat + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLevelOrVelocity + @"</b>: " + mbcm.MikeBoundaryConditionLevelOrVelocity + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.WebTideDataSet + @"</b>: " + mbcm.WebTideDataSet + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.NumberOfWebTideNodes + @"</b>: " + mbcm.NumberOfWebTideNodes + "</li>");
-                sbKMLBoundaryCondition.AppendLine(@"</ul>");
-                sbKMLBoundaryCondition.AppendLine(@"]]></description>");
+        //    countColor = 0;
+        //    foreach (MikeBoundaryConditionModel mbcm in mbcModelList)
+        //    {
+        //        sbKMLBoundaryCondition.AppendLine(@"<Folder>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<name>" + mbcm.MikeBoundaryConditionName + "</name>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<visibility>1</visibility>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<description><![CDATA[");
+        //        sbKMLBoundaryCondition.AppendLine(@"<ul>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionCode + @"</b>: " + mbcm.MikeBoundaryConditionCode + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionName + @"</b>: " + mbcm.MikeBoundaryConditionName + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLength + @"</b>: " + mbcm.MikeBoundaryConditionLength_m + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionFormat + @"</b>: " + mbcm.MikeBoundaryConditionFormat + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.MikeBoundaryConditionLevelOrVelocity + @"</b>: " + mbcm.MikeBoundaryConditionLevelOrVelocity + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.WebTideDataSet + @"</b>: " + mbcm.WebTideDataSet + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<li><b>" + TaskRunnerServiceRes.NumberOfWebTideNodes + @"</b>: " + mbcm.NumberOfWebTideNodes + "</li>");
+        //        sbKMLBoundaryCondition.AppendLine(@"</ul>");
+        //        sbKMLBoundaryCondition.AppendLine(@"]]></description>");
 
-                // drawing Boundary Nodes
-                MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-                List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionWebTide, MapInfoDrawTypeEnum.Polyline);
+        //        // drawing Boundary Nodes
+        //        MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //        List<MapInfoPointModel> mapInfoPointModelList = mapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(mbcm.MikeBoundaryConditionTVItemID, TVTypeEnum.MikeBoundaryConditionWebTide, MapInfoDrawTypeEnum.Polyline);
 
-                sbKMLBoundaryCondition.AppendLine(@"<Folder>");
-                sbKMLBoundaryCondition.AppendLine(@"<name>" + TaskRunnerServiceRes.MikeBoundaryElementNodes + @"</name>");
-                sbKMLBoundaryCondition.AppendLine(@"<open>1</open>");
-                foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
-                {
-                    sbKMLBoundaryCondition.AppendLine(@"<Placemark>");
-                    sbKMLBoundaryCondition.AppendLine(@"<name>Node " + mapInfoPointModel.Ordinal + "</name>");
-                    sbKMLBoundaryCondition.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
-                    sbKMLBoundaryCondition.AppendLine(@"<Point>");
-                    sbKMLBoundaryCondition.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
-                    sbKMLBoundaryCondition.AppendLine(@"</Point>");
-                    sbKMLBoundaryCondition.AppendLine(@"</Placemark>");
-                }
-                sbKMLBoundaryCondition.AppendLine(@"</Folder>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<Folder>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<name>" + TaskRunnerServiceRes.MikeBoundaryElementNodes + @"</name>");
+        //        sbKMLBoundaryCondition.AppendLine(@"<open>1</open>");
+        //        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+        //        {
+        //            sbKMLBoundaryCondition.AppendLine(@"<Placemark>");
+        //            sbKMLBoundaryCondition.AppendLine(@"<name>Node " + mapInfoPointModel.Ordinal + "</name>");
+        //            sbKMLBoundaryCondition.AppendLine(string.Format(@"<styleUrl>#msn_{0}-pushpin</styleUrl>", Colors[countColor]));
+        //            sbKMLBoundaryCondition.AppendLine(@"<Point>");
+        //            sbKMLBoundaryCondition.AppendLine(@"<coordinates>" + mapInfoPointModel.Lng.ToString().Replace(",", ".") + @"," + mapInfoPointModel.Lat.ToString().Replace(",", ".") + @",0</coordinates>");
+        //            sbKMLBoundaryCondition.AppendLine(@"</Point>");
+        //            sbKMLBoundaryCondition.AppendLine(@"</Placemark>");
+        //        }
+        //        sbKMLBoundaryCondition.AppendLine(@"</Folder>");
 
-                sbKMLBoundaryCondition.AppendLine(@"</Folder>");
-                countColor += 1;
-            }
+        //        sbKMLBoundaryCondition.AppendLine(@"</Folder>");
+        //        countColor += 1;
+        //    }
 
 
-            sbKMLBoundaryCondition.AppendLine(@"</Folder>");
-        }
-        private void WriteKMLCurrentsAnimation(DfsuFile dfsuFile, string dfsParamItem, StringBuilder sbStyleCurrentAnim, StringBuilder sbKMLCurrentAnim, List<float> ContourValueList, List<int> SigmaLayerValueList, List<int> ZLayerValueList, List<float> DepthValueList, List<ElementLayer> SelectedElementLayerList, double VectorSizeInMeterForEach10cm_s)
-        {
-            string NotUsed = "";
+        //    sbKMLBoundaryCondition.AppendLine(@"</Folder>");
+        //}
+        //private void WriteKMLCurrentsAnimation(DfsuFile dfsuFile, string dfsParamItem, StringBuilder sbStyleCurrentAnim, StringBuilder sbKMLCurrentAnim, List<float> ContourValueList, List<int> SigmaLayerValueList, List<int> ZLayerValueList, List<float> DepthValueList, List<ElementLayer> SelectedElementLayerList, double VectorSizeInMeterForEach10cm_s)
+        //{
+        //    string NotUsed = "";
 
-            int ItemUVelocity = 0;
-            int ItemVVelocity = 0;
+        //    int ItemUVelocity = 0;
+        //    int ItemVVelocity = 0;
 
-            // getting the ItemNumber
-            foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
-            {
-                if (dfsDyInfo.Quantity.Item == eumItem.eumIuVelocity)
-                {
-                    ItemUVelocity = dfsDyInfo.ItemNumber;
-                }
-                if (dfsDyInfo.Quantity.Item == eumItem.eumIvVelocity)
-                {
-                    ItemVVelocity = dfsDyInfo.ItemNumber;
-                }
-            }
+        //    // getting the ItemNumber
+        //    foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
+        //    {
+        //        if (dfsDyInfo.Quantity.Item == eumItem.eumIuVelocity)
+        //        {
+        //            ItemUVelocity = dfsDyInfo.ItemNumber;
+        //        }
+        //        if (dfsDyInfo.Quantity.Item == eumItem.eumIvVelocity)
+        //        {
+        //            ItemVVelocity = dfsDyInfo.ItemNumber;
+        //        }
+        //    }
 
-            if (ItemUVelocity == 0 || ItemVVelocity == 0)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, TaskRunnerServiceRes.Parameters);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TaskRunnerServiceRes.Parameters);
-                return;
-            }
+        //    if (ItemUVelocity == 0 || ItemVVelocity == 0)
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, TaskRunnerServiceRes.Parameters);
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TaskRunnerServiceRes.Parameters);
+        //        return;
+        //    }
 
-            DrawKMLCurrentsStyle(sbStyleCurrentAnim);
-            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-                return;
+        //    DrawKMLCurrentsStyle(sbStyleCurrentAnim);
+        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+        //        return;
 
-            //int pcount = 0;
-            sbKMLCurrentAnim.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.CurrentsAnim + @"</name>");
-            sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
+        //    //int pcount = 0;
+        //    sbKMLCurrentAnim.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.CurrentsAnim + @"</name>");
+        //    sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
 
-            foreach (int Layer in SigmaLayerValueList)
-            {
-                sbKMLCurrentAnim.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.Layer + " {0}</name>", Layer));
-                sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
+        //    foreach (int Layer in SigmaLayerValueList)
+        //    {
+        //        sbKMLCurrentAnim.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.Layer + " {0}</name>", Layer));
+        //        sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
 
-                Dictionary<int, Node> ElemCenter = new Dictionary<int, Node>();
+        //        Dictionary<int, Node> ElemCenter = new Dictionary<int, Node>();
 
-                foreach (ElementLayer el in SelectedElementLayerList.Where(c => c.Layer == Layer))
-                {
-                    float XCenter = 0.0f;
-                    float YCenter = 0.0f;
+        //        foreach (ElementLayer el in SelectedElementLayerList.Where(c => c.Layer == Layer))
+        //        {
+        //            float XCenter = 0.0f;
+        //            float YCenter = 0.0f;
 
-                    foreach (Node n in el.Element.NodeList)
-                    {
-                        XCenter += n.X;
-                        YCenter += n.Y;
-                    }
-                    XCenter = XCenter / el.Element.NodeList.Count();
-                    YCenter = YCenter / el.Element.NodeList.Count();
+        //            foreach (Node n in el.Element.NodeList)
+        //            {
+        //                XCenter += n.X;
+        //                YCenter += n.Y;
+        //            }
+        //            XCenter = XCenter / el.Element.NodeList.Count();
+        //            YCenter = YCenter / el.Element.NodeList.Count();
 
-                    ElemCenter.Add(el.Element.ID, new Node() { X = XCenter, Y = YCenter });
-                }
+        //            ElemCenter.Add(el.Element.ID, new Node() { X = XCenter, Y = YCenter });
+        //        }
 
-                int vCount = 0;
-                for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
-                {
-                    sbKMLCurrentAnim.AppendLine(@"<Folder>");
-                    sbKMLCurrentAnim.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
-                    sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
-                    sbKMLCurrentAnim.AppendLine(@"<TimeSpan>");
-                    sbKMLCurrentAnim.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
-                    sbKMLCurrentAnim.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds)));
-                    sbKMLCurrentAnim.AppendLine(@"</TimeSpan>");
+        //        int vCount = 0;
+        //        for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
+        //        {
+        //            sbKMLCurrentAnim.AppendLine(@"<Folder>");
+        //            sbKMLCurrentAnim.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
+        //            sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
+        //            sbKMLCurrentAnim.AppendLine(@"<TimeSpan>");
+        //            sbKMLCurrentAnim.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
+        //            sbKMLCurrentAnim.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds)));
+        //            sbKMLCurrentAnim.AppendLine(@"</TimeSpan>");
 
-                    float[] UvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemUVelocity, timeStep).Data;
-                    float[] VvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemVVelocity, timeStep).Data;
+        //            float[] UvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemUVelocity, timeStep).Data;
+        //            float[] VvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemVVelocity, timeStep).Data;
 
-                    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-                    foreach (ElementLayer el in SelectedElementLayerList.Where(c => c.Layer == Layer))
-                    {
-                        float UV = UvelocityList[el.Element.ID - 1];
-                        float VV = VvelocityList[el.Element.ID - 1];
+        //            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //            foreach (ElementLayer el in SelectedElementLayerList.Where(c => c.Layer == Layer))
+        //            {
+        //                float UV = UvelocityList[el.Element.ID - 1];
+        //                float VV = VvelocityList[el.Element.ID - 1];
 
-                        double VectorVal = Math.Sqrt((UV * UV) + (VV * VV));
-                        double VectorDir = 0.0D;
-                        double VectorDirCartesian = Math.Acos(Math.Abs(UV / VectorVal)) * mapInfoService.r2d;
+        //                double VectorVal = Math.Sqrt((UV * UV) + (VV * VV));
+        //                double VectorDir = 0.0D;
+        //                double VectorDirCartesian = Math.Acos(Math.Abs(UV / VectorVal)) * mapInfoService.r2d;
 
-                        if (VectorDirCartesian <= 360 && VectorDirCartesian >= 0)
-                        {
-                            // everything is ok
-                        }
-                        else
-                        {
-                            VectorDirCartesian = 0.0D;
-                        }
+        //                if (VectorDirCartesian <= 360 && VectorDirCartesian >= 0)
+        //                {
+        //                    // everything is ok
+        //                }
+        //                else
+        //                {
+        //                    VectorDirCartesian = 0.0D;
+        //                }
 
-                        if (UV >= 0 && VV >= 0)
-                        {
-                            VectorDir = 90 - VectorDirCartesian;
-                        }
-                        else if (UV < 0 && VV >= 0)
-                        {
-                            VectorDir = 270 + VectorDirCartesian;
-                            VectorDirCartesian = 180 - VectorDirCartesian;
-                        }
-                        else if (UV >= 0 && VV < 0)
-                        {
-                            VectorDir = 90 + VectorDirCartesian;
-                            VectorDirCartesian = 360 - VectorDirCartesian;
-                        }
-                        else if (UV < 0 && VV < 0)
-                        {
-                            VectorDir = 270 - VectorDirCartesian;
-                            VectorDirCartesian = 180 + VectorDirCartesian;
-                        }
+        //                if (UV >= 0 && VV >= 0)
+        //                {
+        //                    VectorDir = 90 - VectorDirCartesian;
+        //                }
+        //                else if (UV < 0 && VV >= 0)
+        //                {
+        //                    VectorDir = 270 + VectorDirCartesian;
+        //                    VectorDirCartesian = 180 - VectorDirCartesian;
+        //                }
+        //                else if (UV >= 0 && VV < 0)
+        //                {
+        //                    VectorDir = 90 + VectorDirCartesian;
+        //                    VectorDirCartesian = 360 - VectorDirCartesian;
+        //                }
+        //                else if (UV < 0 && VV < 0)
+        //                {
+        //                    VectorDir = 270 - VectorDirCartesian;
+        //                    VectorDirCartesian = 180 + VectorDirCartesian;
+        //                }
 
-                        if (VectorVal > 0)
-                        {
-                            sbKMLCurrentAnim.AppendLine(@"<Placemark>");
-                            sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
-                            sbKMLCurrentAnim.AppendLine(string.Format(@"<name>{0:F4} m/s " + TaskRunnerServiceRes.AtLowerCase + " {1:F0}°</name>", VectorVal, VectorDirCartesian).ToString().Replace(",", "."));
+        //                if (VectorVal > 0)
+        //                {
+        //                    sbKMLCurrentAnim.AppendLine(@"<Placemark>");
+        //                    sbKMLCurrentAnim.AppendLine(@"<visibility>0</visibility>");
+        //                    sbKMLCurrentAnim.AppendLine(string.Format(@"<name>{0:F4} m/s " + TaskRunnerServiceRes.AtLowerCase + " {1:F0}°</name>", VectorVal, VectorDirCartesian).ToString().Replace(",", "."));
 
-                            if (Layer == 1)
-                            {
-                                sbKMLCurrentAnim.AppendLine(@"<styleUrl>#pink</styleUrl>");
-                            }
-                            else if (Layer == 2)
-                            {
-                                sbKMLCurrentAnim.AppendLine(@"<styleUrl>#yellow</styleUrl>");
-                            }
-                            else if (Layer == 3)
-                            {
-                                sbKMLCurrentAnim.AppendLine(@"<styleUrl>#green</styleUrl>");
-                            }
-                            else
-                            {
-                                // nothing ... It will be white by default
-                            }
+        //                    if (Layer == 1)
+        //                    {
+        //                        sbKMLCurrentAnim.AppendLine(@"<styleUrl>#pink</styleUrl>");
+        //                    }
+        //                    else if (Layer == 2)
+        //                    {
+        //                        sbKMLCurrentAnim.AppendLine(@"<styleUrl>#yellow</styleUrl>");
+        //                    }
+        //                    else if (Layer == 3)
+        //                    {
+        //                        sbKMLCurrentAnim.AppendLine(@"<styleUrl>#green</styleUrl>");
+        //                    }
+        //                    else
+        //                    {
+        //                        // nothing ... It will be white by default
+        //                    }
 
-                            sbKMLCurrentAnim.AppendLine(@"<LineString>");
-                            sbKMLCurrentAnim.AppendLine(@"<tessellate>1</tessellate>");
-                            sbKMLCurrentAnim.AppendLine(@"<coordinates>");
+        //                    sbKMLCurrentAnim.AppendLine(@"<LineString>");
+        //                    sbKMLCurrentAnim.AppendLine(@"<tessellate>1</tessellate>");
+        //                    sbKMLCurrentAnim.AppendLine(@"<coordinates>");
 
-                            sbKMLCurrentAnim.Append(((Node)ElemCenter[el.Element.ID]).X.ToString().Replace(",", ".") + @"," + ((Node)ElemCenter[el.Element.ID]).Y.ToString().Replace(",", ".") + ",0 ");
+        //                    sbKMLCurrentAnim.Append(((Node)ElemCenter[el.Element.ID]).X.ToString().Replace(",", ".") + @"," + ((Node)ElemCenter[el.Element.ID]).Y.ToString().Replace(",", ".") + ",0 ");
 
-                            Node node = new Node();
-                            double Fact = 0.00012;
+        //                    Node node = new Node();
+        //                    double Fact = 0.00012;
 
-                            double HypothDist = (VectorVal * VectorSizeInMeterForEach10cm_s * Fact);
-                            node.X = (float)(ElemCenter[el.Element.ID].X + (HypothDist * Math.Cos(VectorDirCartesian * mapInfoService.d2r)));
-                            node.Y = (float)(ElemCenter[el.Element.ID].Y + (HypothDist * Math.Sin(VectorDirCartesian * mapInfoService.d2r)));
+        //                    double HypothDist = (VectorVal * VectorSizeInMeterForEach10cm_s * Fact);
+        //                    node.X = (float)(ElemCenter[el.Element.ID].X + (HypothDist * Math.Cos(VectorDirCartesian * mapInfoService.d2r)));
+        //                    node.Y = (float)(ElemCenter[el.Element.ID].Y + (HypothDist * Math.Sin(VectorDirCartesian * mapInfoService.d2r)));
 
-                            sbKMLCurrentAnim.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+        //                    sbKMLCurrentAnim.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
 
-                            Node node2 = new Node();
+        //                    Node node2 = new Node();
 
-                            node2.X = (float)(node.X + (HypothDist * 0.1 * Math.Cos((VectorDirCartesian + 180 - 25) * mapInfoService.d2r)));
-                            node2.Y = (float)(node.Y + (HypothDist * 0.1 * Math.Sin((VectorDirCartesian + 180 - 25) * mapInfoService.d2r)));
+        //                    node2.X = (float)(node.X + (HypothDist * 0.1 * Math.Cos((VectorDirCartesian + 180 - 25) * mapInfoService.d2r)));
+        //                    node2.Y = (float)(node.Y + (HypothDist * 0.1 * Math.Sin((VectorDirCartesian + 180 - 25) * mapInfoService.d2r)));
 
-                            sbKMLCurrentAnim.Append(node2.X.ToString().Replace(",", ".") + @"," + node2.Y.ToString().Replace(",", ".") + ",0 ");
-                            sbKMLCurrentAnim.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+        //                    sbKMLCurrentAnim.Append(node2.X.ToString().Replace(",", ".") + @"," + node2.Y.ToString().Replace(",", ".") + ",0 ");
+        //                    sbKMLCurrentAnim.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
 
-                            node2.X = (float)(node.X + (HypothDist * 0.1 * Math.Cos((VectorDirCartesian + 180 + 25) * mapInfoService.d2r)));
-                            node2.Y = (float)(node.Y + (HypothDist * 0.1 * Math.Sin((VectorDirCartesian + 180 + 25) * mapInfoService.d2r)));
-                            sbKMLCurrentAnim.Append(node2.X.ToString().Replace(",", ".") + @"," + node2.Y.ToString().Replace(",", ".") + ",0 ");
+        //                    node2.X = (float)(node.X + (HypothDist * 0.1 * Math.Cos((VectorDirCartesian + 180 + 25) * mapInfoService.d2r)));
+        //                    node2.Y = (float)(node.Y + (HypothDist * 0.1 * Math.Sin((VectorDirCartesian + 180 + 25) * mapInfoService.d2r)));
+        //                    sbKMLCurrentAnim.Append(node2.X.ToString().Replace(",", ".") + @"," + node2.Y.ToString().Replace(",", ".") + ",0 ");
 
-                            sbKMLCurrentAnim.AppendLine(@"</coordinates>");
-                            sbKMLCurrentAnim.AppendLine(@"</LineString>");
-                            sbKMLCurrentAnim.AppendLine(@"</Placemark>");
-                        }
+        //                    sbKMLCurrentAnim.AppendLine(@"</coordinates>");
+        //                    sbKMLCurrentAnim.AppendLine(@"</LineString>");
+        //                    sbKMLCurrentAnim.AppendLine(@"</Placemark>");
+        //                }
 
-                    }
-                    sbKMLCurrentAnim.AppendLine(@"</Folder>");
-                    vCount += 1;
-                }
-                sbKMLCurrentAnim.AppendLine(@"</Folder>");
+        //            }
+        //            sbKMLCurrentAnim.AppendLine(@"</Folder>");
+        //            vCount += 1;
+        //        }
+        //        sbKMLCurrentAnim.AppendLine(@"</Folder>");
 
-            }
-            sbKMLCurrentAnim.AppendLine(@"</Folder>");
-        }
+        //    }
+        //    sbKMLCurrentAnim.AppendLine(@"</Folder>");
+        //}
         //private void WriteKMLFeacalColiformContourLine(DfsuFile dfsuFile, string dfsParamItem, StringBuilder sbStyleFeacalColiformContour, StringBuilder sbPlacemarkFeacalColiformContour, List<float> ContourValueList, List<int> SigmaLayerValueList, List<int> ZLayerValueList, List<float> DepthValueList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
         //{
         //    string NotUsed = "";
@@ -6325,88 +6325,88 @@ namespace CSSPWebToolsTaskRunner.Services
 
         //    return;
         //}
-        private void WriteKMLMesh(StringBuilder sbStyleMesh, StringBuilder sbKMLMesh, List<ElementLayer> ElementLayerList)
-        {
-            List<Node> nodeList = new List<Node>();
+        //private void WriteKMLMesh(StringBuilder sbStyleMesh, StringBuilder sbKMLMesh, List<ElementLayer> ElementLayerList)
+        //{
+        //    List<Node> nodeList = new List<Node>();
 
-            sbStyleMesh.AppendLine(@"<Style id=""_line"">");
-            sbStyleMesh.AppendLine("<LineStyle>");
-            sbStyleMesh.AppendLine(@"<color>ff555555</color>");
-            sbStyleMesh.AppendLine(@"<width>1</width>");
-            sbStyleMesh.AppendLine("</LineStyle>");
-            sbStyleMesh.AppendLine(@"</Style>");
+        //    sbStyleMesh.AppendLine(@"<Style id=""_line"">");
+        //    sbStyleMesh.AppendLine("<LineStyle>");
+        //    sbStyleMesh.AppendLine(@"<color>ff555555</color>");
+        //    sbStyleMesh.AppendLine(@"<width>1</width>");
+        //    sbStyleMesh.AppendLine("</LineStyle>");
+        //    sbStyleMesh.AppendLine(@"</Style>");
 
 
-            sbKMLMesh.AppendLine(@"<Folder>");
-            sbKMLMesh.AppendLine(@"<visibility>0</visibility>");
-            sbKMLMesh.AppendLine(@"<name>" + TaskRunnerServiceRes.Mesh + "</name>");
+        //    sbKMLMesh.AppendLine(@"<Folder>");
+        //    sbKMLMesh.AppendLine(@"<visibility>0</visibility>");
+        //    sbKMLMesh.AppendLine(@"<name>" + TaskRunnerServiceRes.Mesh + "</name>");
 
-            int CountRefresh = 0;
-            int CountAt = 0;
-            int UpdateAfter = (int)(ElementLayerList.Count() / 10);
-            foreach (ElementLayer ElemLayer in ElementLayerList.OrderBy(c => c.Element.ID))
-            {
-                CountRefresh += 1;
-                CountAt += 1;
-                if (CountRefresh > UpdateAfter)
-                {
-                    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((CountAt * 10) / ElementLayerList.Count()));
+        //    int CountRefresh = 0;
+        //    int CountAt = 0;
+        //    int UpdateAfter = (int)(ElementLayerList.Count() / 10);
+        //    foreach (ElementLayer ElemLayer in ElementLayerList.OrderBy(c => c.Element.ID))
+        //    {
+        //        CountRefresh += 1;
+        //        CountAt += 1;
+        //        if (CountRefresh > UpdateAfter)
+        //        {
+        //            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((CountAt * 10) / ElementLayerList.Count()));
 
-                    CountRefresh = 0;
-                }
+        //            CountRefresh = 0;
+        //        }
 
-                StringBuilder sbCoord = new StringBuilder();
-                float total = 0;
-                string LastPart = "";
-                foreach (Node node in ElemLayer.Element.NodeList)
-                {
+        //        StringBuilder sbCoord = new StringBuilder();
+        //        float total = 0;
+        //        string LastPart = "";
+        //        foreach (Node node in ElemLayer.Element.NodeList)
+        //        {
 
-                    nodeList.Add(node);
+        //            nodeList.Add(node);
 
-                    if (LastPart == "")
-                        LastPart = node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ";
+        //            if (LastPart == "")
+        //                LastPart = node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ";
 
-                    total += node.Z;
-                    sbCoord.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+        //            total += node.Z;
+        //            sbCoord.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
 
-                }
-                sbCoord.Append(LastPart);
+        //        }
+        //        sbCoord.Append(LastPart);
 
-                string PolyName = ElemLayer.Element.ID.ToString();
+        //        string PolyName = ElemLayer.Element.ID.ToString();
 
-                // Inserting the Placemark
-                sbKMLMesh.AppendLine(@"<Placemark>");
-                sbKMLMesh.AppendLine(@"<visibility>0</visibility>");
-                sbKMLMesh.AppendLine(string.Format(@"<name>{0}</name>", PolyName));
-                sbKMLMesh.AppendLine(@"<styleUrl>#_line</styleUrl>");
-                sbKMLMesh.AppendLine(@"<LineString>");
-                sbKMLMesh.AppendLine(@"<coordinates>");
-                sbKMLMesh.AppendLine(sbCoord.ToString());
-                sbKMLMesh.AppendLine(@"</coordinates>");
-                sbKMLMesh.AppendLine(@"</LineString>");
-                sbKMLMesh.AppendLine(@"</Placemark>");
-            }
+        //        // Inserting the Placemark
+        //        sbKMLMesh.AppendLine(@"<Placemark>");
+        //        sbKMLMesh.AppendLine(@"<visibility>0</visibility>");
+        //        sbKMLMesh.AppendLine(string.Format(@"<name>{0}</name>", PolyName));
+        //        sbKMLMesh.AppendLine(@"<styleUrl>#_line</styleUrl>");
+        //        sbKMLMesh.AppendLine(@"<LineString>");
+        //        sbKMLMesh.AppendLine(@"<coordinates>");
+        //        sbKMLMesh.AppendLine(sbCoord.ToString());
+        //        sbKMLMesh.AppendLine(@"</coordinates>");
+        //        sbKMLMesh.AppendLine(@"</LineString>");
+        //        sbKMLMesh.AppendLine(@"</Placemark>");
+        //    }
 
-            sbKMLMesh.AppendLine(@"</Folder>");
+        //    sbKMLMesh.AppendLine(@"</Folder>");
 
-            //List<Node> uniqueNode = (from n in nodeList
-            //                         select n).Distinct().ToList();
+        //    //List<Node> uniqueNode = (from n in nodeList
+        //    //                         select n).Distinct().ToList();
 
-            //sbKMLMesh.AppendLine(@"<Folder>");
+        //    //sbKMLMesh.AppendLine(@"<Folder>");
 
-            //foreach (Node node in uniqueNode)
-            //{
-            //    sbKMLMesh.AppendLine("<Placemark>");
-            //    sbKMLMesh.AppendLine(@"<visibility>0</visibility>");
-            //    sbKMLMesh.AppendLine(string.Format(@"<name>{0}</name>", node.ID));
-            //    sbKMLMesh.AppendLine(@"<Point>");
-            //    sbKMLMesh.AppendLine(string.Format(@"<coordinates>{0},{1},0</coordinates>", node.X, node.Y));
-            //    sbKMLMesh.AppendLine("@</Point>");
-            //    sbKMLMesh.AppendLine("</Placemark>");
-            //}
-            //sbKMLMesh.AppendLine(@"</Folder>");
+        //    //foreach (Node node in uniqueNode)
+        //    //{
+        //    //    sbKMLMesh.AppendLine("<Placemark>");
+        //    //    sbKMLMesh.AppendLine(@"<visibility>0</visibility>");
+        //    //    sbKMLMesh.AppendLine(string.Format(@"<name>{0}</name>", node.ID));
+        //    //    sbKMLMesh.AppendLine(@"<Point>");
+        //    //    sbKMLMesh.AppendLine(string.Format(@"<coordinates>{0},{1},0</coordinates>", node.X, node.Y));
+        //    //    sbKMLMesh.AppendLine("@</Point>");
+        //    //    sbKMLMesh.AppendLine("</Placemark>");
+        //    //}
+        //    //sbKMLMesh.AppendLine(@"</Folder>");
 
-        }
+        //}
         //private void WriteKMLModelInput(StringBuilder sbStyleModelInput, StringBuilder sbKMLModelInput, List<float> ContourValueList, int mikeScenarioID, M21_3FMService m21_3fmInput)
         //{
         //    string NotUsed = "";
@@ -6482,1093 +6482,1093 @@ namespace CSSPWebToolsTaskRunner.Services
 
         //    return;
         //}
-        private void WriteKMLPollutionLimitsContourLine(DfsuFile dfsuFile, string dfsParamItem, StringBuilder sbStylePollutionLimitsContour, StringBuilder sbKMLPollutionLimitsContour, List<float> ContourValueList, List<int> SigmaLayerValueList, List<int> ZLayerValueList, List<float> DepthValueList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
-        {
-            string NotUsed = "";
-
-            int ItemNumber = 0;
-
-            // getting the ItemNumber
-            foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
-            {
-                if (dfsDyInfo.Quantity.Item == eumItem.eumIConcentration)
-                {
-                    ItemNumber = dfsDyInfo.ItemNumber;
-                    break;
-                }
-            }
-
-            if (ItemNumber == 0)
-            {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, dfsParamItem);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.ParameterType, dfsParamItem);
-                return;
-            }
-
-            DrawKMLContourStyle(sbStylePollutionLimitsContour, sbKMLPollutionLimitsContour);
-            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-                return;
-
-            //int pcount = 0;
-            sbKMLPollutionLimitsContour.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.PollutionLimits + @"</name>");
-            sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-            int CountLayer = 1;
-            int CountAt = 0;
-
-            foreach (int Layer in SigmaLayerValueList)
-            {
-                #region Top of Layer
-                sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}]</name>", Layer));
-                sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                int CountContour = 1;
-                foreach (float ContourValue in ContourValueList)
-                {
-                    CountAt += 1;
-                    sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
-                    sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                    string AppTaskStatus = ((int)((CountAt * 100) / (SigmaLayerValueList.Count * ContourValueList.Count))).ToString() + " %";
-
-                    _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, ((int)((CountAt * 100) / (SigmaLayerValueList.Count * ContourValueList.Count))));
-
-                    List<Node> AllNodeList = new List<Node>();
-                    List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
-
-                    for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
-                    {
-
-                        float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
-
-                        for (int i = 0; i < ElementLayerList.Count; i++)
-                        {
-                            if (ElementLayerList[i].Element.Value < ValueList[i])
-                            {
-                                ElementLayerList[i].Element.Value = ValueList[i];
-                            }
-                        }
-                    }
-                    //}
-
-                    foreach (NodeLayer nl in TopNodeLayerList)
-                    {
-                        float Total = 0;
-                        foreach (Element element in nl.Node.ElementList)
-                        {
-                            Total += element.Value;
-                        }
-                        nl.Node.Value = Total / nl.Node.ElementList.Count;
-                    }
-
-                    List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
-
-                    AboveNodeLayerList = (from n in TopNodeLayerList
-                                          where (n.Node.Value >= ContourValue)
-                                          && n.Layer == Layer
-                                          select n).ToList<NodeLayer>();
-
-                    foreach (NodeLayer snl in AboveNodeLayerList)
-                    {
-                        List<NodeLayer> EndNodeLayerList = null;
-
-                        List<NodeLayer> NodeLayerConnectedList = (from nll in TopNodeLayerList
-                                                                  from n in snl.Node.ConnectNodeList
-                                                                  where (n.ID == nll.Node.ID)
-                                                                  select nll).ToList<NodeLayer>();
-
-                        EndNodeLayerList = (from nll in NodeLayerConnectedList
-                                            where (nll.Node.ID != snl.Node.ID)
-                                            && (nll.Node.Value < ContourValue)
-                                            && nll.Layer == Layer
-                                            select nll).ToList<NodeLayer>();
-
-                        foreach (NodeLayer en in EndNodeLayerList)
-                        {
-                            AllNodeList.Add(en.Node);
-                        }
-
-                        if (snl.Node.Code != 0)
-                        {
-                            AllNodeList.Add(snl.Node);
-                        }
-
-                    }
-
-                    //if (AllNodeList.Count == 0)
-                    //{
-                    //    continue;
-                    //}
-
-                    List<Element> TempUniqueElementList = new List<Element>();
-                    List<Element> UniqueElementList = new List<Element>();
-                    foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
-                    {
-                        if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                        {
-                            if (el.Element.Type == 32)
-                            {
-                                bool NodeBigger = false;
-                                for (int i = 3; i < 6; i++)
-                                {
-                                    if (el.Element.NodeList[i].Value >= ContourValue)
-                                    {
-                                        NodeBigger = true;
-                                        break;
-                                    }
-                                }
-                                if (NodeBigger)
-                                {
-                                    int countTrue = 0;
-                                    for (int i = 3; i < 6; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                        {
-                                            countTrue += 1;
-                                        }
-                                    }
-                                    if (countTrue != el.Element.NodeList.Count)
-                                    {
-                                        TempUniqueElementList.Add(el.Element);
-                                    }
-                                }
-                            }
-                            else if (el.Element.Type == 33)
-                            {
-                                bool NodeBigger = false;
-                                for (int i = 4; i < 8; i++)
-                                {
-                                    if (el.Element.NodeList[i].Value >= ContourValue)
-                                    {
-                                        NodeBigger = true;
-                                        break;
-                                    }
-                                }
-                                if (NodeBigger)
-                                {
-                                    int countTrue = 0;
-                                    for (int i = 4; i < 8; i++)
-                                    {
-                                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                        {
-                                            countTrue += 1;
-                                        }
-                                    }
-                                    if (countTrue != el.Element.NodeList.Count)
-                                    {
-                                        TempUniqueElementList.Add(el.Element);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
-                                return;
-                            }
-                        }
-                        else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
-                        {
-                            bool NodeBigger = false;
-                            for (int i = 0; i < el.Element.NodeList.Count; i++)
-                            {
-                                if (el.Element.NodeList[i].Value >= ContourValue)
-                                {
-                                    NodeBigger = true;
-                                    break;
-                                }
-                            }
-                            if (NodeBigger)
-                            {
-                                int countTrue = 0;
-                                for (int i = 0; i < el.Element.NodeList.Count; i++)
-                                {
-                                    if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                                    {
-                                        countTrue += 1;
-                                    }
-                                }
-                                if (countTrue != el.Element.NodeList.Count)
-                                {
-                                    TempUniqueElementList.Add(el.Element);
-                                }
-                            }
-                        }
-                    }
-
-                    UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
-
-                    // filling InterpolatedContourNodeList
-                    InterpolatedContourNodeList = new List<Node>();
-
-                    foreach (Element el in UniqueElementList)
-                    {
-                        if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                        {
-                            if (el.Type == 32)
-                            {
-                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[4], ContourValue);
-                                }
-                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[5], ContourValue);
-                                }
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[3], ContourValue);
-                                }
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
-                                }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
-                                }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[3], ContourValue);
-                                }
-                            }
-                            else if (el.Type == 33)
-                            {
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
-                                }
-                                if (el.NodeList[4].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[7], ContourValue);
-                                }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
-                                }
-                                if (el.NodeList[5].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[6], ContourValue);
-                                }
-                                if (el.NodeList[6].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[5], ContourValue);
-                                }
-                                if (el.NodeList[6].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[7], ContourValue);
-                                }
-                                if (el.NodeList[7].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[4], ContourValue);
-                                }
-                                if (el.NodeList[7].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[6], ContourValue);
-                                }
-                            }
-                            else
-                            {
-                                NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
-                                return;
-                            }
-                        }
-                        else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
-                        {
-                            if (el.Type == 21)
-                            {
-                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
-                                }
-                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[2], ContourValue);
-                                }
-                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
-                                }
-                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
-                                }
-                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
-                                }
-                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[0], ContourValue);
-                                }
-                            }
-                            else if (el.Type == 24)
-                            {
-                            }
-                            else if (el.Type == 25)
-                            {
-                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
-                                }
-                                if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[3], ContourValue);
-                                }
-                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
-                                }
-                                if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
-                                }
-                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
-                                }
-                                if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[3], ContourValue);
-                                }
-                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[0], ContourValue);
-                                }
-                                if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                                {
-                                    InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[2], ContourValue);
-                                }
-                            }
-                            else
-                            {
-                                NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
-                                return;
-                            }
-                        }
-                    }
-
-                    List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
-
-                    ForwardVector = new Dictionary<String, Vector>();
-                    BackwardVector = new Dictionary<String, Vector>();
-
-                    // ------------------------- new code --------------------------
-                    //                     
-
-                    foreach (Element el in UniqueElementList)
-                    {
-                        if (el.Type == 21)
-                        {
-                            FillVectors21_32(el, UniqueElementList, ContourValue, false, true);
-                        }
-                        else if (el.Type == 24)
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
-                            return;
-                        }
-                        else if (el.Type == 25)
-                        {
-                            FillVectors25_33(el, UniqueElementList, ContourValue, false, true);
-                        }
-                        else if (el.Type == 32)
-                        {
-                            FillVectors21_32(el, UniqueElementList, ContourValue, true, true);
-                        }
-                        else if (el.Type == 33)
-                        {
-                            FillVectors25_33(el, UniqueElementList, ContourValue, true, true);
-                        }
-                        else
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
-                            return;
-                        }
-
-                    }
-
-                    //-------------- new code ------------------------
-
-
-                    bool MoreContourLine = true;
-                    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-                    while (MoreContourLine && ForwardVector.Count > 0)
-                    {
-                        List<Node> FinalContourNodeList = new List<Node>();
-                        Vector LastVector = new Vector();
-                        LastVector = ForwardVector.First().Value;
-                        FinalContourNodeList.Add(LastVector.StartNode);
-                        FinalContourNodeList.Add(LastVector.EndNode);
-                        ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                        BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                        bool PolygonCompleted = false;
-                        while (!PolygonCompleted)
-                        {
-                            List<string> KeyStrList = (from k in ForwardVector.Keys
-                                                       where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                                                       && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                                                       select k).ToList<string>();
-
-                            if (KeyStrList.Count != 1)
-                            {
-                                KeyStrList = (from k in BackwardVector.Keys
-                                              where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                                              && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                                              select k).ToList<string>();
-
-                                if (KeyStrList.Count != 1)
-                                {
-                                    PolygonCompleted = true;
-                                    break;
-                                }
-                                else
-                                {
-                                    LastVector = BackwardVector[KeyStrList[0]];
-                                    BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                                    ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                                }
-                            }
-                            else
-                            {
-                                LastVector = ForwardVector[KeyStrList[0]];
-                                ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                                BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                            }
-                            FinalContourNodeList.Add(LastVector.EndNode);
-                            if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
-                            {
-                                PolygonCompleted = true;
-                            }
-                        }
-
-                        if (mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList) < 0)
-                        {
-                            FinalContourNodeList.Reverse();
-                        }
-
-                        FinalContourNodeList.Add(FinalContourNodeList[0]);
-                        ContourPolygon contourPolygon = new ContourPolygon() { };
-                        contourPolygon.ContourNodeList = FinalContourNodeList;
-                        contourPolygon.ContourValue = ContourValue;
-                        ContourPolygonList.Add(contourPolygon);
-
-                        if (ForwardVector.Count == 0)
-                        {
-                            MoreContourLine = false;
-                        }
-                    }
-
-                    foreach (ContourPolygon contourPolygon in ContourPolygonList)
-                    {
-                        sbKMLPollutionLimitsContour.AppendLine(@"<Folder>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"<Placemark>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                        if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
-                        {
-                            sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
-                        }
-                        else if (contourPolygon.ContourValue >= 88)
-                        {
-                            sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
-                        }
-                        else
-                        {
-                            sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
-                        }
-                        sbKMLPollutionLimitsContour.AppendLine(@"<Polygon>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"<outerBoundaryIs>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"<LinearRing>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"<coordinates>");
-                        foreach (Node node in contourPolygon.ContourNodeList)
-                        {
-                            sbKMLPollutionLimitsContour.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
-                        }
-                        sbKMLPollutionLimitsContour.AppendLine(@"</coordinates>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"</LinearRing>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"</outerBoundaryIs>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"</Polygon>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"</Placemark>");
-                        sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
-                    }
-                    sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
-                    CountContour += 1;
-                }
-                sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
-                #endregion Top of Layer
-
-                #region Bottom of Layer
-                //// 
-                //if (Layer == dfsuFile.NumberOfSigmaLayers)
-                //{
-                //    sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>Bottom of Layer [{0}]</name>", Layer));
-                //    sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                //    CountContour = 1;
-                //    foreach (float ContourValue in ContourValueList)
-                //    {
-                //        CountAt += 1;
-                //        sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>Contour Value [{0}]</name>", ContourValue));
-                //        sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                //        string AppTaskStatus = ((int)((CountAt * 100) / (SigmaLayerValueList.Count * ContourValueList.Count))).ToString() + " %";
-                //        UpdateTask(AppTaskID, AppTaskStatus);
-
-                //        List<Node> AllNodeList = new List<Node>();
-                //        List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
-
-                //        //foreach (Dfs.Parameter.TimeSeriesValue v in p.TimeSeriesValueList)
-                //        //{
-                //        for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
-                //        {
-
-                //            float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
-
-                //            for (int i = 0; i < ElementLayerList.Count; i++)
-                //            {
-                //                if (ElementLayerList[i].Element.Value < ValueList[i])
-                //                {
-                //                    ElementLayerList[i].Element.Value = ValueList[i];
-                //                }
-                //            }
-                //        }
-                //        //}
-
-                //        foreach (NodeLayer nl in BottomNodeLayerList)
-                //        {
-                //            float Total = 0;
-                //            foreach (Element element in nl.Node.ElementList)
-                //            {
-                //                Total += element.Value;
-                //            }
-                //            nl.Node.Value = Total / nl.Node.ElementList.Count;
-                //        }
-
-                //        List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
-
-                //        AboveNodeLayerList = (from n in BottomNodeLayerList
-                //                              where (n.Node.Value >= ContourValue)
-                //                              && n.Layer == Layer
-                //                              select n).ToList<NodeLayer>();
-
-                //        foreach (NodeLayer snl in AboveNodeLayerList)
-                //        {
-                //            List<NodeLayer> EndNodeLayerList = null;
-
-                //            List<NodeLayer> NodeLayerConnectedList = (from nll in BottomNodeLayerList
-                //                                                      from n in snl.Node.ConnectNodeList
-                //                                                      where (n.ID == nll.Node.ID)
-                //                                                      select nll).ToList<NodeLayer>();
-
-                //            EndNodeLayerList = (from nll in NodeLayerConnectedList
-                //                                where (nll.Node.ID != snl.Node.ID)
-                //                                && (nll.Node.Value < ContourValue)
-                //                                && nll.Layer == Layer
-                //                                select nll).ToList<NodeLayer>();
-
-                //            foreach (NodeLayer en in EndNodeLayerList)
-                //            {
-                //                AllNodeList.Add(en.Node);
-                //            }
-
-                //            if (snl.Node.Code != 0)
-                //            {
-                //                AllNodeList.Add(snl.Node);
-                //            }
-
-                //        }
-
-                //        if (AllNodeList.Count == 0)
-                //        {
-                //            continue;
-                //        }
-
-                //        List<Element> TempUniqueElementList = new List<Element>();
-                //        List<Element> UniqueElementList = new List<Element>();
-                //        foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
-                //        {
-                //            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                //            {
-                //                if (el.Element.Type == 32)
-                //                {
-                //                    bool NodeBigger = false;
-                //                    for (int i = 0; i < 3; i++)
-                //                    {
-                //                        if (el.Element.NodeList[i].Value >= ContourValue)
-                //                        {
-                //                            NodeBigger = true;
-                //                            break;
-                //                        }
-                //                    }
-                //                    if (NodeBigger)
-                //                    {
-                //                        int countTrue = 0;
-                //                        for (int i = 0; i < 3; i++)
-                //                        {
-                //                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                //                            {
-                //                                countTrue += 1;
-                //                            }
-                //                        }
-                //                        if (countTrue != el.Element.NodeList.Count)
-                //                        {
-                //                            TempUniqueElementList.Add(el.Element);
-                //                        }
-                //                    }
-                //                }
-                //                else if (el.Element.Type == 33)
-                //                {
-                //                    bool NodeBigger = false;
-                //                    for (int i = 0; i < 4; i++)
-                //                    {
-                //                        if (el.Element.NodeList[i].Value >= ContourValue)
-                //                        {
-                //                            NodeBigger = true;
-                //                            break;
-                //                        }
-                //                    }
-                //                    if (NodeBigger)
-                //                    {
-                //                        int countTrue = 0;
-                //                        for (int i = 0; i < 4; i++)
-                //                        {
-                //                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                //                            {
-                //                                countTrue += 1;
-                //                            }
-                //                        }
-                //                        if (countTrue != el.Element.NodeList.Count)
-                //                        {
-                //                            TempUniqueElementList.Add(el.Element);
-                //                        }
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    UpdateTask(AppTaskID, "");
-                //                    throw new Exception("Element type is not supported: Element type = [" + el.Element.Type + "]");
-                //                }
-                //            }
-                //            else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
-                //            {
-                //                bool NodeBigger = false;
-                //                for (int i = 0; i < el.Element.NodeList.Count; i++)
-                //                {
-                //                    if (el.Element.NodeList[i].Value >= ContourValue)
-                //                    {
-                //                        NodeBigger = true;
-                //                        break;
-                //                    }
-                //                }
-                //                if (NodeBigger)
-                //                {
-                //                    int countTrue = 0;
-                //                    for (int i = 0; i < el.Element.NodeList.Count; i++)
-                //                    {
-                //                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
-                //                        {
-                //                            countTrue += 1;
-                //                        }
-                //                    }
-                //                    if (countTrue != el.Element.NodeList.Count)
-                //                    {
-                //                        TempUniqueElementList.Add(el.Element);
-                //                    }
-                //                }
-                //            }
-                //        }
-
-                //        UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
-
-                //        // filling InterpolatedContourNodeList
-                //        InterpolatedContourNodeList = new List<Node>();
-
-                //        foreach (Element el in UniqueElementList)
-                //        {
-                //            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
-                //            {
-                //                if (el.Type == 32)
-                //                {
-                //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
-                //                    }
-                //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[2], ContourValue);
-                //                    }
-                //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
-                //                    }
-                //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
-                //                    }
-                //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
-                //                    }
-                //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[0], ContourValue);
-                //                    }
-                //                }
-                //                else if (el.Type == 33)
-                //                {
-                //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
-                //                    }
-                //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[3], ContourValue);
-                //                    }
-                //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
-                //                    }
-                //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
-                //                    }
-                //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
-                //                    }
-                //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[3], ContourValue);
-                //                    }
-                //                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[0], ContourValue);
-                //                    }
-                //                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
-                //                    {
-                //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[2], ContourValue);
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    UpdateTask(AppTaskID, "");
-                //                    throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
-                //                }
-                //            }
-                //            else
-                //            {
-                //                UpdateTask(AppTaskID, "");
-                //                throw new Exception("Bottom does not exist outside the Dfsu3DSigma and Dfsu3DSigmaZ.");
-                //            }
-                //        }
-
-                //        List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
-
-                //        ForwardVector = new Dictionary<String, Vector>();
-                //        BackwardVector = new Dictionary<String, Vector>();
-
-                //        // ------------------------- new code --------------------------
-                //        //                     
-
-                //        foreach (Element el in UniqueElementList)
-                //        {
-                //            if (el.Type == 21)
-                //            {
-                //                FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, false, false);
-                //            }
-                //            else if (el.Type == 24)
-                //            {
-                //                UpdateTask(AppTaskID, "");
-                //                throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
-                //            }
-                //            else if (el.Type == 25)
-                //            {
-                //                FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, false, false);
-                //            }
-                //            else if (el.Type == 32)
-                //            {
-                //                FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, true, false);
-                //            }
-                //            else if (el.Type == 33)
-                //            {
-                //                FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, true, false);
-                //            }
-                //            else
-                //            {
-                //                UpdateTask(AppTaskID, "");
-                //                throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
-                //            }
-
-                //        }
-
-                //        //-------------- new code ------------------------
-
-
-                //        bool MoreContourLine = true;
-                //        while (MoreContourLine)
-                //        {
-                //            List<Node> FinalContourNodeList = new List<Node>();
-                //            Vector LastVector = new Vector();
-                //            LastVector = ForwardVector.First().Value;
-                //            FinalContourNodeList.Add(LastVector.StartNode);
-                //            FinalContourNodeList.Add(LastVector.EndNode);
-                //            ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                //            BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                //            bool PolygonCompleted = false;
-                //            while (!PolygonCompleted)
-                //            {
-                //                List<string> KeyStrList = (from k in ForwardVector.Keys
-                //                                           where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                //                                           && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                //                                           select k).ToList<string>();
-
-                //                if (KeyStrList.Count != 1)
-                //                {
-                //                    KeyStrList = (from k in BackwardVector.Keys
-                //                                  where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
-                //                                  && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
-                //                                  select k).ToList<string>();
-
-                //                    if (KeyStrList.Count != 1)
-                //                    {
-                //                        PolygonCompleted = true;
-                //                        break;
-                //                    }
-                //                    else
-                //                    {
-                //                        LastVector = BackwardVector[KeyStrList[0]];
-                //                        BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                //                        ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    LastVector = ForwardVector[KeyStrList[0]];
-                //                    ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
-                //                    BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
-                //                }
-                //                FinalContourNodeList.Add(LastVector.EndNode);
-                //                if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
-                //                {
-                //                    PolygonCompleted = true;
-                //                }
-                //            }
-
-                //            if (CalculateAreaOfPolygon(FinalContourNodeList) < 0)
-                //            {
-                //                FinalContourNodeList.Reverse();
-                //            }
-
-                //            FinalContourNodeList.Add(FinalContourNodeList[0]);
-                //            ContourPolygon contourPolygon = new ContourPolygon() { };
-                //            contourPolygon.ContourNodeList = FinalContourNodeList;
-                //            contourPolygon.ContourValue = ContourValue;
-                //            ContourPolygonList.Add(contourPolygon);
-
-                //            if (ForwardVector.Count == 0)
-                //            {
-                //                MoreContourLine = false;
-                //            }
-                //        }
-                //        //sbKMLPollutionLimitsContour.AppendLine(@"<Folder>");
-                //        //sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<name>{0} Pollution Limits Contour</name>", ContourValue));
-                //        //sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-
-                //        foreach (ContourPolygon contourPolygon in ContourPolygonList)
-                //        {
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<Folder>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<Placemark>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
-                //            if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
-                //            {
-                //                sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
-                //            }
-                //            else if (contourPolygon.ContourValue >= 88)
-                //            {
-                //                sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
-                //            }
-                //            else
-                //            {
-                //                sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
-                //            }
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<Polygon>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<outerBoundaryIs>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<LinearRing>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"<coordinates>");
-                //            foreach (Node node in contourPolygon.ContourNodeList)
-                //            {
-                //                sbKMLPollutionLimitsContour.Append(string.Format(@"{0},{1},0 ", node.X, node.Y));
-                //            }
-                //            sbKMLPollutionLimitsContour.AppendLine(@"</coordinates>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"</LinearRing>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"</outerBoundaryIs>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"</Polygon>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"</Placemark>");
-                //            sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
-                //        }
-                //        sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
-                //        CountContour += 1;
-                //    }
-                //    sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
-                //}
-                #endregion Bottom of Layer
-                CountLayer += 1;
-            }
-            sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
-        }
-        private void WriteKMLStudyAreaLine(StringBuilder sbStyleStudyAreaLine, StringBuilder sbKMLStudyAreaLine, List<Element> ElementList, List<Node> NodeList)
-        {
-            sbStyleStudyAreaLine.AppendLine(@"<Style id=""StudyArea"">");
-            sbStyleStudyAreaLine.AppendLine(@"<LineStyle>");
-            sbStyleStudyAreaLine.AppendLine(@"<color>ffffff00</color>");
-            sbStyleStudyAreaLine.AppendLine(@"<width>2</width>");
-            sbStyleStudyAreaLine.AppendLine(@"</LineStyle>");
-            sbStyleStudyAreaLine.AppendLine(@"</Style>");
-
-            List<ContourPolygon> contourPolygonList = new List<ContourPolygon>();
-
-            //using (DFSU dfsu = new DFSU() )
-
-
-            sbKMLStudyAreaLine.AppendLine(@"<Folder>");
-            sbKMLStudyAreaLine.AppendLine(@"<name>" + TaskRunnerServiceRes.StudyArea + @"</name>");
-            sbKMLStudyAreaLine.AppendLine(@"<visibility>0</visibility>");
-            foreach (ContourPolygon contourPolygon in contourPolygonList)
-            {
-                sbKMLStudyAreaLine.AppendLine(@"<Folder>");
-                sbKMLStudyAreaLine.AppendLine(@"<visibility>0</visibility>");
-                sbKMLStudyAreaLine.AppendLine(@"<Placemark>");
-                sbKMLStudyAreaLine.AppendLine(@"<visibility>0</visibility>");
-                sbKMLStudyAreaLine.AppendLine(@"<styleUrl>#StudyArea</styleUrl>");
-                sbKMLStudyAreaLine.AppendLine(@"<LineString>");
-                sbKMLStudyAreaLine.AppendLine(@"<coordinates>");
-                foreach (Node node in contourPolygon.ContourNodeList)
-                {
-                    sbKMLStudyAreaLine.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
-                }
-                sbKMLStudyAreaLine.AppendLine(@"</coordinates>");
-                sbKMLStudyAreaLine.AppendLine(@"</LineString>");
-                sbKMLStudyAreaLine.AppendLine(@"</Placemark>");
-                sbKMLStudyAreaLine.AppendLine(@"</Folder>");
-            }
-            sbKMLStudyAreaLine.AppendLine(@"</Folder>");
-        }
-        private void WriteKMLStyleModelInput(StringBuilder sbStyleModelInput)
-        {
-            sbStyleModelInput.AppendLine(@"<Style id=""sn_grn-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<IconStyle>");
-            sbStyleModelInput.AppendLine(@"<scale>1.1</scale>");
-            sbStyleModelInput.AppendLine(@"<Icon>");
-            sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbStyleModelInput.AppendLine(@"</Icon>");
-            sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleModelInput.AppendLine(@"</IconStyle>");
-            sbStyleModelInput.AppendLine(@"<ListStyle>");
-            sbStyleModelInput.AppendLine(@"</ListStyle>");
-            sbStyleModelInput.AppendLine(@"</Style>");
-
-            sbStyleModelInput.AppendLine(@"<Style id=""sh_grn-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<IconStyle>");
-            sbStyleModelInput.AppendLine(@"<scale>1.3</scale>");
-            sbStyleModelInput.AppendLine(@"<Icon>");
-            sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
-            sbStyleModelInput.AppendLine(@"</Icon>");
-            sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleModelInput.AppendLine(@"</IconStyle>");
-            sbStyleModelInput.AppendLine(@"<ListStyle>");
-            sbStyleModelInput.AppendLine(@"</ListStyle>");
-            sbStyleModelInput.AppendLine(@"</Style>");
-
-            sbStyleModelInput.AppendLine(@"<StyleMap id=""msn_grn-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<Pair>");
-            sbStyleModelInput.AppendLine(@"<key>normal</key>");
-            sbStyleModelInput.AppendLine(@"<styleUrl>#sn_grn-pushpin</styleUrl>");
-            sbStyleModelInput.AppendLine(@"</Pair>");
-            sbStyleModelInput.AppendLine(@"<Pair>");
-            sbStyleModelInput.AppendLine(@"<key>highlight</key>");
-            sbStyleModelInput.AppendLine(@"<styleUrl>#sh_grn-pushpin</styleUrl>");
-            sbStyleModelInput.AppendLine(@"</Pair>");
-            sbStyleModelInput.AppendLine(@"</StyleMap>");
-
-            sbStyleModelInput.AppendLine(@"<Style id=""sn_red-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<IconStyle>");
-            sbStyleModelInput.AppendLine(@"<scale>1.1</scale>");
-            sbStyleModelInput.AppendLine(@"<Icon>");
-            sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
-            sbStyleModelInput.AppendLine(@"</Icon>");
-            sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleModelInput.AppendLine(@"</IconStyle>");
-            sbStyleModelInput.AppendLine(@"<ListStyle>");
-            sbStyleModelInput.AppendLine(@"</ListStyle>");
-            sbStyleModelInput.AppendLine(@"</Style>");
-
-            sbStyleModelInput.AppendLine(@"<Style id=""sh_red-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<IconStyle>");
-            sbStyleModelInput.AppendLine(@"<scale>1.3</scale>");
-            sbStyleModelInput.AppendLine(@"<Icon>");
-            sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
-            sbStyleModelInput.AppendLine(@"</Icon>");
-            sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleModelInput.AppendLine(@"</IconStyle>");
-            sbStyleModelInput.AppendLine(@"<ListStyle>");
-            sbStyleModelInput.AppendLine(@"</ListStyle>");
-            sbStyleModelInput.AppendLine(@"</Style>");
-
-            sbStyleModelInput.AppendLine(@"<StyleMap id=""msn_red-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<Pair>");
-            sbStyleModelInput.AppendLine(@"<key>normal</key>");
-            sbStyleModelInput.AppendLine(@"<styleUrl>#sn_red-pushpin</styleUrl>");
-            sbStyleModelInput.AppendLine(@"</Pair>");
-            sbStyleModelInput.AppendLine(@"<Pair>");
-            sbStyleModelInput.AppendLine(@"<key>highlight</key>");
-            sbStyleModelInput.AppendLine(@"<styleUrl>#sh_red-pushpin</styleUrl>");
-            sbStyleModelInput.AppendLine(@"</Pair>");
-            sbStyleModelInput.AppendLine(@"</StyleMap>");
-
-            sbStyleModelInput.AppendLine(@"<Style id=""sn_blue-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<IconStyle>");
-            sbStyleModelInput.AppendLine(@"<scale>1.1</scale>");
-            sbStyleModelInput.AppendLine(@"<Icon>");
-            sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbStyleModelInput.AppendLine(@"</Icon>");
-            sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleModelInput.AppendLine(@"</IconStyle>");
-            sbStyleModelInput.AppendLine(@"<ListStyle>");
-            sbStyleModelInput.AppendLine(@"</ListStyle>");
-            sbStyleModelInput.AppendLine(@"</Style>");
-
-            sbStyleModelInput.AppendLine(@"<Style id=""sh_blue-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<IconStyle>");
-            sbStyleModelInput.AppendLine(@"<scale>1.3</scale>");
-            sbStyleModelInput.AppendLine(@"<Icon>");
-            sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
-            sbStyleModelInput.AppendLine(@"</Icon>");
-            sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
-            sbStyleModelInput.AppendLine(@"</IconStyle>");
-            sbStyleModelInput.AppendLine(@"<ListStyle>");
-            sbStyleModelInput.AppendLine(@"</ListStyle>");
-            sbStyleModelInput.AppendLine(@"</Style>");
-
-            sbStyleModelInput.AppendLine(@"<StyleMap id=""msn_blue-pushpin"">");
-            sbStyleModelInput.AppendLine(@"<Pair>");
-            sbStyleModelInput.AppendLine(@"<key>normal</key>");
-            sbStyleModelInput.AppendLine(@"<styleUrl>#sn_blue-pushpin</styleUrl>");
-            sbStyleModelInput.AppendLine(@"</Pair>");
-            sbStyleModelInput.AppendLine(@"<Pair>");
-            sbStyleModelInput.AppendLine(@"<key>highlight</key>");
-            sbStyleModelInput.AppendLine(@"<styleUrl>#sh_blue-pushpin</styleUrl>");
-            sbStyleModelInput.AppendLine(@"</Pair>");
-            sbStyleModelInput.AppendLine(@"</StyleMap>");
-        }
-        private void WriteKMLTop(string DocName, StringBuilder sbKML)
-        {
-            sbKML.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
-            sbKML.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
-            sbKML.AppendLine(@"<Document>");
-            sbKML.AppendLine(string.Format(@"<name>{0}</name>", DocName));
-
-            return;
-        }
+        //private void WriteKMLPollutionLimitsContourLine(DfsuFile dfsuFile, string dfsParamItem, StringBuilder sbStylePollutionLimitsContour, StringBuilder sbKMLPollutionLimitsContour, List<float> ContourValueList, List<int> SigmaLayerValueList, List<int> ZLayerValueList, List<float> DepthValueList, List<ElementLayer> ElementLayerList, List<NodeLayer> TopNodeLayerList, List<NodeLayer> BottomNodeLayerList)
+        //{
+        //    string NotUsed = "";
+
+        //    int ItemNumber = 0;
+
+        //    // getting the ItemNumber
+        //    foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
+        //    {
+        //        if (dfsDyInfo.Quantity.Item == eumItem.eumIConcentration)
+        //        {
+        //            ItemNumber = dfsDyInfo.ItemNumber;
+        //            break;
+        //        }
+        //    }
+
+        //    if (ItemNumber == 0)
+        //    {
+        //        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.ParameterType, dfsParamItem);
+        //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.ParameterType, dfsParamItem);
+        //        return;
+        //    }
+
+        //    DrawKMLContourStyle(sbStylePollutionLimitsContour, sbKMLPollutionLimitsContour);
+        //    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+        //        return;
+
+        //    //int pcount = 0;
+        //    sbKMLPollutionLimitsContour.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.PollutionLimits + @"</name>");
+        //    sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //    int CountLayer = 1;
+        //    int CountAt = 0;
+
+        //    foreach (int Layer in SigmaLayerValueList)
+        //    {
+        //        #region Top of Layer
+        //        sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}]</name>", Layer));
+        //        sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //        int CountContour = 1;
+        //        foreach (float ContourValue in ContourValueList)
+        //        {
+        //            CountAt += 1;
+        //            sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
+        //            sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //            string AppTaskStatus = ((int)((CountAt * 100) / (SigmaLayerValueList.Count * ContourValueList.Count))).ToString() + " %";
+
+        //            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, ((int)((CountAt * 100) / (SigmaLayerValueList.Count * ContourValueList.Count))));
+
+        //            List<Node> AllNodeList = new List<Node>();
+        //            List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
+
+        //            for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
+        //            {
+
+        //                float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
+
+        //                for (int i = 0; i < ElementLayerList.Count; i++)
+        //                {
+        //                    if (ElementLayerList[i].Element.Value < ValueList[i])
+        //                    {
+        //                        ElementLayerList[i].Element.Value = ValueList[i];
+        //                    }
+        //                }
+        //            }
+        //            //}
+
+        //            foreach (NodeLayer nl in TopNodeLayerList)
+        //            {
+        //                float Total = 0;
+        //                foreach (Element element in nl.Node.ElementList)
+        //                {
+        //                    Total += element.Value;
+        //                }
+        //                nl.Node.Value = Total / nl.Node.ElementList.Count;
+        //            }
+
+        //            List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
+
+        //            AboveNodeLayerList = (from n in TopNodeLayerList
+        //                                  where (n.Node.Value >= ContourValue)
+        //                                  && n.Layer == Layer
+        //                                  select n).ToList<NodeLayer>();
+
+        //            foreach (NodeLayer snl in AboveNodeLayerList)
+        //            {
+        //                List<NodeLayer> EndNodeLayerList = null;
+
+        //                List<NodeLayer> NodeLayerConnectedList = (from nll in TopNodeLayerList
+        //                                                          from n in snl.Node.ConnectNodeList
+        //                                                          where (n.ID == nll.Node.ID)
+        //                                                          select nll).ToList<NodeLayer>();
+
+        //                EndNodeLayerList = (from nll in NodeLayerConnectedList
+        //                                    where (nll.Node.ID != snl.Node.ID)
+        //                                    && (nll.Node.Value < ContourValue)
+        //                                    && nll.Layer == Layer
+        //                                    select nll).ToList<NodeLayer>();
+
+        //                foreach (NodeLayer en in EndNodeLayerList)
+        //                {
+        //                    AllNodeList.Add(en.Node);
+        //                }
+
+        //                if (snl.Node.Code != 0)
+        //                {
+        //                    AllNodeList.Add(snl.Node);
+        //                }
+
+        //            }
+
+        //            //if (AllNodeList.Count == 0)
+        //            //{
+        //            //    continue;
+        //            //}
+
+        //            List<Element> TempUniqueElementList = new List<Element>();
+        //            List<Element> UniqueElementList = new List<Element>();
+        //            foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
+        //            {
+        //                if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //                {
+        //                    if (el.Element.Type == 32)
+        //                    {
+        //                        bool NodeBigger = false;
+        //                        for (int i = 3; i < 6; i++)
+        //                        {
+        //                            if (el.Element.NodeList[i].Value >= ContourValue)
+        //                            {
+        //                                NodeBigger = true;
+        //                                break;
+        //                            }
+        //                        }
+        //                        if (NodeBigger)
+        //                        {
+        //                            int countTrue = 0;
+        //                            for (int i = 3; i < 6; i++)
+        //                            {
+        //                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //                                {
+        //                                    countTrue += 1;
+        //                                }
+        //                            }
+        //                            if (countTrue != el.Element.NodeList.Count)
+        //                            {
+        //                                TempUniqueElementList.Add(el.Element);
+        //                            }
+        //                        }
+        //                    }
+        //                    else if (el.Element.Type == 33)
+        //                    {
+        //                        bool NodeBigger = false;
+        //                        for (int i = 4; i < 8; i++)
+        //                        {
+        //                            if (el.Element.NodeList[i].Value >= ContourValue)
+        //                            {
+        //                                NodeBigger = true;
+        //                                break;
+        //                            }
+        //                        }
+        //                        if (NodeBigger)
+        //                        {
+        //                            int countTrue = 0;
+        //                            for (int i = 4; i < 8; i++)
+        //                            {
+        //                                if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //                                {
+        //                                    countTrue += 1;
+        //                                }
+        //                            }
+        //                            if (countTrue != el.Element.NodeList.Count)
+        //                            {
+        //                                TempUniqueElementList.Add(el.Element);
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Element.Type.ToString());
+        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Element.Type.ToString());
+        //                        return;
+        //                    }
+        //                }
+        //                else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+        //                {
+        //                    bool NodeBigger = false;
+        //                    for (int i = 0; i < el.Element.NodeList.Count; i++)
+        //                    {
+        //                        if (el.Element.NodeList[i].Value >= ContourValue)
+        //                        {
+        //                            NodeBigger = true;
+        //                            break;
+        //                        }
+        //                    }
+        //                    if (NodeBigger)
+        //                    {
+        //                        int countTrue = 0;
+        //                        for (int i = 0; i < el.Element.NodeList.Count; i++)
+        //                        {
+        //                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //                            {
+        //                                countTrue += 1;
+        //                            }
+        //                        }
+        //                        if (countTrue != el.Element.NodeList.Count)
+        //                        {
+        //                            TempUniqueElementList.Add(el.Element);
+        //                        }
+        //                    }
+        //                }
+        //            }
+
+        //            UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
+
+        //            // filling InterpolatedContourNodeList
+        //            InterpolatedContourNodeList = new List<Node>();
+
+        //            foreach (Element el in UniqueElementList)
+        //            {
+        //                if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //                {
+        //                    if (el.Type == 32)
+        //                    {
+        //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[4], ContourValue);
+        //                        }
+        //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[5], ContourValue);
+        //                        }
+        //                        if (el.NodeList[4].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[3], ContourValue);
+        //                        }
+        //                        if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+        //                        }
+        //                        if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+        //                        }
+        //                        if (el.NodeList[5].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[3], ContourValue);
+        //                        }
+        //                    }
+        //                    else if (el.Type == 33)
+        //                    {
+        //                        if (el.NodeList[4].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[5], ContourValue);
+        //                        }
+        //                        if (el.NodeList[4].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[4], el.NodeList[7], ContourValue);
+        //                        }
+        //                        if (el.NodeList[5].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[4], ContourValue);
+        //                        }
+        //                        if (el.NodeList[5].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[5], el.NodeList[6], ContourValue);
+        //                        }
+        //                        if (el.NodeList[6].Value >= ContourValue && el.NodeList[5].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[5], ContourValue);
+        //                        }
+        //                        if (el.NodeList[6].Value >= ContourValue && el.NodeList[7].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[6], el.NodeList[7], ContourValue);
+        //                        }
+        //                        if (el.NodeList[7].Value >= ContourValue && el.NodeList[4].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[4], ContourValue);
+        //                        }
+        //                        if (el.NodeList[7].Value >= ContourValue && el.NodeList[6].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[7], el.NodeList[6], ContourValue);
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
+        //                        return;
+        //                    }
+        //                }
+        //                else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+        //                {
+        //                    if (el.Type == 21)
+        //                    {
+        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
+        //                        }
+        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[2], ContourValue);
+        //                        }
+        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
+        //                        }
+        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
+        //                        }
+        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
+        //                        }
+        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[0], ContourValue);
+        //                        }
+        //                    }
+        //                    else if (el.Type == 24)
+        //                    {
+        //                    }
+        //                    else if (el.Type == 25)
+        //                    {
+        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[1], ContourValue);
+        //                        }
+        //                        if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[0], el.NodeList[3], ContourValue);
+        //                        }
+        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[0], ContourValue);
+        //                        }
+        //                        if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[1], el.NodeList[2], ContourValue);
+        //                        }
+        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[1], ContourValue);
+        //                        }
+        //                        if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[2], el.NodeList[3], ContourValue);
+        //                        }
+        //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[0], ContourValue);
+        //                        }
+        //                        if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //                        {
+        //                            InsertNewNodeInInterpolatedContourNodeList(dfsuFile, el.NodeList[3], el.NodeList[2], ContourValue);
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+        //                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
+        //                        return;
+        //                    }
+        //                }
+        //            }
+
+        //            List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
+
+        //            ForwardVector = new Dictionary<String, Vector>();
+        //            BackwardVector = new Dictionary<String, Vector>();
+
+        //            // ------------------------- new code --------------------------
+        //            //                     
+
+        //            foreach (Element el in UniqueElementList)
+        //            {
+        //                if (el.Type == 21)
+        //                {
+        //                    FillVectors21_32(el, UniqueElementList, ContourValue, false, true);
+        //                }
+        //                else if (el.Type == 24)
+        //                {
+        //                    NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
+        //                    return;
+        //                }
+        //                else if (el.Type == 25)
+        //                {
+        //                    FillVectors25_33(el, UniqueElementList, ContourValue, false, true);
+        //                }
+        //                else if (el.Type == 32)
+        //                {
+        //                    FillVectors21_32(el, UniqueElementList, ContourValue, true, true);
+        //                }
+        //                else if (el.Type == 33)
+        //                {
+        //                    FillVectors25_33(el, UniqueElementList, ContourValue, true, true);
+        //                }
+        //                else
+        //                {
+        //                    NotUsed = string.Format(TaskRunnerServiceRes.ElementType_IsNotSupported, el.Type.ToString());
+        //                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementType_IsNotSupported", el.Type.ToString());
+        //                    return;
+        //                }
+
+        //            }
+
+        //            //-------------- new code ------------------------
+
+
+        //            bool MoreContourLine = true;
+        //            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+        //            while (MoreContourLine && ForwardVector.Count > 0)
+        //            {
+        //                List<Node> FinalContourNodeList = new List<Node>();
+        //                Vector LastVector = new Vector();
+        //                LastVector = ForwardVector.First().Value;
+        //                FinalContourNodeList.Add(LastVector.StartNode);
+        //                FinalContourNodeList.Add(LastVector.EndNode);
+        //                ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //                BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //                bool PolygonCompleted = false;
+        //                while (!PolygonCompleted)
+        //                {
+        //                    List<string> KeyStrList = (from k in ForwardVector.Keys
+        //                                               where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //                                               && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //                                               select k).ToList<string>();
+
+        //                    if (KeyStrList.Count != 1)
+        //                    {
+        //                        KeyStrList = (from k in BackwardVector.Keys
+        //                                      where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //                                      && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //                                      select k).ToList<string>();
+
+        //                        if (KeyStrList.Count != 1)
+        //                        {
+        //                            PolygonCompleted = true;
+        //                            break;
+        //                        }
+        //                        else
+        //                        {
+        //                            LastVector = BackwardVector[KeyStrList[0]];
+        //                            BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //                            ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        LastVector = ForwardVector[KeyStrList[0]];
+        //                        ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //                        BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //                    }
+        //                    FinalContourNodeList.Add(LastVector.EndNode);
+        //                    if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
+        //                    {
+        //                        PolygonCompleted = true;
+        //                    }
+        //                }
+
+        //                if (mapInfoService.CalculateAreaOfPolygon(FinalContourNodeList) < 0)
+        //                {
+        //                    FinalContourNodeList.Reverse();
+        //                }
+
+        //                FinalContourNodeList.Add(FinalContourNodeList[0]);
+        //                ContourPolygon contourPolygon = new ContourPolygon() { };
+        //                contourPolygon.ContourNodeList = FinalContourNodeList;
+        //                contourPolygon.ContourValue = ContourValue;
+        //                ContourPolygonList.Add(contourPolygon);
+
+        //                if (ForwardVector.Count == 0)
+        //                {
+        //                    MoreContourLine = false;
+        //                }
+        //            }
+
+        //            foreach (ContourPolygon contourPolygon in ContourPolygonList)
+        //            {
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<Folder>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<Placemark>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //                if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
+        //                {
+        //                    sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
+        //                }
+        //                else if (contourPolygon.ContourValue >= 88)
+        //                {
+        //                    sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
+        //                }
+        //                else
+        //                {
+        //                    sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
+        //                }
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<Polygon>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<outerBoundaryIs>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<LinearRing>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"<coordinates>");
+        //                foreach (Node node in contourPolygon.ContourNodeList)
+        //                {
+        //                    sbKMLPollutionLimitsContour.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+        //                }
+        //                sbKMLPollutionLimitsContour.AppendLine(@"</coordinates>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"</LinearRing>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"</outerBoundaryIs>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"</Polygon>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"</Placemark>");
+        //                sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
+        //            }
+        //            sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
+        //            CountContour += 1;
+        //        }
+        //        sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
+        //        #endregion Top of Layer
+
+        //        #region Bottom of Layer
+        //        //// 
+        //        //if (Layer == dfsuFile.NumberOfSigmaLayers)
+        //        //{
+        //        //    sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>Bottom of Layer [{0}]</name>", Layer));
+        //        //    sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //        //    CountContour = 1;
+        //        //    foreach (float ContourValue in ContourValueList)
+        //        //    {
+        //        //        CountAt += 1;
+        //        //        sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<Folder><name>Contour Value [{0}]</name>", ContourValue));
+        //        //        sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //        //        string AppTaskStatus = ((int)((CountAt * 100) / (SigmaLayerValueList.Count * ContourValueList.Count))).ToString() + " %";
+        //        //        UpdateTask(AppTaskID, AppTaskStatus);
+
+        //        //        List<Node> AllNodeList = new List<Node>();
+        //        //        List<ContourPolygon> ContourPolygonList = new List<ContourPolygon>();
+
+        //        //        //foreach (Dfs.Parameter.TimeSeriesValue v in p.TimeSeriesValueList)
+        //        //        //{
+        //        //        for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
+        //        //        {
+
+        //        //            float[] ValueList = (float[])dfsuFile.ReadItemTimeStep(ItemNumber, timeStep).Data;
+
+        //        //            for (int i = 0; i < ElementLayerList.Count; i++)
+        //        //            {
+        //        //                if (ElementLayerList[i].Element.Value < ValueList[i])
+        //        //                {
+        //        //                    ElementLayerList[i].Element.Value = ValueList[i];
+        //        //                }
+        //        //            }
+        //        //        }
+        //        //        //}
+
+        //        //        foreach (NodeLayer nl in BottomNodeLayerList)
+        //        //        {
+        //        //            float Total = 0;
+        //        //            foreach (Element element in nl.Node.ElementList)
+        //        //            {
+        //        //                Total += element.Value;
+        //        //            }
+        //        //            nl.Node.Value = Total / nl.Node.ElementList.Count;
+        //        //        }
+
+        //        //        List<NodeLayer> AboveNodeLayerList = new List<NodeLayer>();
+
+        //        //        AboveNodeLayerList = (from n in BottomNodeLayerList
+        //        //                              where (n.Node.Value >= ContourValue)
+        //        //                              && n.Layer == Layer
+        //        //                              select n).ToList<NodeLayer>();
+
+        //        //        foreach (NodeLayer snl in AboveNodeLayerList)
+        //        //        {
+        //        //            List<NodeLayer> EndNodeLayerList = null;
+
+        //        //            List<NodeLayer> NodeLayerConnectedList = (from nll in BottomNodeLayerList
+        //        //                                                      from n in snl.Node.ConnectNodeList
+        //        //                                                      where (n.ID == nll.Node.ID)
+        //        //                                                      select nll).ToList<NodeLayer>();
+
+        //        //            EndNodeLayerList = (from nll in NodeLayerConnectedList
+        //        //                                where (nll.Node.ID != snl.Node.ID)
+        //        //                                && (nll.Node.Value < ContourValue)
+        //        //                                && nll.Layer == Layer
+        //        //                                select nll).ToList<NodeLayer>();
+
+        //        //            foreach (NodeLayer en in EndNodeLayerList)
+        //        //            {
+        //        //                AllNodeList.Add(en.Node);
+        //        //            }
+
+        //        //            if (snl.Node.Code != 0)
+        //        //            {
+        //        //                AllNodeList.Add(snl.Node);
+        //        //            }
+
+        //        //        }
+
+        //        //        if (AllNodeList.Count == 0)
+        //        //        {
+        //        //            continue;
+        //        //        }
+
+        //        //        List<Element> TempUniqueElementList = new List<Element>();
+        //        //        List<Element> UniqueElementList = new List<Element>();
+        //        //        foreach (ElementLayer el in ElementLayerList.Where(l => l.Layer == Layer))
+        //        //        {
+        //        //            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //        //            {
+        //        //                if (el.Element.Type == 32)
+        //        //                {
+        //        //                    bool NodeBigger = false;
+        //        //                    for (int i = 0; i < 3; i++)
+        //        //                    {
+        //        //                        if (el.Element.NodeList[i].Value >= ContourValue)
+        //        //                        {
+        //        //                            NodeBigger = true;
+        //        //                            break;
+        //        //                        }
+        //        //                    }
+        //        //                    if (NodeBigger)
+        //        //                    {
+        //        //                        int countTrue = 0;
+        //        //                        for (int i = 0; i < 3; i++)
+        //        //                        {
+        //        //                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //        //                            {
+        //        //                                countTrue += 1;
+        //        //                            }
+        //        //                        }
+        //        //                        if (countTrue != el.Element.NodeList.Count)
+        //        //                        {
+        //        //                            TempUniqueElementList.Add(el.Element);
+        //        //                        }
+        //        //                    }
+        //        //                }
+        //        //                else if (el.Element.Type == 33)
+        //        //                {
+        //        //                    bool NodeBigger = false;
+        //        //                    for (int i = 0; i < 4; i++)
+        //        //                    {
+        //        //                        if (el.Element.NodeList[i].Value >= ContourValue)
+        //        //                        {
+        //        //                            NodeBigger = true;
+        //        //                            break;
+        //        //                        }
+        //        //                    }
+        //        //                    if (NodeBigger)
+        //        //                    {
+        //        //                        int countTrue = 0;
+        //        //                        for (int i = 0; i < 4; i++)
+        //        //                        {
+        //        //                            if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //        //                            {
+        //        //                                countTrue += 1;
+        //        //                            }
+        //        //                        }
+        //        //                        if (countTrue != el.Element.NodeList.Count)
+        //        //                        {
+        //        //                            TempUniqueElementList.Add(el.Element);
+        //        //                        }
+        //        //                    }
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    UpdateTask(AppTaskID, "");
+        //        //                    throw new Exception("Element type is not supported: Element type = [" + el.Element.Type + "]");
+        //        //                }
+        //        //            }
+        //        //            else if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu2D)
+        //        //            {
+        //        //                bool NodeBigger = false;
+        //        //                for (int i = 0; i < el.Element.NodeList.Count; i++)
+        //        //                {
+        //        //                    if (el.Element.NodeList[i].Value >= ContourValue)
+        //        //                    {
+        //        //                        NodeBigger = true;
+        //        //                        break;
+        //        //                    }
+        //        //                }
+        //        //                if (NodeBigger)
+        //        //                {
+        //        //                    int countTrue = 0;
+        //        //                    for (int i = 0; i < el.Element.NodeList.Count; i++)
+        //        //                    {
+        //        //                        if (el.Element.NodeList[i].Value >= ContourValue && el.Element.NodeList[i].Code == 0)
+        //        //                        {
+        //        //                            countTrue += 1;
+        //        //                        }
+        //        //                    }
+        //        //                    if (countTrue != el.Element.NodeList.Count)
+        //        //                    {
+        //        //                        TempUniqueElementList.Add(el.Element);
+        //        //                    }
+        //        //                }
+        //        //            }
+        //        //        }
+
+        //        //        UniqueElementList = (from el in TempUniqueElementList select el).Distinct().ToList<Element>();
+
+        //        //        // filling InterpolatedContourNodeList
+        //        //        InterpolatedContourNodeList = new List<Node>();
+
+        //        //        foreach (Element el in UniqueElementList)
+        //        //        {
+        //        //            if (dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigma || dfsuFile.DfsuFileType == DfsuFileType.Dfsu3DSigmaZ)
+        //        //            {
+        //        //                if (el.Type == 32)
+        //        //                {
+        //        //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[2], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[0], ContourValue);
+        //        //                    }
+        //        //                }
+        //        //                else if (el.Type == 33)
+        //        //                {
+        //        //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[1], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[0].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[0], el.NodeList[3], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[0], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[1].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[1], el.NodeList[2], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[1].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[1], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[2].Value >= ContourValue && el.NodeList[3].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[2], el.NodeList[3], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[0].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[0], ContourValue);
+        //        //                    }
+        //        //                    if (el.NodeList[3].Value >= ContourValue && el.NodeList[2].Value < ContourValue)
+        //        //                    {
+        //        //                        InsertNewNodeInInterpolatedContourNodeList(el.NodeList[3], el.NodeList[2], ContourValue);
+        //        //                    }
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    UpdateTask(AppTaskID, "");
+        //        //                    throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
+        //        //                }
+        //        //            }
+        //        //            else
+        //        //            {
+        //        //                UpdateTask(AppTaskID, "");
+        //        //                throw new Exception("Bottom does not exist outside the Dfsu3DSigma and Dfsu3DSigmaZ.");
+        //        //            }
+        //        //        }
+
+        //        //        List<Node> UniqueNodeList = (from n in AllNodeList orderby n.ID select n).Distinct().ToList<Node>();
+
+        //        //        ForwardVector = new Dictionary<String, Vector>();
+        //        //        BackwardVector = new Dictionary<String, Vector>();
+
+        //        //        // ------------------------- new code --------------------------
+        //        //        //                     
+
+        //        //        foreach (Element el in UniqueElementList)
+        //        //        {
+        //        //            if (el.Type == 21)
+        //        //            {
+        //        //                FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, false, false);
+        //        //            }
+        //        //            else if (el.Type == 24)
+        //        //            {
+        //        //                UpdateTask(AppTaskID, "");
+        //        //                throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
+        //        //            }
+        //        //            else if (el.Type == 25)
+        //        //            {
+        //        //                FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, false, false);
+        //        //            }
+        //        //            else if (el.Type == 32)
+        //        //            {
+        //        //                FillVectors21_32(el, UniqueElementList, ContourValue, AppTaskID, true, false);
+        //        //            }
+        //        //            else if (el.Type == 33)
+        //        //            {
+        //        //                FillVectors25_33(el, UniqueElementList, ContourValue, AppTaskID, true, false);
+        //        //            }
+        //        //            else
+        //        //            {
+        //        //                UpdateTask(AppTaskID, "");
+        //        //                throw new Exception("Element type is not supported: Element type = [" + el.Type + "]");
+        //        //            }
+
+        //        //        }
+
+        //        //        //-------------- new code ------------------------
+
+
+        //        //        bool MoreContourLine = true;
+        //        //        while (MoreContourLine)
+        //        //        {
+        //        //            List<Node> FinalContourNodeList = new List<Node>();
+        //        //            Vector LastVector = new Vector();
+        //        //            LastVector = ForwardVector.First().Value;
+        //        //            FinalContourNodeList.Add(LastVector.StartNode);
+        //        //            FinalContourNodeList.Add(LastVector.EndNode);
+        //        //            ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //        //            BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //        //            bool PolygonCompleted = false;
+        //        //            while (!PolygonCompleted)
+        //        //            {
+        //        //                List<string> KeyStrList = (from k in ForwardVector.Keys
+        //        //                                           where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //        //                                           && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //        //                                           select k).ToList<string>();
+
+        //        //                if (KeyStrList.Count != 1)
+        //        //                {
+        //        //                    KeyStrList = (from k in BackwardVector.Keys
+        //        //                                  where k.StartsWith(LastVector.EndNode.ID.ToString() + ",")
+        //        //                                  && !k.EndsWith("," + LastVector.StartNode.ID.ToString())
+        //        //                                  select k).ToList<string>();
+
+        //        //                    if (KeyStrList.Count != 1)
+        //        //                    {
+        //        //                        PolygonCompleted = true;
+        //        //                        break;
+        //        //                    }
+        //        //                    else
+        //        //                    {
+        //        //                        LastVector = BackwardVector[KeyStrList[0]];
+        //        //                        BackwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //        //                        ForwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //        //                    }
+        //        //                }
+        //        //                else
+        //        //                {
+        //        //                    LastVector = ForwardVector[KeyStrList[0]];
+        //        //                    ForwardVector.Remove(LastVector.StartNode.ID.ToString() + "," + LastVector.EndNode.ID.ToString());
+        //        //                    BackwardVector.Remove(LastVector.EndNode.ID.ToString() + "," + LastVector.StartNode.ID.ToString());
+        //        //                }
+        //        //                FinalContourNodeList.Add(LastVector.EndNode);
+        //        //                if (FinalContourNodeList[FinalContourNodeList.Count - 1] == FinalContourNodeList[0])
+        //        //                {
+        //        //                    PolygonCompleted = true;
+        //        //                }
+        //        //            }
+
+        //        //            if (CalculateAreaOfPolygon(FinalContourNodeList) < 0)
+        //        //            {
+        //        //                FinalContourNodeList.Reverse();
+        //        //            }
+
+        //        //            FinalContourNodeList.Add(FinalContourNodeList[0]);
+        //        //            ContourPolygon contourPolygon = new ContourPolygon() { };
+        //        //            contourPolygon.ContourNodeList = FinalContourNodeList;
+        //        //            contourPolygon.ContourValue = ContourValue;
+        //        //            ContourPolygonList.Add(contourPolygon);
+
+        //        //            if (ForwardVector.Count == 0)
+        //        //            {
+        //        //                MoreContourLine = false;
+        //        //            }
+        //        //        }
+        //        //        //sbKMLPollutionLimitsContour.AppendLine(@"<Folder>");
+        //        //        //sbKMLPollutionLimitsContour.AppendLine(string.Format(@"<name>{0} Pollution Limits Contour</name>", ContourValue));
+        //        //        //sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+
+        //        //        foreach (ContourPolygon contourPolygon in ContourPolygonList)
+        //        //        {
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<Folder>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<Placemark>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<visibility>0</visibility>");
+        //        //            if (contourPolygon.ContourValue >= 14 && contourPolygon.ContourValue < 88)
+        //        //            {
+        //        //                sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_14</styleUrl>");
+        //        //            }
+        //        //            else if (contourPolygon.ContourValue >= 88)
+        //        //            {
+        //        //                sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_88</styleUrl>");
+        //        //            }
+        //        //            else
+        //        //            {
+        //        //                sbKMLPollutionLimitsContour.AppendLine(@"<styleUrl>#fc_LT14</styleUrl>");
+        //        //            }
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<Polygon>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<outerBoundaryIs>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<LinearRing>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"<coordinates>");
+        //        //            foreach (Node node in contourPolygon.ContourNodeList)
+        //        //            {
+        //        //                sbKMLPollutionLimitsContour.Append(string.Format(@"{0},{1},0 ", node.X, node.Y));
+        //        //            }
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"</coordinates>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"</LinearRing>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"</outerBoundaryIs>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"</Polygon>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"</Placemark>");
+        //        //            sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
+        //        //        }
+        //        //        sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
+        //        //        CountContour += 1;
+        //        //    }
+        //        //    sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
+        //        //}
+        //        #endregion Bottom of Layer
+        //        CountLayer += 1;
+        //    }
+        //    sbKMLPollutionLimitsContour.AppendLine(@"</Folder>");
+        //}
+        //private void WriteKMLStudyAreaLine(StringBuilder sbStyleStudyAreaLine, StringBuilder sbKMLStudyAreaLine, List<Element> ElementList, List<Node> NodeList)
+        //{
+        //    sbStyleStudyAreaLine.AppendLine(@"<Style id=""StudyArea"">");
+        //    sbStyleStudyAreaLine.AppendLine(@"<LineStyle>");
+        //    sbStyleStudyAreaLine.AppendLine(@"<color>ffffff00</color>");
+        //    sbStyleStudyAreaLine.AppendLine(@"<width>2</width>");
+        //    sbStyleStudyAreaLine.AppendLine(@"</LineStyle>");
+        //    sbStyleStudyAreaLine.AppendLine(@"</Style>");
+
+        //    List<ContourPolygon> contourPolygonList = new List<ContourPolygon>();
+
+        //    //using (DFSU dfsu = new DFSU() )
+
+
+        //    sbKMLStudyAreaLine.AppendLine(@"<Folder>");
+        //    sbKMLStudyAreaLine.AppendLine(@"<name>" + TaskRunnerServiceRes.StudyArea + @"</name>");
+        //    sbKMLStudyAreaLine.AppendLine(@"<visibility>0</visibility>");
+        //    foreach (ContourPolygon contourPolygon in contourPolygonList)
+        //    {
+        //        sbKMLStudyAreaLine.AppendLine(@"<Folder>");
+        //        sbKMLStudyAreaLine.AppendLine(@"<visibility>0</visibility>");
+        //        sbKMLStudyAreaLine.AppendLine(@"<Placemark>");
+        //        sbKMLStudyAreaLine.AppendLine(@"<visibility>0</visibility>");
+        //        sbKMLStudyAreaLine.AppendLine(@"<styleUrl>#StudyArea</styleUrl>");
+        //        sbKMLStudyAreaLine.AppendLine(@"<LineString>");
+        //        sbKMLStudyAreaLine.AppendLine(@"<coordinates>");
+        //        foreach (Node node in contourPolygon.ContourNodeList)
+        //        {
+        //            sbKMLStudyAreaLine.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+        //        }
+        //        sbKMLStudyAreaLine.AppendLine(@"</coordinates>");
+        //        sbKMLStudyAreaLine.AppendLine(@"</LineString>");
+        //        sbKMLStudyAreaLine.AppendLine(@"</Placemark>");
+        //        sbKMLStudyAreaLine.AppendLine(@"</Folder>");
+        //    }
+        //    sbKMLStudyAreaLine.AppendLine(@"</Folder>");
+        //}
+        //private void WriteKMLStyleModelInput(StringBuilder sbStyleModelInput)
+        //{
+        //    sbStyleModelInput.AppendLine(@"<Style id=""sn_grn-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<scale>1.1</scale>");
+        //    sbStyleModelInput.AppendLine(@"<Icon>");
+        //    sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+        //    sbStyleModelInput.AppendLine(@"</Icon>");
+        //    sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleModelInput.AppendLine(@"</IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</Style>");
+
+        //    sbStyleModelInput.AppendLine(@"<Style id=""sh_grn-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<scale>1.3</scale>");
+        //    sbStyleModelInput.AppendLine(@"<Icon>");
+        //    sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>");
+        //    sbStyleModelInput.AppendLine(@"</Icon>");
+        //    sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleModelInput.AppendLine(@"</IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</Style>");
+
+        //    sbStyleModelInput.AppendLine(@"<StyleMap id=""msn_grn-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<Pair>");
+        //    sbStyleModelInput.AppendLine(@"<key>normal</key>");
+        //    sbStyleModelInput.AppendLine(@"<styleUrl>#sn_grn-pushpin</styleUrl>");
+        //    sbStyleModelInput.AppendLine(@"</Pair>");
+        //    sbStyleModelInput.AppendLine(@"<Pair>");
+        //    sbStyleModelInput.AppendLine(@"<key>highlight</key>");
+        //    sbStyleModelInput.AppendLine(@"<styleUrl>#sh_grn-pushpin</styleUrl>");
+        //    sbStyleModelInput.AppendLine(@"</Pair>");
+        //    sbStyleModelInput.AppendLine(@"</StyleMap>");
+
+        //    sbStyleModelInput.AppendLine(@"<Style id=""sn_red-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<scale>1.1</scale>");
+        //    sbStyleModelInput.AppendLine(@"<Icon>");
+        //    sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
+        //    sbStyleModelInput.AppendLine(@"</Icon>");
+        //    sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleModelInput.AppendLine(@"</IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</Style>");
+
+        //    sbStyleModelInput.AppendLine(@"<Style id=""sh_red-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<scale>1.3</scale>");
+        //    sbStyleModelInput.AppendLine(@"<Icon>");
+        //    sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>");
+        //    sbStyleModelInput.AppendLine(@"</Icon>");
+        //    sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleModelInput.AppendLine(@"</IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</Style>");
+
+        //    sbStyleModelInput.AppendLine(@"<StyleMap id=""msn_red-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<Pair>");
+        //    sbStyleModelInput.AppendLine(@"<key>normal</key>");
+        //    sbStyleModelInput.AppendLine(@"<styleUrl>#sn_red-pushpin</styleUrl>");
+        //    sbStyleModelInput.AppendLine(@"</Pair>");
+        //    sbStyleModelInput.AppendLine(@"<Pair>");
+        //    sbStyleModelInput.AppendLine(@"<key>highlight</key>");
+        //    sbStyleModelInput.AppendLine(@"<styleUrl>#sh_red-pushpin</styleUrl>");
+        //    sbStyleModelInput.AppendLine(@"</Pair>");
+        //    sbStyleModelInput.AppendLine(@"</StyleMap>");
+
+        //    sbStyleModelInput.AppendLine(@"<Style id=""sn_blue-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<scale>1.1</scale>");
+        //    sbStyleModelInput.AppendLine(@"<Icon>");
+        //    sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+        //    sbStyleModelInput.AppendLine(@"</Icon>");
+        //    sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleModelInput.AppendLine(@"</IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</Style>");
+
+        //    sbStyleModelInput.AppendLine(@"<Style id=""sh_blue-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<scale>1.3</scale>");
+        //    sbStyleModelInput.AppendLine(@"<Icon>");
+        //    sbStyleModelInput.AppendLine(@"<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>");
+        //    sbStyleModelInput.AppendLine(@"</Icon>");
+        //    sbStyleModelInput.AppendLine(@"<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
+        //    sbStyleModelInput.AppendLine(@"</IconStyle>");
+        //    sbStyleModelInput.AppendLine(@"<ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</ListStyle>");
+        //    sbStyleModelInput.AppendLine(@"</Style>");
+
+        //    sbStyleModelInput.AppendLine(@"<StyleMap id=""msn_blue-pushpin"">");
+        //    sbStyleModelInput.AppendLine(@"<Pair>");
+        //    sbStyleModelInput.AppendLine(@"<key>normal</key>");
+        //    sbStyleModelInput.AppendLine(@"<styleUrl>#sn_blue-pushpin</styleUrl>");
+        //    sbStyleModelInput.AppendLine(@"</Pair>");
+        //    sbStyleModelInput.AppendLine(@"<Pair>");
+        //    sbStyleModelInput.AppendLine(@"<key>highlight</key>");
+        //    sbStyleModelInput.AppendLine(@"<styleUrl>#sh_blue-pushpin</styleUrl>");
+        //    sbStyleModelInput.AppendLine(@"</Pair>");
+        //    sbStyleModelInput.AppendLine(@"</StyleMap>");
+        //}
+        //private void WriteKMLTop(string DocName, StringBuilder sbKML)
+        //{
+        //    sbKML.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+        //    sbKML.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+        //    sbKML.AppendLine(@"<Document>");
+        //    sbKML.AppendLine(string.Format(@"<name>{0}</name>", DocName));
+
+        //    return;
+        //}
         //private void WriteSourcePlacemark(StringBuilder sbKMLModelInput, M21_3FMService.FemEngineHD.HYDRODYNAMIC_MODULE.SOURCES.SOURCE shd, KeyValuePair<string, M21_3FMService.FemEngineHD.HYDRODYNAMIC_MODULE.SOURCES.SOURCE> kvp, List<MikeSourceModel> mikeSourceModelList, M21_3FMService m21_3fmInput)
         //{
         //    string NotUsed = "";

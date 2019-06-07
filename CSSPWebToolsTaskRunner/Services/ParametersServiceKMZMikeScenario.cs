@@ -19,6 +19,7 @@ using DHI.PFS;
 using DHI.Generic.MikeZero.DFS;
 using DHI.Generic.MikeZero;
 using System.Drawing;
+using System.Xml;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -69,6 +70,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case "MikeScenarioCurrentsAnimationKMZ":
+                    {
+                        if (!GenerateMikeScenarioCurrentsAnimationKMZ())
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "MikeScenarioTestKMZ":
                     {
                         if (!GenerateKMZMikeScenario_MikeScenarioTestKMZ())
@@ -113,6 +122,88 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
+            return true;
+        }
+        public bool GenerateMikeScenarioCurrentsAnimationKMZ()
+        {
+            string NotUsed = "";
+            bool ErrorInDoc = false;
+
+            string GoogleEarthPath = "";
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            GoogleEarthPath = GetParameters("GoogleEarthPath", ParamValueList);
+            if (string.IsNullOrWhiteSpace(GoogleEarthPath))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.GoogleEarthPath);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.GoogleEarthPath);
+                return false;
+            }
+
+            GoogleEarthPath = GoogleEarthPath.Replace("!!!!!", "<");
+            GoogleEarthPath = GoogleEarthPath.Replace("@@@@@", ">");
+            GoogleEarthPath = GoogleEarthPath.Replace("%%%%%", ",");
+
+            DfsuFile dfsuFile = null;
+            List<ElementLayer> elementLayerList = new List<ElementLayer>();
+            List<Element> elementList = new List<Element>();
+            List<Node> nodeList = new List<Node>();
+            List<NodeLayer> topNodeLayerList = new List<NodeLayer>();
+            List<NodeLayer> bottomNodeLayerList = new List<NodeLayer>();
+
+            dfsuFile = GetTransportDfsuFile();
+            if (dfsuFile == null)
+            {
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "GetTransportDfsuFile", fi.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "GetTransportDfsuFile", fi.FullName);
+                }
+                return false;
+            }
+            if (!FillRequiredList(dfsuFile, elementList, elementLayerList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            {
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "FillRequiredList", fi.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "FillRequiredList", fi.FullName);
+                }
+                return false;
+            }
+
+            List<ElementLayer> SelectedElementLayerList = ParseKMLPath(GoogleEarthPath, elementLayerList);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return false;
+
+            if (!WriteKMLTop(sb))
+            {
+                ErrorInDoc = true;
+            }
+            sb.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.MIKECurrentsAnimation + "_" + GetScenarioName()));
+
+            if (!DrawKMLCurrentsStyle(sb))
+            {
+                ErrorInDoc = true;
+            }
+
+            if (!WriteKMLCurrentsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList))
+            {
+                ErrorInDoc = true;
+            }
+
+            if (!WriteKMLBottom(sb))
+            {
+                ErrorInDoc = true;
+            }
+
+            dfsuFile.Close();
+
+            if (ErrorInDoc)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreatingKMZDocument_, fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ErrorOccuredWhileCreatingKMZDocument_", fi.FullName);
+                return false;
+            }
             return true;
         }
         private bool GenerateMikeScenarioMeshKMZ()
@@ -296,7 +387,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 ErrorInDoc = true;
             }
-            if (!WriteKMLFecalColiformContourLine(dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList))
+            if (!WriteKMLFecalColiformContourLine(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList))
             {
                 ErrorInDoc = true;
             }
@@ -437,7 +528,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-
 
         // helpers
         private void DrawKMLContourPolygon(List<ContourPolygon> ContourPolygonList, DfsuFile dfsuFile, int ParamCount)
@@ -634,6 +724,31 @@ namespace CSSPWebToolsTaskRunner.Services
             sbHTML.AppendLine(@"<outline>1</outline>");
             sbHTML.AppendLine(@"</PolyStyle>");
             sbHTML.AppendLine(@"</Style>");
+
+            return true;
+        }
+        private bool DrawKMLCurrentsStyle(StringBuilder sbStyleCurrentAnim)
+        {
+            sbStyleCurrentAnim.AppendLine(@"<Style id=""pink"">");
+            sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
+            sbStyleCurrentAnim.AppendLine(@"<color>ffff00ff</color>");
+            //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
+            sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
+            sbStyleCurrentAnim.AppendLine(@"</Style>");
+
+            sbStyleCurrentAnim.AppendLine(@"<Style id=""green"">");
+            sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
+            sbStyleCurrentAnim.AppendLine(@"<color>ff00ff00</color>");
+            //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
+            sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
+            sbStyleCurrentAnim.AppendLine(@"</Style>");
+
+            sbStyleCurrentAnim.AppendLine(@"<Style id=""yellow"">");
+            sbStyleCurrentAnim.AppendLine(@"<LineStyle>");
+            sbStyleCurrentAnim.AppendLine(@"<color>ff00ffff</color>");
+            //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
+            sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
+            sbStyleCurrentAnim.AppendLine(@"</Style>");
 
             return true;
         }
@@ -1026,103 +1141,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        public List<ElementLayer> GetElementSurrondingEachPoint(List<ElementLayer> ElementLayerList, List<Node> Nodes)
-        {
-            List<ElementLayer> AllElementList = new List<ElementLayer>();
-
-            foreach (ElementLayer el in ElementLayerList)
-            {
-                float XMin = (from a in el.Element.NodeList
-                              select a.X).Min();
-                float YMin = (from a in el.Element.NodeList
-                              select a.Y).Min();
-                float XMax = (from a in el.Element.NodeList
-                              select a.X).Max();
-                float YMax = (from a in el.Element.NodeList
-                              select a.Y).Max();
-
-                foreach (Node n in Nodes)
-                {
-                    if ((n.X > XMin && n.X < XMax) && (n.Y > YMin && n.Y < YMax))
-                    {
-                        Point p = new Point((int)(n.X * 10000000), (int)(n.Y * 10000000));
-                        if (el.Element.Type == 21 || el.Element.Type == 32)
-                        {
-                            Point[] poly =
-                            {
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
-                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) },
-                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) },
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
-                                           };
-
-                            if (PointInPolygon(p, poly))
-                            {
-                                AllElementList.Add(el);
-                            }
-                        }
-                        else if (el.Element.Type == 25 || el.Element.Type == 33)
-                        {
-                            Point[] poly =
-                            {
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
-                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) },
-                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) },
-                                new Point() { X = (int)(el.Element.NodeList[3].X*10000000), Y = (int)(el.Element.NodeList[3].Y*10000000) },
-                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
-                                           };
-                            if (PointInPolygon(p, poly))
-                            {
-                                AllElementList.Add(el);
-                            }
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                }
-            }
-
-            return AllElementList;
-        }
-        private bool PointInPolygon(Point p, Point[] poly)
-        {
-            Point p1, p2;
-            bool inside = false;
-            if (poly.Length < 3)
-            {
-                return inside;
-            }
-
-            Point oldPoint = new Point(poly[poly.Length - 1].X, poly[poly.Length - 1].Y);
-
-            for (int i = 0; i < poly.Length; i++)
-            {
-                Point newPoint = new Point(poly[i].X, poly[i].Y);
-
-                if (newPoint.X > oldPoint.X)
-                {
-                    p1 = oldPoint;
-                    p2 = newPoint;
-                }
-                else
-                {
-                    p1 = newPoint;
-                    p2 = oldPoint;
-                }
-
-                if ((newPoint.X < p.X) == (p.X <= oldPoint.X) && ((long)p.Y - (long)p1.Y) * (long)(p2.X - p1.X) < ((long)p2.Y - (long)p1.Y) * (long)(p.X - p1.X))
-                {
-                    inside = !inside;
-                }
-
-                oldPoint = newPoint;
-
-            }
-            return inside;
-        }
-
         private bool FillVectors21_32(Element el, List<Element> UniqueElementList, float ContourValue)
         {
             string NotUsed = "";
@@ -1952,6 +1970,66 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
+        public List<ElementLayer> GetElementSurrondingEachPoint(List<ElementLayer> ElementLayerList, List<Node> Nodes)
+        {
+            List<ElementLayer> AllElementList = new List<ElementLayer>();
+
+            foreach (ElementLayer el in ElementLayerList)
+            {
+                float XMin = (from a in el.Element.NodeList
+                              select a.X).Min();
+                float YMin = (from a in el.Element.NodeList
+                              select a.Y).Min();
+                float XMax = (from a in el.Element.NodeList
+                              select a.X).Max();
+                float YMax = (from a in el.Element.NodeList
+                              select a.Y).Max();
+
+                foreach (Node n in Nodes)
+                {
+                    if ((n.X > XMin && n.X < XMax) && (n.Y > YMin && n.Y < YMax))
+                    {
+                        Point p = new Point((int)(n.X * 10000000), (int)(n.Y * 10000000));
+                        if (el.Element.Type == 21 || el.Element.Type == 32)
+                        {
+                            Point[] poly =
+                            {
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                           };
+
+                            if (PointInPolygon(p, poly))
+                            {
+                                AllElementList.Add(el);
+                            }
+                        }
+                        else if (el.Element.Type == 25 || el.Element.Type == 33)
+                        {
+                            Point[] poly =
+                            {
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[1].X*10000000), Y = (int)(el.Element.NodeList[1].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[2].X*10000000), Y = (int)(el.Element.NodeList[2].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[3].X*10000000), Y = (int)(el.Element.NodeList[3].Y*10000000) },
+                                new Point() { X = (int)(el.Element.NodeList[0].X*10000000), Y = (int)(el.Element.NodeList[0].Y*10000000) },
+                                           };
+                            if (PointInPolygon(p, poly))
+                            {
+                                AllElementList.Add(el);
+                            }
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+
+            return AllElementList;
+        }
         private string GetFileNameOnlyText(PFSFile pfsFile, string Path, string Keyword)
         {
             string NotUsed = "";
@@ -2393,6 +2471,104 @@ namespace CSSPWebToolsTaskRunner.Services
                 InterpolatedContourNodeList.Add(NewNode);
             }
         }
+        private List<ElementLayer> ParseKMLPath(string KMLTextPathForVector, List<ElementLayer> ElementLayerList)
+        {
+            string NotUsed = "";
+
+            List<ElementLayer> AllElementList = new List<ElementLayer>();
+            List<Node> PathNodeList = new List<Node>();
+
+            if (KMLTextPathForVector.Trim() == "")
+            {
+                foreach (ElementLayer el in ElementLayerList)
+                {
+                    AllElementList.Add(el);
+                }
+            }
+            else
+            {
+                try
+                {
+                    XmlReader reader = XmlReader.Create(new StringReader(KMLTextPathForVector));
+                    while (reader.Read())
+                    {
+                        if (reader.Name == "coordinates")
+                        {
+                            string AllCoordinates = reader.ReadElementContentAsString().Trim();
+
+                            string[] xyzArray = AllCoordinates.Split(" ".ToCharArray()[0]);
+                            foreach (string xyz in xyzArray)
+                            {
+                                string[] xyzStr = xyz.Split(",".ToCharArray()[0]);
+                                if (xyzStr.Count() != 3)
+                                {
+                                    return null;
+                                }
+                                Node n = new Node();
+                                if (Thread.CurrentThread.CurrentCulture.Name == "fr-CA")
+                                {
+                                    n.X = float.Parse(xyzStr[0].Replace(".", ","));
+                                    n.Y = float.Parse(xyzStr[1].Replace(".", ","));
+                                }
+                                else
+                                {
+                                    n.X = float.Parse(xyzStr[0]);
+                                    n.Y = float.Parse(xyzStr[1]);
+                                }
+
+                                PathNodeList.Add(n);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, "KMLPath" + ex.Message);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", "KMLPath" + ex.Message);
+                    return new List<ElementLayer>();
+                }
+
+                AllElementList = GetElementSurrondingEachPoint(ElementLayerList, PathNodeList);
+            }
+
+            return AllElementList.Distinct().ToList();
+        }
+        private bool PointInPolygon(Point p, Point[] poly)
+        {
+            Point p1, p2;
+            bool inside = false;
+            if (poly.Length < 3)
+            {
+                return inside;
+            }
+
+            Point oldPoint = new Point(poly[poly.Length - 1].X, poly[poly.Length - 1].Y);
+
+            for (int i = 0; i < poly.Length; i++)
+            {
+                Point newPoint = new Point(poly[i].X, poly[i].Y);
+
+                if (newPoint.X > oldPoint.X)
+                {
+                    p1 = oldPoint;
+                    p2 = newPoint;
+                }
+                else
+                {
+                    p1 = newPoint;
+                    p2 = oldPoint;
+                }
+
+                if ((newPoint.X < p.X) == (p.X <= oldPoint.X) && ((long)p.Y - (long)p1.Y) * (long)(p2.X - p1.X) < ((long)p2.Y - (long)p1.Y) * (long)(p.X - p1.X))
+                {
+                    inside = !inside;
+                }
+
+                oldPoint = newPoint;
+
+            }
+            return inside;
+        }
         public string UpdateAppTaskPercentCompleted(int AppTaskID, int PercentCompleted)
         {
             if (_TaskRunnerBaseService._User != null)
@@ -2532,7 +2708,184 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLFecalColiformContourLine(DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList)
+        private bool WriteKMLCurrentsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList)
+        {
+            string NotUsed = "";
+
+            int ItemUVelocity = 0;
+            int ItemVVelocity = 0;
+
+            // getting the ItemNumber
+            foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
+            {
+                if (dfsDyInfo.Quantity.Item == eumItem.eumIuVelocity)
+                {
+                    ItemUVelocity = dfsDyInfo.ItemNumber;
+                }
+                if (dfsDyInfo.Quantity.Item == eumItem.eumIvVelocity)
+                {
+                    ItemVVelocity = dfsDyInfo.ItemNumber;
+                }
+            }
+
+            if (ItemUVelocity == 0 || ItemVVelocity == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, TaskRunnerServiceRes.Parameters);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TaskRunnerServiceRes.Parameters);
+                return false;
+            }
+
+            //int pcount = 0;
+            sbHTML.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.CurrentsAnim + @"</name>");
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
+
+            int CountLayer = (dfsuFile.NumberOfSigmaLayers == 0 ? 1 : dfsuFile.NumberOfSigmaLayers);
+
+
+            for (int Layer = 1; Layer <= CountLayer; Layer++)
+            {
+                sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.Layer + " {0}</name>", Layer));
+                sbHTML.AppendLine(@"<visibility>0</visibility>");
+
+                Dictionary<int, Node> ElemCenter = new Dictionary<int, Node>();
+
+                foreach (ElementLayer el in SelectedElementLayerList.Where(c => c.Layer == Layer))
+                {
+                    float XCenter = 0.0f;
+                    float YCenter = 0.0f;
+
+                    foreach (Node n in el.Element.NodeList)
+                    {
+                        XCenter += n.X;
+                        YCenter += n.Y;
+                    }
+                    XCenter = XCenter / el.Element.NodeList.Count();
+                    YCenter = YCenter / el.Element.NodeList.Count();
+
+                    ElemCenter.Add(el.Element.ID, new Node() { X = XCenter, Y = YCenter });
+                }
+
+                int vCount = 0;
+                for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
+                {
+                    sbHTML.AppendLine(@"<Folder>");
+                    sbHTML.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
+                    sbHTML.AppendLine(@"<visibility>0</visibility>");
+                    sbHTML.AppendLine(@"<TimeSpan>");
+                    sbHTML.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
+                    sbHTML.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds)));
+                    sbHTML.AppendLine(@"</TimeSpan>");
+
+                    float[] UvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemUVelocity, timeStep).Data;
+                    float[] VvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemVVelocity, timeStep).Data;
+
+                    MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                    foreach (ElementLayer el in SelectedElementLayerList.Where(c => c.Layer == Layer))
+                    {
+                        float UV = UvelocityList[el.Element.ID - 1];
+                        float VV = VvelocityList[el.Element.ID - 1];
+
+                        double VectorVal = Math.Sqrt((UV * UV) + (VV * VV));
+                        double VectorDir = 0.0D;
+                        double VectorDirCartesian = Math.Acos(Math.Abs(UV / VectorVal)) * mapInfoService.r2d;
+
+                        if (VectorDirCartesian <= 360 && VectorDirCartesian >= 0)
+                        {
+                            // everything is ok
+                        }
+                        else
+                        {
+                            VectorDirCartesian = 0.0D;
+                        }
+
+                        if (UV >= 0 && VV >= 0)
+                        {
+                            VectorDir = 90 - VectorDirCartesian;
+                        }
+                        else if (UV < 0 && VV >= 0)
+                        {
+                            VectorDir = 270 + VectorDirCartesian;
+                            VectorDirCartesian = 180 - VectorDirCartesian;
+                        }
+                        else if (UV >= 0 && VV < 0)
+                        {
+                            VectorDir = 90 + VectorDirCartesian;
+                            VectorDirCartesian = 360 - VectorDirCartesian;
+                        }
+                        else if (UV < 0 && VV < 0)
+                        {
+                            VectorDir = 270 - VectorDirCartesian;
+                            VectorDirCartesian = 180 + VectorDirCartesian;
+                        }
+
+                        if (VectorVal > 0)
+                        {
+                            sbHTML.AppendLine(@"<Placemark>");
+                            sbHTML.AppendLine(@"<visibility>0</visibility>");
+                            sbHTML.AppendLine(string.Format(@"<name>{0:F4} m/s " + TaskRunnerServiceRes.AtLowerCase + " {1:F0}°</name>", VectorVal, VectorDirCartesian).ToString().Replace(",", "."));
+
+                            if (Layer == 1)
+                            {
+                                sbHTML.AppendLine(@"<styleUrl>#pink</styleUrl>");
+                            }
+                            else if (Layer == 2)
+                            {
+                                sbHTML.AppendLine(@"<styleUrl>#yellow</styleUrl>");
+                            }
+                            else if (Layer == 3)
+                            {
+                                sbHTML.AppendLine(@"<styleUrl>#green</styleUrl>");
+                            }
+                            else
+                            {
+                                // nothing ... It will be white by default
+                            }
+
+                            sbHTML.AppendLine(@"<LineString>");
+                            sbHTML.AppendLine(@"<tessellate>1</tessellate>");
+                            sbHTML.AppendLine(@"<coordinates>");
+
+                            sbHTML.Append(((Node)ElemCenter[el.Element.ID]).X.ToString().Replace(",", ".") + @"," + ((Node)ElemCenter[el.Element.ID]).Y.ToString().Replace(",", ".") + ",0 ");
+
+                            Node node = new Node();
+                            double Fact = 0.00012;
+                            double VectorSizeInMeterForEach10cm_s = 100;
+
+                            double HypothDist = (VectorVal * VectorSizeInMeterForEach10cm_s * Fact);
+                            node.X = (float)(ElemCenter[el.Element.ID].X + (HypothDist * Math.Cos(VectorDirCartesian * mapInfoService.d2r)));
+                            node.Y = (float)(ElemCenter[el.Element.ID].Y + (HypothDist * Math.Sin(VectorDirCartesian * mapInfoService.d2r)));
+
+                            sbHTML.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+
+                            Node node2 = new Node();
+
+                            node2.X = (float)(node.X + (HypothDist * 0.1 * Math.Cos((VectorDirCartesian + 180 - 25) * mapInfoService.d2r)));
+                            node2.Y = (float)(node.Y + (HypothDist * 0.1 * Math.Sin((VectorDirCartesian + 180 - 25) * mapInfoService.d2r)));
+
+                            sbHTML.Append(node2.X.ToString().Replace(",", ".") + @"," + node2.Y.ToString().Replace(",", ".") + ",0 ");
+                            sbHTML.Append(node.X.ToString().Replace(",", ".") + @"," + node.Y.ToString().Replace(",", ".") + ",0 ");
+
+                            node2.X = (float)(node.X + (HypothDist * 0.1 * Math.Cos((VectorDirCartesian + 180 + 25) * mapInfoService.d2r)));
+                            node2.Y = (float)(node.Y + (HypothDist * 0.1 * Math.Sin((VectorDirCartesian + 180 + 25) * mapInfoService.d2r)));
+                            sbHTML.Append(node2.X.ToString().Replace(",", ".") + @"," + node2.Y.ToString().Replace(",", ".") + ",0 ");
+
+                            sbHTML.AppendLine(@"</coordinates>");
+                            sbHTML.AppendLine(@"</LineString>");
+                            sbHTML.AppendLine(@"</Placemark>");
+                        }
+
+                    }
+                    sbHTML.AppendLine(@"</Folder>");
+                    vCount += 1;
+                }
+                sbHTML.AppendLine(@"</Folder>");
+
+            }
+            sbHTML.AppendLine(@"</Folder>");
+
+            return true;
+        }
+        private bool WriteKMLFecalColiformContourLine(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList)
         {
             string NotUsed = "";
             int PercentCompleted = 3;
@@ -2563,9 +2916,9 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             //            int pcount = 0;
-            sb.AppendLine(@"<Folder>");
-            sb.AppendLine(@"  <name>" + TaskRunnerServiceRes.PollutionAnimation + "</name>");
-            sb.AppendLine(@"  <visibility>0</visibility>");
+            sbHTML.AppendLine(@"<Folder>");
+            sbHTML.AppendLine(@"  <name>" + TaskRunnerServiceRes.PollutionAnimation + "</name>");
+            sbHTML.AppendLine(@"  <visibility>0</visibility>");
 
             int CountAt = 0;
             int CountLayer = (dfsuFile.NumberOfSigmaLayers == 0 ? 1 : dfsuFile.NumberOfSigmaLayers);
@@ -2574,7 +2927,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             int TotalCount = CountLayer * ContourValueList.Count * dfsuFile.NumberOfTimeSteps;
 
-                for (int Layer = 1; Layer <= CountLayer; Layer++)
+            for (int Layer = 1; Layer <= CountLayer; Layer++)
             {
                 //CurrentLayer += 1;
                 CurrentContourValue = 1;
@@ -2583,18 +2936,18 @@ namespace CSSPWebToolsTaskRunner.Services
                 #region Top of Layer
                 if (Layer == 1)
                 {
-                    sb.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
+                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] </name>", Layer));
                 }
                 else
                 {
-                    sb.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
+                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.TopOfLayer + @" [{0}] " + TaskRunnerServiceRes.BottomOfLayer + @" [{1}] </name>", Layer, Layer - 1));
                 }
-                sb.AppendLine(@"<visibility>0</visibility>");
+                sbHTML.AppendLine(@"<visibility>0</visibility>");
                 int CountContourValue = 1;
                 foreach (float ContourValue in ContourValueList)
                 {
-                    sb.AppendLine(string.Format(@"  <Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
-                    sb.AppendLine(@"  <visibility>0</visibility>");
+                    sbHTML.AppendLine(string.Format(@"  <Folder><name>" + TaskRunnerServiceRes.ContourValue + @" [{0}]</name>", ContourValue));
+                    sbHTML.AppendLine(@"  <visibility>0</visibility>");
 
                     int vcount = 0;
                     CurrentContourValue += 1;
@@ -2985,10 +3338,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         vcount += 1;
                     }
-                    sb.AppendLine(@"  </Folder>");
+                    sbHTML.AppendLine(@"  </Folder>");
                     CountContourValue += 1;
                 }
-                sb.AppendLine(@"  </Folder>");
+                sbHTML.AppendLine(@"  </Folder>");
                 #endregion Top of Layer
 
                 #region Bottom of Layer
@@ -3364,7 +3717,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 //}
                 #endregion Bottom of Layer
             }
-            sb.AppendLine(@"</Folder>");
+            sbHTML.AppendLine(@"</Folder>");
 
             string retStr2 = UpdateAppTaskPercentCompleted(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 100);
 
@@ -3433,23 +3786,6 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             sbHTML.AppendLine(@"</Folder>");
-
-            //List<Node> uniqueNode = (from n in nodeList
-            //                         select n).Distinct().ToList();
-
-            //sbKMLMesh.AppendLine(@"<Folder>");
-
-            //foreach (Node node in uniqueNode)
-            //{
-            //    sbKMLMesh.AppendLine("<Placemark>");
-            //    sbKMLMesh.AppendLine(@"<visibility>0</visibility>");
-            //    sbKMLMesh.AppendLine(string.Format(@"<name>{0}</name>", node.ID));
-            //    sbKMLMesh.AppendLine(@"<Point>");
-            //    sbKMLMesh.AppendLine(string.Format(@"<coordinates>{0},{1},0</coordinates>", node.X, node.Y));
-            //    sbKMLMesh.AppendLine("@</Point>");
-            //    sbKMLMesh.AppendLine("</Placemark>");
-            //}
-            //sbKMLMesh.AppendLine(@"</Folder>");
 
             return true;
         }

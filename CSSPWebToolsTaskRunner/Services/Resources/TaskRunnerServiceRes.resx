@@ -1917,4 +1917,10 @@
   <data name="ExcelCouldNotCreateThe2WorksheetsRequired" xml:space="preserve">
     <value>Excel could not create the 2 worksheets required</value>
   </data>
+  <data name="GoogleEarthPath" xml:space="preserve">
+    <value>GoogleEarthPath</value>
+  </data>
+  <data name="MIKECurrentsAnimation" xml:space="preserve">
+    <value>MIKE Currents Animation</value>
+  </data>
 </root>

@@ -2014,6 +2014,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GoogleEarthPath.
+        /// </summary>
+        public static string GoogleEarthPath {
+            get {
+                return ResourceManager.GetString("GoogleEarthPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grouping Inputs KML.
         /// </summary>
         public static string GroupingInputsKML {
@@ -2676,6 +2685,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MikeBoundaryElementNodes {
             get {
                 return ResourceManager.GetString("MikeBoundaryElementNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKE Currents Animation.
+        /// </summary>
+        public static string MIKECurrentsAnimation {
+            get {
+                return ResourceManager.GetString("MIKECurrentsAnimation", resourceCulture);
             }
         }
         
