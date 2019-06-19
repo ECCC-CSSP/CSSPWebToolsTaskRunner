@@ -79,6 +79,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not parse [{0}] properly..
+        /// </summary>
+        public static string _CouldNotBeParseProperly {
+            get {
+                return ResourceManager.GetString("_CouldNotBeParseProperly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} count should be {1}.
         /// </summary>
         public static string _CountShouldBe_ {
@@ -88,7 +97,7 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} devrait être &gt; 0 dans {1}.
+        ///   Looks up a localized string similar to {0} should be &gt; 0 in {1}.
         /// </summary>
         public static string _CountShouldBeBigger0In_ {
             get {
@@ -849,6 +858,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskCommand_ {
             get {
                 return ResourceManager.GetString("CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskCommand_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskName_.
+        /// </summary>
+        public static string CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskName_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskName_", resourceCulture);
             }
         }
         
@@ -1627,20 +1645,29 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error {0} while creating KMZ document {1}.
+        ///   Looks up a localized string similar to Error_NotFound.
         /// </summary>
-        public static string Error_WhileCreatingKMZDocument_ {
+        public static string Error_NotFound {
             get {
-                return ResourceManager.GetString("Error_WhileCreatingKMZDocument_", resourceCulture);
+                return ResourceManager.GetString("Error_NotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error {0} while creating XLSX document {1}.
+        ///   Looks up a localized string similar to Error {0} while creating {1} document {2}.
         /// </summary>
-        public static string Error_WhileCreatingXLSXDocument_ {
+        public static string Error_WhileCreating_Document_ {
             get {
-                return ResourceManager.GetString("Error_WhileCreatingXLSXDocument_", resourceCulture);
+                return ResourceManager.GetString("Error_WhileCreating_Document_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ErrorEmptyNotFound.
+        /// </summary>
+        public static string ErrorEmptyNotFound {
+            get {
+                return ResourceManager.GetString("ErrorEmptyNotFound", resourceCulture);
             }
         }
         
@@ -1654,20 +1681,29 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error occured while creating KMZ document {0}.
+        ///   Looks up a localized string similar to Error occured while creating {0} document {1}.
         /// </summary>
-        public static string ErrorOccuredWhileCreatingKMZDocument_ {
+        public static string ErrorOccuredWhileCreating_Document_ {
             get {
-                return ResourceManager.GetString("ErrorOccuredWhileCreatingKMZDocument_", resourceCulture);
+                return ResourceManager.GetString("ErrorOccuredWhileCreating_Document_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error occured while creating XLSX document {0}.
+        ///   Looks up a localized string similar to ErrorOccuredWhileReadingM21FMOrM3FMFile.
         /// </summary>
-        public static string ErrorOccuredWhileCreatingXLSXDocument_ {
+        public static string ErrorOccuredWhileReadingM21FMOrM3FMFile {
             get {
-                return ResourceManager.GetString("ErrorOccuredWhileCreatingXLSXDocument_", resourceCulture);
+                return ResourceManager.GetString("ErrorOccuredWhileReadingM21FMOrM3FMFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ErrorOccuredWhileWritingM21FMOrM3FMFile.
+        /// </summary>
+        public static string ErrorOccuredWhileWritingM21FMOrM3FMFile {
+            get {
+                return ResourceManager.GetString("ErrorOccuredWhileWritingM21FMOrM3FMFile", resourceCulture);
             }
         }
         
@@ -2698,6 +2734,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MikeBoundaryConditionType.
+        /// </summary>
+        public static string MikeBoundaryConditionType {
+            get {
+                return ResourceManager.GetString("MikeBoundaryConditionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mike boundary condition type should be velocity or level.
         /// </summary>
         public static string MikeBoundaryConditionTypeShouldBeVelocityOrLevel {
@@ -2730,15 +2775,6 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string MIKEMesh {
             get {
                 return ResourceManager.GetString("MIKEMesh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MIKEParameter.
-        /// </summary>
-        public static string MIKEParameter {
-            get {
-                return ResourceManager.GetString("MIKEParameter", resourceCulture);
             }
         }
         
@@ -3823,6 +3859,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ReadCompleted.
+        /// </summary>
+        public static string ReadCompleted {
+            get {
+                return ResourceManager.GetString("ReadCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reading file [{0}]..
         /// </summary>
         public static string ReadingFile_ {
@@ -3846,6 +3891,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ReadingUserInput {
             get {
                 return ResourceManager.GetString("ReadingUserInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ReadLogFileCompleted.
+        /// </summary>
+        public static string ReadLogFileCompleted {
+            get {
+                return ResourceManager.GetString("ReadLogFileCompleted", resourceCulture);
             }
         }
         
@@ -5421,6 +5475,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WindDirection {
             get {
                 return ResourceManager.GetString("WindDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write completed.
+        /// </summary>
+        public static string WriteCompleted {
+            get {
+                return ResourceManager.GetString("WriteCompleted", resourceCulture);
             }
         }
         

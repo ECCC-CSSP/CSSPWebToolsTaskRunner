@@ -5103,8 +5103,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "GetHydrodynamicDfsuFile", dfsuFile.FileName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "GetHydrodynamicDfsuFile", dfsuFile.FileName);
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreating_Document_, "GetHydrodynamicDfsuFile", "KMZ", dfsuFile.FileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("Error_WhileCreating_Document_", "GetHydrodynamicDfsuFile", "KMZ", dfsuFile.FileName);
                 }
                 return;
             }
@@ -5118,8 +5118,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "FillRequiredList", dfsuFile.FileName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "FillRequiredList", dfsuFile.FileName);
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreating_Document_, "FillRequiredList", "KMZ", dfsuFile.FileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("Error_WhileCreating_Document_", "FillRequiredList", "KMZ", dfsuFile.FileName);
                 }
                 return;
             }
@@ -5312,8 +5312,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "GetTransportDfsuFile", dfsuFile.FileName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "GetTransportDfsuFile", dfsuFile.FileName);
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreating_Document_, "GetTransportDfsuFile", "KMZ", dfsuFile.FileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("Error_WhileCreating_Document_", "GetTransportDfsuFile", "KMZ", dfsuFile.FileName);
                 }
                 return;
             }
@@ -5326,8 +5326,8 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
                 {
-                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreatingKMZDocument_, "FillRequiredList", dfsuFile.FileName);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Error_WhileCreatingKMZDocument_", "FillRequiredList", dfsuFile.FileName);
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreating_Document_, "FillRequiredList", "KMZ", dfsuFile.FileName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("Error_WhileCreating_Document_", "FillRequiredList", "KMZ", dfsuFile.FileName);
                 }
                 return;
             }

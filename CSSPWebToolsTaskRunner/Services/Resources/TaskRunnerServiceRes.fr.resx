@@ -120,59 +120,161 @@
   <data name="AbnormalRunCompletion" xml:space="preserve">
     <value>Exécution complétée anormalement.</value>
   </data>
+  <data name="Above" xml:space="preserve">
+    <value>dessus</value>
+  </data>
+  <data name="ActiveMWQMSites" xml:space="preserve">
+    <value>Sites actifs de SQEM</value>
+  </data>
+  <data name="ActivePollutionSourceSites" xml:space="preserve">
+    <value>Sites actifs de source de pollution</value>
+  </data>
+  <data name="AddNewSource_Number_InM21FMOrM3MFFile" xml:space="preserve">
+    <value>Ajouter une nouvelle source [{0}] numéro [{1}] dans .m21fm ou .m3fm</value>
+  </data>
+  <data name="Agriculture" xml:space="preserve">
+    <value>Agriculture</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+  <data name="AllAllAll" xml:space="preserve">
+    <value>Tous-Tous-Tous</value>
+  </data>
   <data name="AllNodesAreSmallerThanContourValue" xml:space="preserve">
     <value>Tous les éléments des nœuds sont inférieurs au ContourValue</value>
   </data>
   <data name="Amplitude" xml:space="preserve">
     <value>Amplitude</value>
   </data>
+  <data name="AnalysisName" xml:space="preserve">
+    <value>Nom de l'analyse</value>
+  </data>
+  <data name="Annotated" xml:space="preserve">
+    <value>Annotée</value>
+  </data>
+  <data name="Appendix" xml:space="preserve">
+    <value>Appendice</value>
+  </data>
+  <data name="AreaFileAutoGenerate" xml:space="preserve">
+    <value>Fichier de zone générer automatiquement</value>
+  </data>
+  <data name="AtCoordinates" xml:space="preserve">
+    <value>A la coordonnée</value>
+  </data>
   <data name="AtLowerCase" xml:space="preserve">
     <value>à</value>
+  </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Auteurs</value>
   </data>
   <data name="AverageDecayFactor" xml:space="preserve">
     <value>Taux de décroissance moyen</value>
   </data>
+  <data name="BackgroundWorkerObject_ShouldBe_" xml:space="preserve">
+    <value>L'objet de BackgroundWorker {0} devrait être {1}</value>
+  </data>
   <data name="BadInputConstituant_" xml:space="preserve">
     <value>Mauvaise entrée du constituant [{0}].</value>
+  </data>
+  <data name="BCMeshTVItemID" xml:space="preserve">
+    <value>BCMeshTVItemID</value>
+  </data>
+  <data name="BecauseOfMissingRainData" xml:space="preserve">
+    <value>puisqu'il y a des données de pluie manquantes</value>
   </data>
   <data name="BedResistanceType" xml:space="preserve">
     <value>Type de résistance du lit</value>
   </data>
-  <data name="MikeBoundaryConditionCode" xml:space="preserve">
-    <value>Code de conditions à la limite (MIKE)</value>
+  <data name="Below" xml:space="preserve">
+    <value>Sous</value>
   </data>
-  <data name="MikeBoundaryConditionFormat" xml:space="preserve">
-    <value>Format de conditions à la limite (MIKE)</value>
+  <data name="BottomOfLayer" xml:space="preserve">
+    <value>Dessous de la tranche</value>
   </data>
-  <data name="MikeBoundaryConditionLength" xml:space="preserve">
-    <value>Longueur de conditions à la limite (MIKE)</value>
+  <data name="BoundaryConditionCode" xml:space="preserve">
+    <value>BoundaryConditionCode</value>
   </data>
-  <data name="MikeBoundaryConditionName" xml:space="preserve">
-    <value>Nom de conditions à la limite (MIKE)</value>
+  <data name="by" xml:space="preserve">
+    <value>par</value>
   </data>
-  <data name="MikeBoundaryConditionType" xml:space="preserve">
-    <value>Niveau ou vélocité aux conditions à la limite (MIKE)</value>
-  </data>
-  <data name="MikeBoundaryElementNodes" xml:space="preserve">
-    <value>Éléments aux nœuds de la limite (MIKE)</value>
+  <data name="CalculationType" xml:space="preserve">
+    <value>Type de calcul</value>
   </data>
   <data name="Celcius" xml:space="preserve">
-    <value>Celcius</value>
+    <value>Celsius</value>
+  </data>
+  <data name="CivicAddress" xml:space="preserve">
+    <value>Adresse civique</value>
+  </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Classification</value>
+  </data>
+  <data name="ClassificationInputsKML" xml:space="preserve">
+    <value>Entrées de classification KML</value>
+  </data>
+  <data name="ClientFullPath" xml:space="preserve">
+    <value>ClientFullPath</value>
+  </data>
+  <data name="ClimateDataValue" xml:space="preserve">
+    <value>ClimateDataValue</value>
+  </data>
+  <data name="ClimateSite" xml:space="preserve">
+    <value>ClimateSite</value>
+  </data>
+  <data name="ClimateSiteTVItemID" xml:space="preserve">
+    <value>ClimateSiteTVItemID</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>Command</value>
   </data>
   <data name="CompletedSuccessfullyWithBackgroundWorkingIndex_" xml:space="preserve">
-    <value>Complété avec succès grâce à l'index des tâches effectuées en arrière plan [{0}].</value>
+    <value>Complété avec succès grâce à l'index des tâches effectuées en arrière-plan [{0}].</value>
   </data>
   <data name="CompressKMLDidNotWorkWith7zError_" xml:space="preserve">
-    <value>7z qui doit comprimer le fichier KML,  n'a pas fonctionné. Erreur: [{0}].</value>
+    <value>7z qui doit comprimer le fichier KML, n’a pas fonctionné. Erreur: [{0}].</value>
+  </data>
+  <data name="ContourPolygonListCountShouldBeOne" xml:space="preserve">
+    <value>Le compte de ContourPolygonList devrait être 1.</value>
   </data>
   <data name="ContourValue" xml:space="preserve">
     <value>Valeur Contour</value>
   </data>
+  <data name="ContourValues" xml:space="preserve">
+    <value>ContourValues</value>
+  </data>
+  <data name="ConvertingFileToPDF" xml:space="preserve">
+    <value>Conversion de fichier en PDF</value>
+  </data>
+  <data name="Coord" xml:space="preserve">
+    <value>Coord</value>
+  </data>
   <data name="Coordinates" xml:space="preserve">
     <value>Coordonnées</value>
   </data>
+  <data name="CouldNotAddNewSection_" xml:space="preserve">
+    <value>Impossible d'ajouter une nouvelle section {0}</value>
+  </data>
+  <data name="CouldNotAdd_Error_" xml:space="preserve">
+    <value>Impossible d'ajouter {0}. Erreur [{1}]</value>
+  </data>
+  <data name="CouldNotCopyFile_To_Error_" xml:space="preserve">
+    <value>Impossible de copier le fichier {0} sur {1} Erreur {2}</value>
+  </data>
+  <data name="CouldNotCreateDirectory__" xml:space="preserve">
+    <value>Dans l'impossibilité de créer le répertoire {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotCreateDocumentFromTemplateError_" xml:space="preserve">
+    <value>Impossible de créer un document à partir du modèle. Erreur [{0}].</value>
+  </data>
+  <data name="CouldNotCreateFile_" xml:space="preserve">
+    <value>Impossible de créer le fichier [{0}]</value>
+  </data>
   <data name="CouldNotCreateFile_Error_" xml:space="preserve">
-    <value>Dans l'impossibilité de créer le fichier [{0}]. Error [{1}].</value>
+    <value>Dans l'impossibilité de créer le fichier [{0}]. Erreur [{1}].</value>
+  </data>
+  <data name="CouldNotCreateMapInfoObjectForDrawType_TVType_TVItemID_" xml:space="preserve">
+    <value>N'a pas pu créer l'information de la carte pour le DrawType {0} TVType {1} et TVItemID {2}</value>
   </data>
   <data name="CouldNotCreate_" xml:space="preserve">
     <value>Dans l'impossibilité de créer [{0}].</value>
@@ -183,11 +285,68 @@
   <data name="CouldNotCreate_For_With_Equal_" xml:space="preserve">
     <value>Dans l'impossibilité de créer [{0}] dans [{1}] à l'aide de [{2}] qui est équivalent à [{3}].</value>
   </data>
+  <data name="CouldNotCreate_ImageError_" xml:space="preserve">
+    <value>Dans l'impossibilité de créer l'image {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotDeleteFile_Error_" xml:space="preserve">
+    <value>Impossible de supprimer le fichier {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotDeleteSection_" xml:space="preserve">
+    <value>Impossible de supprimer la section {0}</value>
+  </data>
+  <data name="CouldNotDelete_Error_" xml:space="preserve">
+    <value>Ne peut supprimer {0}. Erreur [{1}].</value>
+  </data>
+  <data name="CouldNotDelete_With_Equal_Error_" xml:space="preserve">
+    <value>Impossible de supprimer {0} avec {1} Égalité {2} Erreur {3}</value>
+  </data>
+  <data name="CouldNotDownloadWebAddress_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de télécharger l'adresse web {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotExportFile_ToPDFError_" xml:space="preserve">
+    <value>Dans l'impossibilité d'exporter la filière [{0}] en PDF. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotFindABoundaryConditionWithFileNameInM21_3FM" xml:space="preserve">
+    <value>Impossible de trouver une condition de frontière avec le nom du fichier dans le fichier .m21fm ou .m3fm</value>
+  </data>
+  <data name="CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskCommand_" xml:space="preserve">
+    <value>Impossible de trouver disponible BackgroundWorker pour exécuter AppTaskID [{0}] et AppTaskCommand [{1}]</value>
+  </data>
+  <data name="CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskName_" xml:space="preserve">
+    <value>Impossible de trouver disponible BackgroundWorker pour exécuter AppTaskID [{0}] et AppTaskName [{1}]</value>
+  </data>
+  <data name="CouldNotFindElementID_WithinURL_" xml:space="preserve">
+    <value>Impossible de trouver l'élément avec l'ID {0} dans l'URL [{1}]</value>
+  </data>
   <data name="CouldNotFindFile_" xml:space="preserve">
     <value>Dans l'impossibilité de trouver le fichier [{0}].</value>
   </data>
+  <data name="CouldNotFindHtmlElement_" xml:space="preserve">
+    <value>Impossible de trouver l'élément HTML {0}</value>
+  </data>
+  <data name="CouldNotFindPart_CurrentPartIs_In_AtLine_" xml:space="preserve">
+    <value>Impossible de trouver la partie {0}. La partie actuelle est {1} dans {2} à la ligne {3}</value>
+  </data>
+  <data name="CouldNotFindPFSSectionWithPath_" xml:space="preserve">
+    <value>Impossible de trouver une PFSSection avec le chemin [{0}]</value>
+  </data>
+  <data name="CouldNotFindPolygonForSubsector_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver le polygone du sous-secteur {0}</value>
+  </data>
+  <data name="CouldNotFindTVItemRoot" xml:space="preserve">
+    <value>Impossible de trouver la racine de TVItem</value>
+  </data>
+  <data name="CouldNotFindYearSpecificReportSection" xml:space="preserve">
+    <value>Impossible de trouver l'année spécifique de la section du rapport</value>
+  </data>
   <data name="CouldNotFind_" xml:space="preserve">
     <value>Dans l'impossibilité de trouver [{0}].</value>
+  </data>
+  <data name="CouldNotFind_AtLine_" xml:space="preserve">
+    <value>Impossible de trouver {0} à la ligne {1}</value>
+  </data>
+  <data name="CouldNotFind_M21OrM3MDBWith_Equal_" xml:space="preserve">
+    <value>Ne peut pas trouver {0} pour le fichier M21 ou M3 MDB avec {1} équivalent à {2}</value>
   </data>
   <data name="CouldNotFind_With_Equal_" xml:space="preserve">
     <value>Dans l'impossibilité de trouver [{0}] à l'aide de [{1}] qui est équivalent à [{2}].</value>
@@ -204,20 +363,47 @@
   <data name="CouldNotGatherResultFilesToUpload" xml:space="preserve">
     <value>Dans l'impossibilité de regrouper les fichiers de résultats à télécharger.</value>
   </data>
+  <data name="CouldNotGetContourPolygonListWithin_" xml:space="preserve">
+    <value>Dans l'impossibilité d'aller chercher ContourPolygonList de la filière [{0}]</value>
+  </data>
+  <data name="CouldNotGetSection_" xml:space="preserve">
+    <value>Impossible de trouver la section {0}</value>
+  </data>
   <data name="CouldNotOpenFile_" xml:space="preserve">
     <value>Dans l'impossibilité d'ouvrir le fichier [{0}].</value>
   </data>
   <data name="CouldNotOpenFile_Error_" xml:space="preserve">
     <value>Dans l'impossibilité d'ouvrir le fichier [{0}]. Erreur: [{1}].</value>
   </data>
+  <data name="CouldNotParseLabSheetWithLabSheetID_" xml:space="preserve">
+    <value>Impossible d'analyser la feuille de laboratoire avec LabSheetID = {0}</value>
+  </data>
+  <data name="CouldNotParse_As_" xml:space="preserve">
+    <value>Impossible d'analyser {0} comme {1}</value>
+  </data>
   <data name="CouldNotParse_Properly" xml:space="preserve">
     <value>Dans l'impossibilité de lire [{0}] correctement.</value>
+  </data>
+  <data name="CouldNotReadFile_" xml:space="preserve">
+    <value>Impossible de lire le fichier [{0}].</value>
   </data>
   <data name="CouldNotReadFile_Error_" xml:space="preserve">
     <value>Dans l'impossibilité de lire [{0}]. Erreur: [{1}]</value>
   </data>
+  <data name="CouldNotReadInputFileError_" xml:space="preserve">
+    <value>Impossible de lire le fichier d'entrée. Erreur {0}</value>
+  </data>
+  <data name="CouldNotReadResultFileError_" xml:space="preserve">
+    <value>Impossible de lire le fichier de résultat. Erreur {0}</value>
+  </data>
   <data name="CouldNotRun_Error_" xml:space="preserve">
     <value>Dans l'impossibilité de faire fonctionner [{0}]. Erreur: [{1}].</value>
+  </data>
+  <data name="CouldNotSaveExcelFile_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de sauvegarder la filière Excel [{0}]. Erreur [{1}]</value>
+  </data>
+  <data name="CouldNotStartExcel" xml:space="preserve">
+    <value>Impossible de démarrer Excel</value>
   </data>
   <data name="CouldNotUpdate_Error_" xml:space="preserve">
     <value>Dans l'impossibilité de faire une mise à jour de [{0}]. Erreur: [{1}].</value>
@@ -225,26 +411,86 @@
   <data name="CouldNotUpload_" xml:space="preserve">
     <value>Dans l'impossibilité de télécharger [{0}].</value>
   </data>
+  <data name="CouldNotWriteFile_" xml:space="preserve">
+    <value>Impossible d'écrire le fichier [{0}].</value>
+  </data>
+  <data name="CouldNotWriteFile_Error_" xml:space="preserve">
+    <value>Impossible d'écrire le fichier {0}. Erreur {1}</value>
+  </data>
+  <data name="CountOfValuesInLine_ShouldBe_" xml:space="preserve">
+    <value>Nombre de valeurs en ligne {0} Doit être {1}</value>
+  </data>
+  <data name="CountryFileAutoGenerate" xml:space="preserve">
+    <value>Fichier de pays générer automatiquement</value>
+  </data>
+  <data name="CountryTVItemID" xml:space="preserve">
+    <value>CountryTVItemID</value>
+  </data>
   <data name="CreatedDate" xml:space="preserve">
     <value>Créer Date</value>
   </data>
   <data name="CreatingAllInputFiles" xml:space="preserve">
     <value>Dans le processus de créer les fichiers d'entrée de données.</value>
   </data>
+  <data name="CreatingALogFileIfItDoesNotYetExist" xml:space="preserve">
+    <value>Créer un fichier journal s'il n'existe pas</value>
+  </data>
+  <data name="CreatingFileDecayDotDFS0" xml:space="preserve">
+    <value>Création du fichier Decay.dfs0</value>
+  </data>
+  <data name="CreatingFilePrecipitationDotDFS0" xml:space="preserve">
+    <value>Création du fichier de précipitation .dfs0</value>
+  </data>
+  <data name="CreatingSalinityAndTemperatureInitialConditionsFiles" xml:space="preserve">
+    <value>Création du fichier des conditions initiales de la salinité et de la température</value>
+  </data>
+  <data name="CreatingSinusoidalDecayFile" xml:space="preserve">
+    <value>Création d'un fichier de désintégration sinusoïdale</value>
+  </data>
+  <data name="CreatingSourceFlowDFSOFileSourceName_Number_" xml:space="preserve">
+    <value>Enregistrement du flow du fichier.dfs0 dans DB nom de la source [{0}] numéro [{1}]</value>
+  </data>
+  <data name="CreatingSourcePolDFSOFileSourceName_Number_" xml:space="preserve">
+    <value>Création de la source de pollution .dfs0 nom de la source du fichier [{0}] numéro [{1}]</value>
+  </data>
   <data name="CreatingWebTideBoundaryConditionFiles" xml:space="preserve">
     <value>Dans le processus de créer les fichiers  WebTide des conditions à la limite.</value>
   </data>
+  <data name="Creating_" xml:space="preserve">
+    <value>Création de [{0}]</value>
+  </data>
+  <data name="CSVOfMWQMSamples" xml:space="preserve">
+    <value>Fichier de valeurs séparées par des virgules des échantillons de SQEM</value>
+  </data>
+  <data name="CSVOfMWQMSites" xml:space="preserve">
+    <value>Fichier de valeurs séparées par des virgules des sites SQEM</value>
+  </data>
+  <data name="CurrentClassification" xml:space="preserve">
+    <value>Classification courantes</value>
+  </data>
   <data name="CurrentsAnim" xml:space="preserve">
     <value>Animation des courants</value>
+  </data>
+  <data name="CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations" xml:space="preserve">
+    <value>Classification actuelle des zones de croissance des mollusques et échantillonnage de la qualité de l'eau</value>
+  </data>
+  <data name="CurrentURLNotTheSameInDocumentCompletedEvent" xml:space="preserve">
+    <value>L'URL actuelle n'est pas la même dans l'événement de document terminé</value>
+  </data>
+  <data name="DataUsedForStatistics" xml:space="preserve">
+    <value>Données utiliser pour les statistiques</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Date and temps</value>
   </data>
   <data name="DayLowerCase" xml:space="preserve">
     <value>jour</value>
   </data>
   <data name="DecayIsConstant" xml:space="preserve">
-    <value>Taux Décoissance constant</value>
+    <value>Taux Décroissance constant</value>
   </data>
   <data name="DecayIsVariable" xml:space="preserve">
-    <value>Taux Décoissance variable</value>
+    <value>Taux Décroissance variable</value>
   </data>
   <data name="DegreeLowerCase" xml:space="preserve">
     <value>degré</value>
@@ -258,953 +504,35 @@
   <data name="Depth" xml:space="preserve">
     <value>Depth</value>
   </data>
-  <data name="Directory" xml:space="preserve">
-    <value>Répertoire</value>
-  </data>
-  <data name="Effluent" xml:space="preserve">
-    <value>Effluent</value>
-  </data>
-  <data name="ElementTypeIsOtherThan_Its_" xml:space="preserve">
-    <value>Le type d'élément est différent de [{0}]. Sa valeur est [{1}].</value>
-  </data>
-  <data name="ElementType_IsNotSupported" xml:space="preserve">
-    <value>Le système ne supporte pas le type d'élément  [{0}].</value>
-  </data>
-  <data name="ErrorEmptyNotFound" xml:space="preserve">
-    <value>Erreur: [empty] pas trouvé</value>
-  </data>
-  <data name="ErrorInIndex___" xml:space="preserve">
-    <value>Erreur dans l'index {0} {1} {2}.</value>
-  </data>
-  <data name="ErrorOccuredWhileReadingM21FMOrM3FMFile" xml:space="preserve">
-    <value>Erreur survenue lors de la lecture de fichier m21fm ou m3fm</value>
-  </data>
-  <data name="ErrorOccuredWhileWritingM21FMOrM3FMFile" xml:space="preserve">
-    <value>Erreur survenur lors de la lecture de fichier  m21fm ou m3fm </value>
-  </data>
-  <data name="Error_NotFound" xml:space="preserve">
-    <value>Erreur: [{0}] pas trouvé</value>
-  </data>
-  <data name="FCMPNPer100ML" xml:space="preserve">
-    <value>CF </value>
-  </data>
-  <data name="FCMPNPer100MLEnd" xml:space="preserve">
-    <value>CF à la fin</value>
-  </data>
-  <data name="FCMPNPer100MLStart" xml:space="preserve">
-    <value>CF au début</value>
-  </data>
-  <data name="FCMPNPollutionContour" xml:space="preserve">
-    <value>CF  Contour pollution</value>
-  </data>
-  <data name="FileContainsOneParamButItsNotOfTypeWLOrWDItIs_" xml:space="preserve">
-    <value>Le fichier contient un paramètre mais n'est pas de type [eumItem.eumIWaterLevel] ou [eumItem.eumIWaterDepth]. C'est [{0}].</value>
-  </data>
-  <data name="FileContainsTwoParamsButItsNotOfTypeUVAndVVItIs_And_" xml:space="preserve">
-    <value>Le fichier contient deux paramètres mais ils ne sont pas de type [eumItem.eumIuVelocity and eumItem.eumIvVelocity]. Ce sont [{0}] et [{1}].</value>
-  </data>
-  <data name="FileFullName" xml:space="preserve">
-    <value>le nom du fichier au complet</value>
-  </data>
-  <data name="FileName" xml:space="preserve">
-    <value>le nom du fichier</value>
-  </data>
-  <data name="FileType" xml:space="preserve">
-    <value>type de fichier</value>
-  </data>
-  <data name="File_DoesNotExist" xml:space="preserve">
-    <value>Fichier [{0}] n'existe pas.</value>
-  </data>
-  <data name="Flow" xml:space="preserve">
-    <value>Débit</value>
-  </data>
-  <data name="FlowEnd" xml:space="preserve">
-    <value>Débit à la fin</value>
-  </data>
-  <data name="FlowStart" xml:space="preserve">
-    <value>Débit au début</value>
-  </data>
-  <data name="IncludedLowerCase" xml:space="preserve">
-    <value>inclus</value>
-  </data>
-  <data name="IsContinuous" xml:space="preserve">
-    <value>continuel</value>
-  </data>
-  <data name="IsNotContinuous" xml:space="preserve">
-    <value>discontinu</value>
-  </data>
-  <data name="JulianDayThereIsNoYear0" xml:space="preserve">
-    <value>Jour julien; il n'y a pas d'année 0.</value>
-  </data>
-  <data name="Latitude" xml:space="preserve">
-    <value>Latitude</value>
-  </data>
-  <data name="LatitudeInfo" xml:space="preserve">
-    <value>La valeur de la latitude doit se située entre -90 et 90.</value>
-  </data>
-  <data name="Layer" xml:space="preserve">
-    <value>Couche</value>
-  </data>
-  <data name="Longitude" xml:space="preserve">
-    <value>Longitude</value>
-  </data>
-  <data name="LongitudeInfo" xml:space="preserve">
-    <value>La valeur de la longitude doit se située entre -180 et 180.</value>
-  </data>
-  <data name="MaximumNumberOfSigmaLayers_" xml:space="preserve">
-    <value>Nombre maximum de couches sigma [{0}].</value>
-  </data>
-  <data name="Mesh" xml:space="preserve">
-    <value>Filet</value>
-  </data>
-  <data name="MIKEBoundaryCondition" xml:space="preserve">
-    <value>Conditions à la limite MIKE</value>
-  </data>
-  <data name="MinutesLowerCase" xml:space="preserve">
-    <value>Minutes</value>
-  </data>
-  <data name="ModelInput" xml:space="preserve">
-    <value>Intrants modèle</value>
-  </data>
-  <data name="ModelParameters" xml:space="preserve">
-    <value>Paramètres modèle</value>
-  </data>
-  <data name="NormalRunCompletion" xml:space="preserve">
-    <value>Exécution complétée normalement.</value>
-  </data>
-  <data name="NorthClockwiseLowerCase" xml:space="preserve">
-    <value>Nord dans le sens horaire</value>
-  </data>
-  <data name="NotDetermined" xml:space="preserve">
-    <value>Indéterminé</value>
-  </data>
-  <data name="NotImplementedYet" xml:space="preserve">
-    <value>Pas encore implanté.</value>
-  </data>
-  <data name="NotIncludedLowerCase" xml:space="preserve">
-    <value>pas inclus</value>
-  </data>
-  <data name="NotUsedLowerCase" xml:space="preserve">
-    <value>pas utilisé</value>
-  </data>
-  <data name="NoWind" xml:space="preserve">
-    <value>aucun vent</value>
-  </data>
-  <data name="NumberOfWebTideNodes" xml:space="preserve">
-    <value>Nombre de nœuds WebTide</value>
-  </data>
-  <data name="OnlyAllowedContantDecayRate" xml:space="preserve">
-    <value>Pour le taux de décroissance constant, il est permis de télécharger les fichiers  .m21fm ou .m3fm seulement.</value>
-  </data>
-  <data name="OnlyAllowedContantPollutionFlow" xml:space="preserve">
-    <value>Pour une source de pollution à déversement constant, il est permit de télécharger les fichiers .m21fm ou .m3fm seulement.</value>
-  </data>
-  <data name="Parameter" xml:space="preserve">
-    <value>le paramètre</value>
-  </data>
-  <data name="Parameters" xml:space="preserve">
-    <value>les paramètres</value>
-  </data>
-  <data name="PleaseEnterAValid_" xml:space="preserve">
-    <value>Veuillez entrer une valeur de  [{0}] valide.</value>
-  </data>
-  <data name="PlsEnterValidNumSeparatedByCommasFor_" xml:space="preserve">
-    <value>Veuillez entrer les numéros en les séparant avec des virgules pour les couches Z (Z Layers)</value>
-  </data>
-  <data name="PollutionContour" xml:space="preserve">
-    <value>Contour de pollution</value>
-  </data>
-  <data name="PollutionLimits" xml:space="preserve">
-    <value>Limites de pllution</value>
-  </data>
-  <data name="PollutionVideo" xml:space="preserve">
-    <value>Vidéo de pollution</value>
-  </data>
-  <data name="Problem" xml:space="preserve">
-    <value>Difficulté</value>
-  </data>
-  <data name="ProblemWhenParsing_" xml:space="preserve">
-    <value>Problème durant la lecture de  [{0}].</value>
-  </data>
-  <data name="PSU" xml:space="preserve">
-    <value>PSU</value>
-  </data>
-  <data name="ReadCompleted" xml:space="preserve">
-    <value>Lecture complétée</value>
-  </data>
-  <data name="ReadingFile_" xml:space="preserve">
-    <value>Lecture du fichier [{0}]</value>
-  </data>
-  <data name="ReadLogFileCompleted" xml:space="preserve">
-    <value>Lecture du journal d'exploitation complétée</value>
-  </data>
-  <data name="ResultFrequency" xml:space="preserve">
-    <value>Fréquence des résultats</value>
-  </data>
-  <data name="RunCancelledByUser" xml:space="preserve">
-    <value>Opération annulée par l'utilisateur.</value>
-  </data>
-  <data name="Running" xml:space="preserve">
-    <value>Opération en cours</value>
-  </data>
-  <data name="Salinity" xml:space="preserve">
-    <value>Salinité</value>
-  </data>
-  <data name="SalinityEnd" xml:space="preserve">
-    <value>Salinité à la fin</value>
-  </data>
-  <data name="SalinityReference" xml:space="preserve">
-    <value>Salinité de référence</value>
-  </data>
-  <data name="SalinityStart" xml:space="preserve">
-    <value>Salinité au début</value>
-  </data>
-  <data name="ScenarioEndTime" xml:space="preserve">
-    <value>Temps à la fin du scénario</value>
-  </data>
-  <data name="ScenarioStartTime" xml:space="preserve">
-    <value>Temps au début du scénario</value>
-  </data>
-  <data name="SigmaLayers" xml:space="preserve">
-    <value>Couches Sigma </value>
-  </data>
-  <data name="SourceIncluded" xml:space="preserve">
-    <value>Source incluse</value>
-  </data>
-  <data name="SourceNotIncluded" xml:space="preserve">
-    <value>Source non incluse</value>
-  </data>
-  <data name="Spill" xml:space="preserve">
-    <value>Débordement</value>
-  </data>
-  <data name="SpillEndTime" xml:space="preserve">
-    <value>Temps à la fin du débordement</value>
-  </data>
-  <data name="SpillStartTime" xml:space="preserve">
-    <value>Temps au début du débordement</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Date du début</value>
-  </data>
-  <data name="StartDateChronologicallyEarlierThanEndDate" xml:space="preserve">
-    <value>La date de début doit être chronologiquement plus tôt que la date de la fin.</value>
-  </data>
-  <data name="StartDateInfo" xml:space="preserve">
-    <value>L'année de la date du début doit être plus grande que 1900. </value>
-  </data>
-  <data name="Steps" xml:space="preserve">
-    <value>Étapes</value>
-  </data>
-  <data name="StepsInfo" xml:space="preserve">
-    <value>La valeur de l'étape doit être égale ou supérieure à 1.</value>
-  </data>
-  <data name="StudyArea" xml:space="preserve">
-    <value>Aire d'étude</value>
-  </data>
-  <data name="Temperature" xml:space="preserve">
-    <value>Température</value>
-  </data>
-  <data name="TemperatureReference" xml:space="preserve">
-    <value>Température de référence</value>
-  </data>
-  <data name="TemperatureStart" xml:space="preserve">
-    <value>Température au début</value>
-  </data>
-  <data name="TemperatureEnd" xml:space="preserve">
-    <value>Température à la fin</value>
-  </data>
-  <data name="TopOfLayer" xml:space="preserve">
-    <value>Haut de la couche</value>
-  </data>
-  <data name="TotalDistance" xml:space="preserve">
-    <value>Distance totale</value>
-  </data>
-  <data name="UnknownErrorPleaseCheckLogFile" xml:space="preserve">
-    <value>Erreur inconnue. Veuillez consulter le fichier log.</value>
-  </data>
-  <data name="UsedLowerCase" xml:space="preserve">
-    <value>utilisé</value>
-  </data>
-  <data name="WaitingToRun" xml:space="preserve">
-    <value>En attente d'exécuter</value>
-  </data>
-  <data name="WebTideDataSet" xml:space="preserve">
-    <value>DataSet WebTide </value>
-  </data>
-  <data name="Wind" xml:space="preserve">
-    <value>Vent</value>
-  </data>
-  <data name="WindDirection" xml:space="preserve">
-    <value>Direction du vent</value>
-  </data>
-  <data name="WriteCompleted" xml:space="preserve">
-    <value>Écriture complétée</value>
-  </data>
-  <data name="ZLayers" xml:space="preserve">
-    <value>Couches Z</value>
-  </data>
-  <data name="_CouldNotBeParseProperly" xml:space="preserve">
-    <value>Dans l'impossibilité de lire [{0}] correctement.</value>
-  </data>
-  <data name="_CountShouldBeBigger0In_" xml:space="preserve">
-    <value>{0} devrait être &gt; 0 dans {1}</value>
-  </data>
-  <data name="_IsRequired" xml:space="preserve">
-    <value>[{0}] est requis</value>
-  </data>
-  <data name="_NotEqualTo_" xml:space="preserve">
-    <value>[{0}] n'est pas équivalent à [{1}].</value>
-  </data>
-  <data name="_NotImplemented" xml:space="preserve">
-    <value>[{0}] n'est pas implémenté</value>
-  </data>
-  <data name="_NotImplementedYet" xml:space="preserve">
-    <value>[{0}] pas encore implanté.</value>
-  </data>
-  <data name="_ShouldNotBe0" xml:space="preserve">
-    <value>{0} ne devrait pas être 0.</value>
-  </data>
-  <data name="_ShouldNotBeNull" xml:space="preserve">
-    <value>[{0}] ne doit pas être nul</value>
-  </data>
-  <data name="_ShouldNotBeNullOrEmpty" xml:space="preserve">
-    <value>[{0}] ne devrait pas être nul ou laissé vide.</value>
-  </data>
-  <data name="ContourPolygonListCountShouldBeOne" xml:space="preserve">
-    <value>Le compte de ContourPolygonList devrait être 1.</value>
-  </data>
-  <data name="_____Test" xml:space="preserve">
-    <value>A {0} B {1} C {2} D {3} E {4}</value>
-  </data>
-  <data name="CouldNotFindAvailableBackgroundWorkerToRunAppTaskID_AppTaskName_" xml:space="preserve">
-    <value>Impossible de trouver disponible BackgroundWorker pour exécuter AppTaskID [{0}] et AppTaskName [{1}]</value>
-  </data>
-  <data name="StartingWithBackgroundWorkingIndex_" xml:space="preserve">
-    <value>À partir de l'index de travail en arrière-plan [{0}]</value>
-  </data>
-  <data name="BackgroundWorkerObject_ShouldBe_" xml:space="preserve">
-    <value>BackgroundWorker Object {0} ShouldBe {1}</value>
-  </data>
-  <data name="MapInfo" xml:space="preserve">
-    <value>MapInfo</value>
-  </data>
-  <data name="TVItem" xml:space="preserve">
-    <value>TVItem</value>
-  </data>
-  <data name="TVItemID" xml:space="preserve">
-    <value>TVItemID</value>
-  </data>
-  <data name="TVText" xml:space="preserve">
-    <value>TVText</value>
-  </data>
-  <data name="_ShouldBeFalse" xml:space="preserve">
-    <value>[{0}] doit être faux</value>
-  </data>
-  <data name="_ShouldBeTrue" xml:space="preserve">
-    <value>[{0}] devrait être vrai</value>
-  </data>
-  <data name="RootFileAutoGenerate" xml:space="preserve">
-    <value>Fichier base générer automatiquement</value>
-  </data>
-  <data name="TitleNone" xml:space="preserve">
-    <value>Titre vide</value>
-  </data>
-  <data name="TitleArea_" xml:space="preserve">
-    <value>Région {0}</value>
-  </data>
-  <data name="TitleProvince_" xml:space="preserve">
-    <value>Province {0}</value>
-  </data>
-  <data name="TitleInfrastructure_" xml:space="preserve">
-    <value>Infrastructure {0}</value>
-  </data>
-  <data name="TitleMunicipality_" xml:space="preserve">
-    <value>Municipalité {0}</value>
-  </data>
-  <data name="TitleMWQMSite_" xml:space="preserve">
-    <value>Site SQEM {0}</value>
-  </data>
-  <data name="TitlePolSourceSite_" xml:space="preserve">
-    <value>Site Source de Pollution {0}</value>
-  </data>
-  <data name="TitleSector_" xml:space="preserve">
-    <value>Secteur {0}</value>
-  </data>
-  <data name="TitleSubsector_" xml:space="preserve">
-    <value>Sous-sector {0}</value>
-  </data>
-  <data name="Province" xml:space="preserve">
-    <value>Province</value>
-  </data>
-  <data name="SharedStringAndNumberCannotBeUseAtOnce" xml:space="preserve">
-    <value>La chaîne partagée et le numéro ne peuvent pas être utilisés à la fois</value>
-  </data>
-  <data name="OneOfSharedStringAndNumberIsRequired" xml:space="preserve">
-    <value>Une chaîne et un numéro partagés sont requis</value>
-  </data>
-  <data name="NumberTextIsRequired" xml:space="preserve">
-    <value>NumberText est requis</value>
-  </data>
-  <data name="SharedStringIsRequired" xml:space="preserve">
-    <value>SharedString est requis</value>
-  </data>
-  <data name="ProvinceFileAutoGenerate" xml:space="preserve">
-    <value>Fichier Province générer automatiquement</value>
-  </data>
-  <data name="AreaFileAutoGenerate" xml:space="preserve">
-    <value>Fichier de zone générer automatiquement</value>
-  </data>
-  <data name="MunicipalityFileAutoGenerate" xml:space="preserve">
-    <value>Fichier de la municipalité générer automatiquement</value>
-  </data>
-  <data name="SectorFileAutoGenerate" xml:space="preserve">
-    <value>Fichier de secteur générer automatiquement</value>
-  </data>
-  <data name="SubsectorFileAutoGenerate" xml:space="preserve">
-    <value>Fichier du sous-secteur générer automatiquement</value>
-  </data>
-  <data name="CountryFileAutoGenerate" xml:space="preserve">
-    <value>Fichier de pays générer automatiquement</value>
-  </data>
-  <data name="MWQMSamplingPlanAutoGenerate" xml:space="preserve">
-    <value>Le plan d'échantillonnage PSQEM génère automatiquement</value>
-  </data>
-  <data name="SamplingPlanID" xml:space="preserve">
-    <value>SamplingPlanID</value>
-  </data>
-  <data name="CouldNotFind_AtLine_" xml:space="preserve">
-    <value>Impossible de trouver {0} à la ligne {1}</value>
-  </data>
-  <data name="CountOfValuesInLine_ShouldBe_" xml:space="preserve">
-    <value>Nombre de valeurs en ligne {0} Doit être {1}</value>
-  </data>
-  <data name="Province_NotEqualTo_AtLine_" xml:space="preserve">
-    <value>Province [{0}] Non égal à [{1}] À la ligne {2}</value>
-  </data>
-  <data name="YearNotCorrect_AtLine_" xml:space="preserve">
-    <value>Année non correcte {0} À la ligne {1}</value>
-  </data>
-  <data name="ParameterCount_NotEqual_" xml:space="preserve">
-    <value>Nombre de paramètres {0} Non égal à {1}</value>
-  </data>
-  <data name="CouldNotCopyFile_To_Error_" xml:space="preserve">
-    <value>Impossible de copier le fichier {0} sur {1} Erreur {2}</value>
-  </data>
-  <data name="CouldNotDeleteFile_Error_" xml:space="preserve">
-    <value>Impossible de supprimer le fichier {0}. Erreur: {1}</value>
-  </data>
-  <data name="FileContains2ParamButItsNotOfUVAndVVItIs_And_" xml:space="preserve">
-    <value>Le fichier contient 2 paramètres mais ils ne sont pas du type [eumItem.eumIuVelocity and eumItem.eumIvVelocity]. C'est [{0}] et [{1}].</value>
-  </data>
-  <data name="FileContainsOneParamButItsNotOfTypeWLOrWDItIs_1" xml:space="preserve">
-    <value>Le fichier contient un paramètre mais il n'est pas du type [eumItem.eumIWaterLevel] ou [eumItem.eumIWaterDepth]. C'est [{0}]. </value>
-  </data>
-  <data name="NumberOfWebTideNodesIsZero" xml:space="preserve">
-    <value>Le nombre de nœuds de marée Web est nul</value>
-  </data>
-  <data name="CouldNotFindABoundaryConditionWithFileNameInM21_3FM" xml:space="preserve">
-    <value>Impossible de trouver une condition de frontière avec le nom du fichier dans le fichier .m21fm ou .m3fm</value>
-  </data>
-  <data name="ConvertingFileToPDF" xml:space="preserve">
-    <value>Conversion de fichier en PDF</value>
-  </data>
-  <data name="Command" xml:space="preserve">
-    <value>Command</value>
-  </data>
-  <data name="FileGenerator" xml:space="preserve">
-    <value>FileGenerator</value>
-  </data>
-  <data name="FileGeneratorType" xml:space="preserve">
-    <value>FileGeneratorType</value>
-  </data>
-  <data name="Generate" xml:space="preserve">
-    <value>Generate</value>
-  </data>
-  <data name="BCMeshTVItemID" xml:space="preserve">
-    <value>BCMeshTVItemID</value>
-  </data>
-  <data name="BoundaryConditionCode" xml:space="preserve">
-    <value>BoundaryConditionCode</value>
-  </data>
-  <data name="ClimateDataValue" xml:space="preserve">
-    <value>ClimateDataValue</value>
-  </data>
-  <data name="ClimateSite" xml:space="preserve">
-    <value>ClimateSite</value>
-  </data>
-  <data name="ClimateSiteTVItemID" xml:space="preserve">
-    <value>ClimateSiteTVItemID</value>
-  </data>
-  <data name="CouldNotCreateMapInfoObjectForDrawType_TVType_TVItemID_" xml:space="preserve">
-    <value>Could Not Create Map Info Object For DrawType {0} TVType {1} and TVItemID {2}</value>
-  </data>
-  <data name="CouldNotFindTVItemRoot" xml:space="preserve">
-    <value>Could Not Find TVItem Root</value>
-  </data>
-  <data name="ECDBID" xml:space="preserve">
-    <value>ECDBID</value>
-  </data>
-  <data name="EndDay" xml:space="preserve">
-    <value>EndDay</value>
-  </data>
-  <data name="EndMonth" xml:space="preserve">
-    <value>EndMonth</value>
-  </data>
-  <data name="EndYear" xml:space="preserve">
-    <value>EndYear</value>
-  </data>
-  <data name="LatOrLngIsNull" xml:space="preserve">
-    <value>Lat Or Lng Is Null</value>
-  </data>
-  <data name="MapInfoPoint" xml:space="preserve">
-    <value>MapInfoPoint</value>
-  </data>
-  <data name="mapInfoPointListSubsector" xml:space="preserve">
-    <value>mapInfoPointListSubsector</value>
-  </data>
-  <data name="MapInfoPointModelList" xml:space="preserve">
-    <value>MapInfoPointModelList</value>
-  </data>
-  <data name="MapInfoPolyPoint" xml:space="preserve">
-    <value>MapInfoPolyPoint</value>
-  </data>
-  <data name="MikeScenario" xml:space="preserve">
-    <value>MikeScenario</value>
-  </data>
-  <data name="MIKEScenarioDocumentation" xml:space="preserve">
-    <value>MIKEScenarioDocumentation</value>
-  </data>
-  <data name="MikeScenarioTVItemID" xml:space="preserve">
-    <value>MikeScenarioTVItemID</value>
-  </data>
-  <data name="MikeSource" xml:space="preserve">
-    <value>MikeSource</value>
-  </data>
-  <data name="MikeSources" xml:space="preserve">
-    <value>MikeSources</value>
-  </data>
-  <data name="SamplingPlan" xml:space="preserve">
-    <value>SamplingPlan</value>
-  </data>
-  <data name="ParameterType" xml:space="preserve">
-    <value>ParameterType</value>
-  </data>
-  <data name="Prov" xml:space="preserve">
-    <value>Prov</value>
-  </data>
-  <data name="ServerFileName" xml:space="preserve">
-    <value>ServerFileName</value>
-  </data>
-  <data name="SourceNumberString" xml:space="preserve">
-    <value>SourceNumberString</value>
-  </data>
-  <data name="StartDay" xml:space="preserve">
-    <value>StartDay</value>
-  </data>
-  <data name="StartMonth" xml:space="preserve">
-    <value>StartMonth</value>
-  </data>
-  <data name="StartYear" xml:space="preserve">
-    <value>StartYear</value>
-  </data>
-  <data name="StationID" xml:space="preserve">
-    <value>StationID</value>
-  </data>
-  <data name="StationName" xml:space="preserve">
-    <value>StationName</value>
-  </data>
-  <data name="SubsectorTVItemID" xml:space="preserve">
-    <value>SubsectorTVItemID</value>
-  </data>
-  <data name="TVFile" xml:space="preserve">
-    <value>TVFile</value>
-  </data>
-  <data name="TVFileID" xml:space="preserve">
-    <value>TVFileID</value>
-  </data>
-  <data name="TVFileTVItemID" xml:space="preserve">
-    <value>TVFileTVItemID</value>
-  </data>
-  <data name="UploadClientPath" xml:space="preserve">
-    <value>UploadClientPath</value>
-  </data>
-  <data name="UseOfSite" xml:space="preserve">
-    <value>UseOfSite</value>
-  </data>
-  <data name="WTNodeNumb" xml:space="preserve">
-    <value>WTNodeNumb</value>
-  </data>
-  <data name="TVItemLanguage" xml:space="preserve">
-    <value>TVItemLanguage</value>
-  </data>
-  <data name="ElementLayerContainingNode" xml:space="preserve">
-    <value>ElementLayerContainingNode</value>
-  </data>
-  <data name="CouldNotDelete_With_Equal_Error_" xml:space="preserve">
-    <value>Impossible de supprimer {0} avec {1} Égalité {2} Erreur {3}</value>
-  </data>
-  <data name="TVFileDecayNew" xml:space="preserve">
-    <value>TVFileDecayNew</value>
-  </data>
-  <data name="ClientFullPath" xml:space="preserve">
-    <value>ClientFullPath</value>
-  </data>
-  <data name="CouldNotReadInputFileError_" xml:space="preserve">
-    <value>Impossible de lire le fichier d'entrée. Erreur {0}</value>
-  </data>
-  <data name="CouldNotReadResultFileError_" xml:space="preserve">
-    <value>Impossible de lire le fichier de résultat. Erreur {0}</value>
-  </data>
-  <data name="mapInfoPointModelBC" xml:space="preserve">
-    <value>mapInfoPointModelBC</value>
-  </data>
-  <data name="MikeSourceID" xml:space="preserve">
-    <value>MikeSourceID</value>
-  </data>
-  <data name="MikeSourceStartEnd" xml:space="preserve">
-    <value>MikeSourceStartEnd</value>
-  </data>
-  <data name="ServerFilePath" xml:space="preserve">
-    <value>ServerFilePath</value>
-  </data>
-  <data name="ServerFullPath" xml:space="preserve">
-    <value>ServerFullPath</value>
-  </data>
-  <data name="TVFileM21_3FM" xml:space="preserve">
-    <value>TVFileM21_3FM</value>
-  </data>
-  <data name="MapInfoID" xml:space="preserve">
-    <value>MapInfoID</value>
-  </data>
-  <data name="ElementNotFoundWithElem_" xml:space="preserve">
-    <value>Element Not Found With Elem {0}</value>
-  </data>
-  <data name="MWQMSubsector" xml:space="preserve">
-    <value>MWQMSubsector</value>
-  </data>
-  <data name="GenerateOrCommandNeedsToBeTrue" xml:space="preserve">
-    <value>Générer ou commander doit être vrai</value>
-  </data>
-  <data name="MikeScenarioBoundaryConditionFileAutoGenerate" xml:space="preserve">
-    <value>Fichier de condition de bordure du scénario de Mike Auto Generate</value>
-  </data>
-  <data name="MikeScenarioConcentrationAnimation" xml:space="preserve">
-    <value>Animation de pollution du scéncario MIKE</value>
-  </data>
-  <data name="MikeScenarioConcentrationLimits" xml:space="preserve">
-    <value>Limites de pollution de scénario Mike</value>
-  </data>
-  <data name="MikeScenarioCurrentAnimation" xml:space="preserve">
-    <value>Animation des courants du scénario MIKE</value>
-  </data>
-  <data name="MikeScenarioCurrentMaximum" xml:space="preserve">
-    <value>Courants maximum du scénario MIKE</value>
-  </data>
-  <data name="MikeScenarioMesh" xml:space="preserve">
-    <value>Grillage du scénario MIKE</value>
-  </data>
-  <data name="MikeScenarioStudyArea" xml:space="preserve">
-    <value>Région d'étude du scénario MIKE</value>
-  </data>
-  <data name="mikeSourceModelList" xml:space="preserve">
-    <value>mikeSourceModelList</value>
-  </data>
-  <data name="NeedToImplement" xml:space="preserve">
-    <value>Doit implanter</value>
-  </data>
-  <data name="PlsEnterValidNumSeparatedByCommasForDepth" xml:space="preserve">
-    <value>Veuillez entrer des nombres valides séparés par des virgules pour la profondeur</value>
-  </data>
-  <data name="PlsEnterValidNumSeparatedByCommasForSigmaLayers" xml:space="preserve">
-    <value>Veuillez entrer des nombres valides séparés par des virgules pour les couches Sigma </value>
-  </data>
-  <data name="PlsEnterValidNumSeparatedByCommasForZLayers" xml:space="preserve">
-    <value>Veuillez entrer des nombres valides séparés par des virgules pour les couches Z </value>
-  </data>
-  <data name="FCFormAutoGenerate" xml:space="preserve">
-    <value>Génération automatique de la feuille de laboratoire</value>
-  </data>
-  <data name="LabSheet" xml:space="preserve">
-    <value>LabSheet</value>
-  </data>
-  <data name="LabSheetID" xml:space="preserve">
-    <value>LabSheetID</value>
-  </data>
-  <data name="Subsector" xml:space="preserve">
-    <value>Subsector</value>
-  </data>
-  <data name="LabSheetDetail" xml:space="preserve">
-    <value>LabSheetDetail</value>
-  </data>
-  <data name="CouldNotFindPart_CurrentPartIs_In_AtLine_" xml:space="preserve">
-    <value>Impossible de trouver la partie {0}. La partie actuelle est {1} dans {2} à la ligne {3}</value>
-  </data>
-  <data name="CouldNotWriteFile_Error_" xml:space="preserve">
-    <value>Impossible d'écrire le fichier {0}. Erreur {1}</value>
-  </data>
-  <data name="LineNotStartingWith_CurrentLineIs_In_AtLine_" xml:space="preserve">
-    <value>La ligne ne commence pas par {0}. La ligne actuelle est {1} dans {2} à la ligne {3}</value>
-  </data>
-  <data name="MissingTheSwitch_In_AtLine_" xml:space="preserve">
-    <value>Manquant le commutateur {0} dans {1} à la ligne {2}</value>
-  </data>
-  <data name="CouldNotCreateFile_" xml:space="preserve">
-    <value>Impossible de créer le fichier [{0}]</value>
-  </data>
-  <data name="CouldNotParseLabSheetWithLabSheetID_" xml:space="preserve">
-    <value>Impossible d'analyser la feuille de laboratoire avec LabSheetID = {0}</value>
-  </data>
-  <data name="LabSheetTubeMPNDetail" xml:space="preserve">
-    <value>LabSheetTubeMPNDetail</value>
-  </data>
-  <data name="Parameter_NotFound" xml:space="preserve">
-    <value>Paramètre [{0}] introuvable</value>
-  </data>
-  <data name="CouldNotCreateDocumentFromTemplateError_" xml:space="preserve">
-    <value>Impossible de créer un document à partir du modèle. Erreur [{0}].</value>
-  </data>
-  <data name="FileNameForDocTemplateID_IsEmpty" xml:space="preserve">
-    <value>FileName pour DocTemplateID [{0}] est vide</value>
-  </data>
-  <data name="FileAlreadyExist_" xml:space="preserve">
-    <value>Le fichier existe déjà [{0}]</value>
-  </data>
-  <data name="FileGeneratedFromTemplate" xml:space="preserve">
-    <value>Fichier généré à partir du modèle</value>
-  </data>
-  <data name="_AlreadyExist" xml:space="preserve">
-    <value>{0} existe déjà</value>
-  </data>
-  <data name="ErrorsWhileCreatingDocumentDeleteTaskAndCheckCreatedDocument" xml:space="preserve">
-    <value>Erreurs lors de la création du document. Supprimez la tâche et vérifiez le document créé pour plus d'informations.</value>
-  </data>
-  <data name="TVItemID2" xml:space="preserve">
-    <value>TVItemID2</value>
-  </data>
-  <data name="OnlyOneHydrodynamicAndTransportOutputIsAllowed" xml:space="preserve">
-    <value>Une seule production hydrodynamique et de transport est autorisée</value>
-  </data>
-  <data name="PFS_Error_" xml:space="preserve">
-    <value>PFS {0} Erreur {1}</value>
-  </data>
-  <data name="Input" xml:space="preserve">
-    <value>Entrées</value>
-  </data>
-  <data name="MikeBoundaryConditionFormatShouldBeVaryingInTimeConstantAlongBoundaryToStart" xml:space="preserve">
-    <value>Le format aux conditions limites de MIKE devrait varier dans le temps constant le long des limites pour commencer</value>
-  </data>
-  <data name="MikeBoundaryConditionTVItemID" xml:space="preserve">
-    <value>MikeBoundaryConditionTVItemID</value>
-  </data>
-  <data name="MikeBoundaryConditionTypeShouldBeVelocityOrLevel" xml:space="preserve">
-    <value>Le type de variables aux conditione limites de MIKE doit être la vitesse ou le niveau</value>
-  </data>
-  <data name="No_FileFoundInM21Or3fmFile" xml:space="preserve">
-    <value>No {0} fichier trouvé dans le fichier .m21fm ou .m3fm</value>
-  </data>
-  <data name="Output" xml:space="preserve">
-    <value>Sortie</value>
-  </data>
-  <data name="MikeScenarioAlreadyRunning" xml:space="preserve">
-    <value>Le scénario de MIKE est déjà en cours d'exécution</value>
-  </data>
-  <data name="SavingScenarioFiles" xml:space="preserve">
-    <value>Enregistrer les fichiers de scénarios</value>
-  </data>
-  <data name="AtCoordinates" xml:space="preserve">
-    <value>A la cacoordonée</value>
-  </data>
-  <data name="DateAndTime" xml:space="preserve">
-    <value>Date and temps</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>De</value>
-  </data>
-  <data name="Hours" xml:space="preserve">
-    <value>heures</value>
-  </data>
-  <data name="LocalTime" xml:space="preserve">
-    <value>temps local</value>
-  </data>
-  <data name="Node" xml:space="preserve">
-    <value>Noeud</value>
-  </data>
-  <data name="Showing24HoursBeforeStartDateJustInCaseYouNeedToSetADifferentStartDate" xml:space="preserve">
-    <value>Showing 24 hours before start date just in case you need to set a different start date (fr)</value>
-  </data>
-  <data name="TimeOffsetFromGMT" xml:space="preserve">
-    <value>Time offset from GMT (fr)</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>à</value>
-  </data>
-  <data name="TVType" xml:space="preserve">
-    <value>TVType</value>
-  </data>
-  <data name="WaterLevel" xml:space="preserve">
-    <value>Niveau d'eau</value>
-  </data>
-  <data name="CountryTVItemID" xml:space="preserve">
-    <value>CountryTVItemID</value>
-  </data>
-  <data name="Directory_DoesNotExist" xml:space="preserve">
-    <value>Le répertoire [{0}] n'extiste pas</value>
-  </data>
-  <data name="CouldNotGetContourPolygonListWithin_" xml:space="preserve">
-    <value>Dans l'impossibilité d'aller chercher ContourPolygonList de la filière [{0}]</value>
-  </data>
-  <data name="CouldNotSaveExcelFile_Error_" xml:space="preserve">
-    <value>Dans l'impossibilité de sauvegarder la filière Excel [{0}]. Error [{1}]</value>
-  </data>
-  <data name="MWQMAnalysisReportParameter" xml:space="preserve">
-    <value>MWQMAnalysisReportParameter</value>
-  </data>
-  <data name="MWQMAnalysisReportParameterID" xml:space="preserve">
-    <value>MWQMAnalysisReportParameterID</value>
-  </data>
-  <data name="ErrorWhileCreatingExcelDocument_" xml:space="preserve">
-    <value>Erreur lors de la création du document Excel. Erreur: [{0}]</value>
-  </data>
-  <data name="ExcelCouldNotBeStartedCheckOfficeInstallation" xml:space="preserve">
-    <value>EXCEL n'a pas pu être démarré. Vérifiez que les références d'installation de OFFICE sont correctes.</value>
-  </data>
-  <data name="ReportTypeID" xml:space="preserve">
-    <value>ReportTypeID</value>
-  </data>
-  <data name="Year" xml:space="preserve">
-    <value>Year</value>
-  </data>
-  <data name="AllAllAll" xml:space="preserve">
-    <value>Tous-Tous-Tous</value>
-  </data>
-  <data name="CurrentClassification" xml:space="preserve">
-    <value>Current classification (fr)</value>
-  </data>
-  <data name="DryAllAll" xml:space="preserve">
-    <value>Sec-Tous-Tous</value>
-  </data>
-  <data name="LetterAndColorSchema" xml:space="preserve">
-    <value>Letter and color schema (fr)</value>
-  </data>
-  <data name="NotShown" xml:space="preserve">
-    <value>pas montré</value>
-  </data>
-  <data name="WetAllAll" xml:space="preserve">
-    <value>Pluie-Tous-Tous</value>
-  </data>
-  <data name="GMean" xml:space="preserve">
-    <value>Moy Geo.</value>
-  </data>
-  <data name="MaxFC" xml:space="preserve">
-    <value>CF Max</value>
-  </data>
-  <data name="Median" xml:space="preserve">
-    <value>Médiane</value>
-  </data>
-  <data name="MinFC" xml:space="preserve">
-    <value>CF Min</value>
-  </data>
-  <data name="MPN" xml:space="preserve">
-    <value>NPP</value>
-  </data>
-  <data name="MWQMSite" xml:space="preserve">
-    <value>Site PSQEM</value>
-  </data>
-  <data name="P90" xml:space="preserve">
-    <value>P90</value>
-  </data>
-  <data name="Period" xml:space="preserve">
-    <value>Période</value>
-  </data>
-  <data name="Samples" xml:space="preserve">
-    <value>Échant.</value>
-  </data>
-  <data name="Site" xml:space="preserve">
-    <value>Site</value>
-  </data>
-  <data name="SummaryStatisticsOfFCDensities" xml:space="preserve">
-    <value>Statistiques sommaire de densités de CF</value>
-  </data>
-  <data name="CouldNotExportFile_ToPDFError_" xml:space="preserve">
-    <value>Dans l'impossibilité d'exporter la filière [{0}] en PDF. Erreur: {1}</value>
-  </data>
-  <data name="Annotated" xml:space="preserve">
-    <value>Annotated</value>
-  </data>
-  <data name="CouldNotCreate_ImageError_" xml:space="preserve">
-    <value>Dans l'impossibilité de créer l'image {0}. Erreur: {1}</value>
-  </data>
-  <data name="CouldNotDownloadWebAddress_Error_" xml:space="preserve">
-    <value>Dans l'impossibilité de télécharger l'adresse web {0}. Erreur: {1}</value>
-  </data>
-  <data name="CouldNotFindPolygonForSubsector_" xml:space="preserve">
-    <value>Dans l'impossibilité de trouver le polygone du sous-secteur {0}</value>
-  </data>
-  <data name="Inset" xml:space="preserve">
-    <value>Inset</value>
-  </data>
-  <data name="BottomOfLayer" xml:space="preserve">
-    <value>Dessous de la tranche</value>
-  </data>
-  <data name="ContourValues" xml:space="preserve">
-    <value>ContourValues</value>
-  </data>
   <data name="Depths" xml:space="preserve">
     <value>Profondeurs</value>
   </data>
-  <data name="ElementNodes" xml:space="preserve">
-    <value>Noeuds d'éléments</value>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Erreur</value>
+  <data name="Directory" xml:space="preserve">
+    <value>Répertoire</value>
   </data>
-  <data name="ErrorOccuredWhileCreatingKMZDocument_" xml:space="preserve">
-    <value>Erreur lors de la création du document KMZ {0}</value>
+  <data name="Directory_DoesNotExist" xml:space="preserve">
+    <value>Le répertoire [{0}] n'existe pas</value>
   </data>
-  <data name="Error_WhileCreatingKMZDocument_" xml:space="preserve">
-    <value>Erreur {0} lors de la création du document KMZ {1}</value>
+  <data name="Dist" xml:space="preserve">
+    <value>Dist</value>
   </data>
-  <data name="ManningNumber" xml:space="preserve">
-    <value>Coefficient Manning</value>
+  <data name="DoingDecay" xml:space="preserve">
+    <value>Faire décomposition</value>
   </data>
-  <data name="MIKEBoundaryConditions" xml:space="preserve">
-    <value>MIKE conditions aux limites</value>
+  <data name="DoingPrecipitationFile" xml:space="preserve">
+    <value>Faire le fichier de précipitation</value>
   </data>
-  <data name="MIKEMesh" xml:space="preserve">
-    <value>Grillage de MIKE</value>
+  <data name="DoingSources" xml:space="preserve">
+    <value>Faire les sources</value>
   </data>
-  <data name="MIKEPollutionAnimation" xml:space="preserve">
-    <value>Animation de pollution MIKE</value>
+  <data name="DoingSource_" xml:space="preserve">
+    <value>Faire les sources {0}</value>
   </data>
-  <data name="MIKEPollutionLimit" xml:space="preserve">
-    <value>MIKE limite de pollution</value>
-  </data>
-  <data name="MIKESourceNameIsEmpty" xml:space="preserve">
-    <value>Nom de la source MIKE est vide</value>
-  </data>
-  <data name="MIKEStudyArea" xml:space="preserve">
-    <value>MIKE région d'étude</value>
-  </data>
-  <data name="Nodes" xml:space="preserve">
-    <value>Noeuds</value>
-  </data>
-  <data name="PollutionAnimation" xml:space="preserve">
-    <value>Animation de pollution</value>
-  </data>
-  <data name="Polygons" xml:space="preserve">
-    <value>Polygones</value>
-  </data>
-  <data name="WebTideNodes" xml:space="preserve">
-    <value>Noeuds d'éléments web tide</value>
-  </data>
-  <data name="_ShouldNotBe0InFunction_" xml:space="preserve">
-    <value>{0} ne devrait pas être 0 dans la fonction {1}</value>
-  </data>
-  <data name="AnalysisName" xml:space="preserve">
-    <value>Nom de l'analyse</value>
-  </data>
-  <data name="CalculationType" xml:space="preserve">
-    <value>Type de calcul</value>
+  <data name="Dry" xml:space="preserve">
+    <value>Sec</value>
   </data>
   <data name="Dry24h" xml:space="preserve">
     <value>Sec 24h</value>
@@ -1218,74 +546,359 @@
   <data name="Dry96h" xml:space="preserve">
     <value>Sec 96h</value>
   </data>
+  <data name="DryAllAll" xml:space="preserve">
+    <value>Sec-Tous-Tous</value>
+  </data>
+  <data name="ECDBID" xml:space="preserve">
+    <value>ECDBID</value>
+  </data>
+  <data name="Effluent" xml:space="preserve">
+    <value>Effluent</value>
+  </data>
+  <data name="ElementLayerContainingNode" xml:space="preserve">
+    <value>ElementLayerContainingNode</value>
+  </data>
+  <data name="ElementNodes" xml:space="preserve">
+    <value>Nœuds d'éléments</value>
+  </data>
+  <data name="ElementNotFoundWithElem_" xml:space="preserve">
+    <value>Élément non trouvée avec Elem {0}</value>
+  </data>
+  <data name="ElementTypeIsOtherThan_Its_" xml:space="preserve">
+    <value>Le type d'élément est différent de [{0}]. Sa valeur est [{1}].</value>
+  </data>
+  <data name="ElementType_IsNotSupported" xml:space="preserve">
+    <value>Le système ne supporte pas le type d'élément  [{0}].</value>
+  </data>
   <data name="Empty" xml:space="preserve">
     <value>Vide</value>
   </data>
   <data name="EndDate" xml:space="preserve">
     <value>Date de fin</value>
   </data>
-  <data name="FullYear" xml:space="preserve">
-    <value>L'année complète</value>
+  <data name="EndDay" xml:space="preserve">
+    <value>EndDay</value>
   </data>
-  <data name="NumberOfRuns" xml:space="preserve">
-    <value>Nombre d'échantillons</value>
+  <data name="EndMonth" xml:space="preserve">
+    <value>EndMonth</value>
   </data>
-  <data name="ReportYear" xml:space="preserve">
-    <value>L'année du rapport</value>
+  <data name="EndTide" xml:space="preserve">
+    <value>Marée de fin</value>
   </data>
-  <data name="RunsOmitted" xml:space="preserve">
-    <value>Échantillons omis</value>
+  <data name="EndYear" xml:space="preserve">
+    <value>EndYear</value>
   </data>
-  <data name="ShortRangeNumberOfDays" xml:space="preserve">
-    <value>Nombre de jour pour court terme</value>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
   </data>
-  <data name="Wet24h" xml:space="preserve">
-    <value>Pluie 24h</value>
+  <data name="ErrorEmptyNotFound" xml:space="preserve">
+    <value>Erreur: [empty] pas trouvé</value>
   </data>
-  <data name="Wet48h" xml:space="preserve">
-    <value>Pluie 48h</value>
+  <data name="ErrorInIndex___" xml:space="preserve">
+    <value>Erreur dans l'index {0} {1} {2}.</value>
   </data>
-  <data name="Wet72h" xml:space="preserve">
-    <value>Pluie 72h</value>
+  <data name="ErrorOccuredWhileCreating_Document_" xml:space="preserve">
+    <value>Erreur lors de la création du document {0} {1}</value>
   </data>
-  <data name="Wet96h" xml:space="preserve">
-    <value>Pluie 96h</value>
+  <data name="ErrorOccuredWhileReadingM21FMOrM3FMFile" xml:space="preserve">
+    <value>Erreur survenue lors de la lecture de fichier m21fm ou m3fm</value>
   </data>
-  <data name="All" xml:space="preserve">
-    <value>Tous</value>
+  <data name="ErrorOccuredWhileWritingM21FMOrM3FMFile" xml:space="preserve">
+    <value>Erreur survenu lors de la lecture de fichier  m21fm ou m3fm </value>
   </data>
-  <data name="Dry" xml:space="preserve">
-    <value>Sec</value>
+  <data name="ErrorsWhileCreatingDocumentDeleteTaskAndCheckCreatedDocument" xml:space="preserve">
+    <value>Erreurs lors de la création du document. Supprimez la tâche et vérifiez le document créé pour plus d'informations.</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>Non</value>
+  <data name="ErrorWhileCreatingExcelDocument_" xml:space="preserve">
+    <value>Erreur lors de la création du document Excel. Erreur: [{0}]</value>
   </data>
-  <data name="Wet" xml:space="preserve">
-    <value>Pluie</value>
+  <data name="Error_NotFound" xml:space="preserve">
+    <value>Erreur: [{0}] pas trouvé</value>
   </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
+  <data name="Error_WhileCreating_Document_" xml:space="preserve">
+    <value>Erreur {0} lors de la création du document {1} {2}</value>
   </data>
-  <data name="BecauseOfMissingRainData" xml:space="preserve">
-    <value>puisqu'il y a des données de pluie manquantes</value>
+  <data name="ExcelCouldNotBeStartedCheckOfficeInstallation" xml:space="preserve">
+    <value>EXCEL n'a pas pu être démarré. Vérifiez que les références d'installation de OFFICE sont correctes.</value>
   </data>
-  <data name="Agriculture" xml:space="preserve">
-    <value>Agriculture</value>
+  <data name="ExcelCouldNotCreateThe2WorksheetsRequired" xml:space="preserve">
+    <value>Excel ne peut créer les 2 fichier requis</value>
+  </data>
+  <data name="ExtraComment" xml:space="preserve">
+    <value>Commentaire d'extra</value>
+  </data>
+  <data name="FCDensities" xml:space="preserve">
+    <value>Densités FC</value>
+  </data>
+  <data name="FCFormAutoGenerate" xml:space="preserve">
+    <value>Génération automatique de la feuille de laboratoire</value>
+  </data>
+  <data name="FCMPNPer100ML" xml:space="preserve">
+    <value>CF </value>
+  </data>
+  <data name="FCMPNPer100MLEnd" xml:space="preserve">
+    <value>CF à la fin</value>
+  </data>
+  <data name="FCMPNPer100MLStart" xml:space="preserve">
+    <value>CF au début</value>
+  </data>
+  <data name="FCMPNPollutionContour" xml:space="preserve">
+    <value>CF  Contour pollution</value>
+  </data>
+  <data name="FedStationName" xml:space="preserve">
+    <value>FedStationName</value>
+  </data>
+  <data name="FileAlreadyExist_" xml:space="preserve">
+    <value>Le fichier existe déjà [{0}]</value>
+  </data>
+  <data name="FileContains2ParamButItsNotOfUVAndVVItIs_And_" xml:space="preserve">
+    <value>Le fichier contient 2 paramètres mais ils ne sont pas du type [eumItem.eumIuVelocity and eumItem.eumIvVelocity]. C'est [{0}] et [{1}].</value>
+  </data>
+  <data name="FileContainsOneParamButItsNotOfTypeWLOrWDItIs_" xml:space="preserve">
+    <value>Le fichier contient un paramètre mais n'est pas de type [eumItem.eumIWaterLevel] ou [eumItem.eumIWaterDepth]. C'est [{0}].</value>
+  </data>
+  <data name="FileContainsOneParamButItsNotOfTypeWLOrWDItIs_1" xml:space="preserve">
+    <value>Le fichier contient un paramètre mais il n'est pas du type [eumItem.eumIWaterLevel] ou [eumItem.eumIWaterDepth]. C'est [{0}]. </value>
+  </data>
+  <data name="FileContainsTwoParamsButItsNotOfTypeUVAndVVItIs_And_" xml:space="preserve">
+    <value>Le fichier contient deux paramètres mais ils ne sont pas de type [eumItem.eumIuVelocity and eumItem.eumIvVelocity]. Ce sont [{0}] et [{1}].</value>
+  </data>
+  <data name="FileFullName" xml:space="preserve">
+    <value>le nom du fichier au complet</value>
+  </data>
+  <data name="FileGeneratedFromTemplate" xml:space="preserve">
+    <value>Fichier généré à partir du modèle</value>
+  </data>
+  <data name="FileGenerator" xml:space="preserve">
+    <value>FileGenerator</value>
+  </data>
+  <data name="FileGeneratorType" xml:space="preserve">
+    <value>FileGeneratorType</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>le nom du fichier</value>
+  </data>
+  <data name="FileNameForDocTemplateID_IsEmpty" xml:space="preserve">
+    <value>FileName pour DocTemplateID [{0}] est vide</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>type de fichier</value>
+  </data>
+  <data name="File_DoesNotExist" xml:space="preserve">
+    <value>Fichier [{0}] n'existe pas.</value>
+  </data>
+  <data name="FirstCellOfRow_WasSupposeToBeATHWithinURL_" xml:space="preserve">
+    <value>Première case de la rangée {0} devrait être un "th" dans l’URL [{1}]</value>
+  </data>
+  <data name="Flow" xml:space="preserve">
+    <value>Débit</value>
+  </data>
+  <data name="FlowEnd" xml:space="preserve">
+    <value>Débit à la fin</value>
+  </data>
+  <data name="FlowStart" xml:space="preserve">
+    <value>Débit au début</value>
   </data>
   <data name="Forested" xml:space="preserve">
     <value>Forestière</value>
   </data>
+  <data name="ForSimulatingMWQMRunTVItemID" xml:space="preserve">
+    <value>ForSimulatingMWQMRunTVItemID</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>De</value>
+  </data>
+  <data name="FullYear" xml:space="preserve">
+    <value>L'année complète</value>
+  </data>
+  <data name="GeneralStatAndInfo" xml:space="preserve">
+    <value>Information et statistiques généraux</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="GenerateOrCommandNeedsToBeTrue" xml:space="preserve">
+    <value>Générer ou commander doit être vrai</value>
+  </data>
+  <data name="GenerateProvincePollutionSourceSitesForInputTool" xml:space="preserve">
+    <value>Générer des sites source de pollution par province pour l'outil de saisie</value>
+  </data>
+  <data name="GettingApproximateSizeOfHydrodynamicResultFile" xml:space="preserve">
+    <value>Obtenir une taille approximative du fichier de résultat hydrodynamique</value>
+  </data>
+  <data name="GettingApproximateSizeOfTransportResultFile" xml:space="preserve">
+    <value>Obtenir la taille approximative du fichier de résultat de transport</value>
+  </data>
+  <data name="GMean" xml:space="preserve">
+    <value>Moy Geo.</value>
+  </data>
+  <data name="GroupingInputsKML" xml:space="preserve">
+    <value>Entrées de groupage KML</value>
+  </data>
+  <data name="HasHourlyOrHasDailyOrHasMonthlyHasToBeTrue" xml:space="preserve">
+    <value>HasHourly Ou HasDaily Ou HasMonthly doit être vrai</value>
+  </data>
   <data name="HighRisk" xml:space="preserve">
     <value>Risque élevé</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>heures</value>
+  </data>
+  <data name="HTMLTitleShouldStartWith_" xml:space="preserve">
+    <value>Le titre de HTML doit commencer avec [{0}]</value>
+  </data>
+  <data name="HydrometricDataValue" xml:space="preserve">
+    <value>HydrometricDataValue</value>
+  </data>
+  <data name="HydrometricSite" xml:space="preserve">
+    <value>HydrometricSite</value>
+  </data>
+  <data name="HydrometricSiteModel" xml:space="preserve">
+    <value>HydrometricSiteModel</value>
+  </data>
+  <data name="HydrometricSiteTVItemID" xml:space="preserve">
+    <value>HydrometricSiteTVItemID</value>
+  </data>
+  <data name="HydrometricTVItemID" xml:space="preserve">
+    <value>HydrometricTVItemID</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="IncludedLowerCase" xml:space="preserve">
+    <value>inclus</value>
   </data>
   <data name="Industry" xml:space="preserve">
     <value>Industrie</value>
   </data>
+  <data name="InformationAboveWrittenFor" xml:space="preserve">
+    <value>Information ci-dessus écrit pour</value>
+  </data>
+  <data name="InformationBelowWrittenFor" xml:space="preserve">
+    <value>Information ci-dessous écrit pour</value>
+  </data>
+  <data name="Infrastructures" xml:space="preserve">
+    <value>Infrastructures</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Entrées</value>
+  </data>
+  <data name="Inset" xml:space="preserve">
+    <value>Encart</value>
+  </data>
+  <data name="InvalidURL_CouldNotFind_" xml:space="preserve">
+    <value>URL invalide [{0}] impossible de trouver [{1}]</value>
+  </data>
+  <data name="IsContinuous" xml:space="preserve">
+    <value>continuel</value>
+  </data>
+  <data name="IsNotContinuous" xml:space="preserve">
+    <value>discontinu</value>
+  </data>
+  <data name="Issue" xml:space="preserve">
+    <value>Enjeux</value>
+  </data>
+  <data name="Issues" xml:space="preserve">
+    <value>Problèmes</value>
+  </data>
+  <data name="JulianDayThereIsNoYear0" xml:space="preserve">
+    <value>Jour julien; il n'y a pas d'année 0.</value>
+  </data>
+  <data name="KMZClassViewCheck" xml:space="preserve">
+    <value>Verifier les class KMZ</value>
+  </data>
+  <data name="KMZOfMWQMSites" xml:space="preserve">
+    <value>Fichier KMZ des sites de SQEM</value>
+  </data>
+  <data name="LabSheet" xml:space="preserve">
+    <value>LabSheet</value>
+  </data>
+  <data name="LabSheetDetail" xml:space="preserve">
+    <value>LabSheetDetail</value>
+  </data>
+  <data name="LabSheetID" xml:space="preserve">
+    <value>LabSheetID</value>
+  </data>
+  <data name="LabSheetTubeMPNDetail" xml:space="preserve">
+    <value>LabSheetTubeMPNDetail</value>
+  </data>
+  <data name="LandBasePollutionSourceSiteObservationAndIssues" xml:space="preserve">
+    <value>Site de source de pollution sur terre, dernière observation et les enjeux</value>
+  </data>
+  <data name="LastObservationDate" xml:space="preserve">
+    <value>Date de la dernière observation</value>
+  </data>
+  <data name="Lat" xml:space="preserve">
+    <value>Lat</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="LatitudeInfo" xml:space="preserve">
+    <value>La valeur de la latitude doit se située entre -90 et 90.</value>
+  </data>
+  <data name="LatOrLngIsNull" xml:space="preserve">
+    <value>Lat Or Lng Is Null</value>
+  </data>
+  <data name="Layer" xml:space="preserve">
+    <value>Couche</value>
+  </data>
   <data name="Legend" xml:space="preserve">
     <value>Légende</value>
   </data>
+  <data name="LetterAndColorSchema" xml:space="preserve">
+    <value>Schéma des lettres et des couleurs</value>
+  </data>
+  <data name="LineNotStartingWith_CurrentLineIs_In_AtLine_" xml:space="preserve">
+    <value>La ligne ne commence pas par {0}. La ligne actuelle est {1} dans {2} à la ligne {3}</value>
+  </data>
+  <data name="ListOfFigures" xml:space="preserve">
+    <value>Liste des figures</value>
+  </data>
+  <data name="ListOfTables" xml:space="preserve">
+    <value>Liste des tableau</value>
+  </data>
+  <data name="LocalTime" xml:space="preserve">
+    <value>temps local</value>
+  </data>
+  <data name="LocationOfSurveyArea" xml:space="preserve">
+    <value>Lieu de la zone de sondage</value>
+  </data>
+  <data name="Long" xml:space="preserve">
+    <value>Long</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="LongitudeInfo" xml:space="preserve">
+    <value>La valeur de la longitude doit se située entre -180 et 180.</value>
+  </data>
   <data name="LowRisk" xml:space="preserve">
     <value>Risque faible</value>
+  </data>
+  <data name="ManningNumber" xml:space="preserve">
+    <value>Coefficient Manning</value>
+  </data>
+  <data name="MapInfo" xml:space="preserve">
+    <value>MapInfo</value>
+  </data>
+  <data name="MapInfoID" xml:space="preserve">
+    <value>MapInfoID</value>
+  </data>
+  <data name="MapInfoPoint" xml:space="preserve">
+    <value>MapInfoPoint</value>
+  </data>
+  <data name="mapInfoPointListSubsector" xml:space="preserve">
+    <value>mapInfoPointListSubsector</value>
+  </data>
+  <data name="mapInfoPointModelBC" xml:space="preserve">
+    <value>mapInfoPointModelBC</value>
+  </data>
+  <data name="MapInfoPointModelList" xml:space="preserve">
+    <value>MapInfoPointModelList</value>
+  </data>
+  <data name="MapInfoPolyPoint" xml:space="preserve">
+    <value>MapInfoPolyPoint</value>
   </data>
   <data name="Marine" xml:space="preserve">
     <value>Marine</value>
@@ -1293,107 +906,128 @@
   <data name="MarineWaterQualityMonitoringSites" xml:space="preserve">
     <value>Sites d'échantillonnage de qualité d'eau marine</value>
   </data>
-  <data name="ModerateRisk" xml:space="preserve">
-    <value>Risque modéré</value>
-  </data>
-  <data name="Other" xml:space="preserve">
-    <value>Autre</value>
-  </data>
-  <data name="PollutionSourceSites" xml:space="preserve">
-    <value>Sites de source de pollution</value>
-  </data>
-  <data name="Recreation" xml:space="preserve">
-    <value>Récréative</value>
-  </data>
-  <data name="Urban" xml:space="preserve">
-    <value>Urbain</value>
-  </data>
-  <data name="ShellfishWaterClassificationProgram" xml:space="preserve">
-    <value>Programme de classification des eaux coquillières</value>
-  </data>
   <data name="MarineWaterQualityReEvaluationReport" xml:space="preserve">
-    <value>Rapport de ré-évaluation qualité d'eau marine</value>
+    <value>Rapport de réévaluation qualité d'eau marine</value>
   </data>
-  <data name="Report" xml:space="preserve">
-    <value>Rapport</value>
+  <data name="MaxFC" xml:space="preserve">
+    <value>CF Max</value>
   </data>
-  <data name="ShellfishGrowingArea" xml:space="preserve">
-    <value>Shellfish Growing Area (fr)</value>
+  <data name="MaximumNumberOfSigmaLayers_" xml:space="preserve">
+    <value>Nombre maximum de couches sigma [{0}].</value>
   </data>
-  <data name="Dist" xml:space="preserve">
-    <value>Dist</value>
+  <data name="Median" xml:space="preserve">
+    <value>Médiane</value>
   </data>
-  <data name="ID" xml:space="preserve">
-    <value>ID</value>
+  <data name="Mesh" xml:space="preserve">
+    <value>Filet</value>
   </data>
-  <data name="Issues" xml:space="preserve">
-    <value>Issues</value>
+  <data name="MIKEBoundaryCondition" xml:space="preserve">
+    <value>Conditions à la limite MIKE</value>
   </data>
-  <data name="LandBasePollutionSourceSiteObservationAndIssues" xml:space="preserve">
-    <value>Site de source de polution sur terre, dernière observation et les enjeux</value>
+  <data name="MikeBoundaryConditionCode" xml:space="preserve">
+    <value>Code de conditions à la limite (MIKE)</value>
   </data>
-  <data name="NoObservationForThisPollutionSourceSite" xml:space="preserve">
-    <value>Aucune observation pour ce site de pollution</value>
+  <data name="MikeBoundaryConditionFormat" xml:space="preserve">
+    <value>Format de conditions à la limite (MIKE)</value>
   </data>
-  <data name="Photos" xml:space="preserve">
-    <value>Photos</value>
+  <data name="MikeBoundaryConditionFormatShouldBeVaryingInTimeConstantAlongBoundaryToStart" xml:space="preserve">
+    <value>Le format aux conditions limites de MIKE devrait varier dans le temps constant le long des limites pour commencer</value>
   </data>
-  <data name="Slope" xml:space="preserve">
-    <value>Pente</value>
+  <data name="MikeBoundaryConditionLength" xml:space="preserve">
+    <value>Longueur de conditions à la limite (MIKE)</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
+  <data name="MikeBoundaryConditionLevelOrVelocity" xml:space="preserve">
+    <value>Mike Boundary Condition Type</value>
   </data>
-  <data name="Coord" xml:space="preserve">
-    <value>Coord</value>
+  <data name="MikeBoundaryConditionName" xml:space="preserve">
+    <value>Nom de conditions à la limite (MIKE)</value>
   </data>
-  <data name="CouldNotCreateDirectory__" xml:space="preserve">
-    <value>Dans l'impossibilité de créer le répertoire {0}. Erreur: {1}</value>
+  <data name="MIKEBoundaryConditions" xml:space="preserve">
+    <value>MIKE conditions aux limites</value>
   </data>
-  <data name="Issue" xml:space="preserve">
-    <value>Enjeux</value>
+  <data name="MikeBoundaryConditionTVItemID" xml:space="preserve">
+    <value>MikeBoundaryConditionTVItemID</value>
   </data>
-  <data name="NoActiveSites" xml:space="preserve">
-    <value>Aucun site actif</value>
+  <data name="MikeBoundaryConditionType" xml:space="preserve">
+    <value>Niveau ou vélocité aux conditions à la limite (MIKE)</value>
   </data>
-  <data name="Risk" xml:space="preserve">
-    <value>Risque</value>
+  <data name="MikeBoundaryConditionTypeShouldBeVelocityOrLevel" xml:space="preserve">
+    <value>Le type de variables aux conditions limites de MIKE doit être la vitesse ou le niveau</value>
   </data>
-  <data name="WaterBasePollutionSourceSiteObservationAndIssues1" xml:space="preserve">
-    <value>Site de source de polution sur l'eau, dernière observation et les enjeux</value>
+  <data name="MikeBoundaryElementNodes" xml:space="preserve">
+    <value>Éléments aux nœuds de la limite (MIKE)</value>
   </data>
-  <data name="CouldNotFind_M21OrM3MDBWith_Equal_" xml:space="preserve">
-    <value>Could not find {0} for M21 or M3 MDB file with {1} equal {2} (fr)</value>
+  <data name="MIKEMesh" xml:space="preserve">
+    <value>Grillage de MIKE</value>
   </data>
-  <data name="NumberOfIssuesByLandBasePollutionType" xml:space="preserve">
-    <value>Nombre d'enjeux par type de pollution terrestre</value>
+  <data name="MIKEPollutionAnimation" xml:space="preserve">
+    <value>Animation de pollution MIKE</value>
   </data>
-  <data name="NumberOfIssuesByWaterBasePollutionType" xml:space="preserve">
-    <value>Nombre d'enjeux par type de pollution marine</value>
+  <data name="MIKEPollutionLimit" xml:space="preserve">
+    <value>MIKE limite de pollution</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="MikeScenario" xml:space="preserve">
+    <value>MikeScenario</value>
   </data>
-  <data name="MWQMSiteSampleDataAvailability" xml:space="preserve">
-    <value>MWQM site sample data availability (fr)</value>
+  <data name="MikeScenarioAlreadyRunning" xml:space="preserve">
+    <value>Le scénario de MIKE est déjà en cours d'exécution</value>
   </data>
-  <data name="MWQMSitesInformation" xml:space="preserve">
-    <value>MWQM sites information (fr)</value>
+  <data name="MikeScenarioBoundaryConditionFileAutoGenerate" xml:space="preserve">
+    <value>Fichier de condition de bordure du scénario de Mike Auto Generate</value>
   </data>
-  <data name="NOTE" xml:space="preserve">
-    <value>NOTE (fr)</value>
+  <data name="MikeScenarioConcentrationAnimation" xml:space="preserve">
+    <value>Animation de pollution du scénario MIKE</value>
   </data>
-  <data name="Shaded" xml:space="preserve">
-    <value>Shaded (fr)</value>
+  <data name="MikeScenarioConcentrationLimits" xml:space="preserve">
+    <value>Limites de pollution de scénario Mike</value>
   </data>
-  <data name="ActiveMWQMSites" xml:space="preserve">
-    <value>Active MWQM sites (fr)</value>
+  <data name="MikeScenarioCurrentAnimation" xml:space="preserve">
+    <value>Animation des courants du scénario MIKE</value>
   </data>
-  <data name="EndTide" xml:space="preserve">
-    <value>End tide (fr)</value>
+  <data name="MikeScenarioCurrentMaximum" xml:space="preserve">
+    <value>Courants maximum du scénario MIKE</value>
   </data>
-  <data name="FCDensities" xml:space="preserve">
-    <value>FC Densities (fr)</value>
+  <data name="MIKEScenarioDocumentation" xml:space="preserve">
+    <value>MIKEScenarioDocumentation</value>
+  </data>
+  <data name="MikeScenarioMesh" xml:space="preserve">
+    <value>Grillage du scénario MIKE</value>
+  </data>
+  <data name="MikeScenarioResult" xml:space="preserve">
+    <value>MikeScenarioResult</value>
+  </data>
+  <data name="MikeScenarioStudyArea" xml:space="preserve">
+    <value>Région d'étude du scénario MIKE</value>
+  </data>
+  <data name="MikeScenarioTVItemID" xml:space="preserve">
+    <value>MikeScenarioTVItemID</value>
+  </data>
+  <data name="MikeSource" xml:space="preserve">
+    <value>MikeSource</value>
+  </data>
+  <data name="MikeSourceID" xml:space="preserve">
+    <value>MikeSourceID</value>
+  </data>
+  <data name="mikeSourceModelList" xml:space="preserve">
+    <value>mikeSourceModelList</value>
+  </data>
+  <data name="MIKESourceNameIsEmpty" xml:space="preserve">
+    <value>Nom de la source MIKE est vide</value>
+  </data>
+  <data name="MikeSources" xml:space="preserve">
+    <value>MikeSources</value>
+  </data>
+  <data name="MikeSourceStartEnd" xml:space="preserve">
+    <value>MikeSourceStartEnd</value>
+  </data>
+  <data name="MikeSourceTVItemID" xml:space="preserve">
+    <value>MikeSourceTVItemID</value>
+  </data>
+  <data name="MIKEStudyArea" xml:space="preserve">
+    <value>MIKE région d'étude</value>
+  </data>
+  <data name="MinFC" xml:space="preserve">
+    <value>CF Min</value>
   </data>
   <data name="Minus1Day" xml:space="preserve">
     <value>0-24 h</value>
@@ -1410,170 +1044,35 @@
   <data name="Minus5Day" xml:space="preserve">
     <value>(-5) j</value>
   </data>
-  <data name="MWQMSitesSummary" xml:space="preserve">
-    <value>MWQM Sites Summary (fr)</value>
+  <data name="MinutesLowerCase" xml:space="preserve">
+    <value>Minutes</value>
   </data>
-  <data name="NumberOfMWQMRunsByYear" xml:space="preserve">
-    <value>Number of MWQM runs by year (fr)</value>
+  <data name="MissingTheSwitch_In_AtLine_" xml:space="preserve">
+    <value>Manquant le commutateur {0} dans {1} à la ligne {2}</value>
   </data>
-  <data name="NumberOfMWQMSitesByYear" xml:space="preserve">
-    <value>Number of MWQM sites by year (fr)</value>
+  <data name="ModelInput" xml:space="preserve">
+    <value>Intrants modèle</value>
   </data>
-  <data name="NumberOfSamplesByYear" xml:space="preserve">
-    <value>Number of samples by year (fr)</value>
+  <data name="ModelParameters" xml:space="preserve">
+    <value>Paramètres modèle</value>
   </data>
-  <data name="Rain" xml:space="preserve">
-    <value>Rain (fr)</value>
+  <data name="ModerateRisk" xml:space="preserve">
+    <value>Risque modéré</value>
   </data>
-  <data name="Routine" xml:space="preserve">
-    <value>Routine</value>
-  </data>
-  <data name="StartTide" xml:space="preserve">
-    <value>Start tide (fr)</value>
-  </data>
-  <data name="Creating_" xml:space="preserve">
-    <value>Création de [{0}]</value>
-  </data>
-  <data name="TableOfContents" xml:space="preserve">
-    <value>Table des matières</value>
-  </data>
-  <data name="ListOfFigures" xml:space="preserve">
-    <value>Liste des figures</value>
-  </data>
-  <data name="ListOfTables" xml:space="preserve">
-    <value>Liste des tableau</value>
-  </data>
-  <data name="NumberOfRunsUsedByYear" xml:space="preserve">
-    <value>Nombre de randonnées utilisées par année</value>
-  </data>
-  <data name="MWQMSitesApproximateLocation" xml:space="preserve">
-    <value>Endroit approximative des sites PSQEM</value>
-  </data>
-  <data name="PolSourceSitesApproximateLocation" xml:space="preserve">
-    <value>Endroit approximative des sites de source de pollution </value>
-  </data>
-  <data name="NoMunicipalityWithinSubsector" xml:space="preserve">
-    <value>Aucune municipalité à l'intérieur du sous-secteur</value>
-  </data>
-  <data name="Runs" xml:space="preserve">
-    <value>Tournées</value>
-  </data>
-  <data name="CouldNotAddNewSection_" xml:space="preserve">
-    <value>Could not add new section {0} (fr)</value>
-  </data>
-  <data name="CouldNotGetSection_" xml:space="preserve">
-    <value>Could not get section {0} (fr)</value>
-  </data>
-  <data name="CouldNotDeleteSection_" xml:space="preserve">
-    <value>Could not delete section {0} (fr)</value>
-  </data>
-  <data name="CSVOfMWQMSamples" xml:space="preserve">
-    <value>Comma Separated Values file of MWQM Samples (fr)</value>
-  </data>
-  <data name="CSVOfMWQMSites" xml:space="preserve">
-    <value>Comma Separated Values file of MWQM Sites (fr)</value>
-  </data>
-  <data name="KMZOfMWQMSites" xml:space="preserve">
-    <value>KMZ file of MWQM Sites (fr)</value>
-  </data>
-  <data name="XlsxOfMWQMSamples" xml:space="preserve">
-    <value>Excel file of MWQM Samples (fr)</value>
-  </data>
-  <data name="XlsxOfMWQMSites" xml:space="preserve">
-    <value>Excel file of MWQM Sites (fr)</value>
-  </data>
-  <data name="GeneralStatAndInfo" xml:space="preserve">
-    <value>General stat and info (fr)</value>
-  </data>
-  <data name="Infrastructures" xml:space="preserve">
-    <value>Infrastructures (fr)</value>
+  <data name="MPN" xml:space="preserve">
+    <value>NPP</value>
   </data>
   <data name="Municipalities" xml:space="preserve">
-    <value>Municipalities (fr)</value>
+    <value>Municipalités</value>
   </data>
-  <data name="MWQMSites" xml:space="preserve">
-    <value>MWQM Sites (fr)</value>
+  <data name="MunicipalityFileAutoGenerate" xml:space="preserve">
+    <value>Fichier de la municipalité générer automatiquement</value>
   </data>
-  <data name="GenerateProvincePollutionSourceSitesForInputTool" xml:space="preserve">
-    <value>Generate Province Pollution Source Sites For Input Tool (fr)</value>
+  <data name="MWQMAnalysisReportParameter" xml:space="preserve">
+    <value>MWQMAnalysisReportParameter</value>
   </data>
-  <data name="_WithinDocument_ShouldNotBeEmpty" xml:space="preserve">
-    <value>[{0}] within document [{1}] should not be empty (fr)</value>
-  </data>
-  <data name="Classification" xml:space="preserve">
-    <value>Classification</value>
-  </data>
-  <data name="CouldNotDelete_Error_" xml:space="preserve">
-    <value>Could not delete {0}. Error [{1}]. (fr)</value>
-  </data>
-  <data name="ClassificationInputsKML" xml:space="preserve">
-    <value>Classification Inputs KML (fr)</value>
-  </data>
-  <data name="GroupingInputsKML" xml:space="preserve">
-    <value>Grouping Inputs KML (fr)</value>
-  </data>
-  <data name="MWQMSitesAndPolSourceSitesKML" xml:space="preserve">
-    <value>MWQMSites and PolSourceSites KML (fr)</value>
-  </data>
-  <data name="TVItemLink" xml:space="preserve">
-    <value>TVItemLink</value>
-  </data>
-  <data name="TVItemLinkID" xml:space="preserve">
-    <value>TVItemLinkID</value>
-  </data>
-  <data name="MWQMSitePolSourceSite" xml:space="preserve">
-    <value>MWQMSitePolSourceSite</value>
-  </data>
-  <data name="CouldNotParse_As_" xml:space="preserve">
-    <value>Could not parse {0} as {1} (fr)</value>
-  </data>
-  <data name="Variable_ShouldBe_ItIs_" xml:space="preserve">
-    <value>Variable {0} should be {1} it is {2} (fr)</value>
-  </data>
-  <data name="WrongNumberOfValuesShouldBe_" xml:space="preserve">
-    <value>Wrong number of values. Should be {0} (fr)</value>
-  </data>
-  <data name="WrongNumberOfVariablesShouldBe_" xml:space="preserve">
-    <value>Wrong number of variables. Should be {0} (fr)</value>
-  </data>
-  <data name="CouldNotStartExcel" xml:space="preserve">
-    <value>Could not start excel (fr)</value>
-  </data>
-  <data name="CouldNotFindHtmlElement_" xml:space="preserve">
-    <value>Could not find HTML Element {0} (fr)</value>
-  </data>
-  <data name="FedStationName" xml:space="preserve">
-    <value>FedStationName</value>
-  </data>
-  <data name="ActivePollutionSourceSites" xml:space="preserve">
-    <value>Sites actifs de source de pollution</value>
-  </data>
-  <data name="by" xml:space="preserve">
-    <value>par</value>
-  </data>
-  <data name="CivicAddress" xml:space="preserve">
-    <value>Adresse civique</value>
-  </data>
-  <data name="ExtraComment" xml:space="preserve">
-    <value>Commentaire d'extra</value>
-  </data>
-  <data name="LastObservationDate" xml:space="preserve">
-    <value>Date de la dernière observation</value>
-  </data>
-  <data name="Lat" xml:space="preserve">
-    <value>Lat</value>
-  </data>
-  <data name="Long" xml:space="preserve">
-    <value>Long</value>
-  </data>
-  <data name="HydrometricDataValue" xml:space="preserve">
-    <value>HydrometricDataValue</value>
-  </data>
-  <data name="HydrometricSiteModel" xml:space="preserve">
-    <value>HydrometricSiteModel</value>
-  </data>
-  <data name="MikeSourceTVItemID" xml:space="preserve">
-    <value>MikeSourceTVItemID</value>
+  <data name="MWQMAnalysisReportParameterID" xml:space="preserve">
+    <value>MWQMAnalysisReportParameterID</value>
   </data>
   <data name="MWQMRun" xml:space="preserve">
     <value>MWQMRun</value>
@@ -1581,194 +1080,572 @@
   <data name="MWQMRunTVItemID" xml:space="preserve">
     <value>MWQMRunTVItemID</value>
   </data>
-  <data name="_CountShouldBe_" xml:space="preserve">
-    <value>{0} count should be {1} (fr)</value>
+  <data name="MWQMSamplingPlanAutoGenerate" xml:space="preserve">
+    <value>Le plan d'échantillonnage PSQEM génère automatiquement</value>
   </data>
-  <data name="CouldNotFindElementID_WithinURL_" xml:space="preserve">
-    <value>Could not find element id {0} within URL [{1}] (fr)</value>
+  <data name="MWQMSite" xml:space="preserve">
+    <value>Site PSQEM</value>
   </data>
-  <data name="FirstCellOfRow_WasSupposeToBeATHWithinURL_" xml:space="preserve">
-    <value>First cell of row {0} was suppose to be a "th" within URL [{1}] (fr)</value>
+  <data name="MWQMSitePolSourceSite" xml:space="preserve">
+    <value>MWQMSitePolSourceSite</value>
   </data>
-  <data name="HTMLTitleShouldStartWith_" xml:space="preserve">
-    <value>HTML title should start with [{0}] (fr)</value>
+  <data name="MWQMSites" xml:space="preserve">
+    <value>Sites de SQEM</value>
   </data>
-  <data name="InvalidURL_CouldNotFind_" xml:space="preserve">
-    <value>Invalid URL [{0}] could not find [{1}] (fr)</value>
+  <data name="MWQMSiteSampleDataAvailability" xml:space="preserve">
+    <value>Disponibilité des données des sites de SQEM</value>
   </data>
-  <data name="ShouldHaveFound_CellsOfTypeTDWithinURL_" xml:space="preserve">
-    <value>Should have found {0} cells of type "td" within URL [{1}] (fr)</value>
+  <data name="MWQMSitesAndPolSourceSitesKML" xml:space="preserve">
+    <value>Sites de SQEM et PolSourceSites KML</value>
   </data>
-  <data name="TableDoesNotContainProperHeader_OnFirstRowWithinURL_" xml:space="preserve">
-    <value>Table does not contain proper header [{0}] on first row within URL [{1}] (fr)</value>
+  <data name="MWQMSitesApproximateLocation" xml:space="preserve">
+    <value>Endroit approximative des sites PSQEM</value>
   </data>
-  <data name="TableDoesNotContain_CellsOnFirstRowWithinURL_" xml:space="preserve">
-    <value>Table does not contain {0} cells on first row within URL [{1}] (fr)</value>
+  <data name="MWQMSitesInformation" xml:space="preserve">
+    <value>Information des sites de SQEM</value>
   </data>
-  <data name="TableDoesNotContain_RowsWithinURL_" xml:space="preserve">
-    <value>Table does not contain {0} rows within URL [{1}] (fr)</value>
+  <data name="MWQMSitesSummary" xml:space="preserve">
+    <value>Résumé des sites de SQEM</value>
   </data>
-  <data name="KMZClassViewCheck" xml:space="preserve">
-    <value>KMZ Class View Check (fr)</value>
+  <data name="MWQMSubsector" xml:space="preserve">
+    <value>MWQMSubsector</value>
   </data>
-  <data name="AddNewSource_Number_InM21FMOrM3MFFile" xml:space="preserve">
-    <value>Add new source [{0}] number [{1}] in .m21fm or .m3fm (fr)</value>
+  <data name="NeedToImplement" xml:space="preserve">
+    <value>Doit implanter</value>
   </data>
-  <data name="CreatingALogFileIfItDoesNotYetExist" xml:space="preserve">
-    <value>Creating a log file if it does not yet exist (fr)</value>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
   </data>
-  <data name="CreatingFileDecayDotDFS0" xml:space="preserve">
-    <value>Creating file Decay.dfs0 (fr)</value>
+  <data name="NoActiveSites" xml:space="preserve">
+    <value>Aucun site actif</value>
   </data>
-  <data name="CreatingSalinityAndTemperatureInitialConditionsFiles" xml:space="preserve">
-    <value>Creating salinity and temperature initial conditions files (fr)</value>
+  <data name="Node" xml:space="preserve">
+    <value>Nœud</value>
   </data>
-  <data name="CreatingSinusoidalDecayFile" xml:space="preserve">
-    <value>Creating sinusoidal decay file (fr)</value>
+  <data name="Nodes" xml:space="preserve">
+    <value>Nœuds</value>
   </data>
-  <data name="CreatingSourceFlowDFSOFileSourceName_Number_" xml:space="preserve">
-    <value>Saving source flow .dfs0 file in DB source name [{0}] number [{1}] (fr)</value>
+  <data name="NoDFSUFileFound" xml:space="preserve">
+    <value>Aucun fichier .dfsu trouver</value>
   </data>
-  <data name="CreatingSourcePolDFSOFileSourceName_Number_" xml:space="preserve">
-    <value>Creating source pollution .dfs0 file source name [{0}] number [{1}] (fr)</value>
+  <data name="NoMunicipalityWithinSubsector" xml:space="preserve">
+    <value>Aucune municipalité à l'intérieur du sous-secteur</value>
   </data>
-  <data name="DoingDecay" xml:space="preserve">
-    <value>Doing decay (fr)</value>
+  <data name="NoObservationForThisPollutionSourceSite" xml:space="preserve">
+    <value>Aucune observation pour ce site de pollution</value>
   </data>
-  <data name="DoingSources" xml:space="preserve">
-    <value>Doing sources (fr)</value>
+  <data name="NoReportSectionFound" xml:space="preserve">
+    <value>Aucune section de rapport trouver</value>
   </data>
-  <data name="DoingSource_" xml:space="preserve">
-    <value>Doing source {0} (fr)</value>
+  <data name="NormalRunCompletion" xml:space="preserve">
+    <value>Exécution complétée normalement.</value>
   </data>
-  <data name="GettingApproximateSizeOfHydrodynamicResultFile" xml:space="preserve">
-    <value>Getting approximate size of hydrodynamic result file (fr)</value>
+  <data name="NorthClockwiseLowerCase" xml:space="preserve">
+    <value>Nord dans le sens horaire</value>
   </data>
-  <data name="GettingApproximateSizeOfTransportResultFile" xml:space="preserve">
-    <value>Getting approximate size of transport result file (fr)</value>
+  <data name="NotDetermined" xml:space="preserve">
+    <value>Indéterminé</value>
   </data>
-  <data name="HydrometricTVItemID" xml:space="preserve">
-    <value>HydrometricTVItemID</value>
+  <data name="NOTE" xml:space="preserve">
+    <value>NOTE</value>
+  </data>
+  <data name="NotImplementedYet" xml:space="preserve">
+    <value>Pas encore implanté.</value>
+  </data>
+  <data name="NotIncludedLowerCase" xml:space="preserve">
+    <value>pas inclus</value>
+  </data>
+  <data name="NotShown" xml:space="preserve">
+    <value>pas montré</value>
+  </data>
+  <data name="NotUsedLowerCase" xml:space="preserve">
+    <value>pas utilisé</value>
+  </data>
+  <data name="NoWind" xml:space="preserve">
+    <value>aucun vent</value>
+  </data>
+  <data name="No_FileFoundInM21Or3fmFile" xml:space="preserve">
+    <value>Aucun {0} fichier trouvé dans le fichier .m21fm ou .m3fm</value>
+  </data>
+  <data name="NumberOfIssuesByLandBasePollutionType" xml:space="preserve">
+    <value>Nombre d'enjeux par type de pollution terrestre</value>
+  </data>
+  <data name="NumberOfIssuesByWaterBasePollutionType" xml:space="preserve">
+    <value>Nombre d'enjeux par type de pollution marine</value>
+  </data>
+  <data name="NumberOfMWQMRunsByYear" xml:space="preserve">
+    <value>Nombre de tournée SQEM par ans</value>
+  </data>
+  <data name="NumberOfMWQMSitesByYear" xml:space="preserve">
+    <value>Nombre de sites SQEM par ans</value>
+  </data>
+  <data name="NumberOfRuns" xml:space="preserve">
+    <value>Nombre d'échantillons</value>
+  </data>
+  <data name="NumberOfRunsUsedByYear" xml:space="preserve">
+    <value>Nombre de randonnées utilisées par année</value>
+  </data>
+  <data name="NumberOfSamplesByYear" xml:space="preserve">
+    <value>Nombre d'échantillons par ans</value>
+  </data>
+  <data name="NumberOfWebTideNodes" xml:space="preserve">
+    <value>Nombre de nœuds WebTide</value>
+  </data>
+  <data name="NumberOfWebTideNodesIsZero" xml:space="preserve">
+    <value>Le nombre de nœuds de marée Web est nul</value>
+  </data>
+  <data name="NumberTextIsRequired" xml:space="preserve">
+    <value>NumberText est requis</value>
+  </data>
+  <data name="OneOfRainValueForRunDate_RunTVItemID_HasNoData" xml:space="preserve">
+    <value>Une des valeurs de pluie pour la tournée de date [{0}] et tournée TVItemID [{1}] n'a pas de données</value>
+  </data>
+  <data name="OneOfSharedStringAndNumberIsRequired" xml:space="preserve">
+    <value>Une chaîne et un numéro partagés sont requis</value>
+  </data>
+  <data name="OnlyAllowedConstantDecayRate" xml:space="preserve">
+    <value>Pour le taux de décroissance constant, il est permis de télécharger les fichiers  .m21fm ou .m3fm seulement.</value>
+  </data>
+  <data name="OnlyAllowedConstantPollutionFlow" xml:space="preserve">
+    <value>Pour une source de pollution à déversement constant, il est permit de télécharger les fichiers .m21fm ou .m3fm seulement.</value>
+  </data>
+  <data name="OnlyOneHydrodynamicAndTransportOutputIsAllowed" xml:space="preserve">
+    <value>Une seule production hydrodynamique et de transport est autorisée</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Autre</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Sortie</value>
+  </data>
+  <data name="P90" xml:space="preserve">
+    <value>P90</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>le paramètre</value>
+  </data>
+  <data name="ParameterCount_NotEqual_" xml:space="preserve">
+    <value>Nombre de paramètres {0} Non égal à {1}</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>les paramètres</value>
+  </data>
+  <data name="ParameterType" xml:space="preserve">
+    <value>ParameterType</value>
+  </data>
+  <data name="Parameter_NotFound" xml:space="preserve">
+    <value>Paramètre [{0}] introuvable</value>
   </data>
   <data name="PartialSaveOfM21FMOrM3FMFile" xml:space="preserve">
-    <value>Partial save of .m21fm or .m3fm file (fr)</value>
+    <value>Sauvegarde partiel du fichier .m21fm ou .m3fm</value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>Période</value>
+  </data>
+  <data name="PFS_Error_" xml:space="preserve">
+    <value>PFS {0} Erreur {1}</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>Photos</value>
+  </data>
+  <data name="PleaseAddReportSectionForSpecificYear" xml:space="preserve">
+    <value>SVP ajouter les sections des rapport pour les années spécifiques</value>
+  </data>
+  <data name="PleaseEnterAValid_" xml:space="preserve">
+    <value>Veuillez entrer une valeur de  [{0}] valide.</value>
+  </data>
+  <data name="PleaseModifyIfNeeded" xml:space="preserve">
+    <value>SVP modifier au besoin</value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasForDepth" xml:space="preserve">
+    <value>Veuillez entrer des nombres valides séparés par des virgules pour la profondeur</value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasForSigmaLayers" xml:space="preserve">
+    <value>Veuillez entrer des nombres valides séparés par des virgules pour les couches Sigma </value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasForZLayers" xml:space="preserve">
+    <value>Veuillez entrer des nombres valides séparés par des virgules pour les couches Z </value>
+  </data>
+  <data name="PlsEnterValidNumSeparatedByCommasFor_" xml:space="preserve">
+    <value>Veuillez entrer les numéros en les séparant avec des virgules pour les couches Z (Z Layers)</value>
+  </data>
+  <data name="PollutionAnimation" xml:space="preserve">
+    <value>Animation de pollution</value>
+  </data>
+  <data name="PollutionContour" xml:space="preserve">
+    <value>Contour de pollution</value>
+  </data>
+  <data name="PollutionLimits" xml:space="preserve">
+    <value>Limites de pollution</value>
+  </data>
+  <data name="PollutionSourceLocation" xml:space="preserve">
+    <value>Lieu de la source de pollution</value>
+  </data>
+  <data name="PollutionSourceSites" xml:space="preserve">
+    <value>Sites de source de pollution</value>
+  </data>
+  <data name="PollutionVideo" xml:space="preserve">
+    <value>Vidéo de pollution</value>
+  </data>
+  <data name="PolSourceSitesApproximateLocation" xml:space="preserve">
+    <value>Endroit approximative des sites de source de pollution </value>
+  </data>
+  <data name="Polygons" xml:space="preserve">
+    <value>Polygones</value>
+  </data>
+  <data name="Problem" xml:space="preserve">
+    <value>Difficulté</value>
+  </data>
+  <data name="ProblemWhenParsing_" xml:space="preserve">
+    <value>Problème durant la lecture de  [{0}].</value>
+  </data>
+  <data name="Prov" xml:space="preserve">
+    <value>Prov</value>
+  </data>
+  <data name="Province" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="ProvinceFileAutoGenerate" xml:space="preserve">
+    <value>Fichier Province générer automatiquement</value>
+  </data>
+  <data name="Province_NotEqualTo_AtLine_" xml:space="preserve">
+    <value>Province [{0}] Non égal à [{1}] À la ligne {2}</value>
+  </data>
+  <data name="Province_NotFound" xml:space="preserve">
+    <value>Province [{0}] non trouvée</value>
+  </data>
+  <data name="PSU" xml:space="preserve">
+    <value>PSU</value>
+  </data>
+  <data name="Rain" xml:space="preserve">
+    <value>Pluie</value>
+  </data>
+  <data name="ReadCompleted" xml:space="preserve">
+    <value>Lecture complétée</value>
+  </data>
+  <data name="ReadingFile_" xml:space="preserve">
+    <value>Lecture du fichier [{0}]</value>
+  </data>
+  <data name="ReadingFile_Completed" xml:space="preserve">
+    <value>Lecture du fichier [{0}] est compléter.</value>
   </data>
   <data name="ReadingUserInput" xml:space="preserve">
-    <value>Reading user input (fr)</value>
+    <value>Lecture des entrées de l'utilisateur</value>
+  </data>
+  <data name="ReadLogFileCompleted" xml:space="preserve">
+    <value>Lecture du journal d'exploitation complétée</value>
+  </data>
+  <data name="RecommendedShellfishGrowingAreaClassification" xml:space="preserve">
+    <value>Classification des zones de croissances des crustacé recommandé</value>
+  </data>
+  <data name="Recreation" xml:space="preserve">
+    <value>Récréative</value>
+  </data>
+  <data name="ReEvaluation" xml:space="preserve">
+    <value>Ré-Évaluation</value>
+  </data>
+  <data name="ReEvaluationReport" xml:space="preserve">
+    <value>Rapport de la réévaluation</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Rapport</value>
+  </data>
+  <data name="ReportID" xml:space="preserve">
+    <value>ID du rapport</value>
+  </data>
+  <data name="ReportTypeID" xml:space="preserve">
+    <value>ReportTypeID</value>
+  </data>
+  <data name="ReportYear" xml:space="preserve">
+    <value>L'année du rapport</value>
+  </data>
+  <data name="ResultFrequency" xml:space="preserve">
+    <value>Fréquence des résultats</value>
+  </data>
+  <data name="Risk" xml:space="preserve">
+    <value>Risque</value>
+  </data>
+  <data name="RootFileAutoGenerate" xml:space="preserve">
+    <value>Fichier base générer automatiquement</value>
+  </data>
+  <data name="Routine" xml:space="preserve">
+    <value>Routine</value>
+  </data>
+  <data name="RunCancelledByUser" xml:space="preserve">
+    <value>Opération annulée par l'utilisateur.</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Opération en cours</value>
+  </data>
+  <data name="Runs" xml:space="preserve">
+    <value>Tournées</value>
+  </data>
+  <data name="RunsOmitted" xml:space="preserve">
+    <value>Échantillons omis</value>
+  </data>
+  <data name="Salinity" xml:space="preserve">
+    <value>Salinité</value>
+  </data>
+  <data name="SalinityEnd" xml:space="preserve">
+    <value>Salinité à la fin</value>
+  </data>
+  <data name="SalinityReference" xml:space="preserve">
+    <value>Salinité de référence</value>
+  </data>
+  <data name="SalinityStart" xml:space="preserve">
+    <value>Salinité au début</value>
+  </data>
+  <data name="Samples" xml:space="preserve">
+    <value>Échant.</value>
+  </data>
+  <data name="SamplingPlan" xml:space="preserve">
+    <value>SamplingPlan</value>
+  </data>
+  <data name="SamplingPlanFileAutoGenerate" xml:space="preserve">
+    <value>Auto génération du plan d'échantillonnage de SQEM</value>
+  </data>
+  <data name="SamplingPlanID" xml:space="preserve">
+    <value>SamplingPlanID</value>
+  </data>
+  <data name="SavingScenarioFiles" xml:space="preserve">
+    <value>Enregistrer les fichiers de scénarios</value>
   </data>
   <data name="SavingSourceFlowDFSOFileInDBSourceName_Number_" xml:space="preserve">
-    <value>Saving source flow .dfs0 file in DB source name [{0}] number [{1}] (fr)</value>
+    <value>Sauvegarde du fichier de la source de flow .dfs0 dans Db nom de la source [{0}] numéro [{1}]</value>
   </data>
   <data name="SavingSourcePolDFSOFileInDBSourceName_Number_" xml:space="preserve">
-    <value>Saving source pollution .dfs0 file in DB source name [{0}] number [{1}] (fr)</value>
+    <value>Sauvegarde du fichier de la source de pollution .dfs0 dans DB nom de la source [{0}] numéro [{1}]</value>
+  </data>
+  <data name="ScenarioEndTime" xml:space="preserve">
+    <value>Temps à la fin du scénario</value>
+  </data>
+  <data name="ScenarioStartTime" xml:space="preserve">
+    <value>Temps au début du scénario</value>
+  </data>
+  <data name="SectorFileAutoGenerate" xml:space="preserve">
+    <value>Fichier de secteur générer automatiquement</value>
+  </data>
+  <data name="ServerFileName" xml:space="preserve">
+    <value>ServerFileName</value>
+  </data>
+  <data name="ServerFilePath" xml:space="preserve">
+    <value>ServerFilePath</value>
+  </data>
+  <data name="ServerFullPath" xml:space="preserve">
+    <value>ServerFullPath</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingFileNameArea" xml:space="preserve">
+    <value>Réglage du découplage hydrodynamique des modules de file_name_area</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingFileNameFlux" xml:space="preserve">
+    <value>Réglage du découplage hydrodynamique des modules de file_name_flux</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingLastTimeStep" xml:space="preserve">
+    <value>Réglage du découplage hydrodynamique des modules de last_time_step</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingSpecificationFile" xml:space="preserve">
+    <value>Réglage du découplage hydrodynamique des modules de specification_file</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingTimeStepFrequency" xml:space="preserve">
+    <value>Réglage du découplage hydrodynamique des modules de time_step_frequency</value>
+  </data>
+  <data name="SettingHydrodynamicModuleDecouplingType" xml:space="preserve">
+    <value>Réglage du découplage hydrodynamique des modules des types</value>
   </data>
   <data name="SettingHydrodynamicModuleInitialConditionSalinityFileName" xml:space="preserve">
-    <value>Setting hydrodynamic module initial condition salinity file name (fr)</value>
+    <value>Réglage de la condition initiale du module hydrodynamique des nom des fichier de salinité</value>
   </data>
   <data name="SettingHydrodynamicModuleInitialConditionSalinityFormat" xml:space="preserve">
-    <value>Setting hydrodynamic module initial condition salinity format (fr)</value>
+    <value>Réglage de la condition initiale du module hydrodynamique format de salinité</value>
   </data>
   <data name="SettingHydrodynamicModuleInitialConditionTemperatureFileName" xml:space="preserve">
-    <value>Setting hydrodynamic module initial condition temperature file name (fr)</value>
+    <value>Réglage de la condition initiale du module hydrodynamique fichier du nom de la température</value>
   </data>
   <data name="SettingHydrodynamicModuleInitialConditionTemperatureFormat" xml:space="preserve">
-    <value>Setting hydrodynamic module initial condition temperature format (fr)</value>
+    <value>Réglage de la condition initiale du module hydrodynamique du format de température</value>
   </data>
   <data name="SettingHydrodynamicModuleManning" xml:space="preserve">
-    <value>Setting hydrodynamic module manning (fr)</value>
+    <value>Mise en place du module hydrodynamique</value>
+  </data>
+  <data name="SettingHydrodynamicModulePrecipitationFormat" xml:space="preserve">
+    <value>Définition du format de précipitation du module hydrodynamique</value>
   </data>
   <data name="SettingHydrodynamicModuleSalinity" xml:space="preserve">
-    <value>Setting hydrodynamic module salinity (fr)</value>
+    <value>Réglage de la salinité du module hydrodynamique</value>
   </data>
   <data name="SettingHydrodynamicModulesourceConstantValueSourceName_Number_" xml:space="preserve">
-    <value>Setting hydrodynamic module source constant value source name [{0}] number [{1}] (fr)</value>
+    <value>Définition de la constante de source du module hydrodynamique nom de source [{0}] numéro [{1}]</value>
   </data>
   <data name="SettingHydrodynamicModuleSourceCoordinatesSourceName_Number_" xml:space="preserve">
-    <value>Setting transport module source coordinates source name [{0}] number [{1}] (fr)</value>
+    <value>Définition des coordonnées source du module de transport nom source [{0}] numéro [{1}]</value>
   </data>
   <data name="SettingHydrodynamicModuleSourceFileNameSourceName_Number_" xml:space="preserve">
-    <value>Setting hydrodynamic module source file name source name [{0}] number [{1}] (fr)</value>
+    <value>Définition du nom de fichier source du module hydrodynamique nom de source [{0}] numéro [{1}]</value>
+  </data>
+  <data name="SettingHydrodynamicModuleSourceFormatSourceName_Number_" xml:space="preserve">
+    <value>Définition du nom de source du format de source du module hydrodynamique [{0}] numéro [{1}]</value>
   </data>
   <data name="SettingHydrodynamicModuleSourceIncludeSourceName_Number_" xml:space="preserve">
-    <value>Setting hydrodynamic module source include source name [{0}] number [{1}] (fr)</value>
+    <value>Définition de la source du module hydrodynamique: inclure le nom de source [{0}] numéro [{1}]</value>
   </data>
   <data name="SettingHydrodynamicModuleSourceName_Number_" xml:space="preserve">
-    <value>Setting hydrodynamic module source name [{0}] number [{1}] (fr)</value>
+    <value>Définition du nom de source du module hydrodynamique [{0}] numéro [{1}] </value>
+  </data>
+  <data name="SettingHydrodynamicModuleSpecificPrecipitation" xml:space="preserve">
+    <value>Réglage des précipitations spécifiques au module hydrodynamique</value>
   </data>
   <data name="SettingHydrodynamicModuleTemperature" xml:space="preserve">
-    <value>Setting hydrodynamic module temperature (fr)</value>
+    <value>Réglage de la température du module hydrodynamique </value>
   </data>
   <data name="SettingHydrodynamicModuleWindDirection" xml:space="preserve">
-    <value>Setting hydrodynamic module wind direction (fr)</value>
+    <value>Définition de la direction du vent du module hydrodynamique </value>
   </data>
   <data name="SettingHydrodynamicModuleWindSpeed" xml:space="preserve">
-    <value>Setting hydrodynamic module wind speed (fr)</value>
+    <value>Réglage de la vitesse du vent du module hydrodynamique </value>
   </data>
   <data name="SettingHydrodynamicOutputLastTimeStep" xml:space="preserve">
-    <value>Setting hydrodynamic output last time step (fr)</value>
+    <value>Réglage de la sortie hydrodynamique du dernier pas de temps </value>
   </data>
   <data name="SettingHydrodynamicOutputTimeStepFrequency" xml:space="preserve">
-    <value>Setting hydrodynamic output time step frequency (fr)</value>
+    <value>Réglage de la fréquence de pas de temps de sortie hydrodynamique</value>
   </data>
   <data name="SettingNumberOfTimeStepsInM21FMOrM3FMFile" xml:space="preserve">
-    <value>Setting number of time steps in .m21fm or .m3fm file (fr)</value>
+    <value>Définition du nombre de pas de temps dans les fichiers .m21fm ou .m3fm</value>
   </data>
   <data name="SettingStartTimeInM21FMOrM3FMFile" xml:space="preserve">
-    <value>Setting start time in .m21fm or .m3fm file (fr)</value>
+    <value>Définition de l'heure de début dans un fichier .m21fm ou .m3fm </value>
   </data>
   <data name="SettingTransportModuleDecayConstantValue" xml:space="preserve">
-    <value>Setting transport module decay constant value (fr)</value>
+    <value>Définition de la valeur constante de désintégration du module de transport</value>
   </data>
   <data name="SettingTransportModuleDecayContinuous" xml:space="preserve">
-    <value>Setting transport module decay continuous (fr)</value>
+    <value>Réglage de la désintégration du module de transport en continu </value>
   </data>
   <data name="SettingTransportModuleDecayFileName" xml:space="preserve">
-    <value>Setting transport module decay file name (fr)</value>
+    <value>Définition du nom de fichier décomposée du module de transport </value>
   </data>
   <data name="SettingTransportModuleDecayFileNameToEmpty" xml:space="preserve">
-    <value>Setting transport module decay file name to empty (fr)</value>
+    <value>Définition du nom de fichier décomposée du module de transport à vide</value>
   </data>
   <data name="SettingTransportModuleDecayNotContinuous" xml:space="preserve">
-    <value>Setting transport module decay not continuous (fr)</value>
+    <value>Réglage de la désintégration du module de transport non continu </value>
   </data>
   <data name="SettingTransportModuleLastTimeStep" xml:space="preserve">
-    <value>Setting transport module last time step (fr)</value>
+    <value>Définition du dernier pas du module de transport </value>
+  </data>
+  <data name="SettingTransportModulePrecipitationFileName" xml:space="preserve">
+    <value>Définition du nom du fichier de précipitation du module de transport </value>
   </data>
   <data name="SettingTransportModuleSalinityConstantValueSourceName_Number_" xml:space="preserve">
-    <value>Setting transport module salinity constant value source name [{0}] number [{1}] (fr)</value>
+    <value>Définition de la constante de salinité du module de transport, nom de source [{0}] nombre [{1}] </value>
   </data>
   <data name="SettingTransportModuleSourceConstantValueSourceName_Number_" xml:space="preserve">
-    <value>Setting transport module source constant value source name [{0}] number [{1}] (fr)</value>
+    <value>Définition de la constante de source du module de transport nom de source [{0}] numéro [{1}] </value>
   </data>
   <data name="SettingTransportModuleSourceFileNameSourceName_Number_" xml:space="preserve">
-    <value>Setting transport module source file name source name [{0}] number [{1}] (fr)</value>
+    <value>Définition du nom de fichier source du module de transport nom de source [{0}] numéro [{1}]</value>
   </data>
   <data name="SettingTransportModuleSourceFormatSourceName_Number_" xml:space="preserve">
-    <value>Setting transport module source format source name [{0}] number [{1}] (fr)</value>
+    <value>Définition du format de source du module de transport: nom de source [{0}] numéro [{1}] </value>
   </data>
   <data name="SettingTransportModuleSourceName_Number_" xml:space="preserve">
-    <value>Setting transport module source name [{0}] number [{1}] (fr)</value>
+    <value>Définition du nom de source du module de transport [{0}] numéro [{1}]</value>
   </data>
   <data name="SettingTransportModuleTemperatureConstantValueSourceName_Number_" xml:space="preserve">
-    <value>Setting transport module temperature constant value source name [{0}] number [{1}] (fr)</value>
+    <value>Définition de la valeur constante de température du module de transport nom de la source [{0}] numéro [{1}] </value>
   </data>
   <data name="SettingTransportModuleTimeStepFrequency" xml:space="preserve">
-    <value>Setting transport module time step frequency (fr)</value>
+    <value>Réglage de la fréquence des pas de temps du module de transport</value>
   </data>
   <data name="SettingTransportOutputLastTimeStep" xml:space="preserve">
-    <value>Setting transport output last time step (fr)</value>
+    <value>Définition du dernier pas de temps de transport</value>
   </data>
   <data name="SettingTransportOutputTimeStepFrequency" xml:space="preserve">
-    <value>Setting transport output time step frequency (fr)</value>
+    <value>Réglage de la fréquence de pas de temps de sortie de transport</value>
   </data>
-  <data name="StoringDecayFile_InDB" xml:space="preserve">
-    <value>Storing decay file [{0}] in DB (fr)</value>
+  <data name="Shaded" xml:space="preserve">
+    <value>Ombragé</value>
   </data>
-  <data name="TweakScenarioStartTimeToHave60PercHighTideAndFalling" xml:space="preserve">
-    <value>Tweak scenario start time to have 60 % high tide and falling (fr)</value>
+  <data name="SharedStringAndNumberCannotBeUseAtOnce" xml:space="preserve">
+    <value>La chaîne partagée et le numéro ne peuvent pas être utilisés à la fois</value>
   </data>
-  <data name="UpdatingMikeScenarioInfoInDB" xml:space="preserve">
-    <value>Updating mike scenario info in DB (fr)</value>
+  <data name="SharedStringIsRequired" xml:space="preserve">
+    <value>SharedString est requis</value>
+  </data>
+  <data name="ShellfishGrowingArea" xml:space="preserve">
+    <value>Zone de croissance de crustacées</value>
+  </data>
+  <data name="ShellfishWaterClassificationProgram" xml:space="preserve">
+    <value>Programme de classification des eaux coquillières</value>
+  </data>
+  <data name="ShortRangeNumberOfDays" xml:space="preserve">
+    <value>Nombre de jour pour court terme</value>
+  </data>
+  <data name="ShouldHaveFound_CellsOfTypeTDWithinURL_" xml:space="preserve">
+    <value>Devrait avoir trouver {0} cellules de type "td" dans l'URL [{1}]</value>
+  </data>
+  <data name="Showing24HoursBeforeStartDateJustInCaseYouNeedToSetADifferentStartDate" xml:space="preserve">
+    <value>Affichage de 24h avant la date de début au cas où vous devez choisir une différente date de départ</value>
+  </data>
+  <data name="SigmaLayers" xml:space="preserve">
+    <value>Couches Sigma </value>
+  </data>
+  <data name="Site" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Slope" xml:space="preserve">
+    <value>Pente</value>
+  </data>
+  <data name="SourceIncluded" xml:space="preserve">
+    <value>Source incluse</value>
+  </data>
+  <data name="SourceNotIncluded" xml:space="preserve">
+    <value>Source non incluse</value>
+  </data>
+  <data name="SourceNumberString" xml:space="preserve">
+    <value>SourceNumberString</value>
+  </data>
+  <data name="Spill" xml:space="preserve">
+    <value>Débordement</value>
+  </data>
+  <data name="SpillEndTime" xml:space="preserve">
+    <value>Temps à la fin du débordement</value>
+  </data>
+  <data name="SpillStartTime" xml:space="preserve">
+    <value>Temps au début du débordement</value>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Membre du personnel</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Date du début</value>
+  </data>
+  <data name="StartDateChronologicallyEarlierThanEndDate" xml:space="preserve">
+    <value>La date de début doit être chronologiquement plus tôt que la date de la fin.</value>
+  </data>
+  <data name="StartDateInfo" xml:space="preserve">
+    <value>L'année de la date du début doit être plus grande que 1900. </value>
+  </data>
+  <data name="StartDay" xml:space="preserve">
+    <value>StartDay</value>
+  </data>
+  <data name="StartingWithBackgroundWorkingIndex_" xml:space="preserve">
+    <value>À partir de l'index de travail en arrière-plan [{0}]</value>
+  </data>
+  <data name="StartMonth" xml:space="preserve">
+    <value>StartMonth</value>
+  </data>
+  <data name="StartTide" xml:space="preserve">
+    <value>Marée de début</value>
+  </data>
+  <data name="StartYear" xml:space="preserve">
+    <value>StartYear</value>
+  </data>
+  <data name="StationID" xml:space="preserve">
+    <value>StationID</value>
+  </data>
+  <data name="StationName" xml:space="preserve">
+    <value>StationName</value>
   </data>
   <data name="StatsCSVFile" xml:space="preserve">
     <value>Stats document .csv</value>
@@ -1776,142 +1653,307 @@
   <data name="StatsKMLFile" xml:space="preserve">
     <value>Stats document .kml</value>
   </data>
-  <data name="CouldNotFindPFSSectionWithPath_" xml:space="preserve">
-    <value>Could not find PFSSection with path [{0}] (fr)</value>
+  <data name="Steps" xml:space="preserve">
+    <value>Étapes</value>
   </data>
-  <data name="SettingHydrodynamicModuleSourceFormatSourceName_Number_" xml:space="preserve">
-    <value>Setting hydrodynamic module source format source name [{0}] number [{1}] (fr)</value>
+  <data name="StepsInfo" xml:space="preserve">
+    <value>La valeur de l'étape doit être égale ou supérieure à 1.</value>
   </data>
-  <data name="DoingPrecipitationFile" xml:space="preserve">
-    <value>Doing precipitation file (fr)</value>
-  </data>
-  <data name="CreatingFilePrecipitationDotDFS0" xml:space="preserve">
-    <value>Creating file precipitation .dfs0 (fr)</value>
-  </data>
-  <data name="OneOfRainValueForRunDate_RunTVItemID_HasNoData" xml:space="preserve">
-    <value>One of rain value for run date [{0}] and run TVItemID [{1}] has no data (fr)</value>
-  </data>
-  <data name="SettingHydrodynamicModuleSpecificPrecipitation" xml:space="preserve">
-    <value>Setting hydrodynamic module specific precipitation (fr)</value>
-  </data>
-  <data name="SettingTransportModulePrecipitationFileName" xml:space="preserve">
-    <value>Setting transport module precipitation file name (fr)</value>
+  <data name="StoringDecayFile_InDB" xml:space="preserve">
+    <value>Entreposage du fichier de décomposée [{0}] dans DB</value>
   </data>
   <data name="StoringPrecipitationFile_InDB" xml:space="preserve">
-    <value>Storing precipitation file [{0}] in DB (fr)</value>
+    <value>Entreposage du fichier de précipitation [{0}] dans DB</value>
+  </data>
+  <data name="StudyArea" xml:space="preserve">
+    <value>Aire d'étude</value>
+  </data>
+  <data name="Subsector" xml:space="preserve">
+    <value>Sous-secteur</value>
+  </data>
+  <data name="SubsectorFileAutoGenerate" xml:space="preserve">
+    <value>Fichier du sous-secteur générer automatiquement</value>
+  </data>
+  <data name="SubsectorTVItemID" xml:space="preserve">
+    <value>SubsectorTVItemID</value>
+  </data>
+  <data name="SummaryStatisticsOfFCDensities" xml:space="preserve">
+    <value>Statistiques sommaire de densités de CF</value>
+  </data>
+  <data name="SWCP" xml:space="preserve">
+    <value>PCEC</value>
+  </data>
+  <data name="TableDoesNotContainProperHeader_OnFirstRowWithinURL_" xml:space="preserve">
+    <value>Le tableau ne contient pas un bon entête [{0}] dans la première rangé dans l'URL [{1}]</value>
+  </data>
+  <data name="TableDoesNotContain_CellsOnFirstRowWithinURL_" xml:space="preserve">
+    <value>Le tableau ne contient pas {0} case dans la première rangé dans l'URL [{1}]</value>
+  </data>
+  <data name="TableDoesNotContain_RowsWithinURL_" xml:space="preserve">
+    <value>Le tableau ne contient pas {0} rangée dans l'URL [{1}]</value>
+  </data>
+  <data name="TableOfContents" xml:space="preserve">
+    <value>Table des matières</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Température</value>
+  </data>
+  <data name="TemperatureEnd" xml:space="preserve">
+    <value>Température à la fin</value>
+  </data>
+  <data name="TemperatureReference" xml:space="preserve">
+    <value>Température de référence</value>
+  </data>
+  <data name="TemperatureStart" xml:space="preserve">
+    <value>Température au début</value>
+  </data>
+  <data name="TimeOffsetFromGMT" xml:space="preserve">
+    <value>Décalage horaire de GMT</value>
+  </data>
+  <data name="TitleArea_" xml:space="preserve">
+    <value>Région {0}</value>
+  </data>
+  <data name="TitleInfrastructure_" xml:space="preserve">
+    <value>Infrastructure {0}</value>
+  </data>
+  <data name="TitleMunicipality_" xml:space="preserve">
+    <value>Municipalité {0}</value>
+  </data>
+  <data name="TitleMWQMSite_" xml:space="preserve">
+    <value>Site SQEM {0}</value>
+  </data>
+  <data name="TitleNone" xml:space="preserve">
+    <value>Titre vide</value>
+  </data>
+  <data name="TitlePolSourceSite_" xml:space="preserve">
+    <value>Site Source de Pollution {0}</value>
+  </data>
+  <data name="TitleProvince_" xml:space="preserve">
+    <value>Province {0}</value>
+  </data>
+  <data name="TitleSector_" xml:space="preserve">
+    <value>Secteur {0}</value>
+  </data>
+  <data name="TitleSubsector_" xml:space="preserve">
+    <value>Sous-secteur {0}</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>à</value>
+  </data>
+  <data name="TopOfLayer" xml:space="preserve">
+    <value>Haut de la couche</value>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>Distance totale</value>
+  </data>
+  <data name="TVFile" xml:space="preserve">
+    <value>TVFile</value>
+  </data>
+  <data name="TVFileDecayNew" xml:space="preserve">
+    <value>TVFileDecayNew</value>
+  </data>
+  <data name="TVFileID" xml:space="preserve">
+    <value>TVFileID</value>
+  </data>
+  <data name="TVFileM21_3FM" xml:space="preserve">
+    <value>TVFileM21_3FM</value>
   </data>
   <data name="TVFilePrecipitationNew" xml:space="preserve">
     <value>TVFilePrecipitationNew</value>
   </data>
-  <data name="SettingHydrodynamicModulePrecipitationFormat" xml:space="preserve">
-    <value>Setting hydrodynamic module precipitation format (fr)</value>
+  <data name="TVFileTVItemID" xml:space="preserve">
+    <value>TVFileTVItemID</value>
   </data>
-  <data name="NoDFSUFileFound" xml:space="preserve">
-    <value>No .dfsu file found (fr)</value>
+  <data name="TVItem" xml:space="preserve">
+    <value>TVItem</value>
   </data>
-  <data name="SettingHydrodynamicModuleDecouplingFileNameArea" xml:space="preserve">
-    <value>Setting hydrodynamic module decoupling file_name_area (fr)</value>
+  <data name="TVItemID" xml:space="preserve">
+    <value>TVItemID</value>
   </data>
-  <data name="SettingHydrodynamicModuleDecouplingFileNameFlux" xml:space="preserve">
-    <value>Setting hydrodynamic module decoupling file_name_flux (fr)</value>
+  <data name="TVItemID2" xml:space="preserve">
+    <value>TVItemID2</value>
   </data>
-  <data name="SettingHydrodynamicModuleDecouplingLastTimeStep" xml:space="preserve">
-    <value>Setting hydrodynamic module decoupling last_time_step (fr)</value>
+  <data name="TVItemLanguage" xml:space="preserve">
+    <value>TVItemLanguage</value>
   </data>
-  <data name="SettingHydrodynamicModuleDecouplingSpecificationFile" xml:space="preserve">
-    <value>Setting hydrodynamic module decoupling specification_file (fr)</value>
+  <data name="TVItemLink" xml:space="preserve">
+    <value>TVItemLink</value>
   </data>
-  <data name="SettingHydrodynamicModuleDecouplingTimeStepFrequency" xml:space="preserve">
-    <value>Setting hydrodynamic module decoupling time_step_frequency (fr)</value>
+  <data name="TVItemLinkID" xml:space="preserve">
+    <value>TVItemLinkID</value>
   </data>
-  <data name="SettingHydrodynamicModuleDecouplingType" xml:space="preserve">
-    <value>Setting hydrodynamic module decoupling type (fr)</value>
+  <data name="TVText" xml:space="preserve">
+    <value>TVText</value>
   </data>
-  <data name="ForSimulatingMWQMRunTVItemID" xml:space="preserve">
-    <value>ForSimulatingMWQMRunTVItemID</value>
+  <data name="TVType" xml:space="preserve">
+    <value>TVType</value>
   </data>
-  <data name="MikeScenarioResult" xml:space="preserve">
-    <value>MikeScenarioResult</value>
+  <data name="TVTypeShouldBe_" xml:space="preserve">
+    <value>TVType devrait être {0}</value>
   </data>
-  <data name="Authors" xml:space="preserve">
-    <value>Authors (fr)</value>
+  <data name="TweakScenarioStartTimeToHave60PercHighTideAndFalling" xml:space="preserve">
+    <value>Modifier l'heure du début du scénario pour avoir 60 % de marée haute et tombante</value>
   </data>
-  <data name="CouldNotFindYearSpecificReportSection" xml:space="preserve">
-    <value>Could not find year specific report section (fr)</value>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="InformationAboveWrittenFor" xml:space="preserve">
-    <value>Information above written for (fr)</value>
+  <data name="UnknownErrorPleaseCheckLogFile" xml:space="preserve">
+    <value>Erreur inconnue. Veuillez consulter le fichier log.</value>
   </data>
-  <data name="InformationBelowWrittenFor" xml:space="preserve">
-    <value>Information below written for (fr)</value>
+  <data name="UpdatingMikeScenarioInfoInDB" xml:space="preserve">
+    <value>Mise à jour du scénario MIKE, information dans DB</value>
   </data>
-  <data name="NoReportSectionFound" xml:space="preserve">
-    <value>No report section found (fr)</value>
-  </data>
-  <data name="PleaseAddReportSectionForSpecificYear" xml:space="preserve">
-    <value>Please add report section for specific year (fr)</value>
-  </data>
-  <data name="PleaseModifyIfNeeded" xml:space="preserve">
-    <value>Please modify if needed (fr)</value>
-  </data>
-  <data name="ReEvaluation" xml:space="preserve">
-    <value>Re-Evaluation (fr)</value>
-  </data>
-  <data name="ReEvaluationReport" xml:space="preserve">
-    <value>Re-Evaluation Report (fr)</value>
-  </data>
-  <data name="ReportID" xml:space="preserve">
-    <value>Report ID (fr)</value>
-  </data>
-  <data name="Staff" xml:space="preserve">
-    <value>Staff (fr)</value>
-  </data>
-  <data name="SWCP" xml:space="preserve">
-    <value>SWCP (fr)</value>
+  <data name="UploadClientPath" xml:space="preserve">
+    <value>UploadClientPath</value>
   </data>
   <data name="UploadYourFileNamed_ToReplaceTheImageBelow" xml:space="preserve">
-    <value>Upload your file named [{0}] to replace the image below (fr)</value>
+    <value>Télécharger votre fichier nommée [{0}] pour remplacer l'image ci-dessous</value>
   </data>
-  <data name="CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations" xml:space="preserve">
-    <value>Current Shellfish Growing Area Classification and Water Quality Sampling Site Locations (fr)</value>
+  <data name="Urban" xml:space="preserve">
+    <value>Urbain</value>
   </data>
-  <data name="PollutionSourceLocation" xml:space="preserve">
-    <value>Pollution Source Location (fr)</value>
+  <data name="UsedLowerCase" xml:space="preserve">
+    <value>utilisé</value>
   </data>
-  <data name="RecommendedShellfishGrowingAreaClassification" xml:space="preserve">
-    <value>Recommended Shellfish Growing Area Classification (fr)</value>
+  <data name="UseOfSite" xml:space="preserve">
+    <value>UseOfSite</value>
   </data>
-  <data name="Above" xml:space="preserve">
-    <value>above (fr)</value>
+  <data name="Variable_ShouldBe_ItIs_" xml:space="preserve">
+    <value>La variable {0} devrait être {1} c'est {2}</value>
   </data>
-  <data name="Appendix" xml:space="preserve">
-    <value>Appendice</value>
+  <data name="WaitingToRun" xml:space="preserve">
+    <value>En attente d'exécuter</value>
   </data>
-  <data name="Below" xml:space="preserve">
-    <value>below (fr)</value>
+  <data name="WaterBasePollutionSourceSiteObservationAndIssues" xml:space="preserve">
+    <value>Site de source de pollution sur l'eau, dernière observation et les enjeux</value>
   </data>
-  <data name="DataUsedForStatistics" xml:space="preserve">
-    <value>Data used for statistics (fr)</value>
+  <data name="WaterLevel" xml:space="preserve">
+    <value>Niveau d'eau</value>
   </data>
-  <data name="ExcelCouldNotCreateThe2WorksheetsRequired" xml:space="preserve">
-    <value>Excel could not create the 2 worksheets required (fr)</value>
+  <data name="WebTideDataSet" xml:space="preserve">
+    <value>DataSet WebTide </value>
+  </data>
+  <data name="WebTideNodes" xml:space="preserve">
+    <value>Nœuds d'éléments web tide</value>
+  </data>
+  <data name="Wet" xml:space="preserve">
+    <value>Pluie</value>
+  </data>
+  <data name="Wet24h" xml:space="preserve">
+    <value>Pluie 24h</value>
+  </data>
+  <data name="Wet48h" xml:space="preserve">
+    <value>Pluie 48h</value>
+  </data>
+  <data name="Wet72h" xml:space="preserve">
+    <value>Pluie 72h</value>
+  </data>
+  <data name="Wet96h" xml:space="preserve">
+    <value>Pluie 96h</value>
+  </data>
+  <data name="WetAllAll" xml:space="preserve">
+    <value>Pluie-Tous-Tous</value>
+  </data>
+  <data name="Wind" xml:space="preserve">
+    <value>Vent</value>
+  </data>
+  <data name="WindDirection" xml:space="preserve">
+    <value>Direction du vent</value>
+  </data>
+  <data name="WriteCompleted" xml:space="preserve">
+    <value>Écriture complétée</value>
+  </data>
+  <data name="WritingFile_Completed" xml:space="preserve">
+    <value>L'écriture du fichier [{0}] est complet.</value>
+  </data>
+  <data name="WrongNumberOfValuesShouldBe_" xml:space="preserve">
+    <value>Mauvais nombre de valeurs. Devrais être {0}</value>
+  </data>
+  <data name="WrongNumberOfVariablesShouldBe_" xml:space="preserve">
+    <value>Mauvais nombre de variables. Devrais être {0}</value>
+  </data>
+  <data name="WTNodeNumb" xml:space="preserve">
+    <value>WTNodeNumb</value>
+  </data>
+  <data name="XlsxOfMWQMSamples" xml:space="preserve">
+    <value>Fichier Excel des échantillons de SQEM</value>
+  </data>
+  <data name="XlsxOfMWQMSites" xml:space="preserve">
+    <value>Fichier Excel des sites de SQEM</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Année</value>
+  </data>
+  <data name="YearNotCorrect_AtLine_" xml:space="preserve">
+    <value>Année non correcte {0} À la ligne {1}</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="ZLayers" xml:space="preserve">
+    <value>Couches Z</value>
+  </data>
+  <data name="_AlreadyExist" xml:space="preserve">
+    <value>{0} existe déjà</value>
+  </data>
+  <data name="_CouldNotBeParseProperly" xml:space="preserve">
+    <value>Dans l'impossibilité de lire [{0}] correctement.</value>
+  </data>
+  <data name="_CountShouldBeBigger0In_" xml:space="preserve">
+    <value>{0} devrait être &gt; 0 dans {1}</value>
+  </data>
+  <data name="_CountShouldBe_" xml:space="preserve">
+    <value>{0} compte ne devrais pas être {1}</value>
+  </data>
+  <data name="_IsRequired" xml:space="preserve">
+    <value>[{0}] est requis</value>
+  </data>
+  <data name="_NotEqualTo_" xml:space="preserve">
+    <value>[{0}] n'est pas équivalent à [{1}].</value>
+  </data>
+  <data name="_NotImplemented" xml:space="preserve">
+    <value>[{0}] n'est pas implémenté</value>
+  </data>
+  <data name="_NotImplementedYet" xml:space="preserve">
+    <value>[{0}] pas encore implanté.</value>
+  </data>
+  <data name="_Required" xml:space="preserve">
+    <value>{0} est requis</value>
+  </data>
+  <data name="_ShouldBeFalse" xml:space="preserve">
+    <value>[{0}] doit être faux</value>
+  </data>
+  <data name="_ShouldBeTrue" xml:space="preserve">
+    <value>[{0}] devrait être vrai</value>
+  </data>
+  <data name="_ShouldNotBe0" xml:space="preserve">
+    <value>{0} ne devrait pas être 0.</value>
+  </data>
+  <data name="_ShouldNotBe0InFunction_" xml:space="preserve">
+    <value>{0} ne devrait pas être 0 dans la fonction {1}</value>
+  </data>
+  <data name="_ShouldNotBeNull" xml:space="preserve">
+    <value>[{0}] ne doit pas être nul</value>
+  </data>
+  <data name="_ShouldNotBeNullOrEmpty" xml:space="preserve">
+    <value>[{0}] ne devrait pas être nul ou laissé vide.</value>
+  </data>
+  <data name="_WasNotFound" xml:space="preserve">
+    <value>Ne peut pas trouver {0}</value>
+  </data>
+  <data name="_WithinDocument_ShouldNotBeEmpty" xml:space="preserve">
+    <value>[{0}] dans le document [{1}] ne devrais pas être vide</value>
+  </data>
+  <data name="_____Test" xml:space="preserve">
+    <value>A {0} B {1} C {2} D {3} E {4}</value>
+  </data>
+  <data name="GoogleEarthMarker" xml:space="preserve">
+    <value>GoogleEarthMarker</value>
   </data>
   <data name="GoogleEarthPath" xml:space="preserve">
     <value>GoogleEarthPath</value>
   </data>
   <data name="MIKECurrentsAnimation" xml:space="preserve">
-    <value>Animation de courants MIKE</value>
-  </data>
-  <data name="ErrorOccuredWhileCreatingXLSXDocument_" xml:space="preserve">
-    <value>Erreur lors de la création du document XLSX {0}</value>
-  </data>
-  <data name="GoogleEarthMarker" xml:space="preserve">
-    <value>GoogleEarthMarker</value>
-  </data>
-  <data name="MIKEParameter" xml:space="preserve">
-    <value>MIKEParameter</value>
-  </data>
-  <data name="Error_WhileCreatingXLSXDocument_" xml:space="preserve">
-    <value>Erreur {0} lors de la création du document XLSX {1}</value>
+    <value>Courants Animés de MIKE</value>
   </data>
 </root>

@@ -180,31 +180,31 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TVItemID = TempInt;
 
-            if (reportTypeModel.FileType != FileTypeEnum.KMZ)
-            {
-                // doing Year
-                YearText = GetParameters("Year", ParamValueList);
+            //if (reportTypeModel.FileType != FileTypeEnum.KMZ)
+            //{
+            //    // doing Year
+            //    YearText = GetParameters("Year", ParamValueList);
 
-                if (string.IsNullOrWhiteSpace(YearText))
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
-                    return;
-                }
+            //    if (string.IsNullOrWhiteSpace(YearText))
+            //    {
+            //        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+            //        return;
+            //    }
 
-                if (!int.TryParse(YearText, out TempInt))
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
-                    return;
-                }
+            //    if (!int.TryParse(YearText, out TempInt))
+            //    {
+            //        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+            //        return;
+            //    }
 
-                Year = TempInt;
-            }
-            else
-            {
-                Year = DateTime.Now.Year;
-            }
+            //    Year = TempInt;
+            //}
+            //else
+            //{
+            //    Year = DateTime.Now.Year;
+            //}
 
             DateTime CD = DateTime.Now;
             string Language = "_" + _TaskRunnerBaseService._BWObj.appTaskModel.Language;
@@ -1200,99 +1200,104 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool RenameStartOfFileName(ReportTypeModel reportTypeModel, int TVItemID, string TVItemIDText, List<string> ParamValueList)
         {
             string NotUsed = "";
+            string subsector = "";
+            string mikescenarioname = "";
+            string year = "";
+            string contourvalues = "";
+            string lat = "";
+            string lng = "";
 
-            switch (reportTypeModel.TVType)
+            TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
             {
-                case TVTypeEnum.Subsector:
-                    {
-                        TVItemModel tvItemModelSS = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
-                        if (!string.IsNullOrWhiteSpace(tvItemModelSS.Error))
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                            return false;
-                        }
-                        string Subsector = tvItemModelSS.TVText;
-                        int pos = Subsector.IndexOf(" ");
-                        if (pos > 0)
-                        {
-                            Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
-                        }
-                        reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", Subsector);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                return false;
+            }
 
-                        string YearText = GetParameters("Year", ParamValueList);
-                        if (!string.IsNullOrWhiteSpace(YearText))
-                        {
-                            int Year = 0;
+            if (reportTypeModel.TVType == TVTypeEnum.Subsector)
+            {
+                subsector = tvItemModel.TVText;
+                int pos = subsector.IndexOf(" ");
+                if (pos > 0)
+                {
+                    subsector = subsector.Substring(0, subsector.IndexOf(" "));
+                }
 
-                            if (string.IsNullOrWhiteSpace(TVItemIDText))
-                            {
-                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", "");
-                            }
-                            else
-                            {
-                                if (!int.TryParse(YearText, out Year))
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
-                                    return false;
-                                }
-                                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", Year.ToString());
-                            }
-                        }
-                    }
-                    break;
-                case TVTypeEnum.MikeScenario:
-                    {
-                        string TVItemIDStr = "";
-                        string ContourValues = "";
+                if (!string.IsNullOrWhiteSpace(subsector))
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", subsector);
+                }
+                else
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{subsector}", "ERROR subsector");
+                }
 
-                        TVItemIDStr = GetParameters("TVItemID", ParamValueList);
-                        if (string.IsNullOrWhiteSpace(TVItemIDStr))
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
-                        }
+            }
+            else if (reportTypeModel.TVType == TVTypeEnum.MikeScenario)
+            {
+                mikescenarioname = tvItemModel.TVText;
 
-                        int.TryParse(TVItemIDStr, out TVItemID);
-                        if (TVItemID == 0)
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.TVItemID);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.TVItemID);
-                        }
+                if (!string.IsNullOrWhiteSpace(mikescenarioname))
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{mikescenarioname}", mikescenarioname);
+                }
+                else
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{mikescenarioname}", "ERROR mikescenarioname");
+                }
+            }
+            else
+            {
+                reportTypeModel.StartOfFileName = "Not_Implemented_" + reportTypeModel.StartOfFileName;
+            }
 
-                        ContourValues = GetParameters("ContourValues", ParamValueList);
-                        ContourValues = ContourValues.Trim().Replace(" ", "_");
+            year = GetParameters("Year", ParamValueList);
+            if (!string.IsNullOrWhiteSpace(year))
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", year);
+            }
+            else
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{year}", "ERROR year");
+            }
 
-                        TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
-                        if (!string.IsNullOrWhiteSpace(tvItemModelMikeScenario.Error))
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID.ToString());
-                            return false;
-                        }
-                        string MikeScenarioName = tvItemModelMikeScenario.TVText;
-                        int pos = MikeScenarioName.IndexOf(" ");
-                        if (pos > 0)
-                        {
-                            MikeScenarioName = MikeScenarioName.Trim();
-                        }
-                        reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{MikeScenarioName}", MikeScenarioName);
+            contourvalues = GetParameters("ContourValues", ParamValueList);
+            contourvalues = contourvalues.Trim().Replace(" ", "_");
 
+            if (!string.IsNullOrWhiteSpace(contourvalues))
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{contourvalues}", contourvalues);
+            }
+            else
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{contourvalues}", "ERROR contourvalues");
+            }
 
-                        // it is possible that ContourValues parameter does not exist or is empty
-                        ContourValues = GetParameters("ContourValues", ParamValueList);
-                        ContourValues = ContourValues.Trim().Replace(" ", "_");
+            lat = GetParameters("Lat", ParamValueList);
+            lat = lat.Trim().Replace(",", "_");
+            lat = lat.Trim().Replace(".", "_");
 
-                        if (!string.IsNullOrWhiteSpace(ContourValues))
-                        {
+            if (!string.IsNullOrWhiteSpace(lat))
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{lat}", lat);
+            }
+            else
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{lat}", "ERROR lat");
+            }
 
-                            reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{ContourValues}", ContourValues);
-                        }
-                    }
-                    break;
-                default:
-                    break;
+            lng = GetParameters("Lng", ParamValueList);
+            lng = lng.Trim().Replace(",", "_");
+            lng = lng.Trim().Replace(".", "_");
+
+            if (!string.IsNullOrWhiteSpace(lng))
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{lng}", lng);
+            }
+            else
+            {
+                reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{lng}", "ERROR lng");
             }
 
             return true;

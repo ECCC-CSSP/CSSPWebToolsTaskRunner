@@ -760,8 +760,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (ErrorInDoc)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreatingKMZDocument_, fi.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ErrorOccuredWhileCreatingKMZDocument_", fi.FullName);
+                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreating_Document_, "KMZ", fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ErrorOccuredWhileCreating_Document_", "KMZ", fi.FullName);
                 return false;
             }
 
@@ -792,8 +792,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (ErrorInDoc)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreatingKMZDocument_, fi.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ErrorOccuredWhileCreatingKMZDocument_", fi.FullName);
+                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreating_Document_, "KMZ", fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ErrorOccuredWhileCreating_Document_", "KMZ", fi.FullName);
                 return false;
             }
 
