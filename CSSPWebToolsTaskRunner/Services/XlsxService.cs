@@ -399,13 +399,15 @@ namespace CSSPWebToolsTaskRunner.Services
             appExcel.Visible = false;
             Microsoft.Office.Interop.Excel.Workbook xlWorkbook = appExcel.Workbooks.Add();
             Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            xlWorkbook.Sheets.Add();
             Microsoft.Office.Interop.Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[2];
 
             xlWorksheet.Name = "Sites";
 
-            xlWorksheet.Cells[1, 1].Value = "Site_ID";
-            xlWorksheet.Cells[1, 2].Value = "Lat";
-            xlWorksheet.Cells[1, 3].Value = "Long";
+            xlWorksheet.Cells[1, 1].Value = "Subsector";
+            xlWorksheet.Cells[1, 2].Value = "Site_Name";
+            xlWorksheet.Cells[1, 3].Value = "Lat";
+            xlWorksheet.Cells[1, 4].Value = "Long";
 
             // Doing Sheet #1
             int rowCount = 1;
@@ -450,26 +452,35 @@ namespace CSSPWebToolsTaskRunner.Services
                                     select new { t, tl }).ToList();
 
                 var MonitoringSiteList = (from t in db.TVItems
+                                          from tl in db.TVItemLanguages
                                           from mi in db.MapInfos
                                           from mip in db.MapInfoPoints
                                           let hasSample = (from c in db.MWQMSamples
                                                            where c.MWQMSiteTVItemID == t.TVItemID
                                                            && c.UseForOpenData == true
                                                            select c).Any()
-                                          where mi.TVItemID == t.TVItemID
+                                          where t.TVItemID == tl.TVItemID
+                                          && mi.TVItemID == t.TVItemID
                                           && mip.MapInfoID == mi.MapInfoID
                                           && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                           && t.TVType == (int)TVTypeEnum.MWQMSite
                                           && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
                                           && mi.TVType == (int)TVTypeEnum.MWQMSite
                                           && hasSample == true
-                                          select new { t, mip, hasSample }).ToList();
+                                          && tl.Language == (int)LanguageEnum.en
+                                          select new { t, tl, mip, hasSample }).ToList();
 
 
                 int TotalCount2 = tvItemSSList.Count;
                 int Count2 = 0;
                 foreach (var tvItemSS in tvItemSSList)
                 {
+                    string Subsector = tvItemSS.tl.TVText;
+                    if (Subsector.Contains(" "))
+                    {
+                        Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                    }
+
                     if (Count2 % 20 == 0)
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(50.0f * ((float)Count2 / (float)TotalCount2)));
@@ -490,9 +501,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         rowCount += 1;
 
-                        xlWorksheet.Cells[rowCount, 1].Value = MS;
-                        xlWorksheet.Cells[rowCount, 2].Value = Lat;
-                        xlWorksheet.Cells[rowCount, 3].Value = Lng;
+                        xlWorksheet.Cells[rowCount, 1].Value = Subsector;
+                        xlWorksheet.Cells[rowCount, 2].Value = MS;
+                        xlWorksheet.Cells[rowCount, 3].Value = Lat;
+                        xlWorksheet.Cells[rowCount, 4].Value = Lng;
                     }
                 }
             }
@@ -501,13 +513,16 @@ namespace CSSPWebToolsTaskRunner.Services
             // Doing Sheet #2
             xlWorksheet2.Name = "Samples_Echantillons";
 
-            xlWorksheet2.Cells[1, 1].Value = "Site_ID";
-            xlWorksheet2.Cells[1, 2].Value = "Date";
-            xlWorksheet2.Cells[1, 3].Value = "FC_MPN_CF_NPP";
-            xlWorksheet2.Cells[1, 4].Value = "Temp_°C";
-            xlWorksheet2.Cells[1, 5].Value = "Sal_PPT_PPM";
-            //xlWorksheet2.Cells[1, 6].Value = "pH";
-            //xlWorksheet2.Cells[1, 7].Value = "Depth_Profondeur_m";
+            xlWorksheet2.Cells[1, 1].Value = "Subsector";
+            xlWorksheet2.Cells[1, 2].Value = "Site_Name";
+            xlWorksheet2.Cells[1, 3].Value = "Date";
+            xlWorksheet2.Cells[1, 4].Value = "Local Time / Heure Locale";
+            xlWorksheet2.Cells[1, 5].Value = "Time Zone / Fuseau Horaire";
+            xlWorksheet2.Cells[1, 6].Value = "FC_MPN_CF_NPP";
+            xlWorksheet2.Cells[1, 7].Value = "Temp_°C";
+            xlWorksheet2.Cells[1, 8].Value = "Sal_PPT_PPM";
+            xlWorksheet2.Cells[1, 9].Value = "pH";
+            xlWorksheet2.Cells[1, 10].Value = "Depth_Profondeur_m";
 
             rowCount = 1;
 
@@ -552,25 +567,35 @@ namespace CSSPWebToolsTaskRunner.Services
                                     select new { t, tl }).ToList();
 
                 var MonitoringSiteList = (from t in db.TVItems
+                                          from tl in db.TVItemLanguages
                                           from mi in db.MapInfos
                                           from mip in db.MapInfoPoints
                                           let hasSample = (from c in db.MWQMSamples
                                                            where c.MWQMSiteTVItemID == t.TVItemID
                                                            && c.UseForOpenData == true
                                                            select c).Any()
-                                          where mi.TVItemID == t.TVItemID
+                                          where t.TVItemID == tl.TVItemID
+                                          && mi.TVItemID == t.TVItemID
                                           && mip.MapInfoID == mi.MapInfoID
                                           && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                           && t.TVType == (int)TVTypeEnum.MWQMSite
                                           && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
                                           && mi.TVType == (int)TVTypeEnum.MWQMSite
                                           && hasSample == true
-                                          select new { t, mip, hasSample }).ToList();
+                                          && tl.Language == (int)LanguageEnum.en
+                                          select new { t, tl, mip, hasSample }).ToList();
+
 
                 int TotalCount2 = tvItemSSList.Count;
                 int Count2 = 0;
                 foreach (var tvItemSS in tvItemSSList)
                 {
+                    string Subsector = tvItemSS.tl.TVText;
+                    if (Subsector.Contains(" "))
+                    {
+                        Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                    }
+
                     if (Count2 % 2 == 0)
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 50 + (int)(50.0f * ((float)Count2 / (float)TotalCount2)));
@@ -585,6 +610,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
+                        string MN = mwqmSite.tl.TVText;
+
                         using (CSSPDBEntities db2 = new CSSPDBEntities())
                         {
                             List<MWQMSample> sampleList = (from c in db2.MWQMSamples
@@ -595,22 +622,38 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             foreach (MWQMSample mwqmSample in sampleList)
                             {
-                                string MS = mwqmSite.t.TVItemID.ToString();
-                                string D = mwqmSample.SampleDateTime_Local.ToString("yyy-MM-dd");
+                                string D = mwqmSample.SampleDateTime_Local.ToString("yyyy-MM-dd");
+                                string LocalTime = mwqmSample.SampleDateTime_Local.ToString("hh:mm:ss");
+                                string TimeZone = "-4";
+                                if (ProvInit == "NL")
+                                {
+                                    TimeZone = "-3.5";
+                                }
+                                if (ProvInit == "QC")
+                                {
+                                    TimeZone = "-5";
+                                }
+                                if (ProvInit == "BC")
+                                {
+                                    TimeZone = "-8";
+                                }
                                 string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
                                 string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
                                 string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
-                                //string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
-                                //string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
+                                string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
+                                string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
 
                                 rowCount += 1;
-                                xlWorksheet2.Cells[rowCount, 1].Value = MS;
-                                xlWorksheet2.Cells[rowCount, 2].Value = D;
-                                xlWorksheet2.Cells[rowCount, 3].Value = FC;
-                                xlWorksheet2.Cells[rowCount, 4].Value = Temp;
-                                xlWorksheet2.Cells[rowCount, 5].Value = Sal;
-                                //xlWorksheet2.Cells[rowCount, 6].Value = pH;
-                                //xlWorksheet2.Cells[rowCount, 7].Value = Depth;
+                                xlWorksheet2.Cells[rowCount, 1].Value = Subsector;
+                                xlWorksheet2.Cells[rowCount, 2].Value = MN;
+                                xlWorksheet2.Cells[rowCount, 3].Value = D;
+                                xlWorksheet2.Cells[rowCount, 4].Value = LocalTime;
+                                xlWorksheet2.Cells[rowCount, 5].Value = TimeZone;
+                                xlWorksheet2.Cells[rowCount, 6].Value = FC;
+                                xlWorksheet2.Cells[rowCount, 7].Value = Temp;
+                                xlWorksheet2.Cells[rowCount, 8].Value = Sal;
+                                xlWorksheet2.Cells[rowCount, 9].Value = pH;
+                                xlWorksheet2.Cells[rowCount, 10].Value = Depth;
                             }
                         }
                     }

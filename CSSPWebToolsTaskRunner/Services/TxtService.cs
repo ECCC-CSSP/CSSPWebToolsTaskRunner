@@ -132,7 +132,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Site_ID,Lat,Long");
+            sb.AppendLine("subsector,site_name,lat,long");
 
             if (fi.Exists)
             {
@@ -189,26 +189,35 @@ namespace CSSPWebToolsTaskRunner.Services
                                     select new { t, tl }).ToList();
 
                 var MonitoringSiteList = (from t in db.TVItems
+                                          from tl in db.TVItemLanguages
                                           from mi in db.MapInfos
                                           from mip in db.MapInfoPoints
                                           let hasSample = (from c in db.MWQMSamples
                                                            where c.MWQMSiteTVItemID == t.TVItemID
                                                            && c.UseForOpenData == true
                                                            select c).Any()
-                                          where mi.TVItemID == t.TVItemID
+                                          where t.TVItemID == tl.TVItemID
+                                          && mi.TVItemID == t.TVItemID
                                           && mip.MapInfoID == mi.MapInfoID
                                           && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                           && t.TVType == (int)TVTypeEnum.MWQMSite
                                           && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
                                           && mi.TVType == (int)TVTypeEnum.MWQMSite
                                           && hasSample == true
-                                          select new { t, mip, hasSample }).ToList();
+                                          && tl.Language == (int)LanguageEnum.en
+                                          select new { t, tl, mip, hasSample }).ToList();
 
 
                 int TotalCount2 = tvItemSSList.Count;
                 int Count2 = 0;
                 foreach (var tvItemSS in tvItemSSList)
                 {
+                    string Subsector = tvItemSS.tl.TVText;
+                    if (Subsector.Contains(" "))
+                    {
+                        Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                    }
+
                     if (Count2 % 20 == 0)
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count2 / (float)TotalCount2)));
@@ -223,10 +232,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
-                        string MS = mwqmSite.t.TVItemID.ToString();
+                        string MN = mwqmSite.tl.TVText;
+                        //string MS = mwqmSite.t.TVItemID.ToString();
                         string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
                         string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
-                        sb.AppendLine($"{MS},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
+                        sb.AppendLine($"{Subsector},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
                     }
                 }
             }
@@ -288,7 +298,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("Prov,Site_ID,Lat,Long");
+            sb.AppendLine("province,subsector,site_name,lat,long");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
@@ -358,26 +368,36 @@ namespace CSSPWebToolsTaskRunner.Services
                                         select new { t, tl }).ToList();
 
                     var MonitoringSiteList = (from t in db.TVItems
+                                              from tl in db.TVItemLanguages
                                               from mi in db.MapInfos
                                               from mip in db.MapInfoPoints
                                               let hasSample = (from c in db.MWQMSamples
                                                                where c.MWQMSiteTVItemID == t.TVItemID
                                                                && c.UseForOpenData == true
                                                                select c).Any()
-                                              where mi.TVItemID == t.TVItemID
+                                              where t.TVItemID == tl.TVItemID
+                                              && mi.TVItemID == t.TVItemID
                                               && mip.MapInfoID == mi.MapInfoID
                                               && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                               && t.TVType == (int)TVTypeEnum.MWQMSite
                                               && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
                                               && mi.TVType == (int)TVTypeEnum.MWQMSite
                                               && hasSample == true
-                                              select new { t, mip, hasSample }).ToList();
+                                              && tl.Language == (int)LanguageEnum.en
+                                              select new { t, tl, mip, hasSample }).ToList();
 
 
                     int TotalCount2 = tvItemSSList.Count;
                     int Count2 = 0;
                     foreach (var tvItemSS in tvItemSSList)
                     {
+                        string Subsector = tvItemSS.tl.TVText;
+
+                        if (Subsector.Contains(" "))
+                        {
+                            Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                        }
+
                         if (Count2 % 100 == 0)
                         {
                             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((CountProv - 1) / 6.0f * 100.0f) +  (int)(100.0f / 6.0f * ((float)Count2 / (float)TotalCount2)));
@@ -392,10 +412,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                         {
+                            string MN = mwqmSite.tl.TVText;
                             string MS = mwqmSite.t.TVItemID.ToString();
                             string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
                             string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
-                            sb.AppendLine($"{ProvInit},{MS},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
+                            sb.AppendLine($"{ProvInit},{Subsector},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
                         }
                     }
                 }
@@ -466,7 +487,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_PPT_PPM"); //,Depth/Profondeur");
+            sb.AppendLine("subsector,site_name,date,local_time_heure_locale,timezone_fuseau_horaire,fc_mpn_cf_npp,temp_c,sal_ppt_ppm,ph,depth_profondeur_m");
 
             if (fi.Exists)
             {
@@ -523,25 +544,34 @@ namespace CSSPWebToolsTaskRunner.Services
                                     select new { t, tl }).ToList();
 
                 var MonitoringSiteList = (from t in db.TVItems
+                                          from tl in db.TVItemLanguages
                                           from mi in db.MapInfos
                                           from mip in db.MapInfoPoints
                                           let hasSample = (from c in db.MWQMSamples
                                                            where c.MWQMSiteTVItemID == t.TVItemID
                                                            && c.UseForOpenData == true
                                                            select c).Any()
-                                          where mi.TVItemID == t.TVItemID
+                                          where t.TVItemID == tl.TVItemID
+                                          && mi.TVItemID == t.TVItemID
                                           && mip.MapInfoID == mi.MapInfoID
                                           && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                           && t.TVType == (int)TVTypeEnum.MWQMSite
                                           && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
                                           && mi.TVType == (int)TVTypeEnum.MWQMSite
                                           && hasSample == true
-                                          select new { t, mip, hasSample }).ToList();
+                                          && tl.Language == (int)LanguageEnum.en
+                                          select new { t, tl, mip, hasSample }).ToList();
 
                 int TotalCount2 = tvItemSSList.Count;
                 int Count2 = 0;
                 foreach (var tvItemSS in tvItemSSList)
                 {
+                    string Subsector = tvItemSS.tl.TVText;
+                    if (Subsector.Contains(" "))
+                    {
+                        Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                    }
+
                     if (Count2 % 2 == 0)
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count2 / (float)TotalCount2)));
@@ -556,6 +586,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
+                        string MN = mwqmSite.tl.TVText;
                         using (CSSPDBEntities db2 = new CSSPDBEntities())
                         {
                             List<MWQMSample> sampleList = (from c in db2.MWQMSamples
@@ -566,14 +597,27 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             foreach (MWQMSample mwqmSample in sampleList)
                             {
-                                string MS = mwqmSite.t.TVItemID.ToString();
                                 string D = mwqmSample.SampleDateTime_Local.ToString("yyyy-MM-dd");
+                                string LocalTime = mwqmSample.SampleDateTime_Local.ToString("hh:mm:ss");
+                                string TimeZone = "-4";
+                                if (ProvInit == "NL")
+                                {
+                                    TimeZone = "-3.5";
+                                }
+                                if (ProvInit == "QC")
+                                {
+                                    TimeZone = "-5";
+                                }
+                                if (ProvInit == "BC")
+                                {
+                                    TimeZone = "-8";
+                                }
                                 string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",",".")));
                                 string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",",".") : "");
                                 string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",",".") : "");
-                                //string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",",".") : "");
-                                //string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",",".") : "");
-                                sb.AppendLine($"{MS},{D},{FC},{Temp},{Sal}"); //,{pH},{Depth}");
+                                string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",",".") : "");
+                                string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",",".") : "");
+                                sb.AppendLine($"{Subsector},{ProvInit}_{MN},{D},{LocalTime},{TimeZone},{FC},{Temp},{Sal},{pH},{Depth}");
                             }
                         }
                     }
@@ -635,7 +679,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("Prov,Site_ID,Date,FC_MPN_CF_NPP,Temp_°C,Sal_PPT_PPM"); //,Depth/Profondeur");
+            sb.AppendLine("prov,subsector,site_name,date,local_time_heure_locale,timezone_fuseau_horaire,fc_mpn_cf_npp,temp_c,sal_ppt_ppm,ph,depth_profondeur_m");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
@@ -706,25 +750,34 @@ namespace CSSPWebToolsTaskRunner.Services
                                         select new { t, tl }).ToList();
 
                     var MonitoringSiteList = (from t in db.TVItems
+                                              from tl in db.TVItemLanguages
                                               from mi in db.MapInfos
                                               from mip in db.MapInfoPoints
                                               let hasSample = (from c in db.MWQMSamples
                                                                where c.MWQMSiteTVItemID == t.TVItemID
                                                                && c.UseForOpenData == true
                                                                select c).Any()
-                                              where mi.TVItemID == t.TVItemID
+                                              where t.TVItemID == tl.TVItemID
+                                              && mi.TVItemID == t.TVItemID
                                               && mip.MapInfoID == mi.MapInfoID
                                               && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                               && t.TVType == (int)TVTypeEnum.MWQMSite
                                               && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
                                               && mi.TVType == (int)TVTypeEnum.MWQMSite
                                               && hasSample == true
-                                              select new { t, mip, hasSample }).ToList();
+                                              && tl.Language == (int)LanguageEnum.en
+                                              select new { t, tl, mip, hasSample }).ToList();
 
                     int TotalCount2 = tvItemSSList.Count;
                     int Count2 = 0;
                     foreach (var tvItemSS in tvItemSSList)
                     {
+                        string Subsector = tvItemSS.tl.TVText;
+                        if (Subsector.Contains(" "))
+                        {
+                            Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                        }
+
                         if (Count2 % 100 == 0)
                         {
                             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((CountProv - 1) / 6.0f * 100.0f) + (int)(100.0f / 6.0f * ((float)Count2 / (float)TotalCount2)));
@@ -739,6 +792,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                         {
+                            string MN = mwqmSite.tl.TVText;
+
                             using (CSSPDBEntities db2 = new CSSPDBEntities())
                             {
                                 List<MWQMSample> sampleList = (from c in db2.MWQMSamples
@@ -749,14 +804,27 @@ namespace CSSPWebToolsTaskRunner.Services
 
                                 foreach (MWQMSample mwqmSample in sampleList)
                                 {
-                                    string MS = mwqmSite.t.TVItemID.ToString();
                                     string D = mwqmSample.SampleDateTime_Local.ToString("yyyy-MM-dd");
+                                    string LocalTime = mwqmSample.SampleDateTime_Local.ToString("hh:mm:ss");
+                                    string TimeZone = "-4";
+                                    if (ProvInit == "NL")
+                                    {
+                                        TimeZone = "-3.5";
+                                    }
+                                    if (ProvInit == "QC")
+                                    {
+                                        TimeZone = "-5";
+                                    }
+                                    if (ProvInit == "BC")
+                                    {
+                                        TimeZone = "-8";
+                                    }
                                     string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
                                     string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
                                     string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
-                                    //string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
-                                    //string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
-                                    sb.AppendLine($"{ProvInit},{MS},{D},{FC},{Temp},{Sal}"); //,{pH},{Depth}");
+                                    string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
+                                    string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
+                                    sb.AppendLine($"{ProvInit},{Subsector},{ProvInit}_{MN},{D},{LocalTime},{TimeZone},{FC},{Temp},{Sal},{pH},{Depth}");
                                 }
                             }
                         }

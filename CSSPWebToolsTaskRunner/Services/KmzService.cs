@@ -310,12 +310,19 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 var tvItemSSList = (from t in db.TVItems
                                     from tl in db.TVItemLanguages
+                                    let mip = (from mi in db.MapInfos
+                                               from mip in db.MapInfoPoints
+                                               where mi.TVItemID == t.TVItemID
+                                               && mi.MapInfoID == mip.MapInfoID
+                                               && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Polygon
+                                               && mi.TVType == (int)TVTypeEnum.Subsector
+                                               select mip).ToList()
                                     where t.TVItemID == tl.TVItemID
                                     && tl.Language == (int)LanguageEnum.en
                                     && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                     && t.TVType == (int)TVTypeEnum.Subsector
                                     orderby tl.TVText
-                                    select new { t, tl }).ToList();
+                                    select new { t, mip, tl }).ToList();
 
                 var MonitoringSiteList = (from t in db.TVItems
                                           from tl in db.TVItemLanguages
@@ -341,6 +348,31 @@ namespace CSSPWebToolsTaskRunner.Services
                 int Count2 = 0;
                 foreach (var tvItemSS in tvItemSSList)
                 {
+                    bool HasSample = false;
+                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                    {
+                        if (mwqmSite.hasSample)
+                        {
+                            HasSample = true;
+                            break;
+                        }
+                    }
+
+                    string More = "";
+                    if (HasSample)
+                    {
+                        More = " (+)";
+                    }
+
+                        string Subsector = tvItemSS.tl.TVText;
+                    if (Subsector.Contains(" "))
+                    {
+                        Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
+                    }
+
+                    sb.AppendLine(@"	<Folder>");
+                    sb.AppendLine($@"		<name>{Subsector}{More}</name>");
+                    sb.AppendLine($@"		<visibility>0</visibility>");
                     if (Count2 % 20 == 0)
                     {
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count2 / (float)TotalCount2)));
@@ -353,21 +385,49 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     Count2 += 1;
 
+                    if (tvItemSS.mip.Count > 0)
+                    {
+
+                        sb.AppendLine(@"	    <Placemark>");
+                        sb.AppendLine($@"	    	<name>{Subsector}</name>");
+                        sb.AppendLine($@"	    	<visibility>0</visibility>");
+                        sb.AppendLine(@"	    	<styleUrl>#sn_ylw-pushpin</styleUrl>");
+                        sb.AppendLine(@"	    	<Polygon>");
+                        sb.AppendLine(@"	    	    <outerBoundaryIs>");
+                        sb.AppendLine(@"	    	        <LinearRing>");
+                        sb.AppendLine($@"	    		        <coordinates>");
+                        foreach (MapInfoPoint mipm in tvItemSS.mip)
+                        {
+                            sb.AppendLine($@"{mipm.Lng},{mipm.Lat},0 ");
+                        }
+                        sb.AppendLine($@"{tvItemSS.mip[0].Lng},{tvItemSS.mip[0].Lat},0 ");
+
+                        sb.AppendLine($@"	    		        </coordinates>");
+                        sb.AppendLine(@"	    	        </LinearRing>");
+                        sb.AppendLine(@"	    	    </outerBoundaryIs>");
+                        sb.AppendLine(@"	    	</Polygon>");
+                        sb.AppendLine(@"	    </Placemark>");
+
+                    }
+
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
                         string TVText = mwqmSite.tl.TVText;
-                        string MS = mwqmSite.t.TVItemID.ToString();
+                        //string MS = mwqmSite.t.TVItemID.ToString();
                         string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6").Replace(",", ".") : "");
                         string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6").Replace(",", ".") : "");
 
-                        sb.AppendLine(@"	<Placemark>");
-                        sb.AppendLine($@"		<name>{MS}</name>");
-                        sb.AppendLine(@"		<styleUrl>#m_ylw-pushpin</styleUrl>");
-                        sb.AppendLine(@"		<Point>");
-                        sb.AppendLine($@"			<coordinates>{Lng},{Lat},0</coordinates>");
-                        sb.AppendLine(@"		</Point>");
-                        sb.AppendLine(@"	</Placemark>");
+                        sb.AppendLine(@"	    <Placemark>");
+                        sb.AppendLine($@"	    	<name>{ProvInit}_{TVText}</name>");
+                        sb.AppendLine($@"	    	<visibility>0</visibility>");
+                        sb.AppendLine(@"	    	<styleUrl>#m_ylw-pushpin</styleUrl>");
+                        sb.AppendLine(@"	    	<Point>");
+                        sb.AppendLine($@"	    		<coordinates>{Lng},{Lat},0</coordinates>");
+                        sb.AppendLine(@"	    	</Point>");
+                        sb.AppendLine(@"	    </Placemark>");
                     }
+
+                    sb.AppendLine(@"	</Folder>");
                 }
             }
 
