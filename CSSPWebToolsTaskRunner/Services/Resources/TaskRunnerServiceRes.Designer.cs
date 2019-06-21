@@ -3661,6 +3661,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please make sure you create {0} first.
+        /// </summary>
+        public static string PleaseMakeSureYouCreate_First {
+            get {
+                return ResourceManager.GetString("PleaseMakeSureYouCreate_First", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please modify if needed.
         /// </summary>
         public static string PleaseModifyIfNeeded {

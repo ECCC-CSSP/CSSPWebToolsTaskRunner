@@ -1956,4 +1956,7 @@
   <data name="MIKECurrentsAnimation" xml:space="preserve">
     <value>MIKE Currents Animation</value>
   </data>
+  <data name="PleaseMakeSureYouCreate_First" xml:space="preserve">
+    <value>Please make sure you create {0} first</value>
+  </data>
 </root>

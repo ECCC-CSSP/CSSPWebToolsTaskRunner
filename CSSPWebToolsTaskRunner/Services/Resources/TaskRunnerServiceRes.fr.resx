@@ -1956,4 +1956,7 @@
   <data name="MIKECurrentsAnimation" xml:space="preserve">
     <value>Courants Animés de MIKE</value>
   </data>
+  <data name="PleaseMakeSureYouCreate_First" xml:space="preserve">
+    <value>SVP s'assurer d'avoir créé {0} en premier</value>
+  </data>
 </root>

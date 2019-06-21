@@ -393,272 +393,92 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            //StringBuilder sb = new StringBuilder();
+            FileInfo fiSites = new FileInfo(fi.Directory + $@"\Sites_{ProvInit}.csv");
+            FileInfo fiSamples = new FileInfo(fi.Directory + $@"\Samples_Echantillons_{ProvInit}.csv");
+
+            if (!fiSites.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PleaseMakeSureYouCreate_First, fiSites.Name);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("PleaseMakeSureYouCreate_First", fiSites.Name);
+                return;
+            }
+
+            if (!fiSamples.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PleaseMakeSureYouCreate_First, fiSamples.Name);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("PleaseMakeSureYouCreate_First", fiSamples.Name);
+                return;
+            }
 
             Microsoft.Office.Interop.Excel._Application appExcel = new Microsoft.Office.Interop.Excel.Application();
             appExcel.Visible = false;
             Microsoft.Office.Interop.Excel.Workbook xlWorkbook = appExcel.Workbooks.Add();
-            Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             xlWorkbook.Sheets.Add();
-            Microsoft.Office.Interop.Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[2];
+            Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
 
             xlWorksheet.Name = "Sites";
 
-            xlWorksheet.Cells[1, 1].Value = "Subsector";
-            xlWorksheet.Cells[1, 2].Value = "Site_Name";
-            xlWorksheet.Cells[1, 3].Value = "Lat";
-            xlWorksheet.Cells[1, 4].Value = "Long";
+            Microsoft.Office.Interop.Excel.Range A1Range = xlWorksheet.Cells[1, 1];
+            Microsoft.Office.Interop.Excel.QueryTable queryTable = xlWorksheet.QueryTables.Add("TEXT;" + fiSites.FullName, A1Range);
 
-            // Doing Sheet #1
-            int rowCount = 1;
-            using (CSSPDBEntities db = new CSSPDBEntities())
-            {
-                var tvItemProv = (from c in db.TVItems
-                                  from cl in db.TVItemLanguages
-                                  where c.TVItemID == cl.TVItemID
-                                  && c.TVItemID == TVItemID
-                                  && cl.Language == (int)LanguageEnum.en
-                                  && c.TVType == (int)TVTypeEnum.Province
-                                  select new { c, cl }).FirstOrDefault();
+            queryTable.Name = $"Sites_{ProvInit}";
+            queryTable.FieldNames = true;
+            queryTable.RowNumbers = false;
+            queryTable.FillAdjacentFormulas = false;
+            queryTable.PreserveFormatting = true;
+            queryTable.RefreshOnFileOpen = false;
+            queryTable.RefreshStyle = Microsoft.Office.Interop.Excel.XlCellInsertionMode.xlInsertDeleteCells;
+            queryTable.SavePassword = false;
+            queryTable.SaveData = true;
+            queryTable.AdjustColumnWidth = true;
+            queryTable.RefreshPeriod = 0;
+            queryTable.TextFilePromptOnRefresh = false;
+            queryTable.TextFilePlatform = 65001;
+            queryTable.TextFileStartRow = 1;
+            queryTable.TextFileParseType = Microsoft.Office.Interop.Excel.XlTextParsingType.xlDelimited;
+            queryTable.TextFileTextQualifier = Microsoft.Office.Interop.Excel.XlTextQualifier.xlTextQualifierDoubleQuote;
+            queryTable.TextFileConsecutiveDelimiter = false;
+            queryTable.TextFileTabDelimiter = true;
+            queryTable.TextFileSemicolonDelimiter = false;
+            queryTable.TextFileCommaDelimiter = true;
+            queryTable.TextFileSpaceDelimiter = false;
+            queryTable.TextFileTrailingMinusNumbers = true;
 
-                if (tvItemProv == null)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                    return;
-                }
-
-                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
-                {
-                    if (ProvList[i] == tvItemProv.cl.TVText)
-                    {
-                        ProvInit = ProvInitList[i];
-                        break;
-                    }
-                }
-
-                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name);
-                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name);
-
-                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
-
-                var tvItemSSList = (from t in db.TVItems
-                                    from tl in db.TVItemLanguages
-                                    where t.TVItemID == tl.TVItemID
-                                    && tl.Language == (int)LanguageEnum.en
-                                    && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
-                                    && t.TVType == (int)TVTypeEnum.Subsector
-                                    orderby tl.TVText
-                                    select new { t, tl }).ToList();
-
-                var MonitoringSiteList = (from t in db.TVItems
-                                          from tl in db.TVItemLanguages
-                                          from mi in db.MapInfos
-                                          from mip in db.MapInfoPoints
-                                          let hasSample = (from c in db.MWQMSamples
-                                                           where c.MWQMSiteTVItemID == t.TVItemID
-                                                           && c.UseForOpenData == true
-                                                           select c).Any()
-                                          where t.TVItemID == tl.TVItemID
-                                          && mi.TVItemID == t.TVItemID
-                                          && mip.MapInfoID == mi.MapInfoID
-                                          && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
-                                          && t.TVType == (int)TVTypeEnum.MWQMSite
-                                          && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
-                                          && mi.TVType == (int)TVTypeEnum.MWQMSite
-                                          && hasSample == true
-                                          && tl.Language == (int)LanguageEnum.en
-                                          select new { t, tl, mip, hasSample }).ToList();
-
-
-                int TotalCount2 = tvItemSSList.Count;
-                int Count2 = 0;
-                foreach (var tvItemSS in tvItemSSList)
-                {
-                    string Subsector = tvItemSS.tl.TVText;
-                    if (Subsector.Contains(" "))
-                    {
-                        Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
-                    }
-
-                    if (Count2 % 20 == 0)
-                    {
-                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(50.0f * ((float)Count2 / (float)TotalCount2)));
-
-                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
-                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
-
-                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
-                    }
-
-                    Count2 += 1;
-
-                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
-                    {
-                        string MS = mwqmSite.t.TVItemID.ToString();
-                        string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6").Replace(",", ".") : "");
-                        string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6").Replace(",", ".") : "");
-
-                        rowCount += 1;
-
-                        xlWorksheet.Cells[rowCount, 1].Value = Subsector;
-                        xlWorksheet.Cells[rowCount, 2].Value = MS;
-                        xlWorksheet.Cells[rowCount, 3].Value = Lat;
-                        xlWorksheet.Cells[rowCount, 4].Value = Lng;
-                    }
-                }
-            }
+            queryTable.Refresh(true);
 
 
             // Doing Sheet #2
+            Microsoft.Office.Interop.Excel._Worksheet xlWorksheet2 = xlWorkbook.Sheets[2];
             xlWorksheet2.Name = "Samples_Echantillons";
 
-            xlWorksheet2.Cells[1, 1].Value = "Subsector";
-            xlWorksheet2.Cells[1, 2].Value = "Site_Name";
-            xlWorksheet2.Cells[1, 3].Value = "Date";
-            xlWorksheet2.Cells[1, 4].Value = "Local Time / Heure Locale";
-            xlWorksheet2.Cells[1, 5].Value = "Time Zone / Fuseau Horaire";
-            xlWorksheet2.Cells[1, 6].Value = "FC_MPN_CF_NPP";
-            xlWorksheet2.Cells[1, 7].Value = "Temp_°C";
-            xlWorksheet2.Cells[1, 8].Value = "Sal_PPT_PPM";
-            xlWorksheet2.Cells[1, 9].Value = "pH";
-            xlWorksheet2.Cells[1, 10].Value = "Depth_Profondeur_m";
+            Microsoft.Office.Interop.Excel.Range A1Range2 = xlWorksheet2.Cells[1, 1];
+            Microsoft.Office.Interop.Excel.QueryTable queryTable2 = xlWorksheet2.QueryTables.Add("TEXT;" + fiSamples.FullName, A1Range2);
 
-            rowCount = 1;
+            queryTable2.Name = $"Samples_Echantillons_{ProvInit}";
+            queryTable2.FieldNames = true;
+            queryTable2.RowNumbers = false;
+            queryTable2.FillAdjacentFormulas = false;
+            queryTable2.PreserveFormatting = true;
+            queryTable2.RefreshOnFileOpen = false;
+            queryTable2.RefreshStyle = Microsoft.Office.Interop.Excel.XlCellInsertionMode.xlInsertDeleteCells;
+            queryTable2.SavePassword = false;
+            queryTable2.SaveData = true;
+            queryTable2.AdjustColumnWidth = true;
+            queryTable2.RefreshPeriod = 0;
+            queryTable2.TextFilePromptOnRefresh = false;
+            queryTable2.TextFilePlatform = 65001;
+            queryTable2.TextFileStartRow = 1;
+            queryTable2.TextFileParseType = Microsoft.Office.Interop.Excel.XlTextParsingType.xlDelimited;
+            queryTable2.TextFileTextQualifier = Microsoft.Office.Interop.Excel.XlTextQualifier.xlTextQualifierDoubleQuote;
+            queryTable2.TextFileConsecutiveDelimiter = false;
+            queryTable2.TextFileTabDelimiter = true;
+            queryTable2.TextFileSemicolonDelimiter = false;
+            queryTable2.TextFileCommaDelimiter = true;
+            queryTable2.TextFileSpaceDelimiter = false;
+            queryTable2.TextFileTrailingMinusNumbers = true;
 
-            using (CSSPDBEntities db = new CSSPDBEntities())
-            {
-                var tvItemProv = (from c in db.TVItems
-                                  from cl in db.TVItemLanguages
-                                  where c.TVItemID == cl.TVItemID
-                                  && c.TVItemID == TVItemID
-                                  && cl.Language == (int)LanguageEnum.en
-                                  && c.TVType == (int)TVTypeEnum.Province
-                                  select new { c, cl }).FirstOrDefault();
+            queryTable2.Refresh(true);
 
-                if (tvItemProv == null)
-                {
-                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
-                    return;
-                }
-
-                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
-                {
-                    if (ProvList[i] == tvItemProv.cl.TVText)
-                    {
-                        ProvInit = ProvInitList[i];
-                        break;
-                    }
-                }
-
-                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name);
-                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name);
-
-                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
-
-                var tvItemSSList = (from t in db.TVItems
-                                    from tl in db.TVItemLanguages
-                                    where t.TVItemID == tl.TVItemID
-                                    && tl.Language == (int)LanguageEnum.en
-                                    && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
-                                    && t.TVType == (int)TVTypeEnum.Subsector
-                                    orderby tl.TVText
-                                    select new { t, tl }).ToList();
-
-                var MonitoringSiteList = (from t in db.TVItems
-                                          from tl in db.TVItemLanguages
-                                          from mi in db.MapInfos
-                                          from mip in db.MapInfoPoints
-                                          let hasSample = (from c in db.MWQMSamples
-                                                           where c.MWQMSiteTVItemID == t.TVItemID
-                                                           && c.UseForOpenData == true
-                                                           select c).Any()
-                                          where t.TVItemID == tl.TVItemID
-                                          && mi.TVItemID == t.TVItemID
-                                          && mip.MapInfoID == mi.MapInfoID
-                                          && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
-                                          && t.TVType == (int)TVTypeEnum.MWQMSite
-                                          && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Point
-                                          && mi.TVType == (int)TVTypeEnum.MWQMSite
-                                          && hasSample == true
-                                          && tl.Language == (int)LanguageEnum.en
-                                          select new { t, tl, mip, hasSample }).ToList();
-
-
-                int TotalCount2 = tvItemSSList.Count;
-                int Count2 = 0;
-                foreach (var tvItemSS in tvItemSSList)
-                {
-                    string Subsector = tvItemSS.tl.TVText;
-                    if (Subsector.Contains(" "))
-                    {
-                        Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
-                    }
-
-                    if (Count2 % 2 == 0)
-                    {
-                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 50 + (int)(50.0f * ((float)Count2 / (float)TotalCount2)));
-
-                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
-                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
-
-                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
-                    }
-
-                    Count2 += 1;
-
-                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
-                    {
-                        string MN = mwqmSite.tl.TVText;
-
-                        using (CSSPDBEntities db2 = new CSSPDBEntities())
-                        {
-                            List<MWQMSample> sampleList = (from c in db2.MWQMSamples
-                                                           where c.MWQMSiteTVItemID == mwqmSite.t.TVItemID
-                                                           && c.UseForOpenData == true
-                                                           orderby c.SampleDateTime_Local ascending
-                                                           select c).ToList();
-
-                            foreach (MWQMSample mwqmSample in sampleList)
-                            {
-                                string D = mwqmSample.SampleDateTime_Local.ToString("yyyy-MM-dd");
-                                string LocalTime = mwqmSample.SampleDateTime_Local.ToString("hh:mm:ss");
-                                string TimeZone = "-4";
-                                if (ProvInit == "NL")
-                                {
-                                    TimeZone = "-3.5";
-                                }
-                                if (ProvInit == "QC")
-                                {
-                                    TimeZone = "-5";
-                                }
-                                if (ProvInit == "BC")
-                                {
-                                    TimeZone = "-8";
-                                }
-                                string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
-                                string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
-                                string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
-                                string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
-                                string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
-
-                                rowCount += 1;
-                                xlWorksheet2.Cells[rowCount, 1].Value = Subsector;
-                                xlWorksheet2.Cells[rowCount, 2].Value = MN;
-                                xlWorksheet2.Cells[rowCount, 3].Value = D;
-                                xlWorksheet2.Cells[rowCount, 4].Value = LocalTime;
-                                xlWorksheet2.Cells[rowCount, 5].Value = TimeZone;
-                                xlWorksheet2.Cells[rowCount, 6].Value = FC;
-                                xlWorksheet2.Cells[rowCount, 7].Value = Temp;
-                                xlWorksheet2.Cells[rowCount, 8].Value = Sal;
-                                xlWorksheet2.Cells[rowCount, 9].Value = pH;
-                                xlWorksheet2.Cells[rowCount, 10].Value = Depth;
-                            }
-                        }
-                    }
-                }
-            }
 
             appExcel.ActiveWorkbook.SaveAs(fi.FullName, Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
             xlWorkbook.Close();

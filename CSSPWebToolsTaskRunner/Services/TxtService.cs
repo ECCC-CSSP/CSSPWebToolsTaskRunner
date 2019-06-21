@@ -598,7 +598,11 @@ namespace CSSPWebToolsTaskRunner.Services
                             foreach (MWQMSample mwqmSample in sampleList)
                             {
                                 string D = mwqmSample.SampleDateTime_Local.ToString("yyyy-MM-dd");
-                                string LocalTime = mwqmSample.SampleDateTime_Local.ToString("hh:mm:ss");
+                                string LocalTime = "";
+                                if (!(mwqmSample.SampleDateTime_Local.Hour == 0 && mwqmSample.SampleDateTime_Local.Minute == 0 && mwqmSample.SampleDateTime_Local.Second == 0))
+                                {
+                                    LocalTime = mwqmSample.SampleDateTime_Local.ToString("hh:mm:ss");
+                                }
                                 string TimeZone = "-4";
                                 if (ProvInit == "NL")
                                 {

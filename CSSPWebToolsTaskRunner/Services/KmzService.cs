@@ -312,6 +312,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                     from tl in db.TVItemLanguages
                                     let mip = (from mi in db.MapInfos
                                                from mip in db.MapInfoPoints
+                                               orderby mip.Ordinal ascending
                                                where mi.TVItemID == t.TVItemID
                                                && mi.MapInfoID == mip.MapInfoID
                                                && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Polygon
