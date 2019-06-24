@@ -347,7 +347,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int TotalCount2 = tvItemSSList.Count;
                 int Count2 = 0;
-                foreach (var tvItemSS in tvItemSSList)
+                foreach (var tvItemSS in tvItemSSList.OrderBy(c => c.tl.TVText))
                 {
                     bool HasSample = false;
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
@@ -365,7 +365,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         More = " (+)";
                     }
 
-                        string Subsector = tvItemSS.tl.TVText;
+                    string Subsector = tvItemSS.tl.TVText;
                     if (Subsector.Contains(" "))
                     {
                         Subsector = Subsector.Substring(0, Subsector.IndexOf(" "));
@@ -411,7 +411,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     }
 
-                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                     {
                         string TVText = mwqmSite.tl.TVText;
                         //string MS = mwqmSite.t.TVItemID.ToString();
@@ -1862,7 +1862,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             else
             {
-                Count = TotalCount*2;
+                Count = TotalCount * 2;
                 TotalCount = 3 * TotalCount;
             }
             foreach (TVItemModel tvItemModelSS in tvItemModelSSList)

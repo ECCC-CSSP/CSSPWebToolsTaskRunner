@@ -132,7 +132,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("subsector,site_name,lat,long");
+            sb.AppendLine("Subsector,Site,Lat,Long");
 
             if (fi.Exists)
             {
@@ -210,7 +210,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int TotalCount2 = tvItemSSList.Count;
                 int Count2 = 0;
-                foreach (var tvItemSS in tvItemSSList)
+                foreach (var tvItemSS in tvItemSSList.OrderBy(c => c.tl.TVText))
                 {
                     string Subsector = tvItemSS.tl.TVText;
                     if (Subsector.Contains(" "))
@@ -230,7 +230,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     Count2 += 1;
 
-                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                     {
                         string MN = mwqmSite.tl.TVText;
                         //string MS = mwqmSite.t.TVItemID.ToString();
@@ -298,7 +298,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("province,subsector,site_name,lat,long");
+            sb.AppendLine("Province,Subsector,Site,Lat,Long");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
@@ -389,7 +389,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     int TotalCount2 = tvItemSSList.Count;
                     int Count2 = 0;
-                    foreach (var tvItemSS in tvItemSSList)
+                    foreach (var tvItemSS in tvItemSSList.OrderBy(c => c.tl.TVText))
                     {
                         string Subsector = tvItemSS.tl.TVText;
 
@@ -410,7 +410,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         Count2 += 1;
 
-                        foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                        foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                         {
                             string MN = mwqmSite.tl.TVText;
                             string MS = mwqmSite.t.TVItemID.ToString();
@@ -487,7 +487,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("subsector,site_name,date,local_time_heure_locale,timezone_fuseau_horaire,fc_mpn_cf_npp,temp_c,sal_ppt_ppm,ph,depth_profondeur_m");
+            sb.AppendLine("Subsector,Site,Date,Local Time (Heure Locale),Time Zone (Fuseau Horaire),FC MPN / 100 mL (CF NPP / 100 mL),Temp C,Sal PPT (PPM),pH,Depth (Profondeur) m");
 
             if (fi.Exists)
             {
@@ -564,7 +564,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 int TotalCount2 = tvItemSSList.Count;
                 int Count2 = 0;
-                foreach (var tvItemSS in tvItemSSList)
+                foreach (var tvItemSS in tvItemSSList.OrderBy(c => c.tl.TVText))
                 {
                     string Subsector = tvItemSS.tl.TVText;
                     if (Subsector.Contains(" "))
@@ -584,7 +584,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     Count2 += 1;
 
-                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                    foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                     {
                         string MN = mwqmSite.tl.TVText;
                         using (CSSPDBEntities db2 = new CSSPDBEntities())
@@ -683,7 +683,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("prov,subsector,site_name,date,local_time_heure_locale,timezone_fuseau_horaire,fc_mpn_cf_npp,temp_c,sal_ppt_ppm,ph,depth_profondeur_m");
+            sb.AppendLine("Province,Subsector,Site,Date,Local Time (Heure Locale),Time Zone (Fuseau Horaire),FC MPN / 100 mL (CF NPP / 100 mL),Temp C,Sal PPT (PPM),pH,Depth (Profondeur) m");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
@@ -774,7 +774,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     int TotalCount2 = tvItemSSList.Count;
                     int Count2 = 0;
-                    foreach (var tvItemSS in tvItemSSList)
+                    foreach (var tvItemSS in tvItemSSList.OrderBy(c => c.tl.TVText))
                     {
                         string Subsector = tvItemSS.tl.TVText;
                         if (Subsector.Contains(" "))
@@ -794,7 +794,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         Count2 += 1;
 
-                        foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
+                        foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                         {
                             string MN = mwqmSite.tl.TVText;
 
