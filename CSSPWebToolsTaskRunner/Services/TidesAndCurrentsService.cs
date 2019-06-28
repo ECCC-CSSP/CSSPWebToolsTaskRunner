@@ -1762,7 +1762,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     CountAt += 1;
                     if (CountRefresh > UpdateAfter)
                     {
-                        //SendPercentToDB(bwObj, (int)((CountAt * 100) / InputAndResultList.Count()));
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)((CountAt * 100) / InputAndResultList.Count()));
                         CountRefresh = 0;
                     }
                 }
@@ -1778,8 +1778,9 @@ namespace CSSPWebToolsTaskRunner.Services
                     mi.Reslt = -999;
                     mi.Reslt2 = -999;
 
-                    NotUsed = string.Format(TaskRunnerServiceRes.ElementNotFoundWithElem_, ele.ID);
-                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("ElementNotFoundWithElem_", ele.ID.ToString());
+                    string PointText = $"{ tideModel.Lat.ToString("F5") } { tideModel.Lng.ToString("F5") }";
+                    NotUsed = string.Format(TaskRunnerServiceRes.Point_IsNotWithinTheWebTideDataSet_, PointText, tideModel.WebTideDataSet.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("Point_IsNotWithinTheWebTideDataSet_", PointText, tideModel.WebTideDataSet.ToString());
                     return;
 
                     //__________________________________________________

@@ -49,6 +49,8 @@ namespace CSSPWebToolsTaskRunner.Services
         private UseOfSiteService _UseOfSiteService { get; set; }
         private ClimateSiteService _ClimateSiteService { get; set; }
         private ClimateDataValueService _ClimateDataValueService { get; set; }
+        private TidesAndCurrentsService _TidesAndCurrentsService { get; set; }
+        private TideSiteService _TideSiteService { get; set; }
         private BaseEnumService _BaseEnumService { get; set; }
         public FileInfo fi { get; set; }
         public ReportTypeModel reportTypeModel { get; set; }
@@ -109,6 +111,8 @@ namespace CSSPWebToolsTaskRunner.Services
             _UseOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _ClimateSiteService = new ClimateSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _ClimateDataValueService = new ClimateDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _TideSiteService = new TideSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _TidesAndCurrentsService = new TidesAndCurrentsService(_TaskRunnerBaseService);
             RunSiteInfoList = new List<RunSiteInfo>();
         }
         #endregion Constructors
@@ -1206,6 +1210,7 @@ namespace CSSPWebToolsTaskRunner.Services
             string contourvalues = "";
             string lat = "";
             string lng = "";
+            string municipality = "";
 
             TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
@@ -1245,6 +1250,19 @@ namespace CSSPWebToolsTaskRunner.Services
                 else
                 {
                     reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{mikescenarioname}", "ERROR mikescenarioname");
+                }
+            }
+            else if (reportTypeModel.TVType == TVTypeEnum.Municipality)
+            {
+                municipality = tvItemModel.TVText;
+
+                if (!string.IsNullOrWhiteSpace(municipality))
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{municipality}", municipality);
+                }
+                else
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{municipality}", "ERROR municipality");
                 }
             }
             else

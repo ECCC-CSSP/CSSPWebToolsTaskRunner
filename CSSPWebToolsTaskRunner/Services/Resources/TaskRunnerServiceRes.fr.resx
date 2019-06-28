@@ -1959,4 +1959,34 @@
   <data name="PleaseMakeSureYouCreate_First" xml:space="preserve">
     <value>SVP s'assurer d'avoir créé {0} en premier</value>
   </data>
+  <data name="AllHoursAreInUTC" xml:space="preserve">
+    <value>Tous les heures sont en UTC</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Temps de fin</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Endoit</value>
+  </data>
+  <data name="Monthly" xml:space="preserve">
+    <value>Mensuel</value>
+  </data>
+  <data name="MonthlyHighTides" xml:space="preserve">
+    <value>Grandes Marées Mensuelles</value>
+  </data>
+  <data name="MonthlyLowTides" xml:space="preserve">
+    <value>Petites Marées Mensuelles</value>
+  </data>
+  <data name="Point_IsNotWithinTheWebTideDataSet_" xml:space="preserve">
+    <value>La coordonée {0} n'est pas à l'intérieure des limites des données WebTide {1}</value>
+  </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>Temps de départ</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Temps</value>
+  </data>
+  <data name="WaterLevelsData" xml:space="preserve">
+    <value>Données de niveaux d'eau</value>
+  </data>
 </root>
