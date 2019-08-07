@@ -46,6 +46,8 @@ namespace CSSPWebToolsTaskRunner.Services
         public PolSourceSiteService _PolSourceSiteService { get; private set; }
         public PolSourceObservationService _PolSourceObservationService { get; private set; }
         public PolSourceObservationIssueService _PolSourceObservationIssueService { get; private set; }
+        public MWQMSiteService _MWQMSiteService { get; private set; }
+
 
         public BaseEnumService _BaseEnumService { get; set; }
         #endregion Properties
@@ -68,6 +70,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _PolSourceSiteService = new PolSourceSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _PolSourceObservationService = new PolSourceObservationService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _PolSourceObservationIssueService = new PolSourceObservationIssueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _MWQMSiteService = new MWQMSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
             _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
         }
@@ -975,18 +978,18 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine($@"		</ListStyle>");
             sb.AppendLine($@" </Style>");
 
-            // Style for MWQM Sites
-            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square"">");
+            // Style for MWQM Sites green square
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square_green"">");
             sb.AppendLine($@"		<Pair>");
             sb.AppendLine($@"			<key>normal</key>");
-            sb.AppendLine($@"			<styleUrl>#sn_placemark_square</styleUrl>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_square_green</styleUrl>");
             sb.AppendLine($@"		</Pair>");
             sb.AppendLine($@"		<Pair>");
             sb.AppendLine($@"			<key>highlight</key>");
-            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight</styleUrl>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight_green</styleUrl>");
             sb.AppendLine($@"		</Pair>");
             sb.AppendLine($@"	</StyleMap>");
-            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight"">");
+            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight_green"">");
             sb.AppendLine($@"		<IconStyle>");
             sb.AppendLine($@"			<color>ff00ff00</color>");
             sb.AppendLine($@"			<scale>1.2</scale>");
@@ -997,7 +1000,7 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine($@"		<ListStyle>");
             sb.AppendLine($@"		</ListStyle>");
             sb.AppendLine($@"	</Style>");
-            sb.AppendLine($@"	<Style id=""sn_placemark_square"">");
+            sb.AppendLine($@"	<Style id=""sn_placemark_square_green"">");
             sb.AppendLine($@"		<IconStyle>");
             sb.AppendLine($@"			<color>ff00ff00</color>");
             sb.AppendLine($@"			<scale>1.2</scale>");
@@ -1008,6 +1011,75 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine($@"		<ListStyle>");
             sb.AppendLine($@"		</ListStyle>");
             sb.AppendLine($@" </Style>");
+
+            // Style for MWQM Sites red square
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square_red"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_square_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>1.2</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<ListStyle>");
+            sb.AppendLine($@"		</ListStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_square_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>1.2</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<ListStyle>");
+            sb.AppendLine($@"		</ListStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for MWQM Sites purple square
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square_purple"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_square_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>1.2</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<ListStyle>");
+            sb.AppendLine($@"		</ListStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_square_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>1.2</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<ListStyle>");
+            sb.AppendLine($@"		</ListStyle>");
+            sb.AppendLine($@" </Style>");
+
 
             // Style for Infrastructures
             sb.AppendLine($@"	<Style id=""sn_shaded_dot"">");
@@ -1049,6 +1121,11 @@ namespace CSSPWebToolsTaskRunner.Services
             int Count = 0;
             foreach (TVItemModel tvItemModelSS in tvitemModelSSList)
             {
+                //if (!tvItemModelSS.TVText.StartsWith("NB-06-020"))
+                //{
+                //    continue;
+                //}
+
                 Count += 1;
 
                 if (Count % 5 == 0)
@@ -1103,6 +1180,11 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     PolSourceSiteModel polSourceSiteModel = polSourceSiteModelList.Where(c => c.PolSourceSiteTVItemID == tvItemModel.TVItemID).FirstOrDefault();
 
+                    if (polSourceSiteModel == null)
+                    {
+                        continue;
+                    }
+
                     sb.AppendLine($@"			    <Placemark>");
                     sb.AppendLine($@"			    <name>P{ polSourceSiteModel.Site }</name>");
                     sb.AppendLine($@"	            <visibility>0</visibility>");
@@ -1116,6 +1198,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         if (polSourceObservationModel != null)
                         {
+
                             sb.AppendLine($@"                <h3>Last Observation</h3>");
                             sb.AppendLine($@"                <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
                             sb.AppendLine($@"                <blockquote>");
@@ -1221,7 +1304,10 @@ namespace CSSPWebToolsTaskRunner.Services
                                 sb.AppendLine($@"                </blockquote>");
                             }
                             sb.AppendLine($@"                </blockquote>");
+
+                            ShowPictures(sb, tvItemModel.TVItemID, false);
                         }
+
                     }
                     sb.AppendLine($@"                   ]]></description>");
                     sb.AppendLine($@"			    	<styleUrl>#s_ylw-pushpin</styleUrl>");
@@ -1253,13 +1339,35 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<TVItemModel> tvitemModelMWQMSiteList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSS.TVItemID, TVTypeEnum.MWQMSite).Where(c => c.IsActive == true).ToList();
                 foreach (TVItemModel tvItemModel in tvitemModelMWQMSiteList)
                 {
+                    TVLocation tvlNew = new TVLocation();
+                    tvlNew.TVItemID = tvItemModel.TVItemID;
+                    tvlNew.TVText = tvItemModel.TVText;
+                    tvlNew.TVType = TVTypeEnum.PolSourceSite;
+                    tvlNew.SubTVType = TVTypeEnum.MWQMSite;
+
+                    _MapInfoService.GetMWQMSiteMapInfoStatDB(tvItemModel.TVItemID, tvlNew, 30);
+
                     sb.AppendLine($@"			    <Placemark>");
-                    sb.AppendLine($@"			    <name>S{tvItemModel.TVText}</name>");
+                    sb.AppendLine($@"			    <name>{ tvlNew.TVText.Substring(0, 8).Replace(" ", "") }</name>");
                     sb.AppendLine($@"	            <visibility>0</visibility>");
                     sb.AppendLine($@"               <description><![CDATA[");
                     sb.AppendLine($@"                <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
+
+                    ShowPictures(sb, tvItemModel.TVItemID, true);
+
                     sb.AppendLine($@"                   ]]></description>");
-                    sb.AppendLine($@"			    	<styleUrl>#msn_placemark_square</styleUrl>");
+                    if (tvlNew.SubTVType == TVTypeEnum.NoDepuration)
+                    {
+                        sb.AppendLine($@"			    	<styleUrl>#msn_placemark_square_purple</styleUrl>");
+                    }
+                    else if (tvlNew.SubTVType == TVTypeEnum.Failed)
+                    {
+                        sb.AppendLine($@"			    	<styleUrl>#msn_placemark_square_red</styleUrl>");
+                    }
+                    else // passed
+                    {
+                        sb.AppendLine($@"			    	<styleUrl>#msn_placemark_square_green</styleUrl>");
+                    }
                     sb.AppendLine($@"			    	<Point>");
                     sb.AppendLine($@"		    			<coordinates>");
                     using (CSSPDBEntities db = new CSSPDBEntities())
@@ -1306,6 +1414,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                 sb.AppendLine($@"	                    <visibility>0</visibility>");
                                 sb.AppendLine($@"                       <description><![CDATA[");
                                 sb.AppendLine($@"                        <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
+
+                                ShowPictures(sb, tvItemModel.TVItemID, false);
+
                                 sb.AppendLine($@"                           ]]></description>");
                                 sb.AppendLine($@"			                	<styleUrl>#sn_shaded_dot</styleUrl>");
                                 sb.AppendLine($@"			                	<Point>");
@@ -1377,6 +1488,35 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelTVFile, TaskRunnerServiceRes.MWQMSitesAndPolSourceSitesKML, FilePurposeEnum.Information);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
+        }
+
+        private void ShowPictures(StringBuilder sb, int TVItemID, bool IsMWQMSite)
+        {
+            List<TVFileModel> tvFileModelList = _TVFileService.GetTVFileModelListWithParentTVItemIDDB(TVItemID);
+
+            if (tvFileModelList.Where(c => c.FileType == FileTypeEnum.JPEG || c.FileType == FileTypeEnum.JPG).Any())
+            {
+                sb.AppendLine(@"<script src=""http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"" type=""text/javascript""></script>");
+
+                if (IsMWQMSite)
+                {
+                    sb.AppendLine(@"<h3 style=""text-align:center""><a href=""" + @"http://wmon01dtchlebl2/csspwebtools/en-CA/MWQM/_mwqmSiteSampleMovingAverageStat?MWQMSiteTVItemID=" + TVItemID + @""" target=""_blank"">Open Data Table</a></h3>");
+                }
+
+                foreach (TVFileModel tvFileModel in tvFileModelList)
+                {
+                    string src = @"http://wmon01dtchlebl2/csspwebtools/en-CA/File/ShowImage?TVFileTVItemID=" + tvFileModel.TVFileTVItemID;
+                    sb.AppendLine($@"                <p><img src="""" data-src=""{src}"" width=""500"" height=""500""></p>");
+                }
+
+                sb.AppendLine(@" <script type=""text/javascript"">");
+                sb.AppendLine(@"    $(document).ready(function () {");
+                sb.AppendLine(@"        $('img').each(function() {");
+                sb.AppendLine(@"            $(this).attr('src', $(this).data('src'));");
+                sb.AppendLine(@"        });");
+                sb.AppendLine(@"    }); ");
+                sb.AppendLine(@"</script>");
+            }
         }
         public string ParseKml(FileInfo fi)
         {
