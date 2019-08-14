@@ -2025,7 +2025,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
             string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            int CountryTVItemID = 0;
+            int ParentTVItemID = 0;
             foreach (string s in ParamValueList)
             {
                 string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -2037,9 +2037,9 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
 
-                if (ParamValue[0] == "CountryTVItemID")
+                if (ParamValue[0] == "ParentTVItemID")
                 {
-                    CountryTVItemID = int.Parse(ParamValue[1]);
+                    ParentTVItemID = int.Parse(ParamValue[1]);
                 }
                 else
                 {
@@ -2049,18 +2049,18 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            if (CountryTVItemID == 0)
+            if (ParentTVItemID == 0)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.CountryTVItemID);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.CountryTVItemID);
+                NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.ParentTVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.ParentTVItemID);
                 return;
             }
 
-            TVItemModel tvItemModelCountry = _TVItemService.GetTVItemModelWithTVItemIDDB(CountryTVItemID);
+            TVItemModel tvItemModelCountry = _TVItemService.GetTVItemModelWithTVItemIDDB(ParentTVItemID);
             if (!string.IsNullOrWhiteSpace(tvItemModelCountry.Error))
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.CountryTVItemID, CountryTVItemID.ToString());
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.CountryTVItemID, CountryTVItemID.ToString());
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.ParentTVItemID, ParentTVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.ParentTVItemID, ParentTVItemID.ToString());
                 return;
             }
 
@@ -2099,7 +2099,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 "_" + (CD.Minute > 9 ? CD.Minute.ToString() : "0" + CD.Minute.ToString());
 
 
-            string ServerNewFilePath = _TVFileService.GetServerFilePath(CountryTVItemID);
+            string ServerNewFilePath = _TVFileService.GetServerFilePath(ParentTVItemID);
 
             di = new DirectoryInfo(ServerNewFilePath);
             if (!di.Exists)
@@ -2126,12 +2126,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             int currentRow = 5;
 
-            List<EmailDistributionListModel> emailDistributionListModelList = _EmailDistributionListService.GetEmailDistributionListModelWithCountryTVItemIDDB(CountryTVItemID);
+            List<EmailDistributionListModel> emailDistributionListModelList = _EmailDistributionListService.GetEmailDistributionListModelWithParentTVItemIDDB(ParentTVItemID);
 
             foreach (EmailDistributionListModel emailDistributionListModel in emailDistributionListModelList)
             {
 
-                xlWorksheet.Cells[currentRow, 1] = emailDistributionListModel.RegionName;
+                xlWorksheet.Cells[currentRow, 1] = emailDistributionListModel.EmailListName;
 
                 List<EmailDistributionListContactModel> emailDistributionListContactModelList = _EmailDistributionListContactService.GetEmailDistributionListContactModelListWithEmailDistributionListIDDB(emailDistributionListModel.EmailDistributionListID);
 
