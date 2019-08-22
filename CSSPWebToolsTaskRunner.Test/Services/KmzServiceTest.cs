@@ -13,6 +13,7 @@ using System.Web.Mvc;
 //using CSSPWebToolsDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
+using CSSPDBDLL.Services;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -28,7 +29,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
 
         #region Properties
         private CSSPWebToolsTaskRunner csspWebToolsTaskRunner { get; set; }
-        private KmzService kmzService { get; set; }
+   
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -49,6 +50,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         #region Constructors
         public KmzServiceTest()
         {
+            csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
         }
         #endregion Constructors
 
@@ -75,6 +77,96 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         #endregion Initialize and Cleanup
 
         #region Functions public
+        [TestMethod]
+        public void KmzService_GenerateMikeScenarioEstimatedDroguePathsAnimationKMZ_Test()
+        {
+            AppTaskModel appTaskModel = new AppTaskModel();
+            appTaskModel.AppTaskID = 17384;
+            appTaskModel.TVItemID = 28475;
+            appTaskModel.TVItemID2 = 28475;
+            appTaskModel.AppTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters;
+            appTaskModel.AppTaskStatus = AppTaskStatusEnum.Created;
+            appTaskModel.PercentCompleted = 1;
+            appTaskModel.Parameters = @"|||TVItemID,28475|||ReportTypeID,43|||GoogleEarthPath,!!!!!?xml version=""1.0"" encoding=""UTF-8""?@@@@@" +
+@"!!!!!kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom""@@@@@" +
+@"!!!!!Document@@@@@" +
+@" !!!!!name@@@@@KmlFile!!!!!/name@@@@@" +
+@" !!!!!Style id=""s_ylw-pushpin_hl""@@@@@" +
+@"  !!!!!IconStyle@@@@@" +
+@"   !!!!!scale@@@@@1.3!!!!!/scale@@@@@" +
+@"   !!!!!Icon@@@@@" +
+@"    !!!!!href@@@@@http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png!!!!!/href@@@@@" +
+@"   !!!!!/Icon@@@@@" +
+@"   !!!!!hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/@@@@@" +
+@"  !!!!!/IconStyle@@@@@" +
+@" !!!!!/Style@@@@@" +
+@" !!!!!Style id=""s_ylw-pushpin""@@@@@" +
+@"  !!!!!IconStyle@@@@@" +
+@"   !!!!!scale@@@@@1.1!!!!!/scale@@@@@" +
+@"   !!!!!Icon@@@@@" +
+@"    !!!!!href@@@@@http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png!!!!!/href@@@@@" +
+@"   !!!!!/Icon@@@@@" +
+@"   !!!!!hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/@@@@@" +
+@"  !!!!!/IconStyle@@@@@" +
+@" !!!!!/Style@@@@@" +
+@" !!!!!StyleMap id=""m_ylw-pushpin""@@@@@" +
+@"  !!!!!Pair@@@@@" +
+@"   !!!!!key@@@@@normal!!!!!/key@@@@@" +
+@"   !!!!!styleUrl@@@@@#s_ylw-pushpin!!!!!/styleUrl@@@@@" +
+@"  !!!!!/Pair@@@@@" +
+@"  !!!!!Pair@@@@@" +
+@"   !!!!!key@@@@@highlight!!!!!/key@@@@@" +
+@"   !!!!!styleUrl@@@@@#s_ylw-pushpin_hl!!!!!/styleUrl@@@@@" +
+@"  !!!!!/Pair@@@@@" +
+@" !!!!!/StyleMap@@@@@" +
+@" !!!!!Placemark@@@@@" +
+@"  !!!!!name@@@@@Untitled Path!!!!!/name@@@@@" +
+@"  !!!!!styleUrl@@@@@#m_ylw-pushpin!!!!!/styleUrl@@@@@" +
+@"  !!!!!LineString@@@@@" +
+@"   !!!!!tessellate@@@@@1!!!!!/tessellate@@@@@" +
+@"   !!!!!coordinates@@@@@" +
+@"    -64.70513588369528%%%%%46.4717867228814%%%%%0 -64.69737256625811%%%%%46.47342948729938%%%%%0 " +
+@"   !!!!!/coordinates@@@@@" +
+@"  !!!!!/LineString@@@@@" +
+@" !!!!!/Placemark@@@@@" +
+@"!!!!!/Document@@@@@" +
+@"!!!!!/kml@@@@@" +
+@" |||";
+
+            appTaskModel.Language = LanguageEnum.en;
+            appTaskModel.StartDateTime_UTC = new DateTime(2019, 8, 21, 17, 2, 15);
+            appTaskModel.EndDateTime_UTC = null;
+            appTaskModel.EstimatedLength_second = null;
+            appTaskModel.RemainingTime_second = null;
+            appTaskModel.LastUpdateDate_UTC = new DateTime(2019, 8, 21, 17, 4, 17);
+            appTaskModel.LastUpdateContactTVItemID = 2;
+
+
+            // Generated files will be located
+            // \inetpub\wwwroot\csspwebtools\App_Data\28475
+            foreach (string LanguageRequest in new List<string>() { "en"/*, "fr"*/ })
+            {
+                csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj = new BWObj()
+                {
+                    appTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters,
+                    appTaskModel = appTaskModel,
+                    bw = null,
+                    Index = 0,
+                    TextLanguageList = new List<TextLanguage>(),
+                };
+
+                ParametersService parametersService = new ParametersService(csspWebToolsTaskRunner._TaskRunnerBaseService);
+                parametersService.Generate();
+                if (csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    int ThereWasAnError = 34;
+                }
+                else
+                {
+                    int EverythingOK = 34;
+                }
+            }
+        }
         #endregion Functions public
 
         #region Functions private

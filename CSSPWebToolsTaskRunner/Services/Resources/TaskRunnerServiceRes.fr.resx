@@ -1992,4 +1992,14 @@
   <data name="ParentTVItemID" xml:space="preserve">
     <value>ParentTVItemID</value>
   </data>
+  <data name="EstimatedDroguePathsAnim" xml:space="preserve">
+    <value>32/5000
+Animation estimée des chemins de drogue</value>
+  </data>
+  <data name="CouldNotFindMeshElementContainingLat_Lng_" xml:space="preserve">
+    <value>Impossible de trouver un élément de maillage contenant Lat [{0}] et Lng [{1}]</value>
+  </data>
+  <data name="EstimatedDrogue" xml:space="preserve">
+    <value>Drogue estimée</value>
+  </data>
 </root>

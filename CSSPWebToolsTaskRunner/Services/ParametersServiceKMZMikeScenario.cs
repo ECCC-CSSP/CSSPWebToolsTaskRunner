@@ -78,6 +78,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case "MikeScenarioEstimatedDroguePathsAnimationKMZ":
+                    {
+                        if (!GenerateMikeScenarioEstimatedDroguePathsAnimationKMZ())
+                        {
+                            return false;
+                        }
+                    }
+                    break;
                 case "MikeScenarioTestKMZ":
                     {
                         if (!GenerateKMZMikeScenario_MikeScenarioTestKMZ())
@@ -187,6 +195,88 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             if (!WriteKMLCurrentsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList))
+            {
+                ErrorInDoc = true;
+            }
+
+            if (!WriteKMLBottom(sb))
+            {
+                ErrorInDoc = true;
+            }
+
+            dfsuFile.Close();
+
+            if (ErrorInDoc)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.ErrorOccuredWhileCreating_Document_, "KMZ", fi.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ErrorOccuredWhileCreating_Document_", "KMZ", fi.FullName);
+                return false;
+            }
+            return true;
+        }
+        public bool GenerateMikeScenarioEstimatedDroguePathsAnimationKMZ()
+        {
+            string NotUsed = "";
+            bool ErrorInDoc = false;
+
+            string GoogleEarthPath = "";
+            List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            GoogleEarthPath = GetParameters("GoogleEarthPath", ParamValueList);
+            if (string.IsNullOrWhiteSpace(GoogleEarthPath))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind__, TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.GoogleEarthPath);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind__", TaskRunnerServiceRes.Parameter, TaskRunnerServiceRes.GoogleEarthPath);
+                return false;
+            }
+
+            GoogleEarthPath = GoogleEarthPath.Replace("!!!!!", "<");
+            GoogleEarthPath = GoogleEarthPath.Replace("@@@@@", ">");
+            GoogleEarthPath = GoogleEarthPath.Replace("%%%%%", ",");
+
+            DfsuFile dfsuFile = null;
+            List<ElementLayer> elementLayerList = new List<ElementLayer>();
+            List<Element> elementList = new List<Element>();
+            List<Node> nodeList = new List<Node>();
+            List<NodeLayer> topNodeLayerList = new List<NodeLayer>();
+            List<NodeLayer> bottomNodeLayerList = new List<NodeLayer>();
+
+            dfsuFile = GetTransportDfsuFile();
+            if (dfsuFile == null)
+            {
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreating_Document_, "GetTransportDfsuFile", "KMZ", fi.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("Error_WhileCreating_Document_", "GetTransportDfsuFile", "KMZ", fi.FullName);
+                }
+                return false;
+            }
+            if (!FillRequiredList(dfsuFile, elementList, elementLayerList, nodeList, topNodeLayerList, bottomNodeLayerList))
+            {
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.Error_WhileCreating_Document_, "FillRequiredList", fi.FullName);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("Error_WhileCreatingKMZDocument_", "FillRequiredList", "KMZ", fi.FullName);
+                }
+                return false;
+            }
+
+            List<ElementLayer> SelectedElementLayerList = ParseKMLPath(GoogleEarthPath, elementLayerList);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return false;
+
+            if (!WriteKMLTop(sb))
+            {
+                ErrorInDoc = true;
+            }
+            sb.AppendLine(string.Format(@"<name>{0}</name>", TaskRunnerServiceRes.EstimatedDroguePathsAnim + "_" + GetScenarioName()));
+
+            if (!DrawKMLEstimatedDroguePathsStyle(sb))
+            {
+                ErrorInDoc = true;
+            }
+
+            if (!WriteKMLEstimatedDroguePathsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList))
             {
                 ErrorInDoc = true;
             }
@@ -749,6 +839,443 @@ namespace CSSPWebToolsTaskRunner.Services
             //sbStyleCurrentAnim.AppendLine(@"<gx:physicalWidth>12</gx:physicalWidth>");
             sbStyleCurrentAnim.AppendLine(@"</LineStyle>");
             sbStyleCurrentAnim.AppendLine(@"</Style>");
+
+            return true;
+        }
+        private bool DrawKMLEstimatedDroguePathsStyle(StringBuilder sbStyleCurrentAnim)
+        {
+            // Style for blue circle
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_circle_blue"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_circle_blue</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_circle_highlight_blue</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_circle_highlight_blue"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_circle_blue"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for green circle
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_circle_green"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_circle_green</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_circle_highlight_green</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_circle_highlight_green"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_circle_green"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for red circle
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_circle_red"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_circle_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_circle_highlight_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_circle_highlight_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_circle_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for purple circle
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_circle_purple"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_circle_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_circle_highlight_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_circle_highlight_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_circle_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for blue square
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square_blue"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_square_blue</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight_blue</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight_blue"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_square_blue"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for green square
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square_green"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_square_green</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight_green</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight_green"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_square_green"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for red square
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square_red"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_square_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_square_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for purple square
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_square_purple"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_square_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_square_highlight_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_square_highlight_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square_highlight.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_square_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for blue shaded_dot
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_shaded_dot_blue"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_shaded_dot_blue</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_shaded_dot_highlight_blue</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_shaded_dot_highlight_blue"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_shaded_dot_blue"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ffff0000</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for green shaded_dot
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_shaded_dot_green"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_shaded_dot_green</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_shaded_dot_highlight_green</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_shaded_dot_highlight_green"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_shaded_dot_green"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff00ff00</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for red shaded_dot
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_shaded_dot_red"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_shaded_dot_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_shaded_dot_highlight_red</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_shaded_dot_highlight_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_shaded_dot_red"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff0000ff</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
+            // Style for purple shaded_dot
+            sb.AppendLine($@"	<StyleMap id=""msn_placemark_shaded_dot_purple"">");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>normal</key>");
+            sb.AppendLine($@"			<styleUrl>#sn_placemark_shaded_dot_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"		<Pair>");
+            sb.AppendLine($@"			<key>highlight</key>");
+            sb.AppendLine($@"			<styleUrl>#sh_placemark_shaded_dot_highlight_purple</styleUrl>");
+            sb.AppendLine($@"		</Pair>");
+            sb.AppendLine($@"	</StyleMap>");
+            sb.AppendLine($@"	<Style id=""sh_placemark_shaded_dot_highlight_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@"	</Style>");
+            sb.AppendLine($@"	<Style id=""sn_placemark_shaded_dot_purple"">");
+            sb.AppendLine($@"		<IconStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"			<scale>0.6</scale>");
+            sb.AppendLine($@"			<Icon>");
+            sb.AppendLine($@"				<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>");
+            sb.AppendLine($@"			</Icon>");
+            sb.AppendLine($@"		</IconStyle>");
+            sb.AppendLine($@"		<LineStyle>");
+            sb.AppendLine($@"			<color>ff800080</color>");
+            sb.AppendLine($@"		</LineStyle>");
+            sb.AppendLine($@" </Style>");
+
 
             return true;
         }
@@ -2882,6 +3409,391 @@ namespace CSSPWebToolsTaskRunner.Services
 
             }
             sbHTML.AppendLine(@"</Folder>");
+
+            return true;
+        }
+        private bool WriteKMLEstimatedDroguePathsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList)
+        {
+            string NotUsed = "";
+
+            int ItemUVelocity = 0;
+            int ItemVVelocity = 0;
+            MapInfoService mapInfoService = new MapInfoService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            // getting the ItemNumber
+            foreach (IDfsSimpleDynamicItemInfo dfsDyInfo in dfsuFile.ItemInfo)
+            {
+                if (dfsDyInfo.Quantity.Item == eumItem.eumIuVelocity)
+                {
+                    ItemUVelocity = dfsDyInfo.ItemNumber;
+                }
+                if (dfsDyInfo.Quantity.Item == eumItem.eumIvVelocity)
+                {
+                    ItemVVelocity = dfsDyInfo.ItemNumber;
+                }
+            }
+
+            if (ItemUVelocity == 0 || ItemVVelocity == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, TaskRunnerServiceRes.Parameters);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TaskRunnerServiceRes.Parameters);
+                return false;
+            }
+
+            //int pcount = 0;
+            sbHTML.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.EstimatedDroguePathsAnim + @"</name>");
+            sbHTML.AppendLine(@"<visibility>0</visibility>");
+
+            int CountLayer = (dfsuFile.NumberOfSigmaLayers == 0 ? 1 : dfsuFile.NumberOfSigmaLayers);
+
+            Coord StartCoord = new Coord();
+            Coord CurrentCoord = new Coord();
+
+            int CountDrogue = 0;
+            int CountDelay = 12;
+            int CountSteps = 0;
+            int TotalDrogueCount = SelectedElementLayerList.Count;
+            int TotalSteps = SelectedElementLayerList.Count * CountDelay * CountLayer;
+            foreach (ElementLayer elementLayer in SelectedElementLayerList)
+            {
+                CountDrogue += 1;
+                //if (CountDrogue > 1)
+                //{
+                //    continue;
+                //}
+
+                ElementLayer currentElementLayer = new ElementLayer()
+                {
+                    Element = elementLayer.Element,
+                    Layer = elementLayer.Layer,
+                    ZMax = elementLayer.ZMax,
+                    ZMin = elementLayer.ZMin,
+                };
+
+                float XCenter = 0.0f;
+                float YCenter = 0.0f;
+
+                foreach (Node n in currentElementLayer.Element.NodeList)
+                {
+                    XCenter += n.X;
+                    YCenter += n.Y;
+                }
+
+                XCenter = XCenter / currentElementLayer.Element.NodeList.Count();
+                YCenter = YCenter / currentElementLayer.Element.NodeList.Count();
+
+                StartCoord = new Coord() { Lat = YCenter, Lng = XCenter, Ordinal = 0 };
+                CurrentCoord = new Coord() { Lat = YCenter, Lng = XCenter, Ordinal = 0 };
+
+                sbHTML.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.EstimatedDrogue + " " + CountDrogue.ToString() + @"</name>");
+                sbHTML.AppendLine(@"<visibility>0</visibility>");
+
+                for (int delay = 0; delay < CountDelay; delay++) // hrs to delay
+                {
+                    int NumberOfTimeStepsToDelay = (int)(3600.0D / dfsuFile.TimeStepInSeconds * delay);
+
+                    List<Coord> coordList = new List<Coord>()
+                    {
+                        StartCoord
+                    };
+
+                    sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.EstimatedDrogue + " {0} Delay {1} hrs</name>", CountDrogue, delay));
+                    sbHTML.AppendLine(@"<visibility>0</visibility>");
+
+                    for (int Layer = 1; Layer <= CountLayer; Layer++)
+                    {
+                        CountSteps += 1;
+
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (100 * CountSteps / TotalSteps));
+                        _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", $"Drogue { CountDrogue } of { TotalDrogueCount } Delay { delay } of { CountDelay } Layer { Layer } of { CountLayer }"));
+
+                        sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.Layer + " {0}</name>", Layer));
+                        sbHTML.AppendLine(@"<visibility>0</visibility>");
+
+                        StringBuilder sbHTML2 = new StringBuilder();
+
+                        int vCount = 0;
+                        for (int timeStep = 0; timeStep < dfsuFile.NumberOfTimeSteps; timeStep++)
+                        {
+                            if (timeStep < NumberOfTimeStepsToDelay)
+                            {
+                                continue;
+                            }
+
+                            if (coordList.Count == 0)
+                            {
+                                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBe0, "coordList.Count");
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBe0", "coordList.Count");
+                                return false;
+                            }
+
+                            List<Node> PathNodeList = new List<Node>()
+                            {
+                                new Node() { X = coordList[coordList.Count - 1].Lng, Y = coordList[coordList.Count - 1].Lat }
+                            };
+
+                            currentElementLayer = GetElementSurrondingEachPoint(elementLayerList, PathNodeList).FirstOrDefault();
+
+                            if (currentElementLayer == null)
+                            {
+                                NotUsed = string.Format(TaskRunnerServiceRes._ShouldNotBeNull, "currentElementLayer");
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_ShouldNotBeNull", "currentElementLayer");
+                                return false;
+                            }
+
+                            float[] UvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemUVelocity, timeStep).Data;
+                            float[] VvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemVVelocity, timeStep).Data;
+
+                            double totalTimeInSeconds = 0.0D;
+                            int MaxDist = 10; // meters lat or lng
+                            while (totalTimeInSeconds < dfsuFile.TimeStepInSeconds)
+                            {
+                                float UV = UvelocityList[currentElementLayer.Element.ID - 1];
+                                float VV = VvelocityList[currentElementLayer.Element.ID - 1];
+
+                                double distLat = (double)VV * dfsuFile.TimeStepInSeconds;
+                                double distLng = (double)UV * dfsuFile.TimeStepInSeconds;
+
+                                double dist = Math.Sqrt((distLat * distLat) + (distLng * distLng));
+
+                                if (dist != 0.0D)
+                                {
+                                    if (dist > MaxDist)
+                                    {
+                                        double fact = MaxDist / dist;
+                                        double time = dfsuFile.TimeStepInSeconds * fact;
+                                        totalTimeInSeconds += time;
+
+                                        distLat = (double)VV * time;
+                                        distLng = (double)UV * time;
+
+                                        dist = Math.Sqrt((distLat * distLat) + (distLng * distLng));
+                                    }
+
+                                    double VectorVal = Math.Sqrt((UV * UV) + (VV * VV));
+                                    double VectorDir = 0.0D;
+                                    double VectorDirCartesian = Math.Acos(Math.Abs(UV / VectorVal)) * mapInfoService.r2d;
+
+                                    if (VectorDirCartesian <= 360 && VectorDirCartesian >= 0)
+                                    {
+                                        // everything is ok
+                                    }
+                                    else
+                                    {
+                                        VectorDirCartesian = 0.0D;
+                                    }
+
+                                    if (UV >= 0 && VV >= 0)
+                                    {
+                                        VectorDir = 90 - VectorDirCartesian;
+                                    }
+                                    else if (UV < 0 && VV >= 0)
+                                    {
+                                        VectorDir = 270 + VectorDirCartesian;
+                                        VectorDirCartesian = 180 - VectorDirCartesian;
+                                    }
+                                    else if (UV >= 0 && VV < 0)
+                                    {
+                                        VectorDir = 90 + VectorDirCartesian;
+                                        VectorDirCartesian = 360 - VectorDirCartesian;
+                                    }
+                                    else if (UV < 0 && VV < 0)
+                                    {
+                                        VectorDir = 270 - VectorDirCartesian;
+                                        VectorDirCartesian = 180 + VectorDirCartesian;
+                                    }
+
+
+                                    double Lat1 = coordList[coordList.Count - 1].Lat;
+                                    double Lng1 = coordList[coordList.Count - 1].Lng;
+
+                                    Coord coord2 = _MapInfoService.CalculateDestination(Lat1 * _MapInfoService.d2r, Lng1 * _MapInfoService.d2r, dist, VectorDir * _MapInfoService.d2r);
+
+                                    List<Node> PathNodeList2 = new List<Node>() { new Node() { X = coord2.Lng, Y = coord2.Lat } };
+                                    ElementLayer NewElementLayer = GetElementSurrondingEachPoint(elementLayerList, new List<Node>() { new Node() { X = coord2.Lng, Y = coord2.Lat } }).FirstOrDefault();
+
+                                    if (NewElementLayer == null)
+                                    {
+                                        coordList.Add(new Coord() { Lat = (float)Lat1, Lng = (float)Lng1, Ordinal = 0 });
+                                        totalTimeInSeconds = dfsuFile.TimeStepInSeconds;
+                                    }
+                                    else
+                                    {
+                                        coordList.Add(new Coord() { Lat = coord2.Lat, Lng = coord2.Lng, Ordinal = 0 });
+                                    }
+
+
+                                    if (NewElementLayer == null || currentElementLayer.Element.ID != NewElementLayer.Element.ID)
+                                    {
+                                        sbHTML2.AppendLine(@"<Folder>");
+                                        sbHTML2.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds))));
+                                        sbHTML2.AppendLine(@"<visibility>0</visibility>");
+                                        sbHTML2.AppendLine(@"<TimeSpan>");
+                                        sbHTML2.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds)));
+                                        sbHTML2.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds)));
+                                        sbHTML2.AppendLine(@"</TimeSpan>");
+                                        sbHTML2.AppendLine(@"<Placemark>");
+                                        sbHTML2.AppendLine(@"<visibility>0</visibility>");
+                                        sbHTML2.AppendLine($@"<name>EDP { CountDrogue }</name>");
+
+                                        switch (CountDrogue)
+                                        {
+                                            case 1:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_green</styleUrl>");
+                                                }
+                                                break;
+                                            case 2:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_red</styleUrl>");
+                                                }
+                                                break;
+                                            case 3:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_blue</styleUrl>");
+                                                }
+                                                break;
+                                            case 4:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_purple</styleUrl>");
+                                                }
+                                                break;
+                                            case 5:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_green</styleUrl>");
+                                                }
+                                                break;
+                                            case 6:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_red</styleUrl>");
+                                                }
+                                                break;
+                                            case 7:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_blue</styleUrl>");
+                                                }
+                                                break;
+                                            case 8:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_purple</styleUrl>");
+                                                }
+                                                break;
+                                            default:
+                                                {
+                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_shaded_dot_green</styleUrl>");
+                                                }
+                                                break;
+                                        }
+
+                                        sbHTML2.AppendLine(@"<Point>");
+                                        sbHTML2.AppendLine(@"<coordinates>");
+                                        sbHTML2.Append(@"");
+                                        if (coordList.Count > 1)
+                                        {
+                                            sbHTML2.Append($@"{ coordList[coordList.Count - 1].Lng },{ coordList[coordList.Count - 1].Lat },0 ");
+                                        }
+                                        sbHTML2.AppendLine(@"</coordinates>");
+                                        sbHTML2.AppendLine(@"</Point>");
+                                        sbHTML2.AppendLine(@"</Placemark>");
+                                        sbHTML2.AppendLine(@"</Folder>");
+
+                                        if (NewElementLayer != null)
+                                        {
+                                            currentElementLayer = NewElementLayer;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    totalTimeInSeconds = dfsuFile.TimeStepInSeconds;
+                                }
+                            }
+                            vCount += 1;
+                        }
+
+                        sbHTML.AppendLine(@"<Folder>");
+                        sbHTML.AppendLine(@"<name>Full Path</name>");
+                        sbHTML.AppendLine(@"<visibility>0</visibility>");
+                        sbHTML.AppendLine(@"<Placemark>");
+                        sbHTML.AppendLine(@"<visibility>0</visibility>");
+                        sbHTML.AppendLine($@"<name>EDP { CountDrogue }</name>");
+                        switch (CountDrogue)
+                        {
+                            case 1:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_green</styleUrl>");
+                                }
+                                break;
+                            case 2:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_red</styleUrl>");
+                                }
+                                break;
+                            case 3:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_blue</styleUrl>");
+                                }
+                                break;
+                            case 4:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_purple</styleUrl>");
+                                }
+                                break;
+                            case 5:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_green</styleUrl>");
+                                }
+                                break;
+                            case 6:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_red</styleUrl>");
+                                }
+                                break;
+                            case 7:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_blue</styleUrl>");
+                                }
+                                break;
+                            case 8:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_purple</styleUrl>");
+                                }
+                                break;
+                            default:
+                                {
+                                    sbHTML.AppendLine(@"<styleUrl>#msn_placemark_shaded_dot_green</styleUrl>");
+                                }
+                                break;
+                        }
+                        sbHTML.AppendLine(@"<LineString>");
+                        sbHTML.AppendLine(@"<tessellate>1</tessellate>");
+                        sbHTML.AppendLine(@"<coordinates>");
+                        sbHTML.Append(@"");
+                        foreach (Coord coord in coordList)
+                        {
+                            sbHTML.Append($@"{ coord.Lng },{ coord.Lat },0 ");
+
+                        }
+                        sbHTML.AppendLine(@"</coordinates>");
+                        sbHTML.AppendLine(@"</LineString>");
+                        sbHTML.AppendLine(@"</Placemark>");
+                        sbHTML.AppendLine(@"</Folder>");
+
+                        sbHTML.AppendLine(sbHTML2.ToString());
+
+                        sbHTML.AppendLine(@"</Folder>"); // TaskRunnerServiceRes.Layer
+
+                    }
+
+                    sbHTML.AppendLine(@"</Folder>"); // Delay
+
+                }
+
+                sbHTML.AppendLine(@"</Folder>"); // TaskRunnerServiceRes.EstimatedDroguePathsAnim
+
+            }
+
+            sbHTML.AppendLine(@"</Folder>"); // TaskRunnerServiceRes.EstimatedDroguePathsAnim
 
             return true;
         }

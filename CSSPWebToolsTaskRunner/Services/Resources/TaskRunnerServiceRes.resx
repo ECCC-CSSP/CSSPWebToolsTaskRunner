@@ -1995,4 +1995,13 @@
   <data name="ParentTVItemID" xml:space="preserve">
     <value>ParentTVItemID</value>
   </data>
+  <data name="EstimatedDroguePathsAnim" xml:space="preserve">
+    <value>Estimated drogue paths animation</value>
+  </data>
+  <data name="CouldNotFindMeshElementContainingLat_Lng_" xml:space="preserve">
+    <value>Could not find mesh element containing Lat [{0}] and Lng [{1}]</value>
+  </data>
+  <data name="EstimatedDrogue" xml:space="preserve">
+    <value>Estimated Drogue</value>
+  </data>
 </root>

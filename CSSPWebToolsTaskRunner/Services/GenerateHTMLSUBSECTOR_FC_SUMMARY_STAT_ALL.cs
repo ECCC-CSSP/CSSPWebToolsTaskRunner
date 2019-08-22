@@ -658,144 +658,148 @@ namespace CSSPWebToolsTaskRunner.Services
                     YearList.Add(year);
                 }
 
-                List<int> CountPerYear = new List<int>();
-                foreach (int year in YearList)
+                if (YearList.Count > 0)
                 {
-                    CountPerYear.Add(DateTimeList.Where(c => c.Year == year).Count());
-                }
-
-                if (xlApp == null)
-                {
-                    xlApp = new Microsoft.Office.Interop.Excel.Application();
-                    workbook = xlApp.Workbooks.Add();
-                    worksheet = workbook.Worksheets.get_Item(1);
-                    xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
-                }
-
-                Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 700, 100);
-                Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
-
-                chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
-
-                Microsoft.Office.Interop.Excel.SeriesCollection seriesCollection = chartPage.SeriesCollection();
-                Microsoft.Office.Interop.Excel.Series series = seriesCollection.NewSeries();
-
-                series.XValues = YearList.ToArray();
-                series.Values = CountPerYear.ToArray();
-
-                chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
-                chartPage.ChartTitle.Select();
-                xlApp.Selection.Delete();
-                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
-                xlApp.Selection.Delete();
-                chartPage.Legend.Select();
-                xlApp.Selection.Delete();
-                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
-                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
-                chartPage.Parent.RoundedCorners = true;
-
-                chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfRunsUsedByYear;
-
-                CountAnalysisReportParameterModel += 1;
-                // need to save the file with a unique name under the TVItemID
-                FileInfo fiImage = new FileInfo(fi.DirectoryName + @"\" + FileNameExtra + CountAnalysisReportParameterModel.ToString() + ".png");
-
-                DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
-
-                if (!di.Exists)
-                {
-                    try
+                    List<int> CountPerYear = new List<int>();
+                    foreach (int year in YearList)
                     {
-                        di.Create();
+                        CountPerYear.Add(DateTimeList.Where(c => c.Year == year).Count());
                     }
-                    catch (Exception ex)
+
+                    if (xlApp == null)
                     {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
-                        return false;
+                        xlApp = new Microsoft.Office.Interop.Excel.Application();
+                        workbook = xlApp.Workbooks.Add();
+                        worksheet = workbook.Worksheets.get_Item(1);
+                        xlCharts = (Microsoft.Office.Interop.Excel.ChartObjects)worksheet.ChartObjects();
                     }
-                }
 
-                chartPage.Export(fiImage.FullName, "PNG", false);
+                    Microsoft.Office.Interop.Excel.ChartObject chart = xlCharts.Add(100, 100, 700, 100);
+                    Microsoft.Office.Interop.Excel.Chart chartPage = chart.Chart;
 
-                sbTemp.AppendLine(@"        <tr>");
-                sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
-                sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NOTE }</b> : { TaskRunnerServiceRes.Shaded } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.GMean } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.Median } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.P90 } &gt; 43 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (% &gt; 43) &gt; 10");
-                sbTemp.AppendLine($@"            </td>");
-                sbTemp.AppendLine(@"        </tr>");
-                if (string.IsNullOrWhiteSpace(HideQueryText))
-                {
-                    sbTemp.AppendLine(@"        <tr>");
-                    sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
-                    sbTemp.Append($@"&nbsp;");
-                    sbTemp.AppendLine($@"            </td>");
-                    sbTemp.AppendLine(@"        </tr>");
-                    sbTemp.AppendLine(@"        <tr>");
-                    sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ReportYear }</b> : { mwqmAnalysisReportParameterModel.AnalysisReportYear }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.StartDate }</b> : { mwqmAnalysisReportParameterModel.StartDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.EndDate }</b> : { mwqmAnalysisReportParameterModel.EndDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NumberOfRuns }</b> : { mwqmAnalysisReportParameterModel.NumberOfRuns }&nbsp;&nbsp;&nbsp;");
-                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.FullYear }</b> : { (mwqmAnalysisReportParameterModel.FullYear ? TaskRunnerServiceRes.Yes : TaskRunnerServiceRes.No) }&nbsp;&nbsp;&nbsp;");
+                    chartPage.ChartType = Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered;
 
-                    if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll)
+                    Microsoft.Office.Interop.Excel.SeriesCollection seriesCollection = chartPage.SeriesCollection();
+                    Microsoft.Office.Interop.Excel.Series series = seriesCollection.NewSeries();
+
+                    series.XValues = YearList.ToArray();
+                    series.Values = CountPerYear.ToArray();
+
+                    chartPage.ApplyLayout(9, Microsoft.Office.Interop.Excel.XlChartType.xlColumnClustered);
+                    chartPage.ChartTitle.Select();
+                    xlApp.Selection.Delete();
+                    chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlValue).AxisTitle.Select();
+                    xlApp.Selection.Delete();
+                    chartPage.Legend.Select();
+                    xlApp.Selection.Delete();
+                    chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).TickLabelSpacing = 5;
+                    chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory).MajorTickMark = Microsoft.Office.Interop.Excel.Constants.xlOutside;
+                    chartPage.Parent.RoundedCorners = true;
+
+                    chartPage.Axes(Microsoft.Office.Interop.Excel.XlAxisType.xlCategory, Microsoft.Office.Interop.Excel.XlAxisGroup.xlPrimary).AxisTitle.Text = TaskRunnerServiceRes.NumberOfRunsUsedByYear;
+
+                    CountAnalysisReportParameterModel += 1;
+                    // need to save the file with a unique name under the TVItemID
+                    FileInfo fiImage = new FileInfo(fi.DirectoryName + @"\" + FileNameExtra + CountAnalysisReportParameterModel.ToString() + ".png");
+
+                    DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
+
+                    if (!di.Exists)
                     {
-                        sbTemp.Append($@" <b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry24h }</b> : { mwqmAnalysisReportParameterModel.DryLimit24h } mm &nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry48h }</b> : { mwqmAnalysisReportParameterModel.DryLimit48h } mm &nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry72h }</b> : { mwqmAnalysisReportParameterModel.DryLimit72h } mm &nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry96h }</b> : { mwqmAnalysisReportParameterModel.DryLimit96h } mm &nbsp;&nbsp;&nbsp;");
-                    }
-                    if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll)
-                    {
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet24h }</b> : { mwqmAnalysisReportParameterModel.WetLimit24h } mm &nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet48h }</b> : { mwqmAnalysisReportParameterModel.WetLimit48h } mm &nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet72h }</b> : { mwqmAnalysisReportParameterModel.WetLimit72h } mm &nbsp;&nbsp;&nbsp;");
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet96h }</b> : { mwqmAnalysisReportParameterModel.WetLimit96h } mm &nbsp;&nbsp;&nbsp;");
-                    }
-                    List<int> MWQMRunTVItemIDList = mwqmAnalysisReportParameterModel.RunsToOmit.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
-
-                    if (MWQMRunTVItemIDList.Count > 0)
-                    {
-                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.RunsOmitted }</b> : ");
-
-                        foreach (int mwqmRunTVItemID in MWQMRunTVItemIDList)
+                        try
                         {
-                            MWQMRunModel mwqmRunModel = _MWQMRunService.GetMWQMRunModelWithMWQMRunTVItemIDDB(mwqmRunTVItemID);
-                            if (!string.IsNullOrEmpty(mwqmRunModel.Error))
-                            {
-                                sbTemp.Append($@" [err - { mwqmRunTVItemID }]");
-                            }
-                            else
-                            {
-                                sbTemp.Append($@" [{ mwqmRunModel.DateTime_Local.ToString("yyyy MMM dd") }]");
-                            }
+                            di.Create();
+                        }
+                        catch (Exception ex)
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotCreateDirectory__, di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotCreateDirectory__", di.FullName, ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                            return false;
                         }
                     }
-                    sbTemp.AppendLine($@"");
-                    sbTemp.AppendLine(@"            </td>");
-                    sbTemp.AppendLine(@"        </tr>");
-                }
-                if (string.IsNullOrWhiteSpace(HideNumberOfRunsUsedByYearGraph))
-                {
+
+                    chartPage.Export(fiImage.FullName, "PNG", false);
+
                     sbTemp.AppendLine(@"        <tr>");
                     sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
-                    sbTemp.Append($@"&nbsp;");
+                    sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NOTE }</b> : { TaskRunnerServiceRes.Shaded } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.GMean } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.Median } &gt; 14 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { TaskRunnerServiceRes.P90 } &gt; 43 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (% &gt; 43) &gt; 10");
                     sbTemp.AppendLine($@"            </td>");
                     sbTemp.AppendLine(@"        </tr>");
-                    sbTemp.AppendLine(@"        <tr>");
-                    sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
-                    sbTemp.AppendLine($@"<div>|||Image|FileName,{ fiImage.FullName }|width,460|height,90|||</div>");
-                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 6.2: { TaskRunnerServiceRes.NumberOfRunsUsedByYear }|||</div>"); // --- { AllWetDry } --- ({ Year }) --- { RunText }|||</div>");
-                    sbTemp.AppendLine(@"            </td>");
-                    sbTemp.AppendLine(@"        </tr>");
-                }
-                sbTemp.AppendLine(@"</table>");
+                    if (string.IsNullOrWhiteSpace(HideQueryText))
+                    {
+                        sbTemp.AppendLine(@"        <tr>");
+                        sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                        sbTemp.Append($@"&nbsp;");
+                        sbTemp.AppendLine($@"            </td>");
+                        sbTemp.AppendLine(@"        </tr>");
+                        sbTemp.AppendLine(@"        <tr>");
+                        sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.AnalysisName }</b> : { (string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterModel.AnalysisName) ? "---" : mwqmAnalysisReportParameterModel.AnalysisName) }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.CalculationType }</b> : { AllWetDry }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ReportYear }</b> : { mwqmAnalysisReportParameterModel.AnalysisReportYear }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.StartDate }</b> : { mwqmAnalysisReportParameterModel.StartDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.EndDate }</b> : { mwqmAnalysisReportParameterModel.EndDate.ToString("yyyy MMM dd") }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.NumberOfRuns }</b> : { mwqmAnalysisReportParameterModel.NumberOfRuns }&nbsp;&nbsp;&nbsp;");
+                        sbTemp.Append($@"<b>{ TaskRunnerServiceRes.FullYear }</b> : { (mwqmAnalysisReportParameterModel.FullYear ? TaskRunnerServiceRes.Yes : TaskRunnerServiceRes.No) }&nbsp;&nbsp;&nbsp;");
 
-                sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
+                        if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.DryAllAll)
+                        {
+                            sbTemp.Append($@" <b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry24h }</b> : { mwqmAnalysisReportParameterModel.DryLimit24h } mm &nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry48h }</b> : { mwqmAnalysisReportParameterModel.DryLimit48h } mm &nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry72h }</b> : { mwqmAnalysisReportParameterModel.DryLimit72h } mm &nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Dry96h }</b> : { mwqmAnalysisReportParameterModel.DryLimit96h } mm &nbsp;&nbsp;&nbsp;");
+                        }
+                        if (mwqmAnalysisReportParameterModel.AnalysisCalculationType == AnalysisCalculationTypeEnum.WetAllAll)
+                        {
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.ShortRangeNumberOfDays }</b> : { Math.Abs(mwqmAnalysisReportParameterModel.ShortRangeNumberOfDays) }&nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet24h }</b> : { mwqmAnalysisReportParameterModel.WetLimit24h } mm &nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet48h }</b> : { mwqmAnalysisReportParameterModel.WetLimit48h } mm &nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet72h }</b> : { mwqmAnalysisReportParameterModel.WetLimit72h } mm &nbsp;&nbsp;&nbsp;");
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.Wet96h }</b> : { mwqmAnalysisReportParameterModel.WetLimit96h } mm &nbsp;&nbsp;&nbsp;");
+                        }
+                        List<int> MWQMRunTVItemIDList = mwqmAnalysisReportParameterModel.RunsToOmit.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+                        if (MWQMRunTVItemIDList.Count > 0)
+                        {
+                            sbTemp.Append($@"<b>{ TaskRunnerServiceRes.RunsOmitted }</b> : ");
+
+                            foreach (int mwqmRunTVItemID in MWQMRunTVItemIDList)
+                            {
+                                MWQMRunModel mwqmRunModel = _MWQMRunService.GetMWQMRunModelWithMWQMRunTVItemIDDB(mwqmRunTVItemID);
+                                if (!string.IsNullOrEmpty(mwqmRunModel.Error))
+                                {
+                                    sbTemp.Append($@" [err - { mwqmRunTVItemID }]");
+                                }
+                                else
+                                {
+                                    sbTemp.Append($@" [{ mwqmRunModel.DateTime_Local.ToString("yyyy MMM dd") }]");
+                                }
+                            }
+                        }
+                        sbTemp.AppendLine($@"");
+                        sbTemp.AppendLine(@"            </td>");
+                        sbTemp.AppendLine(@"        </tr>");
+                    }
+                    if (string.IsNullOrWhiteSpace(HideNumberOfRunsUsedByYearGraph))
+                    {
+                        sbTemp.AppendLine(@"        <tr>");
+                        sbTemp.AppendLine($@"            <td class=""textAlignLeft"">");
+                        sbTemp.Append($@"&nbsp;");
+                        sbTemp.AppendLine($@"            </td>");
+                        sbTemp.AppendLine(@"        </tr>");
+                        sbTemp.AppendLine(@"        <tr>");
+                        sbTemp.AppendLine($@"            <td class=""textAlignCenter"">");
+                        sbTemp.AppendLine($@"<div>|||Image|FileName,{ fiImage.FullName }|width,460|height,90|||</div>");
+                        sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 6.2: { TaskRunnerServiceRes.NumberOfRunsUsedByYear }|||</div>"); // --- { AllWetDry } --- ({ Year }) --- { RunText }|||</div>");
+                        sbTemp.AppendLine(@"            </td>");
+                        sbTemp.AppendLine(@"        </tr>");
+                    }
+                    sbTemp.AppendLine(@"</table>");
+
+                    sbTemp.AppendLine(@"<p>|||PAGE_BREAK|||</p>");
+
+                }
             }
 
             return true;

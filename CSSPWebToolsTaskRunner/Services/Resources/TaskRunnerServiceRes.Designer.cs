@@ -907,6 +907,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find mesh element containing Lat [{0}] and Lng [{1}].
+        /// </summary>
+        public static string CouldNotFindMeshElementContainingLat_Lng_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindMeshElementContainingLat_Lng_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find part {0}. Current part is {1} in {2} at line {3}.
         /// </summary>
         public static string CouldNotFindPart_CurrentPartIs_In_AtLine_ {
@@ -1740,6 +1749,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ErrorWhileCreatingExcelDocument_ {
             get {
                 return ResourceManager.GetString("ErrorWhileCreatingExcelDocument_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated Drogue.
+        /// </summary>
+        public static string EstimatedDrogue {
+            get {
+                return ResourceManager.GetString("EstimatedDrogue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated drogue paths animation.
+        /// </summary>
+        public static string EstimatedDroguePathsAnim {
+            get {
+                return ResourceManager.GetString("EstimatedDroguePathsAnim", resourceCulture);
             }
         }
         
