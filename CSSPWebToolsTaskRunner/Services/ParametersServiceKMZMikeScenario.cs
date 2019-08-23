@@ -219,8 +219,32 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             bool ErrorInDoc = false;
 
+            int DoFirstXDroguePoints = 0;
+            List<int> DelaysList = new List<int>();
+            List<int> LayersList = new List<int>();
             string GoogleEarthPath = "";
+
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            DoFirstXDroguePoints = int.Parse(GetParameters("DoFirstXDroguePoints", ParamValueList));
+
+            List<string> DelaysTextList = GetParametersArray("Delays", ParamValueList);
+            if (DelaysTextList.Count > 0)
+            {
+                foreach (string DelaysText in DelaysTextList)
+                {
+                    DelaysList.Add(int.Parse(DelaysText));
+                }
+            }
+
+            List<string> LayersTextList = GetParametersArray("Layers", ParamValueList);
+            if (LayersTextList.Count > 0)
+            {
+                foreach (string LayersText in LayersTextList)
+                {
+                    LayersList.Add(int.Parse(LayersText));
+                }
+            }
 
             GoogleEarthPath = GetParameters("GoogleEarthPath", ParamValueList);
             if (string.IsNullOrWhiteSpace(GoogleEarthPath))
@@ -265,6 +289,10 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return false;
 
+            List<Coord> StartCoordList = ParseKMLPathCoord(GoogleEarthPath, elementLayerList);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return false;
+
             if (!WriteKMLTop(sb))
             {
                 ErrorInDoc = true;
@@ -276,7 +304,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLEstimatedDroguePathsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList))
+            if (!WriteKMLEstimatedDroguePathsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList, StartCoordList, DoFirstXDroguePoints, DelaysList, LayersList))
             {
                 ErrorInDoc = true;
             }
@@ -3060,6 +3088,64 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return AllElementList.Distinct().ToList();
         }
+        private List<Coord> ParseKMLPathCoord(string KMLTextPathForVector, List<ElementLayer> ElementLayerList)
+        {
+            string NotUsed = "";
+
+            List<Coord> coordList = new List<Coord>();
+
+            if (KMLTextPathForVector.Trim() == "")
+            {
+                return new List<Coord>();
+            }
+            else
+            {
+                try
+                {
+                    XmlReader reader = XmlReader.Create(new StringReader(KMLTextPathForVector));
+                    while (reader.Read())
+                    {
+                        if (reader.Name == "coordinates")
+                        {
+                            string AllCoordinates = reader.ReadElementContentAsString().Trim();
+
+                            string[] xyzArray = AllCoordinates.Split(" ".ToCharArray()[0]);
+                            foreach (string xyz in xyzArray)
+                            {
+                                string[] xyzStr = xyz.Split(",".ToCharArray()[0]);
+                                if (xyzStr.Count() != 3)
+                                {
+                                    return null;
+                                }
+                                Coord coord = new Coord();
+                                if (Thread.CurrentThread.CurrentCulture.Name == "fr-CA")
+                                {
+                                    coord.Lng = float.Parse(xyzStr[0].Replace(".", ","));
+                                    coord.Lat = float.Parse(xyzStr[1].Replace(".", ","));
+                                    coord.Ordinal = 0;
+                                }
+                                else
+                                {
+                                    coord.Lng = float.Parse(xyzStr[0]);
+                                   coord.Lat = float.Parse(xyzStr[1]);
+                                    coord.Ordinal = 0;
+                                }
+
+                                coordList.Add(coord);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, "KMLPath" + ex.Message);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", "KMLPath" + ex.Message);
+                    return new List<Coord>();
+                }
+            }
+
+            return coordList;
+        }
         private bool PointInPolygon(Point p, Point[] poly)
         {
             Point p1, p2;
@@ -3235,7 +3321,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLCurrentsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList)
+        private bool WriteKMLCurrentsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, 
+            List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList)
         {
             string NotUsed = "";
 
@@ -3412,7 +3499,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLEstimatedDroguePathsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList)
+        private bool WriteKMLEstimatedDroguePathsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, 
+            List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList, List<Coord> StartCoordList,
+            int DoFirstXDroguePoints, List<int> DelaysList, List<int> LayersList)
         {
             string NotUsed = "";
 
@@ -3449,18 +3538,27 @@ namespace CSSPWebToolsTaskRunner.Services
             Coord StartCoord = new Coord();
             Coord CurrentCoord = new Coord();
 
+            for (int i = LayersList.Count - 1; i > 0; i--)
+            {
+                if (CountLayer < LayersList[i])
+                {
+                    LayersList.Remove(LayersList[i]);
+                }
+            }
+
+            if (LayersList.Count == 0)
+            {
+                LayersList.Add(1);
+            }
+
             int CountDrogue = 0;
-            int CountDelay = 12;
-            int CountSteps = 0;
-            int TotalDrogueCount = SelectedElementLayerList.Count;
-            int TotalSteps = SelectedElementLayerList.Count * CountDelay * CountLayer;
             foreach (ElementLayer elementLayer in SelectedElementLayerList)
             {
                 CountDrogue += 1;
-                //if (CountDrogue > 1)
-                //{
-                //    continue;
-                //}
+                if (CountDrogue > DoFirstXDroguePoints)
+                {
+                    continue;
+                }
 
                 ElementLayer currentElementLayer = new ElementLayer()
                 {
@@ -3482,14 +3580,115 @@ namespace CSSPWebToolsTaskRunner.Services
                 XCenter = XCenter / currentElementLayer.Element.NodeList.Count();
                 YCenter = YCenter / currentElementLayer.Element.NodeList.Count();
 
-                StartCoord = new Coord() { Lat = YCenter, Lng = XCenter, Ordinal = 0 };
-                CurrentCoord = new Coord() { Lat = YCenter, Lng = XCenter, Ordinal = 0 };
+                StartCoord = new Coord() { Lat = StartCoordList[CountDrogue - 1].Lat, Lng = StartCoordList[CountDrogue - 1].Lng, Ordinal = 0 };
+
+                sbHTML.AppendLine(@"<Placemark>");
+                sbHTML.AppendLine(@"<visibility>1</visibility>");
+                sbHTML.AppendLine($@"<name>{ TaskRunnerServiceRes.EstimatedDrogue } {CountDrogue } { TaskRunnerServiceRes.StartPosition }</name>");
+                switch (CountDrogue)
+                {
+                    case 1:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_green</styleUrl>");
+                        }
+                        break;
+                    case 2:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_red</styleUrl>");
+                        }
+                        break;
+                    case 3:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_blue</styleUrl>");
+                        }
+                        break;
+                    case 4:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_circle_purple</styleUrl>");
+                        }
+                        break;
+                    case 5:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_green</styleUrl>");
+                        }
+                        break;
+                    case 6:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_red</styleUrl>");
+                        }
+                        break;
+                    case 7:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_blue</styleUrl>");
+                        }
+                        break;
+                    case 8:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_square_purple</styleUrl>");
+                        }
+                        break;
+                    default:
+                        {
+                            sbHTML.AppendLine(@"<styleUrl>#msn_placemark_shaded_dot_green</styleUrl>");
+                        }
+                        break;
+                }
+
+
+                sbHTML.AppendLine(@"<Point>");
+                sbHTML.AppendLine(@"<coordinates>");
+                sbHTML.Append(@"");
+                sbHTML.Append($@"{ StartCoord.Lng },{ StartCoord.Lat },0 ");
+                sbHTML.AppendLine(@"</coordinates>");
+                sbHTML.AppendLine(@"</Point>");
+                sbHTML.AppendLine(@"</Placemark>");
+
+            }
+
+            CountDrogue = 0;
+            int CountDelays = DelaysList.Count;
+            int CountLayers = LayersList.Count;
+            int CountSteps = 0;
+            int TotalDrogueCount = DoFirstXDroguePoints;
+            int TotalSteps = DoFirstXDroguePoints * CountDelays * CountLayers;
+            foreach (ElementLayer elementLayer in SelectedElementLayerList)
+            {
+                CountDrogue += 1;
+                if (CountDrogue > DoFirstXDroguePoints)
+                {
+                    continue;
+                }
+
+                ElementLayer currentElementLayer = new ElementLayer()
+                {
+                    Element = elementLayer.Element,
+                    Layer = elementLayer.Layer,
+                    ZMax = elementLayer.ZMax,
+                    ZMin = elementLayer.ZMin,
+                };
+
+                float XCenter = 0.0f;
+                float YCenter = 0.0f;
+
+                foreach (Node n in currentElementLayer.Element.NodeList)
+                {
+                    XCenter += n.X;
+                    YCenter += n.Y;
+                }
+
+                XCenter = XCenter / currentElementLayer.Element.NodeList.Count();
+                YCenter = YCenter / currentElementLayer.Element.NodeList.Count();
+
+                StartCoord = new Coord() { Lat = StartCoordList[CountDrogue - 1].Lat, Lng = StartCoordList[CountDrogue - 1].Lng, Ordinal = 0 };
+                CurrentCoord = new Coord() { Lat = StartCoordList[CountDrogue - 1].Lat, Lng = StartCoordList[CountDrogue - 1].Lng, Ordinal = 0 };
 
                 sbHTML.AppendLine(@"<Folder><name>" + TaskRunnerServiceRes.EstimatedDrogue + " " + CountDrogue.ToString() + @"</name>");
                 sbHTML.AppendLine(@"<visibility>0</visibility>");
 
-                for (int delay = 0; delay < CountDelay; delay++) // hrs to delay
+                for (int delayIndex = 0; delayIndex < DelaysList.Count; delayIndex++) // hrs to delay
                 {
+                    int delay = DelaysList[delayIndex];
+
                     int NumberOfTimeStepsToDelay = (int)(3600.0D / dfsuFile.TimeStepInSeconds * delay);
 
                     List<Coord> coordList = new List<Coord>()
@@ -3500,12 +3699,14 @@ namespace CSSPWebToolsTaskRunner.Services
                     sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.EstimatedDrogue + " {0} Delay {1} hrs</name>", CountDrogue, delay));
                     sbHTML.AppendLine(@"<visibility>0</visibility>");
 
-                    for (int Layer = 1; Layer <= CountLayer; Layer++)
+                    for (int LayerIndex = 0; LayerIndex < LayersList.Count; LayerIndex++)
                     {
-                        CountSteps += 1;
+                        int Layer = LayersList[LayerIndex];
 
                         _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (100 * CountSteps / TotalSteps));
-                        _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", $"Drogue { CountDrogue } of { TotalDrogueCount } Delay { delay } of { CountDelay } Layer { Layer } of { CountLayer }"));
+                        _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", $"Drogue { CountDrogue } of { TotalDrogueCount } Delay { delayIndex + 1 } of { CountDelays } Layer { LayerIndex + 1 } of { CountLayer }"));
+
+                        CountSteps += 1;
 
                         sbHTML.AppendLine(string.Format(@"<Folder><name>" + TaskRunnerServiceRes.Layer + " {0}</name>", Layer));
                         sbHTML.AppendLine(@"<visibility>0</visibility>");
@@ -3545,7 +3746,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             float[] VvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemVVelocity, timeStep).Data;
 
                             double totalTimeInSeconds = 0.0D;
-                            int MaxDist = 10; // meters lat or lng
+                            double MinimumDistance = 10.0D;
                             while (totalTimeInSeconds < dfsuFile.TimeStepInSeconds)
                             {
                                 float UV = UvelocityList[currentElementLayer.Element.ID - 1];
@@ -3558,9 +3759,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
                                 if (dist != 0.0D)
                                 {
-                                    if (dist > MaxDist)
+                                    if (dist > MinimumDistance)
                                     {
-                                        double fact = MaxDist / dist;
+                                        double fact = MinimumDistance / dist;
                                         double time = dfsuFile.TimeStepInSeconds * fact;
                                         totalTimeInSeconds += time;
 
@@ -3568,6 +3769,10 @@ namespace CSSPWebToolsTaskRunner.Services
                                         distLng = (double)UV * time;
 
                                         dist = Math.Sqrt((distLat * distLat) + (distLng * distLng));
+                                    }
+                                    else
+                                    {
+                                        totalTimeInSeconds = dfsuFile.TimeStepInSeconds;
                                     }
 
                                     double VectorVal = Math.Sqrt((UV * UV) + (VV * VV));
@@ -3614,6 +3819,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                                     if (NewElementLayer == null)
                                     {
+                                        NewElementLayer = currentElementLayer;
                                         coordList.Add(new Coord() { Lat = (float)Lat1, Lng = (float)Lng1, Ordinal = 0 });
                                         totalTimeInSeconds = dfsuFile.TimeStepInSeconds;
                                     }
@@ -3622,9 +3828,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                         coordList.Add(new Coord() { Lat = coord2.Lat, Lng = coord2.Lng, Ordinal = 0 });
                                     }
 
+                                    //if (currentElementLayer.Element.ID != NewElementLayer.Element.ID)
+                                    //{
 
-                                    if (NewElementLayer == null || currentElementLayer.Element.ID != NewElementLayer.Element.ID)
-                                    {
                                         sbHTML2.AppendLine(@"<Folder>");
                                         sbHTML2.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds))));
                                         sbHTML2.AppendLine(@"<visibility>0</visibility>");
@@ -3697,11 +3903,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         sbHTML2.AppendLine(@"</Placemark>");
                                         sbHTML2.AppendLine(@"</Folder>");
 
-                                        if (NewElementLayer != null)
-                                        {
-                                            currentElementLayer = NewElementLayer;
-                                        }
-                                    }
+                                    //}
                                 }
                                 else
                                 {

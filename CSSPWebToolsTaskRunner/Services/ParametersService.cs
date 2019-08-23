@@ -1189,10 +1189,6 @@ namespace CSSPWebToolsTaskRunner.Services
             foreach (string pv in ParamValueList)
             {
                 List<string> ParamValue = pv.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-                if (ParamValue.Count != 2)
-                {
-                    return "";
-                }
                 if (Parameter == ParamValue[0])
                 {
                     return ParamValue[1];
@@ -1200,6 +1196,23 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             return "";
+        }
+        private List<string> GetParametersArray(string Parameter, List<string> ParamValueList)
+        {
+            foreach (string pv in ParamValueList)
+            {
+                string Param = pv.Substring(0, pv.IndexOf(","));
+                if (Param == Parameter)
+                {
+                    string Value = pv.Substring(pv.IndexOf(",") + 1);
+
+                    List<string> valueList = Value.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                    return valueList;
+                }
+            }
+
+            return new List<string>();
         }
         private bool RenameStartOfFileName(ReportTypeModel reportTypeModel, int TVItemID, string TVItemIDText, List<string> ParamValueList)
         {

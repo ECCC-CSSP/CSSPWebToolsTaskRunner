@@ -87,7 +87,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             appTaskModel.AppTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters;
             appTaskModel.AppTaskStatus = AppTaskStatusEnum.Created;
             appTaskModel.PercentCompleted = 1;
-            appTaskModel.Parameters = @"|||TVItemID,28475|||ReportTypeID,43|||GoogleEarthPath,!!!!!?xml version=""1.0"" encoding=""UTF-8""?@@@@@" +
+            appTaskModel.Parameters = @"|||TVItemID,28475|||ReportTypeID,43|||DoFirstXDroguePoints,1|||Delays,0,1,2,3,4,5,6,7,8|||Layers,1|||GoogleEarthPath,!!!!!?xml version=""1.0"" encoding=""UTF-8""?@@@@@" +
 @"!!!!!kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom""@@@@@" +
 @"!!!!!Document@@@@@" +
 @" !!!!!name@@@@@KmlFile!!!!!/name@@@@@" +

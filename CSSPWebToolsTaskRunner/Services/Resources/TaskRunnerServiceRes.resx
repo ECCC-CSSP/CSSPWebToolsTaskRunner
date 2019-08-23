@@ -2004,4 +2004,7 @@
   <data name="EstimatedDrogue" xml:space="preserve">
     <value>Estimated Drogue</value>
   </data>
+  <data name="StartPosition" xml:space="preserve">
+    <value>Start position</value>
+  </data>
 </root>

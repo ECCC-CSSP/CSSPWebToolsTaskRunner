@@ -4912,6 +4912,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start position.
+        /// </summary>
+        public static string StartPosition {
+            get {
+                return ResourceManager.GetString("StartPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start tide.
         /// </summary>
         public static string StartTide {

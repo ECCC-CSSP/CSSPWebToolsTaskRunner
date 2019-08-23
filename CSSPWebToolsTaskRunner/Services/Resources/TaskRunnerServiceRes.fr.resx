@@ -2002,4 +2002,7 @@ Animation estimée des chemins de drogue</value>
   <data name="EstimatedDrogue" xml:space="preserve">
     <value>Drogue estimée</value>
   </data>
+  <data name="StartPosition" xml:space="preserve">
+    <value>La position de départ</value>
+  </data>
 </root>
