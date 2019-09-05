@@ -1207,7 +1207,15 @@ namespace CSSPWebToolsTaskRunner.Services
                     _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count / (float)TotalCount)));
                 }
 
-                string TVText = tvItemModelSS.TVText.Substring(0, tvItemModelSS.TVText.IndexOf(" "));
+                string TVText = "";
+                if (tvItemModelSS.TVText.Contains(" "))
+                {
+                    TVText = tvItemModelSS.TVText.Substring(0, tvItemModelSS.TVText.IndexOf(" "));
+                }
+                else
+                {
+                    TVText = tvItemModelSS.TVText;
+                }
 
                 // ---------------------------------------------------------------
                 // doing Subsector

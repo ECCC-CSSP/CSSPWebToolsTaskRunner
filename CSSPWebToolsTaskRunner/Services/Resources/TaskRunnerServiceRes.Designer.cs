@@ -3868,6 +3868,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PolSourceSiteEffect.
+        /// </summary>
+        public static string PolSourceSiteEffect {
+            get {
+                return ResourceManager.GetString("PolSourceSiteEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pollution source sites approximate location.
         /// </summary>
         public static string PolSourceSitesApproximateLocation {
