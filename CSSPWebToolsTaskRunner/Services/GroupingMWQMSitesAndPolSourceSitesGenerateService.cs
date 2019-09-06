@@ -301,10 +301,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
             List<TVItemModel> tvitemModelSSList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProv.TVItemID, TVTypeEnum.Subsector);
 
+            List<PolSourceSiteEffect> existingPolSourceSiteEffectSubsectorList = new List<PolSourceSiteEffect>();
+            List<PolSourceSiteEffect> newPolSourceSiteEffectSubsectorList = new List<PolSourceSiteEffect>();
+
             int CountSS = 0;
             int TotalCount = tvitemModelSSList.Count;
             string Status = appTaskModel.StatusText;
-            foreach (TVItemModel tvItemModelSS in tvitemModelSSList.Where(c => c.TVText.StartsWith("NB-01-010-001")))
+            foreach (TVItemModel tvItemModelSS in tvitemModelSSList)
             {
                 CountSS += 1;
                 if (CountSS % 1 == 0)
@@ -401,69 +404,105 @@ namespace CSSPWebToolsTaskRunner.Services
                     List<int> InfraTVItemIDList = (from c in mapInfoInfraList2
                                                    select c.TVItemID).Distinct().ToList();
 
-                    List<PolSourceSiteEffectModel> polSourceSiteEffectModelToDeleteList = new List<PolSourceSiteEffectModel>();
-
                     using (CSSPDBEntities db2 = new CSSPDBEntities())
                     {
                         List<int> TVItemIDMWQMSiteWithinSubsector = tvItemMWQMSiteList.Where(c => c.TVPath.Contains(tvItemModelSS.TVPath + "p")).Select(c => c.TVItemID).ToList();
 
-                        List<PolSourceSiteEffect> existingPolSourceSiteEffectMWQMSitesList = (from c in db2.PolSourceSiteEffects
-                                                                                              from m in TVItemIDMWQMSiteWithinSubsector
-                                                                                              where c.MWQMSiteOrInfrastructureTVItemID == m
-                                                                                              select c).ToList();
+                        existingPolSourceSiteEffectSubsectorList = (from c in db2.PolSourceSiteEffects
+                                                                    from m in TVItemIDMWQMSiteWithinSubsector
+                                                                    where c.MWQMSiteTVItemID == m
+                                                                    select c).ToList();
 
-                        foreach (TVItem tvItemMWQMSite in tvItemMWQMSiteList.Where(c => c.TVPath.Contains(tvItemModelSS.TVPath + "p")))
+                    }
+
+                    foreach (TVItem tvItemMWQMSite in tvItemMWQMSiteList.Where(c => c.TVPath.Contains(tvItemModelSS.TVPath + "p")))
+                    {
+                        if (MWQMTVItemIDList.Contains(tvItemMWQMSite.TVItemID))
                         {
-                            if (MWQMTVItemIDList.Contains(tvItemMWQMSite.TVItemID))
+                            List<PolSourceSiteEffect> MWQMSiteExistingPolSourceSiteEffectList = (from c in existingPolSourceSiteEffectSubsectorList
+                                                                                                 where c.MWQMSiteTVItemID == tvItemMWQMSite.TVItemID
+                                                                                                 select c).ToList();
+
+                            // doing pollution source site
+                            foreach (int PSSTVItemID in PSSTVItemIDList)
                             {
-                                List<PolSourceSiteEffect> MWQMSiteExistingPolSourceSiteEffectList = (from c in existingPolSourceSiteEffectMWQMSitesList
-                                                                                                      where c.MWQMSiteOrInfrastructureTVItemID == tvItemMWQMSite.TVItemID
-                                                                                                      select c).ToList();
+                                newPolSourceSiteEffectSubsectorList.Add(new PolSourceSiteEffect() { PolSourceSiteOrInfrastructureTVItemID = PSSTVItemID, MWQMSiteTVItemID = tvItemMWQMSite.TVItemID, });
 
-                                foreach (int PSSTVItemID in PSSTVItemIDList)
+                                if (!(MWQMSiteExistingPolSourceSiteEffectList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == PSSTVItemID).Any()))
                                 {
-                                    if (!(MWQMSiteExistingPolSourceSiteEffectList.Where(c => c.PolSourceSiteTVItemID == PSSTVItemID).Any()))
+                                    PolSourceSiteEffectModel polSourceSiteEffectModelNew = new PolSourceSiteEffectModel()
                                     {
-                                        PolSourceSiteEffectModel polSourceSiteEffectModelNew = new PolSourceSiteEffectModel()
-                                        {
-                                            PolSourceSiteTVItemID = PSSTVItemID,
-                                            MWQMSiteOrInfrastructureTVItemID = tvItemMWQMSite.TVItemID,
-                                        };
+                                        PolSourceSiteOrInfrastructureTVItemID = PSSTVItemID,
+                                        MWQMSiteTVItemID = tvItemMWQMSite.TVItemID,
+                                    };
 
-                                        PolSourceSiteEffectModel polSourceSiteEffectModelAlreadyExist = polSourceSiteEffectService.GetPolSourceSiteEffectModelWithPolSourceSiteEffectIDAndMWQMSiteOrInfrastructureTVItemIDDB(PSSTVItemID, tvItemMWQMSite.TVItemID);
-                                        if (!string.IsNullOrWhiteSpace(polSourceSiteEffectModelAlreadyExist.Error))
-                                        {
-
-                                            PolSourceSiteEffectModel polSourceSiteEffectModelRet = polSourceSiteEffectService.PostAddPolSourceSiteEffectDB(polSourceSiteEffectModelNew);
-                                            if (!string.IsNullOrWhiteSpace(polSourceSiteEffectModelRet.Error))
-                                            {
-                                                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.PolSourceSiteEffect, polSourceSiteEffectModelRet.Error);
-                                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.MWQMSitePolSourceSite, polSourceSiteEffectModelRet.Error);
-                                                return;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                foreach (PolSourceSiteEffect polSourceSiteEffect in MWQMSiteExistingPolSourceSiteEffectList)
-                                {
-                                    if (!PSSTVItemIDList.Contains(polSourceSiteEffect.PolSourceSiteTVItemID))
+                                    PolSourceSiteEffectModel polSourceSiteEffectModelAlreadyExist = polSourceSiteEffectService.GetPolSourceSiteEffectModelWithPolSourceSiteOrInfrastructureTVItemIDAndMWQMSiteTVItemIDDB(PSSTVItemID, tvItemMWQMSite.TVItemID);
+                                    if (!string.IsNullOrWhiteSpace(polSourceSiteEffectModelAlreadyExist.Error))
                                     {
-                                        PolSourceSiteEffectModel polSourceSiteEffectModelRet = polSourceSiteEffectService.PostDeletePolSourceSiteEffectDB(polSourceSiteEffect.PolSourceSiteEffectID);
+
+                                        PolSourceSiteEffectModel polSourceSiteEffectModelRet = polSourceSiteEffectService.PostAddPolSourceSiteEffectDB(polSourceSiteEffectModelNew);
                                         if (!string.IsNullOrWhiteSpace(polSourceSiteEffectModelRet.Error))
                                         {
                                             NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.PolSourceSiteEffect, polSourceSiteEffectModelRet.Error);
-                                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.MWQMSitePolSourceSite, polSourceSiteEffectModelRet.Error);
+                                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.PolSourceSiteEffect, polSourceSiteEffectModelRet.Error);
                                             return;
                                         }
                                     }
                                 }
+                            }
 
+                            // doing infrastructure
+                            foreach (int InfraTVItemID in InfraTVItemIDList)
+                            {
+                                newPolSourceSiteEffectSubsectorList.Add(new PolSourceSiteEffect() { PolSourceSiteOrInfrastructureTVItemID = InfraTVItemID, MWQMSiteTVItemID = tvItemMWQMSite.TVItemID, });
+
+                                if (!(MWQMSiteExistingPolSourceSiteEffectList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == InfraTVItemID).Any()))
+                                {
+                                    PolSourceSiteEffectModel polSourceSiteEffectModelNew = new PolSourceSiteEffectModel()
+                                    {
+                                        PolSourceSiteOrInfrastructureTVItemID = InfraTVItemID,
+                                        MWQMSiteTVItemID = tvItemMWQMSite.TVItemID,
+                                    };
+
+                                    PolSourceSiteEffectModel polSourceSiteEffectModelAlreadyExist = polSourceSiteEffectService.GetPolSourceSiteEffectModelWithPolSourceSiteOrInfrastructureTVItemIDAndMWQMSiteTVItemIDDB(InfraTVItemID, tvItemMWQMSite.TVItemID);
+                                    if (!string.IsNullOrWhiteSpace(polSourceSiteEffectModelAlreadyExist.Error))
+                                    {
+
+                                        PolSourceSiteEffectModel polSourceSiteEffectModelRet = polSourceSiteEffectService.PostAddPolSourceSiteEffectDB(polSourceSiteEffectModelNew);
+                                        if (!string.IsNullOrWhiteSpace(polSourceSiteEffectModelRet.Error))
+                                        {
+                                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.PolSourceSiteEffect, polSourceSiteEffectModelRet.Error);
+                                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.PolSourceSiteEffect, polSourceSiteEffectModelRet.Error);
+                                            return;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
+
+            foreach (PolSourceSiteEffect polSourceSiteEffect in existingPolSourceSiteEffectSubsectorList)
+            {
+                if (!newPolSourceSiteEffectSubsectorList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID 
+                && c.MWQMSiteTVItemID == polSourceSiteEffect.MWQMSiteTVItemID).Any())
+                {
+                    PolSourceSiteEffectModel polSourceSiteEffectModelAlreadyExist = polSourceSiteEffectService.GetPolSourceSiteEffectModelWithPolSourceSiteOrInfrastructureTVItemIDAndMWQMSiteTVItemIDDB(polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID, polSourceSiteEffect.MWQMSiteTVItemID);
+                    if (string.IsNullOrWhiteSpace(polSourceSiteEffectModelAlreadyExist.Error))
+                    {
+
+                        PolSourceSiteEffectModel polSourceSiteEffectModelRet = polSourceSiteEffectService.PostDeletePolSourceSiteEffectDB(polSourceSiteEffectModelAlreadyExist.PolSourceSiteEffectID);
+                        if (!string.IsNullOrWhiteSpace(polSourceSiteEffectModelRet.Error))
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDelete_Error_, TaskRunnerServiceRes.PolSourceSiteEffect, polSourceSiteEffectModelRet.Error);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDelete_Error_", TaskRunnerServiceRes.PolSourceSiteEffect, polSourceSiteEffectModelRet.Error);
+                            return;
+                        }
+                    }
+                }
+            }
+
             #endregion Saving PolSourceSiteEffect in CSSPDB
 
             appTaskModel.PercentCompleted = 100;

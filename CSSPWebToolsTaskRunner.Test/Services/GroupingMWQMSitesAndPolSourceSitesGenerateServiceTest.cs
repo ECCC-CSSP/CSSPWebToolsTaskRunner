@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Transactions;
 using CSSPModelsDLL.Services;
 using System.IO;
-using CSSPWebToolsDBDLL.Services;
+using CSSPDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using DHI.PFS;
 
@@ -87,7 +87,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             {
                 SetupTest(LanguageRequest);
 
-                int ProvinceTVItemID = 9;
+                int ProvinceTVItemID = 7;
 
                 StringBuilder sbKML = new StringBuilder();
                 string Parameters = $"|||ProvinceTVItemID,{ ProvinceTVItemID }|||";

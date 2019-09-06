@@ -1288,7 +1288,6 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
 
                             sb.AppendLine($@"                <h3>Last Observation</h3>");
-                            //sb.AppendLine($@"                <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
                             sb.AppendLine($@"                <blockquote>");
                             sb.AppendLine($@"                <p><b>Date:</b> {((DateTime)polSourceObservationModel.ObservationDate_Local).ToString("yyyy MMMM dd")}</p>");
                             sb.AppendLine($@"                <p><b>Observation Last Update (UTC):</b> {((DateTime)polSourceObservationModel.LastUpdateDate_UTC).ToString("yyyy MMMM dd HH:mm:ss")}</p>");
@@ -1392,9 +1391,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                 sb.AppendLine($@"                </blockquote>");
                             }
                             sb.AppendLine($@"                </blockquote>");
-
-                            ShowPictures(sb, tvItemModel.TVItemID, false);
                         }
+
+                        ShowPictures(sb, tvItemModel.TVItemID, false);
 
                     }
                     sb.AppendLine($@"                   ]]></description>");
@@ -1405,7 +1404,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModel.TVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
 
-                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList.Take(1))
                         {
                             sb.AppendLine($@"{mapInfoPointModel.Lng.ToString("F6")},{mapInfoPointModel.Lat.ToString("F6")},0 ");
                         }
@@ -1447,7 +1446,6 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
 
                             sb.AppendLine($@"                <h3>Last Observation</h3>");
-                            //sb.AppendLine($@"                <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
                             sb.AppendLine($@"                <blockquote>");
                             sb.AppendLine($@"                <p><b>Date:</b> {((DateTime)polSourceObservationModel.ObservationDate_Local).ToString("yyyy MMMM dd")}</p>");
                             sb.AppendLine($@"                <p><b>Observation Last Update (UTC):</b> {((DateTime)polSourceObservationModel.LastUpdateDate_UTC).ToString("yyyy MMMM dd HH:mm:ss")}</p>");
@@ -1551,9 +1549,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                 sb.AppendLine($@"                </blockquote>");
                             }
                             sb.AppendLine($@"                </blockquote>");
-
-                            ShowPictures(sb, tvItemModel.TVItemID, false);
                         }
+
+                        ShowPictures(sb, tvItemModel.TVItemID, false);
 
                     }
                     sb.AppendLine($@"                   ]]></description>");
@@ -1564,7 +1562,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModel.TVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
 
-                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList.Take(1))
                         {
                             sb.AppendLine($@"{mapInfoPointModel.Lng.ToString("F6")},{mapInfoPointModel.Lat.ToString("F6")},0 ");
                         }
@@ -1607,7 +1605,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     sb.AppendLine($@"			    <name>{ tvlNew.TVText.Substring(0, 8).Replace(" ", "") }</name>");
                     sb.AppendLine($@"	            <visibility>0</visibility>");
                     sb.AppendLine($@"               <description><![CDATA[");
-                    //sb.AppendLine($@"                <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
 
                     ShowPictures(sb, tvItemModel.TVItemID, true);
 
@@ -1630,7 +1627,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModel.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
 
-                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList.Take(1))
                         {
                             sb.AppendLine($@"{mapInfoPointModel.Lng.ToString("F6")},{mapInfoPointModel.Lat.ToString("F6")},0 ");
                         }
@@ -1662,7 +1659,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     sb.AppendLine($@"			    <name>{ tvlNew.TVText.Substring(0, 8).Replace(" ", "") }</name>");
                     sb.AppendLine($@"	            <visibility>0</visibility>");
                     sb.AppendLine($@"               <description><![CDATA[");
-                    //sb.AppendLine($@"                <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
 
                     ShowPictures(sb, tvItemModel.TVItemID, true);
 
@@ -1674,7 +1670,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModel.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
 
-                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+                        foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList.Take(1))
                         {
                             sb.AppendLine($@"{mapInfoPointModel.Lng.ToString("F6")},{mapInfoPointModel.Lat.ToString("F6")},0 ");
                         }
@@ -1768,9 +1764,6 @@ namespace CSSPWebToolsTaskRunner.Services
                                 sb.AppendLine($@"</tbody>");
                                 sb.AppendLine($@"</table>");
 
-
-                                //sb.AppendLine($@"                        <span data-tvitemid=""{tvItemModel.TVItemID}"">&nbsp;</span>");
-
                                 ShowPictures(sb, tvItemModel.TVItemID, false);
 
                                 sb.AppendLine($@"                           ]]></description>");
@@ -1779,7 +1772,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 sb.AppendLine($@"		                			<coordinates>");
                                 using (CSSPDBEntities db = new CSSPDBEntities())
                                 {
-                                    foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
+                                    foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList.Take(1))
                                     {
                                         sb.AppendLine($@"{mapInfoPointModel.Lng.ToString("F6")},{mapInfoPointModel.Lat.ToString("F6")},0 ");
                                     }
