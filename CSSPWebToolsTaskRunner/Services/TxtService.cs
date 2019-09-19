@@ -132,7 +132,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Province,Sector,Site,Lat,Long");
+            sb.AppendLine("Province,Sector,SiteID,Site,Lat,Long");
 
             if (fi.Exists)
             {
@@ -233,10 +233,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                     {
                         string MN = mwqmSite.tl.TVText;
-                        //string MS = mwqmSite.t.TVItemID.ToString();
+                        string MSID = mwqmSite.t.TVItemID.ToString();
                         string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
                         string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
-                        sb.AppendLine($"{ProvInit}\t{Subsector},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
+                        sb.AppendLine($"{ProvInit},{Subsector},{MSID},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
                     }
                 }
             }
@@ -298,7 +298,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("Province,Sector,Site,Lat,Long");
+            sb.AppendLine("Province,Sector,SiteID,Site,Lat,Long");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
@@ -413,10 +413,10 @@ namespace CSSPWebToolsTaskRunner.Services
                         foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                         {
                             string MN = mwqmSite.tl.TVText;
-                            string MS = mwqmSite.t.TVItemID.ToString();
+                            string MSID = mwqmSite.t.TVItemID.ToString();
                             string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
                             string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
-                            sb.AppendLine($"{ProvInit},{Subsector},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
+                            sb.AppendLine($"{ProvInit},{Subsector},{MSID},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
                         }
                     }
                 }
@@ -487,7 +487,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Province,Sector,Site_ID,Site,Date_UTC,FC_MPN_(CF_NPP)_100_mL,Temp_C,Sal_PPT_(PPM),Depth_(Profondeur)_m,pH");
+            sb.AppendLine("Province,Sector,Site_ID,Site_Name,Date_UTC,FC_MPN_(CF_NPP)_100_mL,Temp_C,Sal_PPT_(PPM),Depth_(Profondeur)_m,pH");
 
             if (fi.Exists)
             {
@@ -717,7 +717,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("Province,Sector,Site_ID,Site,Date_UTC,FC_MPN_(CF_NPP)_100_mL,Temp_C,Sal_PPT_(PPM),Depth_(Profondeur)_m,pH");
+            sb.AppendLine("Province,Sector,Site_ID,Site_Name,Date_UTC,FC_MPN_(CF_NPP)_100_mL,Temp_C,Sal_PPT_(PPM),Depth_(Profondeur)_m,pH");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
