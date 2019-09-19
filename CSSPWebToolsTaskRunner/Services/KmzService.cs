@@ -216,9 +216,10 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"	<name>" + fi.Name + "</name>");
             sb.AppendLine(@"	<Style id=""s_ylw-pushpin_hl"">");
             sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.3</scale>");
+            sb.AppendLine(@"			<scale>0.8</scale>");
+            sb.AppendLine(@"		    <color>ff00ff00</color>");
             sb.AppendLine(@"			<Icon>");
-            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
             sb.AppendLine(@"			</Icon>");
             sb.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
             sb.AppendLine(@"		</IconStyle>");
@@ -235,18 +236,20 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"	</StyleMap>");
             sb.AppendLine(@"	<Style id=""s_ylw-pushpin"">");
             sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.1</scale>");
+            sb.AppendLine(@"			<scale>0.8</scale>");
+            sb.AppendLine(@"		    <color>ff00ff00</color>");
             sb.AppendLine(@"			<Icon>");
-            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
             sb.AppendLine(@"			</Icon>");
             sb.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
             sb.AppendLine(@"		</IconStyle>");
             sb.AppendLine(@"	</Style>");
             sb.AppendLine(@"	<Style id=""sn_ylw-pushpin"">");
             sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.1</scale>");
+            sb.AppendLine(@"			<scale>0.8</scale>");
+            sb.AppendLine(@"		    <color>ff00ff00</color>");
             sb.AppendLine(@"			<Icon>");
-            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
             sb.AppendLine(@"			</Icon>");
             sb.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
             sb.AppendLine(@"		</IconStyle>");
@@ -270,11 +273,11 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"	</StyleMap>");
             sb.AppendLine(@"	<Style id=""sh_ylw-pushpin"">");
             sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.3</scale>");
+            sb.AppendLine(@"			<scale>0.8</scale>");
+            sb.AppendLine(@"		    <color>ff00ff00</color>");
             sb.AppendLine(@"			<Icon>");
-            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>");
+            sb.AppendLine(@"				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
             sb.AppendLine(@"			</Icon>");
-            sb.AppendLine(@"			<hotSpot x=""20"" y=""2"" xunits=""pixels"" yunits=""pixels""/>");
             sb.AppendLine(@"		</IconStyle>");
             sb.AppendLine(@"		<LineStyle>");
             sb.AppendLine(@"			<color>ff00ff00</color>");
@@ -284,6 +287,48 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"			<color>00ffffff</color>");
             sb.AppendLine(@"		</PolyStyle>");
             sb.AppendLine(@" </Style>");
+
+            //sb.AppendLine(@"<StyleMap id=""msn_placemark_circle"">");
+            //sb.AppendLine(@"	<Pair>");
+            //sb.AppendLine(@"		<key>normal</key>");
+            //sb.AppendLine(@"		<styleUrl>#sn_placemark_circle</styleUrl>");
+            //sb.AppendLine(@"	</Pair>");
+            //sb.AppendLine(@"	<Pair>");
+            //sb.AppendLine(@"		<key>highlight</key>");
+            //sb.AppendLine(@"		<styleUrl>#sh_placemark_circle_highlight</styleUrl>");
+            //sb.AppendLine(@"	</Pair>");
+            //sb.AppendLine(@"</StyleMap>");
+            //sb.AppendLine(@"<Style id=""sh_placemark_circle_highlight"">");
+            //sb.AppendLine(@"	<IconStyle>");
+            //sb.AppendLine(@"		<color>ff00ff00</color>");
+            //sb.AppendLine(@"		<Icon>");
+            //sb.AppendLine(@"			<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>");
+            //sb.AppendLine(@"		</Icon>");
+            //sb.AppendLine(@"	</IconStyle>");
+            //sb.AppendLine(@"	<LabelStyle>");
+            //sb.AppendLine(@"		<color>ff00ff00</color>");
+            //sb.AppendLine(@"	</LabelStyle>");
+            //sb.AppendLine(@"	<BalloonStyle>");
+            //sb.AppendLine(@"	</BalloonStyle>");
+            //sb.AppendLine(@"	<ListStyle>");
+            //sb.AppendLine(@"	</ListStyle>");
+            //sb.AppendLine(@"</Style>");
+            //sb.AppendLine(@"<Style id=""sn_placemark_circle"">");
+            //sb.AppendLine(@"	<IconStyle>");
+            //sb.AppendLine(@"		<color>ff00ff00</color>");
+            //sb.AppendLine(@"		<Icon>");
+            //sb.AppendLine(@"			<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>");
+            //sb.AppendLine(@"		</Icon>");
+            //sb.AppendLine(@"	</IconStyle>");
+            //sb.AppendLine(@"	<LabelStyle>");
+            //sb.AppendLine(@"		<color>ff00ff00</color>");
+            //sb.AppendLine(@"	</LabelStyle>");
+            //sb.AppendLine(@"	<BalloonStyle>");
+            //sb.AppendLine(@"	</BalloonStyle>");
+            //sb.AppendLine(@"	<ListStyle>");
+            //sb.AppendLine(@"	</ListStyle>");
+            //sb.AppendLine(@" </Style>");
+
 
 
             using (CSSPDBEntities db = new CSSPDBEntities())
@@ -1705,7 +1750,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         tvItemModelMuniList.Add(tvItemModelMuni);
                     }
                 }
-                
+
                 foreach (TVItemModel tvItemModelMuni in tvItemModelMuniList.OrderBy(c => c.TVText))
                 {
                     sb.AppendLine($@"		        <Folder>");
