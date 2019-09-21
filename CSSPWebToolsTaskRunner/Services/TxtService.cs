@@ -487,7 +487,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Province,Sector,Site_ID,Site_Name,Date_UTC,FC_MPN_(CF_NPP)_100_mL,Temp_C,Sal_PPT_(PPM),Depth_(Profondeur)_m,pH");
+            sb.AppendLine("Province,Sector,Site_ID,Site_Name,Date_UTC,Date_Local,FC_MPN_CF_NPP_100_mL,Temp_C,Sal_PPT_PPM,Depth_Profondeur_m,pH");
 
             if (fi.Exists)
             {
@@ -597,8 +597,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             foreach (MWQMSample mwqmSample in sampleList)
                             {
-
                                 DateTime Date_Local = mwqmSample.SampleDateTime_Local;
+                                string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd HH:mm:ss");
 
                                 string Date_UTC_Text = "";
                                 if (ProvInit == "NL")
@@ -606,11 +606,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Newfoundland Standard Time");
                                     if (tst.IsDaylightSavingTime(Date_Local))
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-02:30");
+                                        Date_UTC_Text = Date_Local.AddHours(-2).AddMinutes(-30).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                     else
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-03:30");
+                                        Date_UTC_Text = Date_Local.AddHours(-3).AddMinutes(-30).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                 }
                                 else if (ProvInit == "QC")
@@ -618,11 +618,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                                     if (tst.IsDaylightSavingTime(Date_Local))
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-04:00");
+                                        Date_UTC_Text = Date_Local.AddHours(-4).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                     else
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-05:00");
+                                        Date_UTC_Text = Date_Local.AddHours(-5).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                 }
                                 else if (ProvInit == "BC")
@@ -630,11 +630,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
                                     if (tst.IsDaylightSavingTime(Date_Local))
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-07:00");
+                                        Date_UTC_Text = Date_Local.AddHours(-7).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                     else
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-08:00");
+                                        Date_UTC_Text = Date_Local.AddHours(-8).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                 }
                                 else
@@ -642,20 +642,20 @@ namespace CSSPWebToolsTaskRunner.Services
                                     TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
                                     if (tst.IsDaylightSavingTime(Date_Local))
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-03:00");
+                                        Date_UTC_Text = Date_Local.AddHours(-3).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                     else
                                     {
-                                        Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-04:00");
+                                        Date_UTC_Text = Date_Local.AddHours(-4).ToString("yyyy-MM-dd HH:mm:ss");
                                     }
                                 }
 
-                                string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
+                                string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "1.9" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", "."));
                                 string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
                                 string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
                                 string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
                                 string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
-                                sb.AppendLine($"{ProvInit},{Subsector},{mwqmSite.t.TVItemID},{ProvInit}_{MN},{Date_UTC_Text},{FC},{Temp},{Sal},{Depth},{pH}");
+                                sb.AppendLine($"{ProvInit},{Subsector},{mwqmSite.t.TVItemID},{ProvInit}_{MN},{Date_UTC_Text},{Date_Local_Text},{FC},{Temp},{Sal},{Depth},{pH}");
                             }
                         }
                     }
@@ -717,7 +717,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("Province,Sector,Site_ID,Site_Name,Date_UTC,FC_MPN_(CF_NPP)_100_mL,Temp_C,Sal_PPT_(PPM),Depth_(Profondeur)_m,pH");
+            sb.AppendLine("Province,Sector,Site_ID,Site_Name,Date_UTC,Date_Local,FC_MPN_CF_NPP_100_mL,Temp_C,Sal_PPT_PPM,Depth_Profondeur_m,pH");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
@@ -843,6 +843,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 foreach (MWQMSample mwqmSample in sampleList)
                                 {
                                     DateTime Date_Local = mwqmSample.SampleDateTime_Local;
+                                    string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd HH:mm:ss");
 
                                     string Date_UTC_Text = "";
                                     if (ProvInit == "NL")
@@ -850,11 +851,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                         TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Newfoundland Standard Time");
                                         if (tst.IsDaylightSavingTime(Date_Local))
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-02:30");
+                                            Date_UTC_Text = Date_Local.AddHours(-2).AddMinutes(-30).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                         else
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-03:30");
+                                            Date_UTC_Text = Date_Local.AddHours(-3).AddMinutes(-30).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                     }
                                     else if (ProvInit == "QC")
@@ -862,11 +863,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                         TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                                         if (tst.IsDaylightSavingTime(Date_Local))
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-04:00");
+                                            Date_UTC_Text = Date_Local.AddHours(-4).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                         else
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-05:00");
+                                            Date_UTC_Text = Date_Local.AddHours(-5).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                     }
                                     else if (ProvInit == "BC")
@@ -874,11 +875,11 @@ namespace CSSPWebToolsTaskRunner.Services
                                         TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
                                         if (tst.IsDaylightSavingTime(Date_Local))
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-07:00");
+                                            Date_UTC_Text = Date_Local.AddHours(-7).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                         else
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-08:00");
+                                            Date_UTC_Text = Date_Local.AddHours(-8).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                     }
                                     else
@@ -886,20 +887,21 @@ namespace CSSPWebToolsTaskRunner.Services
                                         TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
                                         if (tst.IsDaylightSavingTime(Date_Local))
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-03:00");
+                                            Date_UTC_Text = Date_Local.AddHours(-3).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                         else
                                         {
-                                            Date_UTC_Text = Date_Local.ToString("yyyy-MM-ddThh:mm:ss-04:00");
+                                            Date_UTC_Text = Date_Local.AddHours(-4).ToString("yyyy-MM-dd HH:mm:ss");
                                         }
                                     }
 
-                                    string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "< 2" : (mwqmSample.FecCol_MPN_100ml > 1600 ? "> 1600" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", ".")));
+
+                                    string FC = (mwqmSample.FecCol_MPN_100ml < 2 ? "1.9" : mwqmSample.FecCol_MPN_100ml.ToString().Replace(",", "."));
                                     string Temp = (mwqmSample.WaterTemp_C != null ? ((double)mwqmSample.WaterTemp_C).ToString("F1").Replace(",", ".") : "");
                                     string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
                                     string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
                                     string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
-                                    sb.AppendLine($"{ProvInit},{Subsector},{mwqmSite.t.TVItemID},{ProvInit}_{MN},{Date_UTC_Text},{FC},{Temp},{Sal},{Depth},{pH}");
+                                    sb.AppendLine($"{ProvInit},{Subsector},{mwqmSite.t.TVItemID},{ProvInit}_{MN},{Date_UTC_Text},{Date_Local_Text},{FC},{Temp},{Sal},{Depth},{pH}");
                                 }
                             }
                         }
