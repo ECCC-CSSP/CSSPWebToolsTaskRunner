@@ -1075,7 +1075,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     case "string":
                         {
-                            pfsParameter = pfsKeywordNew.InsertNewParameterString(pfsParameterOld.ToStringValue(), index);
+                            pfsParameter = pfsKeywordNew.InsertNewParameterString(pfsParameterOld.ToString(), index);
                         }
                         break;
                     case "bool":
@@ -4118,7 +4118,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
 
                 // already verified if the number of output is 1
-                string FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+                string FileName = GetParameterResultFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
                 if (string.IsNullOrWhiteSpace(FileName))
                 {
                     return;
@@ -4131,7 +4131,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 AddFileToFileNameList(ServerPath, fi.FullName, FileNameList, true);
 
                 // already verified if the number of output is 1
-                FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+                FileName = GetParameterResultFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
                 if (string.IsNullOrWhiteSpace(FileName))
                 {
                     return;
@@ -4223,7 +4223,49 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 try
                 {
-                    FileName = keyword.GetParameter(1).ToString();
+                    FileName = keyword.GetParameter(1).ToFileName();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return FileName;
+                }
+            }
+
+            return FileName;
+        }
+        private string GetParameterResultFileName(PFSFile pfsFile, string Path, string Keyword)
+        {
+            string NotUsed = "";
+            string FileName = "";
+
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
+
+            if (pfsSection == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            PFSKeyword keyword = null;
+            try
+            {
+                keyword = pfsSection.GetKeyword(Keyword);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return FileName;
+            }
+
+            if (keyword != null)
+            {
+                try
+                {
+                    FileName = keyword.GetParameter(1).ToResultFileName();
                 }
                 catch (Exception ex)
                 {
@@ -4543,7 +4585,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 try
                 {
-                    Name = pfsKeywordName.GetParameter(1).ToString();
+                    Name = pfsKeywordName.GetParameter(1).ToResultFileName();
                 }
                 catch (Exception ex)
                 {

@@ -137,12 +137,12 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         public void MikeScenarioFileService_MikeScenarioAskToRun_Test()
         {
             // AppTaskID TVItemID    TVItemID2 AppTaskCommand  AppTaskStatus PercentCompleted    Parameters Language    StartDateTime_UTC EndDateTime_UTC EstimatedLength_second RemainingTime_second    LastUpdateDate_UTC LastUpdateContactTVItemID
-            // 14895   357139  357139  2   1   1 ||| MikeScenarioTVItemID,357139 ||| 1   2018 - 10 - 17 12:04:21.687 NULL NULL    NULL    2018 - 10 - 17 12:04:21.687 2
+            // 14895   337049  337049  2   1   1 ||| MikeScenarioTVItemID,337049 ||| 1   2018 - 10 - 17 12:04:21.687 NULL NULL    NULL    2018 - 10 - 17 12:04:21.687 2
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
                 SetupTest(LanguageRequest);
 
-                int MikeScenarioTVItemID = 357139;
+                int MikeScenarioTVItemID = 337049;
 
                 string Parameters = $"|||MikeScenarioTVItemID,{ MikeScenarioTVItemID }|||";
 
@@ -190,7 +190,6 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             }
 
         }
-
         [TestMethod]
         public void MikeScenarioFileService_CreateInititalConditionFileSalAndTempFromTVFileItemID_Test()
         {
@@ -260,10 +259,72 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 break;
             }
         }
+
+
+
+              [TestMethod]
+        public void MikeScenarioFileService_MikeScenarioImport_Test()
+        {
+            //        AppTaskID TVItemID    TVItemID2 AppTaskCommand  AppTaskStatus PercentCompleted    Parameters Language    StartDateTime_UTC EndDateTime_UTC EstimatedLength_second RemainingTime_second    LastUpdateDate_UTC LastUpdateContactTVItemID
+            //17907   381362  381362  3   1   1 ||| TVItemID,12110 ||| UploadClientPath,E:\CSSP\Modelling\Mike21\New Brunswick\Cap - Pele\Model\Model Inputs\||| 1   2019 - 09 - 30 20:00:08.687 NULL NULL    NULL   2019 - 09 - 30 20:00:08.697 2
+
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                int MikeScenarioTVItemID = 381362;
+
+                string Parameters = $@"|||TVItemID,12110|||UploadClientPath,E:\CSSP\Modelling\Mike21\New Brunswick\Cap-Pele\Model\Model Inputs\|||";
+
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 100000,
+                    TVItemID = MikeScenarioTVItemID,
+                    TVItemID2 = MikeScenarioTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.MikeScenarioImport,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+
+                MikeScenarioFileService _MikeScenarioFileService = new MikeScenarioFileService(taskRunnerBaseService);
+                _MikeScenarioFileService.MikeScenarioImportDB();
+                Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+
+                break;
+            }
+
+        }
+
         #endregion Functions public
 
         #region Functions private
-        
+
         public void SetupTest(LanguageEnum LanguageRequest)
         {
             csspWebToolsTaskRunner = new CSSPWebToolsTaskRunner();
