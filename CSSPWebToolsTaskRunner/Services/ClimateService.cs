@@ -713,9 +713,9 @@ namespace CSSPWebToolsTaskRunner.Services
                             httpStrDaily = webClient.DownloadString(new Uri(url));
                             if (httpStrDaily.Length > 0)
                             {
-                                if (httpStrDaily.Substring(0, "\"Station Name".Length) == "\"Station Name")
+                                if (httpStrDaily.Substring(0, "\"".Length) == "\"")
                                 {
-                                    httpStrDaily = httpStrDaily.Replace("\"", "").Replace("\n", "\r\n");
+                                    httpStrDaily = httpStrDaily.Replace("\"", "");
                                 }
                             }
                             else
@@ -765,9 +765,9 @@ namespace CSSPWebToolsTaskRunner.Services
                                     httpStrDaily2 = webClient2.DownloadString(new Uri(url2));
                                     if (httpStrDaily2.Length > 0)
                                     {
-                                        if (httpStrDaily2.Substring(0, "\"Station Name".Length) == "\"Station Name")
+                                        if (httpStrDaily2.Substring(0, "\"".Length) == "\"")
                                         {
-                                            httpStrDaily2 = httpStrDaily2.Replace("\"", "").Replace("\n", "\r\n");
+                                            httpStrDaily2 = httpStrDaily2.Replace("\"", "");
                                         }
                                     }
                                     else
@@ -2704,284 +2704,265 @@ namespace CSSPWebToolsTaskRunner.Services
                     countLine += 1;
                     string lineStr = tr.ReadLine();
                     if (lineStr == null)
-                    {
                         break;
-                    }
 
                     List<string> lineValueArr = lineStr.Split(",".ToCharArray(), StringSplitOptions.None).ToList();
 
                     if (countLine == 1)
                     {
                         LookupTxt = "Station Name";
-                        if (lineValueArr[0] != LookupTxt)
+                        if (lineValueArr[2] != LookupTxt)
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
                             _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
                             return;
                         }
+                        LookupTxt = "Climate ID";
+                        if (lineValueArr[3] != LookupTxt)
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            return;
+                        }
+                        LookupTxt = "Date/Time";
+                        if (lineValueArr[4] != LookupTxt)
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            return;
+                        }
+                        LookupTxt = "Date/Time";
+                        if (lineValueArr[4] != LookupTxt)
+                        {
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            return;
+                        }
+                    }
+                    if (countLine > 1)
+                    {
                         LookupTxt = climateSiteModel.ClimateSiteName;
-                        if (lineValueArr[1] != LookupTxt)
+                        if (lineValueArr[2] != LookupTxt)
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
                             _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
                             return;
                         }
-                    }
-                    if (countLine == 2)
-                    {
-                        LookupTxt = "Province";
-                        if (lineValueArr[0] != LookupTxt)
+                        LookupTxt = climateSiteModel.ClimateID;
+                        if (lineValueArr[3] != LookupTxt)
                         {
                             NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
                             _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
                             return;
                         }
-                        LookupTxt = lineValueArr[1];
-                        if (!FullProvList.Contains(LookupTxt))
+
+                        if (lineValueArr.Count != 31)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CountOfValuesInLine_ShouldBe_, countLine, "31");
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CountOfValuesInLine_ShouldBe_", countLine.ToString(), "27");
                             return;
                         }
-                        for (int i = 0; i < 6; i++)
+
+                        string DateStr = lineValueArr[4];
+
+                        if (DateStr.Length != 10)
                         {
-                            if (lineValueArr[1] == FullProvList[i])
-                            {
-                                if (climateSiteModel.Province != ShortProvList[i])
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.Province_NotEqualTo_AtLine_, ShortProvList[i], climateSiteModel.Province, countLine.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-                                    return;
-                                }
-                            }
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, "Date", countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", "Date", countLine.ToString());
+                            return;
                         }
-                    }
-                    if (countLine == 6 || countLine == 7)
-                    {
-                        LookupTxt = "Climate Identifier";
-                        if (lineValueArr[0] == LookupTxt)
+
+                        DateTime LineDate = new DateTime(1, 1, 1);
+
+                        if (DateTime.TryParse(lineValueArr[4], out DateTime dateTime))
                         {
-                            if (lineValueArr[1].Length > 0)
-                            {
-                                LookupTxt = climateSiteModel.ClimateID;
-                                if (lineValueArr[1] != climateSiteModel.ClimateID)
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-                                    return;
-                                }
-                            }
+                            LineDate = dateTime;
                         }
-                    }
-                    if (lineValueArr[0].Contains("-"))
-                    {
-                        if (lineValueArr[0].Substring(4, 1) == "-")
+
+                        if (!(StartDate <= LineDate && EndDate >= LineDate))
                         {
-                            if (lineValueArr.Count != 27)
-                            {
-                                NotUsed = string.Format(TaskRunnerServiceRes.CountOfValuesInLine_ShouldBe_, countLine, "27");
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CountOfValuesInLine_ShouldBe_", countLine.ToString(), "27");
-                                return;
-                            }
+                            continue;
+                        }
 
-                            int Year = int.Parse(lineValueArr[1]);
-                            int Month = int.Parse(lineValueArr[2]);
-                            int Day = int.Parse(lineValueArr[3]);
+                        //string httpStrHourly = "";
+                        //if (HourlyDateListToLoad.Contains(LineDate))
+                        //{
+                        //    using (WebClient webClient = new WebClient())
+                        //    {
+                        //        WebProxy webProxy = new WebProxy();
+                        //        webClient.Proxy = webProxy;
+                        //        string url = string.Format(UpdateClimateSiteHourlyFromStartDateToEndDate, climateSiteModel.ECDBID, LineDate.Year, LineDate.Month);
+                        //        httpStrHourly = webClient.DownloadString(new Uri(url));
+                        //        if (httpStrHourly.Length > 0)
+                        //        {
+                        //            if (httpStrHourly.Substring(0, "\"".Length) == "\"")
+                        //            {
+                        //                httpStrHourly = httpStrHourly.Replace("\"", "");
+                        //            }
+                        //        }
+                        //        else
+                        //        {
+                        //            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
+                        //            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
+                        //            return;
+                        //        }
+                        //    }
 
-                            if (Year == 0 || Month == 0 || Day == 0)
-                            {
-                                NotUsed = string.Format(TaskRunnerServiceRes.YearNotCorrect_AtLine_, Year.ToString() + " - " + Month.ToString() + " - " + Day.ToString(), countLine.ToString());
-                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("YearNotCorrect_AtLine_", Year.ToString() + " - " + Month.ToString() + " - " + Day.ToString(), countLine.ToString());
-                                return;
-                            }
+                        //    if (climateSiteModel.HourlyStartDate_Local <= LineDate && climateSiteModel.HourlyEndDate_Local >= LineDate)
+                        //    {
+                        //        UpdateHourlyValuesForClimateSiteAndDate(climateSiteModel, httpStrHourly, LineDate, hourlyValues);
+                        //        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                        //            return;
 
-                            DateTime LineDate = new DateTime(Year, Month, Day);
-
-                            if (!(StartDate <= LineDate && EndDate >= LineDate))
-                            {
-                                continue;
-                            }
-
-                            string httpStrHourly = "";
-                            if (HourlyDateListToLoad.Contains(LineDate))
-                            {
-                                using (WebClient webClient = new WebClient())
-                                {
-                                    WebProxy webProxy = new WebProxy();
-                                    webClient.Proxy = webProxy;
-                                    string url = string.Format(UpdateClimateSiteHourlyFromStartDateToEndDate, climateSiteModel.ECDBID, Year, LineDate.Month);
-                                    httpStrHourly = webClient.DownloadString(new Uri(url));
-                                    if (httpStrHourly.Length > 0)
-                                    {
-                                        if (httpStrHourly.Substring(0, "\"Station Name".Length) == "\"Station Name")
-                                        {
-                                            httpStrHourly = httpStrHourly.Replace("\"", "").Replace("\n", "\r\n");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotReadFile_, url);
-                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotReadFile_", url);
-                                        return;
-                                    }
-                                }
-
-                                if (climateSiteModel.HourlyStartDate_Local <= LineDate && climateSiteModel.HourlyEndDate_Local >= LineDate)
-                                {
-                                    UpdateHourlyValuesForClimateSiteAndDate(climateSiteModel, httpStrHourly, LineDate, hourlyValues);
-                                    if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-                                        return;
-
-                                    if (!string.IsNullOrWhiteSpace(hourlyValues.ToString()))
-                                    {
-                                        string Title = "Year,Month,Day,Hour,Temp_C,DewPoint_C,RelHum_Perc,WindDir_10deg,WindSpd_km_h,Visibility_km,StnPress_kPa,Humidx,WindChill\r\n";
-                                        hourlyValues.Append(Title + hourlyValues.ToString());
-                                    }
-                                }
-                            }
+                        //        if (!string.IsNullOrWhiteSpace(hourlyValues.ToString()))
+                        //        {
+                        //            string Title = "Year,Month,Day,Hour,Temp_C,DewPoint_C,RelHum_Perc,WindDir_10deg,WindSpd_km_h,Visibility_km,StnPress_kPa,Humidx,WindChill\r\n";
+                        //            hourlyValues.Append(Title + hourlyValues.ToString());
+                        //        }
+                        //    }
+                        //}
 
 
-                            float? MaxTemp = null;
-                            if (lineValueArr[5].Length > 0)
+                        float? MaxTemp = null;
+                        if (lineValueArr[9].Length > 0)
+                        {
+                            MaxTemp = float.Parse(lineValueArr[9]);
+                        }
+                        float? MinTemp = null;
+                        if (lineValueArr[11].Length > 0)
+                        {
+                            MinTemp = float.Parse(lineValueArr[11]);
+                        }
+                        float? MeanTemp = null;
+                        if (lineValueArr[13].Length > 0)
+                        {
+                            MeanTemp = float.Parse(lineValueArr[13]);
+                        }
+                        float? HeatDegDays = null;
+                        if (lineValueArr[15].Length > 0)
+                        {
+                            HeatDegDays = float.Parse(lineValueArr[15]);
+                        }
+                        float? CoolDegDays = null;
+                        if (lineValueArr[17].Length > 0)
+                        {
+                            CoolDegDays = float.Parse(lineValueArr[17]);
+                        }
+                        float? TotalRain = null;
+                        if (lineValueArr[19].Length > 0)
+                        {
+                            if (lineValueArr[19].Trim() == "T")
                             {
-                                MaxTemp = float.Parse(lineValueArr[5]);
-                            }
-                            float? MinTemp = null;
-                            if (lineValueArr[7].Length > 0)
-                            {
-                                MinTemp = float.Parse(lineValueArr[7]);
-                            }
-                            float? MeanTemp = null;
-                            if (lineValueArr[9].Length > 0)
-                            {
-                                MeanTemp = float.Parse(lineValueArr[9]);
-                            }
-                            float? HeatDegDays = null;
-                            if (lineValueArr[11].Length > 0)
-                            {
-                                HeatDegDays = float.Parse(lineValueArr[11]);
-                            }
-                            float? CoolDegDays = null;
-                            if (lineValueArr[13].Length > 0)
-                            {
-                                CoolDegDays = float.Parse(lineValueArr[13]);
-                            }
-                            float? TotalRain = null;
-                            if (lineValueArr[15].Length > 0)
-                            {
-                                if (lineValueArr[15].Trim() == "T")
-                                {
-                                    TotalRain = 0.0f;
-                                }
-                                else
-                                {
-                                    TotalRain = float.Parse(lineValueArr[15]);
-                                }
-                            }
-                            float? TotalSnow = null;
-                            if (lineValueArr[17].Length > 0)
-                            {
-                                if (lineValueArr[17].Trim() == "T")
-                                {
-                                    TotalSnow = 0.0f;
-                                }
-                                else
-                                {
-                                    TotalSnow = float.Parse(lineValueArr[17]);
-                                }
-                            }
-                            float? TotalPrecip = null;
-                            if (lineValueArr[19].Length > 0)
-                            {
-                                if (lineValueArr[19].Trim() == "T")
-                                {
-                                    TotalPrecip = 0.0f;
-                                }
-                                else
-                                {
-                                    TotalPrecip = float.Parse(lineValueArr[19]);
-                                }
-                            }
-                            float? SnowOnGround = null;
-                            if (lineValueArr[21].Length > 0)
-                            {
-                                if (lineValueArr[21].Trim() == "T")
-                                {
-                                    SnowOnGround = 0.0f;
-                                }
-                                else
-                                {
-                                    SnowOnGround = float.Parse(lineValueArr[21]);
-                                }
-                            }
-                            float? DirMaxGust = null;
-                            if (lineValueArr[23].Length > 0)
-                            {
-                                DirMaxGust = float.Parse(lineValueArr[23]);
-                            }
-                            float? SpdMaxGust = null;
-                            if (lineValueArr[25].Length > 0)
-                            {
-                                if (lineValueArr[25].Substring(0, 1) == "<")
-                                {
-                                    SpdMaxGust = float.Parse(lineValueArr[25].Substring(1));
-                                }
-                                else
-                                {
-                                    SpdMaxGust = float.Parse(lineValueArr[25]);
-                                }
-                            }
-
-                            ClimateDataValueModel climateDataValueModelNew = new ClimateDataValueModel()
-                            {
-                                ClimateSiteID = climateSiteModel.ClimateSiteID,
-                                HasBeenRead = true,
-                                CoolDegDays_C = CoolDegDays,
-                                DateTime_Local = LineDate,
-                                DirMaxGust_0North = DirMaxGust,
-                                HeatDegDays_C = HeatDegDays,
-                                HourlyValues = hourlyValues.ToString(),
-                                Keep = true,
-                                MaxTemp_C = MaxTemp,
-                                MinTemp_C = MinTemp,
-                                Rainfall_mm = TotalRain,
-                                RainfallEntered_mm = null,
-                                Snow_cm = TotalSnow,
-                                SnowOnGround_cm = SnowOnGround,
-                                SpdMaxGust_kmh = SpdMaxGust,
-                                StorageDataType = StorageDataTypeEnum.Archived,
-                                TotalPrecip_mm_cm = TotalPrecip,
-                            };
-                            ClimateDataValueModel climateDataValueModelExist = climateDataValueService.GetClimateDataValueModelExitDB(climateDataValueModelNew);
-                            if (!string.IsNullOrWhiteSpace(climateDataValueModelExist.Error))
-                            {
-                                ClimateDataValueModel climateDataValueModelRet = climateDataValueService.PostAddClimateDataValueDB(climateDataValueModelNew);
-                                if (!string.IsNullOrWhiteSpace(climateDataValueModelRet.Error))
-                                {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelRet.Error);
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelRet.Error);
-                                    return;
-                                }
+                                TotalRain = 0.0f;
                             }
                             else
                             {
+                                TotalRain = float.Parse(lineValueArr[19]);
+                            }
+                        }
+                        float? TotalSnow = null;
+                        if (lineValueArr[21].Length > 0)
+                        {
+                            if (lineValueArr[21].Trim() == "T")
+                            {
+                                TotalSnow = 0.0f;
+                            }
+                            else
+                            {
+                                TotalSnow = float.Parse(lineValueArr[21]);
+                            }
+                        }
+                        float? TotalPrecip = null;
+                        if (lineValueArr[23].Length > 0)
+                        {
+                            if (lineValueArr[23].Trim() == "T")
+                            {
+                                TotalPrecip = 0.0f;
+                            }
+                            else
+                            {
+                                TotalPrecip = float.Parse(lineValueArr[23]);
+                            }
+                        }
+                        float? SnowOnGround = null;
+                        if (lineValueArr[25].Length > 0)
+                        {
+                            if (lineValueArr[25].Trim() == "T")
+                            {
+                                SnowOnGround = 0.0f;
+                            }
+                            else
+                            {
+                                SnowOnGround = float.Parse(lineValueArr[25]);
+                            }
+                        }
+                        float? DirMaxGust = null;
+                        if (lineValueArr[27].Length > 0)
+                        {
+                            DirMaxGust = float.Parse(lineValueArr[27]);
+                        }
+                        float? SpdMaxGust = null;
+                        if (lineValueArr[29].Length > 0)
+                        {
+                            if (lineValueArr[29].Substring(0, 1) == "<")
+                            {
+                                SpdMaxGust = float.Parse(lineValueArr[29].Substring(1));
+                            }
+                            else
+                            {
+                                SpdMaxGust = float.Parse(lineValueArr[29]);
+                            }
+                        }
 
-                                if (climateDataValueModelExist.HasBeenRead == false)
+                        ClimateDataValueModel climateDataValueModelNew = new ClimateDataValueModel()
+                        {
+                            ClimateSiteID = climateSiteModel.ClimateSiteID,
+                            HasBeenRead = true,
+                            CoolDegDays_C = CoolDegDays,
+                            DateTime_Local = LineDate,
+                            DirMaxGust_0North = DirMaxGust,
+                            HeatDegDays_C = HeatDegDays,
+                            HourlyValues = hourlyValues.ToString(),
+                            Keep = true,
+                            MaxTemp_C = MaxTemp,
+                            MinTemp_C = MinTemp,
+                            Rainfall_mm = TotalRain,
+                            RainfallEntered_mm = null,
+                            Snow_cm = TotalSnow,
+                            SnowOnGround_cm = SnowOnGround,
+                            SpdMaxGust_kmh = SpdMaxGust,
+                            StorageDataType = StorageDataTypeEnum.Archived,
+                            TotalPrecip_mm_cm = TotalPrecip,
+                        };
+                        ClimateDataValueModel climateDataValueModelExist = climateDataValueService.GetClimateDataValueModelExitDB(climateDataValueModelNew);
+                        if (!string.IsNullOrWhiteSpace(climateDataValueModelExist.Error))
+                        {
+                            ClimateDataValueModel climateDataValueModelRet = climateDataValueService.PostAddClimateDataValueDB(climateDataValueModelNew);
+                            if (!string.IsNullOrWhiteSpace(climateDataValueModelRet.Error))
+                            {
+                                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotAdd_Error_, TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelRet.Error);
+                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotAdd_Error_", TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelRet.Error);
+                                return;
+                            }
+                        }
+                        else
+                        {
+
+                            if (climateDataValueModelExist.HasBeenRead == false)
+                            {
+                                climateDataValueModelNew.ClimateDataValueID = climateDataValueModelExist.ClimateDataValueID;
+                                climateDataValueModelNew.RainfallEntered_mm = climateDataValueModelExist.RainfallEntered_mm;
+                                climateDataValueModelNew.HasBeenRead = true;
+                                climateDataValueModelExist = climateDataValueService.PostUpdateClimateDataValueDB(climateDataValueModelNew);
+                                if (!string.IsNullOrWhiteSpace(climateDataValueModelExist.Error))
                                 {
-                                    climateDataValueModelNew.ClimateDataValueID = climateDataValueModelExist.ClimateDataValueID;
-                                    climateDataValueModelNew.RainfallEntered_mm = climateDataValueModelExist.RainfallEntered_mm;
-                                    climateDataValueModelNew.HasBeenRead = true;
-                                    climateDataValueModelExist = climateDataValueService.PostUpdateClimateDataValueDB(climateDataValueModelNew);
-                                    if (!string.IsNullOrWhiteSpace(climateDataValueModelExist.Error))
-                                    {
-                                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelExist.Error); ;
-                                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelExist.Error);
-                                        return;
-                                    }
+                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelExist.Error); ;
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.ClimateDataValue, climateDataValueModelExist.Error);
+                                    return;
                                 }
                             }
-
                         }
+
                     }
                 }
             }
