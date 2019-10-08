@@ -2610,7 +2610,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     try
                     {
-                        FileName = keyword.GetParameter(1).ToFileName();
+                        FileName = keyword.GetParameter(1).ToResultFileName();
                     }
                     catch (Exception ex)
                     {
@@ -2623,6 +2623,49 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return FileName;
         }
+        public string GetParameterResultFileName(PFSFile pfsFile, string Path, string Keyword)
+        {
+            string NotUsed = "";
+            string FileName = "";
+
+            PFSSection pfsSection = pfsFile.GetSectionFromHandle(Path);
+
+            if (pfsSection == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindPFSSectionWithPath_, Path);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindPFSSectionWithPath_", Path);
+                return null;
+            }
+
+            PFSKeyword keyword = null;
+            try
+            {
+                keyword = pfsSection.GetKeyword(Keyword);
+            }
+            catch (Exception ex)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetKeyword", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return FileName;
+            }
+
+            if (keyword != null)
+            {
+                try
+                {
+                    FileName = keyword.GetParameter(1).ToResultFileName();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.PFS_Error_, "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("PFS_Error_", "GetParameter", ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                    return FileName;
+                }
+            }
+
+            return FileName;
+        }
+
         public DfsuFile GetHydrodynamicDfsuFile()
         {
             string NotUsed = "";
@@ -2644,7 +2687,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             PFSFile pfsFile = new PFSFile(tvFileModelM21_3fm.ServerFilePath + tvFileModelM21_3fm.ServerFileName);
-            string HydroFileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string HydroFileName = GetParameterResultFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
             if (string.IsNullOrWhiteSpace(HydroFileName))
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
@@ -2975,7 +3018,7 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             PFSFile pfsFile = new PFSFile(tvFileModelM21_3fm.ServerFilePath + tvFileModelM21_3fm.ServerFileName);
-            string TransFileName = GetFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string TransFileName = GetParameterResultFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
             if (string.IsNullOrWhiteSpace(TransFileName))
             {
                 if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)

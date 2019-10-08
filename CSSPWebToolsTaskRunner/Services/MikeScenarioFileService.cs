@@ -4181,7 +4181,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 try
                 {
-                    FileName = keyword.GetParameter(1).ToFileNamePath();
+                    FileName = keyword.GetParameter(1).ToFileName();
                 }
                 catch (Exception ex)
                 {
@@ -5585,7 +5585,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            string FileNameTemp = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string FileNameTemp = GetParameterResultFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
             if (string.IsNullOrWhiteSpace(FileNameTemp))
             {
                 return;
@@ -5596,7 +5596,7 @@ namespace CSSPWebToolsTaskRunner.Services
             FileInfo fiServer = new FileInfo(tvFileService.GetServerFilePath(MikeScenarioTVItemID) + "\\" + fi.Name);
             string ServerHydroName = tvFileService.ChoseEDriveOrCDrive(fiServer.FullName);
 
-            string FileNameTemp2 = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string FileNameTemp2 = GetParameterResultFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
             if (string.IsNullOrWhiteSpace(FileNameTemp2))
             {
                 return;
@@ -5783,7 +5783,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             //string DfsuFileName = fiM21_M3.FullName;
 
-            string FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            string FileName = GetParameterResultFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/OUTPUTS/OUTPUT_1", "file_name");
 
             FileInfo fiDfsu = new FileInfo(ServerPath + FileName);
 
@@ -5838,7 +5838,7 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 23);
 
             // try transport module result file
-            FileName = GetParameterFileNameOnlyText(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
+            FileName = GetParameterResultFileName(pfsFile, "FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name");
 
             FileInfo fiDfsuTrans = new FileInfo(ServerPath + FileName);
 
