@@ -184,31 +184,31 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TVItemID = TempInt;
 
-            //if (reportTypeModel.FileType != FileTypeEnum.KMZ)
-            //{
-            //    // doing Year
-            //    YearText = GetParameters("Year", ParamValueList);
+            if (reportTypeModel.FileType != FileTypeEnum.KMZ)
+            {
+                // doing Year
+                YearText = GetParameters("Year", ParamValueList);
 
-            //    if (string.IsNullOrWhiteSpace(YearText))
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
-            //        return;
-            //    }
+                if (string.IsNullOrWhiteSpace(YearText))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+                    return;
+                }
 
-            //    if (!int.TryParse(YearText, out TempInt))
-            //    {
-            //        NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
-            //        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
-            //        return;
-            //    }
+                if (!int.TryParse(YearText, out TempInt))
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes._IsRequired, TaskRunnerServiceRes.Year);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_IsRequired", TaskRunnerServiceRes.Year);
+                    return;
+                }
 
-            //    Year = TempInt;
-            //}
-            //else
-            //{
-            //    Year = DateTime.Now.Year;
-            //}
+                Year = TempInt;
+            }
+            else
+            {
+                Year = DateTime.Now.Year;
+            }
 
             DateTime CD = DateTime.Now;
             string Language = "_" + _TaskRunnerBaseService._BWObj.appTaskModel.Language;
