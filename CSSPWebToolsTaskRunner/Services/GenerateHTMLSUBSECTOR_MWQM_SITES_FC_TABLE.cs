@@ -66,7 +66,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
-            climateSiteModelList = climateSiteModelList.OrderBy(c => c.ClimateSiteName).ToList();
+            //climateSiteModelList = climateSiteModelList.OrderBy(c => c.ClimateSiteName).ToList();
 
             List<MWQMSiteModel> mwqmSiteModelList2 = (from s in mwqmSiteModelList
                                                       from t in tvItemModelListMWQMSites

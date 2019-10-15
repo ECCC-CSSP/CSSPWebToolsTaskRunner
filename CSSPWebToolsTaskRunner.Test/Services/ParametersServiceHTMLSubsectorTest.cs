@@ -774,7 +774,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             {
                 SetupTest(LanguageRequest);
 
-                int SubsectorTVItemID = 785;
+                int SubsectorTVItemID = 776;
                 int ReportTypeID = 23;
                 int Year = 2019;
 
