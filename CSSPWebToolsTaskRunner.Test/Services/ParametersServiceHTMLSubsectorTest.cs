@@ -299,7 +299,7 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             {
                 SetupTest(LanguageRequest);
 
-                int SubsectorTVItemID = 778;
+                int SubsectorTVItemID = 785;
                 int ReportTypeID = 23;
                 int Year = 2019;
 
@@ -757,6 +757,76 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 StringBuilder sbTemp = new StringBuilder();
 
                 bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP(sbTemp);
+                Assert.AreEqual(true, retBool);
+
+                StreamWriter sw = fi.CreateText();
+                sw.Write(sbTemp.ToString());
+                sw.Flush();
+                sw.Close();
+
+                break;
+            }
+        }
+        [TestMethod]
+        public void PublicGenerateHTMLSUBSECTOR_MWQM_SITES_FC_TABLE_Test()
+        {
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                SetupTest(LanguageRequest);
+
+                int SubsectorTVItemID = 785;
+                int ReportTypeID = 23;
+                int Year = 2019;
+
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\TestHTML\PublicGenerateHTMLSUBSECTOR_MWQM_SITES_FC_TABLE" + LanguageRequest.ToString() + ".html");
+                StringBuilder sbHTML = new StringBuilder();
+                string Parameters = $"|||TVItemID,{ SubsectorTVItemID }|||ReportTypeID,{ ReportTypeID }|||Year,{ Year }|||";
+                ReportTypeModel reportTypeModel = _ReportTypeService.GetReportTypeModelWithReportTypeIDDB(ReportTypeID);
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 10000,
+                    TVItemID = SubsectorTVItemID,
+                    TVItemID2 = SubsectorTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.CreateDocumentFromParameters,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = Parameters,
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+                ParametersService parameterService = new ParametersService(taskRunnerBaseService);
+                parameterService.fi = fi;
+                parameterService.sb = sbHTML;
+                parameterService.Parameters = Parameters;
+                parameterService.reportTypeModel = reportTypeModel;
+                parameterService.TVItemID = SubsectorTVItemID;
+                parameterService.Year = Year;
+                StringBuilder sbTemp = new StringBuilder();
+
+                bool retBool = parameterService.PublicGenerateHTMLSUBSECTOR_MWQM_SITES_FC_TABLE(sbTemp);
                 Assert.AreEqual(true, retBool);
 
                 StreamWriter sw = fi.CreateText();

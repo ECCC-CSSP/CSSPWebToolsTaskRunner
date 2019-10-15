@@ -48,7 +48,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MWQMSiteModel> mwqmSiteModelList = _MWQMSiteService.GetMWQMSiteModelListWithSubsectorTVItemIDDB(TVItemID);
             List<MWQMRunModel> mwqmRunModelList = _MWQMRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(TVItemID);
             List<MWQMSampleModel> mwqmSampleModelList = _MWQMSampleService.GetMWQMSampleModelListWithSubsectorTVItemIDDB(TVItemID);
-            List<UseOfSiteModel> useOfSiteModelList = _UseOfSiteService.GetUseOfSiteModelListWithSubsectorTVItemIDDB(TVItemID).Where(c => c.TVType == TVTypeEnum.ClimateSite).ToList();
+            List<UseOfSiteModel> useOfSiteModelList = _UseOfSiteService.GetUseOfSiteModelListWithSubsectorTVItemIDDB(TVItemID).Where(c => c.TVType == TVTypeEnum.ClimateSite).OrderBy(c => c.Ordinal).ToList();
 
             List<ClimateSiteModel> climateSiteModelList = new List<ClimateSiteModel>();
             List<ClimateDataValueModel> climateDataValueModelList = new List<ClimateDataValueModel>();
@@ -211,7 +211,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                  && c.DateTime_Local.Day == Date1.Day
                                  && c.TotalPrecip_mm_cm != null
                                  && mwqmRunModel.RainDay1_mm != null
-                                 && (int)c.TotalPrecip_mm_cm == (int)mwqmRunModel.RainDay1_mm
+                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay1_mm
                                  && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
                                  select c).Any())
                             {
@@ -233,7 +233,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                  && c.DateTime_Local.Day == Date2.Day
                                  && c.TotalPrecip_mm_cm != null
                                  && mwqmRunModel.RainDay2_mm != null
-                                 && (int)c.TotalPrecip_mm_cm == (int)mwqmRunModel.RainDay2_mm
+                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay2_mm
                                  && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
                                  select c).Any())
                             {
@@ -255,7 +255,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                  && c.DateTime_Local.Day == Date3.Day
                                  && c.TotalPrecip_mm_cm != null
                                  && mwqmRunModel.RainDay3_mm != null
-                                 && (int)c.TotalPrecip_mm_cm == (int)mwqmRunModel.RainDay3_mm
+                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay3_mm
                                  && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
                                  select c).Any())
                             {
@@ -277,7 +277,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                  && c.DateTime_Local.Day == Date4.Day
                                  && c.TotalPrecip_mm_cm != null
                                  && mwqmRunModel.RainDay4_mm != null
-                                 && (int)c.TotalPrecip_mm_cm == (int)mwqmRunModel.RainDay4_mm
+                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay4_mm
                                  && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
                                  select c).Any())
                             {
@@ -299,7 +299,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                  && c.DateTime_Local.Day == Date5.Day
                                  && c.TotalPrecip_mm_cm != null
                                  && mwqmRunModel.RainDay5_mm != null
-                                 && (int)c.TotalPrecip_mm_cm == (int)mwqmRunModel.RainDay5_mm
+                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay5_mm
                                  && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
                                  select c).Any())
                             {
