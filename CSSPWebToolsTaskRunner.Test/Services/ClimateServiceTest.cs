@@ -246,8 +246,8 @@ namespace CSSPWebToolsTaskRunner.Test.Services
             // 14922	7	2018	26	1	1	|||ProvinceTVItemID,7|||Year,2018|||	1	2018-10-23 12:13:31.377	NULL	NULL	NULL	2018-10-23 12:13:31.377	2            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
-                int ProvinceTVItemID = 9;
-                int Year = 2018;
+                int ProvinceTVItemID = 7;
+                int Year = 2019;
 
                 AppTaskModel appTaskModel = new AppTaskModel()
                 {
