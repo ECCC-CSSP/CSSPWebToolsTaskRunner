@@ -2010,4 +2010,19 @@
   <data name="PolSourceSiteEffect" xml:space="preserve">
     <value>PolSourceSiteEffect</value>
   </data>
+  <data name="CoCoRaHSParseItem_CouldNotBeConvertedTo_" xml:space="preserve">
+    <value>CoCoRaHS Parse: item {0} could not be converted to [{1}]</value>
+  </data>
+  <data name="CoCoRaHSParseItem_ShouldBe_" xml:space="preserve">
+    <value>CoCoRaHS Parse: item {0} should be {1}</value>
+  </data>
+  <data name="CoCoRaHSParseLineDoesNotHave13Items" xml:space="preserve">
+    <value>CoCoRaHS Parse:  line does not have 13 items</value>
+  </data>
+  <data name="CoCoRaHSSite" xml:space="preserve">
+    <value>CoCoRaHSSite</value>
+  </data>
+  <data name="LoadNewCoCoRaHSDataInDBError_" xml:space="preserve">
+    <value>Load new CoCoRaHS data in DB Error [{0}]</value>
+  </data>
 </root>

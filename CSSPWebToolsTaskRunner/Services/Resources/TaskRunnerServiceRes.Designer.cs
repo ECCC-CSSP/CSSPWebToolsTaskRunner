@@ -556,6 +556,42 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHS Parse: item {0} could not be converted to [{1}].
+        /// </summary>
+        public static string CoCoRaHSParseItem_CouldNotBeConvertedTo_ {
+            get {
+                return ResourceManager.GetString("CoCoRaHSParseItem_CouldNotBeConvertedTo_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHS Parse: item {0} should be {1}.
+        /// </summary>
+        public static string CoCoRaHSParseItem_ShouldBe_ {
+            get {
+                return ResourceManager.GetString("CoCoRaHSParseItem_ShouldBe_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHS Parse:  line does not have 13 items.
+        /// </summary>
+        public static string CoCoRaHSParseLineDoesNotHave13Items {
+            get {
+                return ResourceManager.GetString("CoCoRaHSParseLineDoesNotHave13Items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHSSite.
+        /// </summary>
+        public static string CoCoRaHSSite {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command.
         /// </summary>
         public static string Command {
@@ -2505,6 +2541,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string ListOfTables {
             get {
                 return ResourceManager.GetString("ListOfTables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load new CoCoRaHS data in DB Error [{0}].
+        /// </summary>
+        public static string LoadNewCoCoRaHSDataInDBError_ {
+            get {
+                return ResourceManager.GetString("LoadNewCoCoRaHSDataInDBError_", resourceCulture);
             }
         }
         

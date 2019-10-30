@@ -2008,4 +2008,19 @@ Animation estimée des chemins de drogue</value>
   <data name="PolSourceSiteEffect" xml:space="preserve">
     <value>PolSourceSiteEffect</value>
   </data>
+  <data name="CoCoRaHSParseItem_CouldNotBeConvertedTo_" xml:space="preserve">
+    <value>CoCoRaHS Parse: item {0} n'a pas pu &#x1E;être converti en [{1}]</value>
+  </data>
+  <data name="CoCoRaHSParseItem_ShouldBe_" xml:space="preserve">
+    <value>CoCoRaHS Parse: item {0} devrait être {1}</value>
+  </data>
+  <data name="CoCoRaHSParseLineDoesNotHave13Items" xml:space="preserve">
+    <value>CoCoRaHS Parse: la line ne contient pas 13 items</value>
+  </data>
+  <data name="CoCoRaHSSite" xml:space="preserve">
+    <value>CoCoRaHSSite</value>
+  </data>
+  <data name="LoadNewCoCoRaHSDataInDBError_" xml:space="preserve">
+    <value>Erreur lors de téléchargement de données de CoCoRaHS dans la BD [{0}]</value>
+  </data>
 </root>

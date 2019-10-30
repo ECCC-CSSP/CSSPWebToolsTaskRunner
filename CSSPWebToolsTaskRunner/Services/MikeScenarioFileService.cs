@@ -3187,15 +3187,29 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 List<OtherFileInfo> FileList = new List<OtherFileInfo>();
                 string FileName = GetParameterFileName(pfsFile, "FemEngineHD/HYDRODYNAMIC_MODULE/BOUNDARY_CONDITIONS/" + mbcm.MikeBoundaryConditionCode, "file_name");
-                FileInfo fiBC = new FileInfo(FileName);
 
                 List<MapInfoPointModel> mapInfoPointModelBC = new List<MapInfoPointModel>();
+
+                FileInfo fiBC = new FileInfo(FileName);
+
+                List<TVFileModel> tvFileModelList = tvFileService.GetTVFileModelListWithParentTVItemIDDB(mikeScenarioModel.MikeScenarioTVItemID);
+                TVFileModel tvFileModelBC = new TVFileModel();
+                foreach (TVFileModel tvFileModel2 in tvFileModelList)
+                {
+                    if (tvFileModel2.ServerFileName == fiBC.Name)
+                    {
+                        tvFileModelBC = tvFileModel2;
+                        break;
+                    }
+                }
+
+                fiBC = new FileInfo(tvFileService.ChoseEDriveOrCDrive(tvFileModelBC.ServerFilePath) + tvFileModelBC.ServerFileName);
 
                 string FilePathBC = fiBC.Directory + @"\";
                 string FileNameBC = fiBC.Name;
                 string FilePathBC_EDrive = FilePathBC.Replace(@"C:\", @"E:\");
                 string newServerPathBC = fiBC.Directory + @"\";
-                TVFileModel tvFileModelBC = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(FilePathBC_EDrive, FileNameBC);
+                tvFileModelBC = tvFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(FilePathBC_EDrive, FileNameBC);
                 if (!string.IsNullOrWhiteSpace(tvFileModelBC.Error))
                 {
                     NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVFile, TaskRunnerServiceRes.ServerFilePath + "," + TaskRunnerServiceRes.ServerFileName, FilePathBC_EDrive + FileNameBC);
