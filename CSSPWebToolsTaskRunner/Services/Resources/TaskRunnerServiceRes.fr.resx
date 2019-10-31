@@ -2023,4 +2023,13 @@ Animation estimée des chemins de drogue</value>
   <data name="LoadNewCoCoRaHSDataInDBError_" xml:space="preserve">
     <value>Erreur lors de téléchargement de données de CoCoRaHS dans la BD [{0}]</value>
   </data>
+  <data name="CoCoRaHSStationNumberDoesNotStartWith_" xml:space="preserve">
+    <value>CoCoRaHS StationNumber ne commence pas avec {0}</value>
+  </data>
+  <data name="CoCoRaHSValue" xml:space="preserve">
+    <value>CoCoRaHSValue</value>
+  </data>
+  <data name="StationNumber" xml:space="preserve">
+    <value>StationNumber</value>
+  </data>
 </root>

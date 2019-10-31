@@ -592,6 +592,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHS StationNumber does not start with {0}.
+        /// </summary>
+        public static string CoCoRaHSStationNumberDoesNotStartWith_ {
+            get {
+                return ResourceManager.GetString("CoCoRaHSStationNumberDoesNotStartWith_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHSValue.
+        /// </summary>
+        public static string CoCoRaHSValue {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command.
         /// </summary>
         public static string Command {
@@ -5016,6 +5034,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string StationName {
             get {
                 return ResourceManager.GetString("StationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StationNumber.
+        /// </summary>
+        public static string StationNumber {
+            get {
+                return ResourceManager.GetString("StationNumber", resourceCulture);
             }
         }
         

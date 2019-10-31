@@ -2025,4 +2025,13 @@
   <data name="LoadNewCoCoRaHSDataInDBError_" xml:space="preserve">
     <value>Load new CoCoRaHS data in DB Error [{0}]</value>
   </data>
+  <data name="CoCoRaHSStationNumberDoesNotStartWith_" xml:space="preserve">
+    <value>CoCoRaHS StationNumber does not start with {0}</value>
+  </data>
+  <data name="CoCoRaHSValue" xml:space="preserve">
+    <value>CoCoRaHSValue</value>
+  </data>
+  <data name="StationNumber" xml:space="preserve">
+    <value>StationNumber</value>
+  </data>
 </root>
