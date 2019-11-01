@@ -463,11 +463,6 @@ namespace CSSPWebToolsTaskRunner.Services
         public void GetAllPrecipitationForYear()
         {
             string NotUsed = "";
-            LoadNewCoCoRaHSDataInDB();
-            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
-            {
-                return;
-            }
 
             TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -670,13 +665,66 @@ namespace CSSPWebToolsTaskRunner.Services
             appTaskModel.PercentCompleted = 100;
             appTaskService.PostUpdateAppTask(appTaskModel);
         }
-        public void GetClimateSitesDataForSubsectorRunsOfYear(int SubsectorTVItemID, int Year)
+        public void ClimateSiteLoadCoCoRaHSData()
         {
+            string NotUsed = "";
+
+            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+
+            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID);
+                return;
+            }
+
+            if (_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID2 == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes._Required, TaskRunnerServiceRes.TVItemID2);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("_Required", TaskRunnerServiceRes.TVItemID2);
+                return;
+            }
+
+            string Parameters = _TaskRunnerBaseService._BWObj.appTaskModel.Parameters;
+            string[] ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            int TVItemID = 0;
+            foreach (string s in ParamValueList)
+            {
+                string[] ParamValue = s.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                if (ParamValue.Length != 2)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotParse_Properly, TaskRunnerServiceRes.Parameters);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotParse_Properly", TaskRunnerServiceRes.Parameters);
+                    return;
+                }
+
+                if (ParamValue[0] == "TVItemID")
+                {
+                    TVItemID = int.Parse(ParamValue[1]);
+                }
+                else
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, ParamValue[0]);
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", ParamValue[0].ToString());
+                    return;
+                }
+            }
+
             LoadNewCoCoRaHSDataInDB();
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
             {
                 return;
             }
+
+            appTaskModel.PercentCompleted = 100;
+            appTaskService.PostUpdateAppTask(appTaskModel);
+        }
+        public void GetClimateSitesDataForSubsectorRunsOfYear(int SubsectorTVItemID, int Year)
+        {
 
             string NotUsed = "";
             int CurrentYear = DateTime.Now.Year;
@@ -3021,7 +3069,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 if (cocoRaHSSite != null)
                 {
-                    DateTime EndDate2 = EndDate.AddHours(12);
+                    DateTime EndDate2 = EndDate.AddDays(1);
 
                     List<CoCoRaHSValue> cocoRaHSValueList = (from c in dbcoco.CoCoRaHSValues
                                                              where c.CoCoRaHSSiteID == cocoRaHSSite.CoCoRaHSSiteID
@@ -3030,13 +3078,14 @@ namespace CSSPWebToolsTaskRunner.Services
                                                              select c).ToList();
 
                     DateTime CurrentDate = StartDate;
-                    while (CurrentDate < EndDate.AddHours(12))
+                    while (CurrentDate < EndDate2)
                     {
-                        DateTime CurrentDateEnd = CurrentDate.AddDays(1);
+                        DateTime CurrentDatePlus1 = CurrentDate.AddDays(1);
+                        DateTime CurrentDateEndPlus1 = CurrentDate.AddDays(2);
 
-                        CoCoRaHSValue cocoRaHSValue = (from c in cocoRaHSValueList
-                                                       where c.ObservationDateAndTime >= CurrentDate
-                                                       && c.ObservationDateAndTime <= CurrentDateEnd
+                        CoCoRaHSValue cocoRaHSValuePlus1 = (from c in cocoRaHSValueList
+                                                       where c.ObservationDateAndTime >= CurrentDatePlus1
+                                                       && c.ObservationDateAndTime <= CurrentDateEndPlus1
                                                        select c).FirstOrDefault();
 
                         ClimateDataValueModel climateDataValueModelNew = new ClimateDataValueModel()
@@ -3057,7 +3106,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             SnowOnGround_cm = null,
                             SpdMaxGust_kmh = null,
                             StorageDataType = StorageDataTypeEnum.Archived,
-                            TotalPrecip_mm_cm = (cocoRaHSValue == null ? null : cocoRaHSValue.TotalPrecipAmt),
+                            TotalPrecip_mm_cm = (cocoRaHSValuePlus1 == null ? null : (cocoRaHSValuePlus1.ObservationDateAndTime.Hour > 11 ? null : cocoRaHSValuePlus1.TotalPrecipAmt)),
                         };
 
                         ClimateDataValueModel climateDataValueModelExist = climateDataValueService.GetClimateDataValueModelExitDB(climateDataValueModelNew);
@@ -3079,6 +3128,8 @@ namespace CSSPWebToolsTaskRunner.Services
                                 climateDataValueModelNew.ClimateDataValueID = climateDataValueModelExist.ClimateDataValueID;
                                 climateDataValueModelNew.RainfallEntered_mm = climateDataValueModelExist.RainfallEntered_mm;
                                 climateDataValueModelNew.HasBeenRead = true;
+                                climateDataValueModelNew.TotalPrecip_mm_cm = (cocoRaHSValuePlus1 == null ? null : (cocoRaHSValuePlus1.ObservationDateAndTime.Hour > 11 ? null : cocoRaHSValuePlus1.TotalPrecipAmt));
+                      
                                 climateDataValueModelExist = climateDataValueService.PostUpdateClimateDataValueDB(climateDataValueModelNew);
                                 if (!string.IsNullOrWhiteSpace(climateDataValueModelExist.Error))
                                 {
