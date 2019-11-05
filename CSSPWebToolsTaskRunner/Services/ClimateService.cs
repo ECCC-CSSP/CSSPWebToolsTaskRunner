@@ -3084,9 +3084,9 @@ namespace CSSPWebToolsTaskRunner.Services
                         DateTime CurrentDateEndPlus1 = CurrentDate.AddDays(2);
 
                         CoCoRaHSValue cocoRaHSValuePlus1 = (from c in cocoRaHSValueList
-                                                       where c.ObservationDateAndTime >= CurrentDatePlus1
-                                                       && c.ObservationDateAndTime <= CurrentDateEndPlus1
-                                                       select c).FirstOrDefault();
+                                                            where c.ObservationDateAndTime >= CurrentDatePlus1
+                                                            && c.ObservationDateAndTime <= CurrentDateEndPlus1
+                                                            select c).FirstOrDefault();
 
                         ClimateDataValueModel climateDataValueModelNew = new ClimateDataValueModel()
                         {
@@ -3129,7 +3129,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 climateDataValueModelNew.RainfallEntered_mm = climateDataValueModelExist.RainfallEntered_mm;
                                 climateDataValueModelNew.HasBeenRead = true;
                                 climateDataValueModelNew.TotalPrecip_mm_cm = (cocoRaHSValuePlus1 == null ? null : (cocoRaHSValuePlus1.ObservationDateAndTime.Hour > 11 ? null : cocoRaHSValuePlus1.TotalPrecipAmt));
-                      
+
                                 climateDataValueModelExist = climateDataValueService.PostUpdateClimateDataValueDB(climateDataValueModelNew);
                                 if (!string.IsNullOrWhiteSpace(climateDataValueModelExist.Error))
                                 {
@@ -3365,7 +3365,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                       select c.ObservationDateAndTime).FirstOrDefault();
             }
 
-            LatestDateWithData = LatestDateWithData.AddDays(-1);
+            LatestDateWithData = LatestDateWithData.AddDays(-2);
 
             DateTime CurrentDate = DateTime.Now;
 
@@ -3759,6 +3759,42 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         if (cocoRaHSSite != null)
                         {
+
+                            ClimateSite climateSite = (from c in climateSiteList
+                                                       where c.ClimateID == StationNumber
+                                                       select c).FirstOrDefault();
+
+                            if (climateSite.DailyEndDate_Local > ObservationDateAndTime)
+                            {
+
+                                using (CSSPDBEntities db2 = new CSSPDBEntities())
+                                {
+                                    ClimateSite climateSiteToChange = (from c in mapInfoService.db.ClimateSites
+                                                                       where c.ClimateSiteID == climateSite.ClimateSiteID
+                                                                       select c).FirstOrDefault();
+
+                                    if (climateSiteToChange != null)
+                                    {
+                                        DateTime LastDateRead = new DateTime(ObservationDateAndTime.Year, ObservationDateAndTime.Month, ObservationDateAndTime.Day);
+                                        if (LastDateRead > climateSiteToChange.DailyEndDate_Local)
+                                        {
+                                            climateSiteToChange.DailyEndDate_Local = LastDateRead;
+
+                                            try
+                                            {
+                                                db2.SaveChanges();
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                NotUsed = String.Format(TaskRunnerServiceRes.CouldNotUpdate_Error_, TaskRunnerServiceRes.ClimateSite, ex.Message);
+                                                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotUpdate_Error_", TaskRunnerServiceRes.ClimateSite, ex.Message);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                             CoCoRaHSValueModel cocorahsValueModelNew = new CoCoRaHSValueModel()
                             {
                                 CoCoRaHSSiteID = cocoRaHSSite.CoCoRaHSSiteID,
@@ -3963,7 +3999,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                          select c.ObservationDateAndTime).FirstOrDefault();
 
                     bool DailyNow = false;
-                    if (LastDate.Date > new DateTime(2019, 10, 10))
+                    if (LastDate.Date > DateTime.Now.AddDays(-10))
                     {
                         DailyNow = true;
                     }
