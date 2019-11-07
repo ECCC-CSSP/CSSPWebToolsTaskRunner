@@ -137,6 +137,30 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             bool ErrorInDoc = false;
 
+            List<string> ProvinceTextEN = new List<string>()
+            {
+                "New Brunswick",
+                "Newfoundland and Labrador",
+                "Nova Scotia",
+                "Prince Edward Island",
+                "Québec",
+                "British Columbia",
+                "Maine",
+                "Washington"
+            };
+
+            List<string> ProvinceTextFR = new List<string>()
+            {
+                "Nouveau-Brunswick",
+                "Terre-Neuve-et-Labrador",
+                "Nouvelle-Écosse",
+                "Île-du-Prince-Édouard",
+                "Québec",
+                "Colombie-Britannique",
+                "Maine",
+                "Washington"
+            };
+
             string GoogleEarthPath = "";
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -151,6 +175,63 @@ namespace CSSPWebToolsTaskRunner.Services
             GoogleEarthPath = GoogleEarthPath.Replace("!!!!!", "<");
             GoogleEarthPath = GoogleEarthPath.Replace("@@@@@", ">");
             GoogleEarthPath = GoogleEarthPath.Replace("%%%%%", ",");
+
+            TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+
+            List<TVItemModel> tvItemModelParentList = _TVItemService.GetParentsTVItemModelList(tvItemModelMikeScenario.TVPath);
+
+            TVItemModel tvItemModelProvince = null;
+            foreach (TVItemModel tvItemModel in tvItemModelParentList)
+            {
+                if (tvItemModel.TVType == TVTypeEnum.Province)
+                {
+                    tvItemModelProvince = tvItemModel;
+                }
+            }
+
+            if (tvItemModelProvince == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, TaskRunnerServiceRes.Province + "," + TaskRunnerServiceRes.TVItem);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TaskRunnerServiceRes.Province + "," + TaskRunnerServiceRes.TVItem);
+                return false;
+            }
+
+            string ProvInit = "";
+            for (int i = 0; i < ProvinceTextEN.Count; i++)
+            {
+                if (ProvinceTextEN[i] == tvItemModelProvince.TVText || ProvinceTextFR[i] == tvItemModelProvince.TVText)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            ProvInit = "NB";
+                            break;
+                        case 1:
+                            ProvInit = "NL";
+                            break;
+                        case 2:
+                            ProvInit = "NS";
+                            break;
+                        case 3:
+                            ProvInit = "PE";
+                            break;
+                        case 4:
+                            ProvInit = "QC";
+                            break;
+                        case 5:
+                            ProvInit = "BC";
+                            break;
+                        case 6:
+                            ProvInit = "ME";
+                            break;
+                        case 7:
+                            ProvInit = "WA";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
 
             DfsuFile dfsuFile = null;
             List<ElementLayer> elementLayerList = new List<ElementLayer>();
@@ -194,7 +275,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLCurrentsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList))
+            if (!WriteKMLCurrentsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList, ProvInit))
             {
                 ErrorInDoc = true;
             }
@@ -218,6 +299,30 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
             bool ErrorInDoc = false;
+
+            List<string> ProvinceTextEN = new List<string>()
+            {
+                "New Brunswick",
+                "Newfoundland and Labrador",
+                "Nova Scotia",
+                "Prince Edward Island",
+                "Québec",
+                "British Columbia",
+                "Maine",
+                "Washington"
+            };
+
+            List<string> ProvinceTextFR = new List<string>()
+            {
+                "Nouveau-Brunswick",
+                "Terre-Neuve-et-Labrador",
+                "Nouvelle-Écosse",
+                "Île-du-Prince-Édouard",
+                "Québec",
+                "Colombie-Britannique",
+                "Maine",
+                "Washington"
+            };
 
             int DoFirstXDroguePoints = 0;
             List<int> DelaysList = new List<int>();
@@ -257,6 +362,63 @@ namespace CSSPWebToolsTaskRunner.Services
             GoogleEarthPath = GoogleEarthPath.Replace("!!!!!", "<");
             GoogleEarthPath = GoogleEarthPath.Replace("@@@@@", ">");
             GoogleEarthPath = GoogleEarthPath.Replace("%%%%%", ",");
+
+            TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+
+            List<TVItemModel> tvItemModelParentList = _TVItemService.GetParentsTVItemModelList(tvItemModelMikeScenario.TVPath);
+
+            TVItemModel tvItemModelProvince = null;
+            foreach (TVItemModel tvItemModel in tvItemModelParentList)
+            {
+                if (tvItemModel.TVType == TVTypeEnum.Province)
+                {
+                    tvItemModelProvince = tvItemModel;
+                }
+            }
+
+            if (tvItemModelProvince == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, TaskRunnerServiceRes.Province + "," + TaskRunnerServiceRes.TVItem);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TaskRunnerServiceRes.Province + "," + TaskRunnerServiceRes.TVItem);
+                return false;
+            }
+
+            string ProvInit = "";
+            for (int i = 0; i < ProvinceTextEN.Count; i++)
+            {
+                if (ProvinceTextEN[i] == tvItemModelProvince.TVText || ProvinceTextFR[i] == tvItemModelProvince.TVText)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            ProvInit = "NB";
+                            break;
+                        case 1:
+                            ProvInit = "NL";
+                            break;
+                        case 2:
+                            ProvInit = "NS";
+                            break;
+                        case 3:
+                            ProvInit = "PE";
+                            break;
+                        case 4:
+                            ProvInit = "QC";
+                            break;
+                        case 5:
+                            ProvInit = "BC";
+                            break;
+                        case 6:
+                            ProvInit = "ME";
+                            break;
+                        case 7:
+                            ProvInit = "WA";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
 
             DfsuFile dfsuFile = null;
             List<ElementLayer> elementLayerList = new List<ElementLayer>();
@@ -304,7 +466,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 ErrorInDoc = true;
             }
 
-            if (!WriteKMLEstimatedDroguePathsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList, StartCoordList, DoFirstXDroguePoints, DelaysList, LayersList))
+            if (!WriteKMLEstimatedDroguePathsAnimation(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, SelectedElementLayerList, StartCoordList, DoFirstXDroguePoints, DelaysList, LayersList, ProvInit))
             {
                 ErrorInDoc = true;
             }
@@ -444,6 +606,29 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             string NotUsed = "";
             bool ErrorInDoc = false;
+            List<string> ProvinceTextEN = new List<string>()
+            {
+                "New Brunswick",
+                "Newfoundland and Labrador",
+                "Nova Scotia",
+                "Prince Edward Island",
+                "Québec",
+                "British Columbia",
+                "Maine",
+                "Washington"
+            };
+
+            List<string> ProvinceTextFR = new List<string>()
+            {
+                "Nouveau-Brunswick",
+                "Terre-Neuve-et-Labrador",
+                "Nouvelle-Écosse",
+                "Île-du-Prince-Édouard",
+                "Québec",
+                "Colombie-Britannique",
+                "Maine",
+                "Washington"
+            };
 
             string ContourValues = "";
             List<string> ParamValueList = Parameters.Split("|||".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -457,6 +642,63 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             List<float> ContourValueList = ContourValues.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => float.Parse(c)).ToList();
+
+            TVItemModel tvItemModelMikeScenario = _TVItemService.GetTVItemModelWithTVItemIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID);
+
+            List<TVItemModel> tvItemModelParentList = _TVItemService.GetParentsTVItemModelList(tvItemModelMikeScenario.TVPath);
+
+            TVItemModel tvItemModelProvince = null;
+            foreach (TVItemModel tvItemModel in tvItemModelParentList)
+            {
+                if (tvItemModel.TVType == TVTypeEnum.Province)
+                {
+                    tvItemModelProvince = tvItemModel;
+                }
+            }
+
+            if (tvItemModelProvince == null)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_, TaskRunnerServiceRes.Province + "," + TaskRunnerServiceRes.TVItem);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFind_", TaskRunnerServiceRes.Province + "," + TaskRunnerServiceRes.TVItem);
+                return false;
+            }
+
+            string ProvInit = "";
+            for (int i = 0; i < ProvinceTextEN.Count; i++)
+            {
+                if (ProvinceTextEN[i] == tvItemModelProvince.TVText || ProvinceTextFR[i] == tvItemModelProvince.TVText)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            ProvInit = "NB";
+                            break;
+                        case 1:
+                            ProvInit = "NL";
+                            break;
+                        case 2:
+                            ProvInit = "NS";
+                            break;
+                        case 3:
+                            ProvInit = "PE";
+                            break;
+                        case 4:
+                            ProvInit = "QC";
+                            break;
+                        case 5:
+                            ProvInit = "BC";
+                            break;
+                        case 6:
+                            ProvInit = "ME";
+                            break;
+                        case 7:
+                            ProvInit = "WA";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
 
             DfsuFile dfsuFile = null;
             List<ElementLayer> elementLayerList = new List<ElementLayer>();
@@ -505,7 +747,7 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 ErrorInDoc = true;
             }
-            if (!WriteKMLFecalColiformContourLine(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList))
+            if (!WriteKMLFecalColiformContourLine(sb, dfsuFile, elementLayerList, topNodeLayerList, bottomNodeLayerList, ContourValueList, ProvInit))
             {
                 ErrorInDoc = true;
             }
@@ -648,7 +890,7 @@ namespace CSSPWebToolsTaskRunner.Services
         }
 
         // helpers
-        private void DrawKMLContourPolygon(List<ContourPolygon> ContourPolygonList, DfsuFile dfsuFile, int ParamCount)
+        private void DrawKMLContourPolygon(List<ContourPolygon> ContourPolygonList, DfsuFile dfsuFile, int ParamCount, string ProvInit)
         {
             int Count = 0;
             float MaxXCoord = -180;
@@ -659,8 +901,68 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    <visibility>0</visibility>");
             sb.AppendLine(string.Format(@"    <name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
             sb.AppendLine(@"    <TimeSpan>");
-            sb.AppendLine(string.Format(@"    <begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds)));
-            sb.AppendLine(string.Format(@"    <end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds)));
+
+            string Date_UTC_TextStart = "";
+            string Date_UTC_TextEnd = "";
+            if (ProvInit == "NL")
+            {
+                TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Newfoundland Standard Time");
+                if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(3).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(3).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(2).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(2).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+            }
+            else if (ProvInit == "QC")
+            {
+                TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(5).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(5).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+            }
+            else if (ProvInit == "BC")
+            {
+                TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(7).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(7).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+            }
+            else
+            {
+                TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
+                if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+                else
+                {
+                    Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(ParamCount * dfsuFile.TimeStepInSeconds).AddHours(3).ToString("yyyy-MM-ddTHH:mm:ss");
+                    Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((ParamCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(3).ToString("yyyy-MM-ddTHH:mm:ss");
+                }
+            }
+
+            sb.AppendLine($@"    <begin>{Date_UTC_TextStart}</begin>");
+            sb.AppendLine($@"    <end>{Date_UTC_TextEnd}</end>");
             sb.AppendLine(@"    </TimeSpan>");
             foreach (ContourPolygon contourPolygon in ContourPolygonList)
             {
@@ -3170,7 +3472,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 else
                                 {
                                     coord.Lng = float.Parse(xyzStr[0]);
-                                   coord.Lat = float.Parse(xyzStr[1]);
+                                    coord.Lat = float.Parse(xyzStr[1]);
                                     coord.Ordinal = 0;
                                 }
 
@@ -3364,8 +3666,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLCurrentsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, 
-            List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList)
+        private bool WriteKMLCurrentsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList,
+            List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList, string ProvInit)
         {
             string NotUsed = "";
 
@@ -3429,8 +3731,71 @@ namespace CSSPWebToolsTaskRunner.Services
                     sbHTML.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
                     sbHTML.AppendLine(@"<visibility>0</visibility>");
                     sbHTML.AppendLine(@"<TimeSpan>");
-                    sbHTML.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
-                    sbHTML.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds)));
+
+                    string Date_UTC_TextStart = "";
+                    string Date_UTC_TextEnd = "";
+                    if (ProvInit == "NL")
+                    {
+                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Newfoundland Standard Time");
+                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(3).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(3).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                        else
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(2).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(2).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                    }
+                    else if (ProvInit == "QC")
+                    {
+                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(5).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(5).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                        else
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                    }
+                    else if (ProvInit == "BC")
+                    {
+                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                        else
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(7).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(7).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                    }
+                    else
+                    {
+                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
+                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                        else
+                        {
+                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds).AddHours(3).ToString("yyyy-MM-ddTHH:mm:ss");
+                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds).AddHours(3).ToString("yyyy-MM-ddTHH:mm:ss");
+                        }
+                    }
+
+                    sb.AppendLine($@"    <begin>{Date_UTC_TextStart}</begin>");
+                    sb.AppendLine($@"    <end>{Date_UTC_TextEnd}</end>");
+
+                    //sbHTML.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds(vCount * dfsuFile.TimeStepInSeconds)));
+                    //sbHTML.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds((vCount + 1) * dfsuFile.TimeStepInSeconds)));
                     sbHTML.AppendLine(@"</TimeSpan>");
 
                     float[] UvelocityList = (float[])dfsuFile.ReadItemTimeStep(ItemUVelocity, timeStep).Data;
@@ -3542,9 +3907,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLEstimatedDroguePathsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, 
+        private bool WriteKMLEstimatedDroguePathsAnimation(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList,
             List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<ElementLayer> SelectedElementLayerList, List<Coord> StartCoordList,
-            int DoFirstXDroguePoints, List<int> DelaysList, List<int> LayersList)
+            int DoFirstXDroguePoints, List<int> DelaysList, List<int> LayersList, string ProvInit)
         {
             string NotUsed = "";
 
@@ -3874,77 +4239,140 @@ namespace CSSPWebToolsTaskRunner.Services
                                     //if (currentElementLayer.Element.ID != NewElementLayer.Element.ID)
                                     //{
 
-                                        sbHTML2.AppendLine(@"<Folder>");
-                                        sbHTML2.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds))));
-                                        sbHTML2.AppendLine(@"<visibility>0</visibility>");
-                                        sbHTML2.AppendLine(@"<TimeSpan>");
-                                        sbHTML2.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds)));
-                                        sbHTML2.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds)));
-                                        sbHTML2.AppendLine(@"</TimeSpan>");
-                                        sbHTML2.AppendLine(@"<Placemark>");
-                                        sbHTML2.AppendLine(@"<visibility>0</visibility>");
-                                        sbHTML2.AppendLine($@"<name>EDP { CountDrogue }</name>");
+                                    sbHTML2.AppendLine(@"<Folder>");
+                                    sbHTML2.AppendLine(string.Format(@"<name>{0:yyyy-MM-dd} {0:HH:mm:ss tt}</name>", dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds))));
+                                    sbHTML2.AppendLine(@"<visibility>0</visibility>");
+                                    sbHTML2.AppendLine(@"<TimeSpan>");
 
-                                        switch (CountDrogue)
+                                    string Date_UTC_TextStart = "";
+                                    string Date_UTC_TextEnd = "";
+                                    if (ProvInit == "NL")
+                                    {
+                                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Newfoundland Standard Time");
+                                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
                                         {
-                                            case 1:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_green</styleUrl>");
-                                                }
-                                                break;
-                                            case 2:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_red</styleUrl>");
-                                                }
-                                                break;
-                                            case 3:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_blue</styleUrl>");
-                                                }
-                                                break;
-                                            case 4:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_purple</styleUrl>");
-                                                }
-                                                break;
-                                            case 5:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_green</styleUrl>");
-                                                }
-                                                break;
-                                            case 6:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_red</styleUrl>");
-                                                }
-                                                break;
-                                            case 7:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_blue</styleUrl>");
-                                                }
-                                                break;
-                                            case 8:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_purple</styleUrl>");
-                                                }
-                                                break;
-                                            default:
-                                                {
-                                                    sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_shaded_dot_green</styleUrl>");
-                                                }
-                                                break;
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(3).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(3).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
                                         }
+                                        else
+                                        {
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(2).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(2).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss");
+                                        }
+                                    }
+                                    else if (ProvInit == "QC")
+                                    {
+                                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                                        {
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(5).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(5).ToString("yyyy-MM-ddTHH:mm:ss");
+                                        }
+                                        else
+                                        {
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                                        }
+                                    }
+                                    else if (ProvInit == "BC")
+                                    {
+                                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                                        {
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(8).ToString("yyyy-MM-ddTHH:mm:ss");
+                                        }
+                                        else
+                                        {
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(7).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(7).ToString("yyyy-MM-ddTHH:mm:ss");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Atlantic Standard Time");
+                                        if (tst.IsDaylightSavingTime(dfsuFile.StartDateTime))
+                                        {
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ss");
+                                        }
+                                        else
+                                        {
+                                            Date_UTC_TextStart = dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(3).ToString("yyyy-MM-ddTHH:mm:ss");
+                                            Date_UTC_TextEnd = dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds).AddHours(3).ToString("yyyy-MM-ddTHH:mm:ss");
+                                        }
+                                    }
 
-                                        sbHTML2.AppendLine(@"<Point>");
-                                        sbHTML2.AppendLine(@"<coordinates>");
-                                        sbHTML2.Append(@"");
-                                        if (coordList.Count > 1)
-                                        {
-                                            sbHTML2.Append($@"{ coordList[coordList.Count - 1].Lng },{ coordList[coordList.Count - 1].Lat },0 ");
-                                        }
-                                        sbHTML2.AppendLine(@"</coordinates>");
-                                        sbHTML2.AppendLine(@"</Point>");
-                                        sbHTML2.AppendLine(@"</Placemark>");
-                                        sbHTML2.AppendLine(@"</Folder>");
+                                    sbHTML2.AppendLine($@"    <begin>{Date_UTC_TextStart}</begin>");
+                                    sbHTML2.AppendLine($@"    <end>{Date_UTC_TextEnd}</end>");
+
+                                    //sbHTML2.AppendLine(string.Format(@"<begin>{0:yyyy-MM-dd}T{0:HH:mm:ss}</begin>", dfsuFile.StartDateTime.AddSeconds((vCount * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds)));
+                                    //sbHTML2.AppendLine(string.Format(@"<end>{0:yyyy-MM-dd}T{0:HH:mm:ss}</end>", dfsuFile.StartDateTime.AddSeconds(((vCount + 1) * dfsuFile.TimeStepInSeconds) + totalTimeInSeconds)));
+                                    sbHTML2.AppendLine(@"</TimeSpan>");
+                                    sbHTML2.AppendLine(@"<Placemark>");
+                                    sbHTML2.AppendLine(@"<visibility>0</visibility>");
+                                    sbHTML2.AppendLine($@"<name>EDP { CountDrogue }</name>");
+
+                                    switch (CountDrogue)
+                                    {
+                                        case 1:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_green</styleUrl>");
+                                            }
+                                            break;
+                                        case 2:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_red</styleUrl>");
+                                            }
+                                            break;
+                                        case 3:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_blue</styleUrl>");
+                                            }
+                                            break;
+                                        case 4:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_circle_purple</styleUrl>");
+                                            }
+                                            break;
+                                        case 5:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_green</styleUrl>");
+                                            }
+                                            break;
+                                        case 6:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_red</styleUrl>");
+                                            }
+                                            break;
+                                        case 7:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_blue</styleUrl>");
+                                            }
+                                            break;
+                                        case 8:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_square_purple</styleUrl>");
+                                            }
+                                            break;
+                                        default:
+                                            {
+                                                sbHTML2.AppendLine(@"<styleUrl>#msn_placemark_shaded_dot_green</styleUrl>");
+                                            }
+                                            break;
+                                    }
+
+                                    sbHTML2.AppendLine(@"<Point>");
+                                    sbHTML2.AppendLine(@"<coordinates>");
+                                    sbHTML2.Append(@"");
+                                    if (coordList.Count > 1)
+                                    {
+                                        sbHTML2.Append($@"{ coordList[coordList.Count - 1].Lng },{ coordList[coordList.Count - 1].Lat },0 ");
+                                    }
+                                    sbHTML2.AppendLine(@"</coordinates>");
+                                    sbHTML2.AppendLine(@"</Point>");
+                                    sbHTML2.AppendLine(@"</Placemark>");
+                                    sbHTML2.AppendLine(@"</Folder>");
 
                                     //}
                                 }
@@ -4042,7 +4470,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
-        private bool WriteKMLFecalColiformContourLine(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList)
+        private bool WriteKMLFecalColiformContourLine(StringBuilder sbHTML, DfsuFile dfsuFile, List<ElementLayer> elementLayerList, List<NodeLayer> topNodeLayerList, List<NodeLayer> bottomNodeLayerList, List<float> ContourValueList, string ProvInit)
         {
             string NotUsed = "";
             int PercentCompleted = 3;
@@ -4491,7 +4919,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             }
 
                         }
-                        DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount);
+                        DrawKMLContourPolygon(ContourPolygonList, dfsuFile, vcount, ProvInit);
 
                         vcount += 1;
                     }
