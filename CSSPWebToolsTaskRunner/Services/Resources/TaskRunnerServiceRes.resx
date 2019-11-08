@@ -2034,4 +2034,16 @@
   <data name="StationNumber" xml:space="preserve">
     <value>StationNumber</value>
   </data>
+  <data name="IN" xml:space="preserve">
+    <value>IN</value>
+  </data>
+  <data name="ObsDate" xml:space="preserve">
+    <value>ObsDate</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="Prob" xml:space="preserve">
+    <value>Prob</value>
+  </data>
 </root>

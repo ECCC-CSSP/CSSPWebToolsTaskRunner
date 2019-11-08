@@ -2284,6 +2284,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IN.
+        /// </summary>
+        public static string IN {
+            get {
+                return ResourceManager.GetString("IN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to included.
         /// </summary>
         public static string IncludedLowerCase {
@@ -3634,6 +3643,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ObsDate.
+        /// </summary>
+        public static string ObsDate {
+            get {
+                return ResourceManager.GetString("ObsDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to One of rain value for run date [{0}] and run TVItemID [{1}] has no data.
         /// </summary>
         public static string OneOfRainValueForRunDate_RunTVItemID_HasNoData {
@@ -3765,6 +3783,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string PartialSaveOfM21FMOrM3FMFile {
             get {
                 return ResourceManager.GetString("PartialSaveOfM21FMOrM3FMFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        public static string Path {
+            get {
+                return ResourceManager.GetString("Path", resourceCulture);
             }
         }
         
@@ -3954,6 +3981,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string Polygons {
             get {
                 return ResourceManager.GetString("Polygons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prob.
+        /// </summary>
+        public static string Prob {
+            get {
+                return ResourceManager.GetString("Prob", resourceCulture);
             }
         }
         

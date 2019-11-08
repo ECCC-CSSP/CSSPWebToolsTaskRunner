@@ -2032,4 +2032,16 @@ Animation estimée des chemins de drogue</value>
   <data name="StationNumber" xml:space="preserve">
     <value>StationNumber</value>
   </data>
+  <data name="IN" xml:space="preserve">
+    <value>NE</value>
+  </data>
+  <data name="ObsDate" xml:space="preserve">
+    <value>DateObs</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Chemin</value>
+  </data>
+  <data name="Prob" xml:space="preserve">
+    <value>Prob</value>
+  </data>
 </root>

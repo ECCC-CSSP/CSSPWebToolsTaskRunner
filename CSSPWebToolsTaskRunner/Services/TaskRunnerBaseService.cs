@@ -1367,6 +1367,10 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 AppTaskLanguageService appTaskLanguageService = new AppTaskLanguageService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
                 appTaskLanguageModel = appTaskLanguageService.GetAppTaskLanguageModelWithAppTaskIDAndLanguageDB(_BWObj.appTaskModel.AppTaskID, textLanguage.Language);
+                if (textLanguage.Text.Length > 250)
+                {
+                    textLanguage.Text = textLanguage.Text.Substring(0, 245);
+                }
                 appTaskLanguageModel.ErrorText = textLanguage.Text;
                 AppTaskLanguageModel appTaskLanguageModelRet = appTaskLanguageService.PostUpdateAppTaskLanguageDB(appTaskLanguageModel);
             }

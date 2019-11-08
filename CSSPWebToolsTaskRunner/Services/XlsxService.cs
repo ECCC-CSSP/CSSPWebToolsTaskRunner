@@ -1324,7 +1324,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl,C0,C250,C500,C750,C1000,C1250,C1500,C1750,C2000,C2250,C2500,C2750,C3000,C3250,C3500,C3750");
             //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl");
-            sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,ObsDate,CSSPUrl");
+            sb.AppendLine("Subsector,Desc,Site,IN,Type,Path,Prob,Risk,Lat,Lng,ObsDate,CSSPUrl");
 
             using (CSSPDBEntities db = new CSSPDBEntities())
             {
@@ -1441,12 +1441,21 @@ namespace CSSPWebToolsTaskRunner.Services
                     foreach (var polSourceSite in PollutionSourceSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID))
                     {
                         string SS = tvItemSS.tl.TVText.Replace(",", "_");
+                        string Desc = "";
+                        if (SS.Contains(" "))
+                        {
+                            Desc = SS.Substring(SS.IndexOf(" "));
+                            Desc = Desc.Trim();
+                            Desc = Desc.Replace("(", "").Replace(")", "");
+                            SS = SS.Substring(0, SS.IndexOf(" "));
+                        }
                         string PSS = "P" + (polSourceSite.pss != null && polSourceSite.pss.Site != null ? polSourceSite.pss.Site.ToString().Replace(",", "_") : "");
                         string OBSDate = (polSourceSite.pso != null && polSourceSite.pso.pso.ObservationDate_Local != null ? polSourceSite.pso.pso.ObservationDate_Local.ToString("yyyy-MM-dd") : "");
                         string PSTVT = polSourceSite.tl.TVText;
                         string[] PSArr = PSTVT.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
                         string PSType = "";
-                        string PSSubtype = "";
+                        string PSPath = "";
+                        string PSProb = "";
                         string PSRisk = "";
                         if (PSArr.Length > 0)
                         {
@@ -1458,7 +1467,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         if (PSArr.Length > 1)
                         {
-                            PSSubtype = PSArr[1];
+                            PSPath = PSArr[1];
                         }
                         if (PSArr.Length > 2)
                         {
@@ -1466,15 +1475,16 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         string Lat = (polSourceSite.mip != null ? polSourceSite.mip.Lat.ToString("F5") : "");
                         string Lng = (polSourceSite.mip != null ? polSourceSite.mip.Lng.ToString("F5") : "");
-                        //string AD = (!string.IsNullOrWhiteSpace(polSourceSite.add) ? polSourceSite.add.Replace(",", "_") : "");
                         string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + polSourceSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
 
                         string TVText = "";
 
+                        int IN = 0;
                         foreach (var psi in polSourceSite.psi)
                         {
                             if (psi != null && psi.psi != null)
                             {
+                                IN += 1;
                                 List<string> ObservationInfoList = (string.IsNullOrWhiteSpace(psi.psi.ObservationInfo) ? new List<string>() : psi.psi.ObservationInfo.Trim().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
 
                                 for (int i = 0, countObs = ObservationInfoList.Count; i < countObs; i++)
@@ -1500,49 +1510,20 @@ namespace CSSPWebToolsTaskRunner.Services
                                         case "900":
                                             {
                                                 Temp = Temp.Replace("Status", "     Status");
+                                                if (!string.IsNullOrWhiteSpace(Temp))
+                                                {
+                                                    PSProb = Temp.Replace("Status:", "");
+                                                    PSProb = PSProb.Trim();
+                                                    if (PSProb.Contains(" "))
+                                                    {
+                                                        PSProb = PSProb.Substring(0, PSProb.IndexOf(" "));
+                                                    }
+                                                }
                                             }
                                             break;
                                         case "910":
                                             {
                                                 Temp = Temp.Replace("Risk", "     Risk");
-                                            }
-                                            break;
-                                        case "110":
-                                        case "120":
-                                        case "122":
-                                        case "151":
-                                        case "152":
-                                        case "153":
-                                        case "155":
-                                        case "156":
-                                        case "157":
-                                        case "163":
-                                        case "166":
-                                        case "167":
-                                        case "170":
-                                        case "171":
-                                        case "172":
-                                        case "173":
-                                        case "176":
-                                        case "178":
-                                        case "181":
-                                        case "182":
-                                        case "183":
-                                        case "185":
-                                        case "186":
-                                        case "187":
-                                        case "190":
-                                        case "191":
-                                        case "192":
-                                        case "193":
-                                        case "194":
-                                        case "196":
-                                        case "198":
-                                        case "199":
-                                        case "220":
-                                        case "930":
-                                            {
-                                                //Temp = @"<span class=""hidden"">" + Temp + "</span>";
                                             }
                                             break;
                                         default:
@@ -1558,207 +1539,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             string ISS = TempISS.Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", "").Replace("\r", "   ").Replace("\n", "");
 
-                            if (ISS.Length > 4000)
-                            {
-                                int lsief = 354;
-                            }
-
-                            //string C0 = " ";
-                            //string C250 = " ";
-                            //string C500 = " ";
-                            //string C750 = " ";
-                            //string C1000 = " ";
-                            //string C1250 = " ";
-                            //string C1500 = " ";
-                            //string C1750 = " ";
-                            //string C2000 = " ";
-                            //string C2250 = " ";
-                            //string C2500 = " ";
-                            //string C2750 = " ";
-                            //string C3000 = " ";
-                            //string C3250 = " ";
-                            //string C3500 = " ";
-                            //string C3750 = " ";
-                            //if (ISS.Length > 0)
-                            //{
-                            //    if (ISS.Length < 250)
-                            //    {
-                            //        C0 = ISS.Substring(0);
-                            //    }
-                            //    else
-                            //    {
-                            //        C0 = ISS.Substring(0, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 250)
-                            //{
-                            //    if (ISS.Length < 500)
-                            //    {
-                            //        C250 = ISS.Substring(250);
-                            //    }
-                            //    else
-                            //    {
-                            //        C250 = ISS.Substring(250, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 500)
-                            //{
-                            //    if (ISS.Length < 750)
-                            //    {
-                            //        C500 = ISS.Substring(500);
-                            //    }
-                            //    else
-                            //    {
-                            //        C500 = ISS.Substring(500, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 750)
-                            //{
-                            //    if (ISS.Length < 1000)
-                            //    {
-                            //        C750 = ISS.Substring(750);
-                            //    }
-                            //    else
-                            //    {
-                            //        C750 = ISS.Substring(750, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 1000)
-                            //{
-                            //    if (ISS.Length < 1250)
-                            //    {
-                            //        C1000 = ISS.Substring(1000);
-                            //    }
-                            //    else
-                            //    {
-                            //        C1000 = ISS.Substring(1000, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 1250)
-                            //{
-                            //    if (ISS.Length < 1500)
-                            //    {
-                            //        C1250 = ISS.Substring(1250);
-                            //    }
-                            //    else
-                            //    {
-                            //        C1250 = ISS.Substring(1250, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 1500)
-                            //{
-                            //    if (ISS.Length < 1750)
-                            //    {
-                            //        C1500 = ISS.Substring(1500);
-                            //    }
-                            //    else
-                            //    {
-                            //        C1500 = ISS.Substring(1500, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 1750)
-                            //{
-                            //    if (ISS.Length < 2000)
-                            //    {
-                            //        C1750 = ISS.Substring(1750);
-                            //    }
-                            //    else
-                            //    {
-                            //        C1750 = ISS.Substring(1750, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 2000)
-                            //{
-                            //    if (ISS.Length < 2250)
-                            //    {
-                            //        C2000 = ISS.Substring(2000);
-                            //    }
-                            //    else
-                            //    {
-                            //        C2000 = ISS.Substring(2000, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 2250)
-                            //{
-                            //    if (ISS.Length < 2500)
-                            //    {
-                            //        C2250 = ISS.Substring(2250);
-                            //    }
-                            //    else
-                            //    {
-                            //        C2250 = ISS.Substring(2250, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 2500)
-                            //{
-                            //    if (ISS.Length < 2750)
-                            //    {
-                            //        C2500 = ISS.Substring(2500);
-                            //    }
-                            //    else
-                            //    {
-                            //        C2500 = ISS.Substring(2500, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 2750)
-                            //{
-                            //    if (ISS.Length < 3000)
-                            //    {
-                            //        C2750 = ISS.Substring(2750);
-                            //    }
-                            //    else
-                            //    {
-                            //        C2750 = ISS.Substring(2750, 250);
-                            //    }
-                            //}
-                            //if (ISS.Length > 3000)
-                            //{
-                            //    if (ISS.Length < 3250)
-                            //    {
-                            //        C3000 = ISS.Substring(3000);
-                            //    }
-                            //    else
-                            //    {
-                            //        C3000 = ISS.Substring(3000, 350);
-                            //    }
-                            //}
-                            //if (ISS.Length > 3250)
-                            //{
-                            //    if (ISS.Length < 3500)
-                            //    {
-                            //        C3250 = ISS.Substring(3250);
-                            //    }
-                            //    else
-                            //    {
-                            //        C3250 = ISS.Substring(3250, 350);
-                            //    }
-                            //}
-                            //if (ISS.Length > 3500)
-                            //{
-                            //    if (ISS.Length < 3750)
-                            //    {
-                            //        C3500 = ISS.Substring(3500);
-                            //    }
-                            //    else
-                            //    {
-                            //        C3500 = ISS.Substring(3500, 350);
-                            //    }
-                            //}
-                            //if (ISS.Length > 3750)
-                            //{
-                            //    if (ISS.Length < 3000)
-                            //    {
-                            //        C3750 = ISS.Substring(3750);
-                            //    }
-                            //    else
-                            //    {
-                            //        C3750 = ISS.Substring(3750, 350);
-                            //    }
-                            //}
-                            //sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBS},{AD},{URL},{C0},{C250},{C500},{C750},{C1000},{C1250},{C1500},{C1750},{C2000},{C2250},{C2500},{C2750},{C3000},{C3250},{C3500},{C3750}");
                             if (SS.Length == 0)
                             {
                                 SS = " ";
+                            }
+                            if (Desc.Length == 0)
+                            {
+                                Desc = " ";
                             }
                             if (PSS.Length == 0)
                             {
@@ -1768,9 +1555,13 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 PSType = " ";
                             }
-                            if (PSSubtype.Length == 0)
+                            if (PSPath.Length == 0)
                             {
-                                PSSubtype = " ";
+                                PSPath = " ";
+                            }
+                            if (PSProb.Length == 0)
+                            {
+                                PSProb = " ";
                             }
                             if (Lat.Length == 0)
                             {
@@ -1784,16 +1575,11 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 OBSDate = " ";
                             }
-                            //if (AD.Length == 0)
-                            //{
-                            //    AD = " ";
-                            //}
                             if (URL.Length == 0)
                             {
                                 URL = " ";
                             }
-                            //sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBS},{AD},{URL}");
-                            sb.AppendLine($"{SS},{PSS},{PSType},{PSSubtype},{PSRisk},{Lat},{Lng},{OBSDate},{URL}");
+                            sb.AppendLine($"{SS},{Desc},{PSS},{IN},{PSType},{PSPath},{PSProb},{PSRisk},{Lat},{Lng},{OBSDate},{URL}");
                         }
                     }
                 }
