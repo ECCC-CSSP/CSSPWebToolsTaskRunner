@@ -614,7 +614,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             textFound = textFound.Substring("|||TableCaption|".Length).Replace("|||", "");
 
-                            appWord.Selection.Range.InsertCaption("Table", "", false, null, true);
+                            appWord.Selection.Range.InsertCaption("Tableau", "", "", WdCaptionPosition.wdCaptionPositionBelow, 1);
 
                             appWord.Selection.HomeKey();
                             appWord.Selection.Text = textFound;
@@ -630,7 +630,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             textFound = textFound.Substring("|||FigureCaption|".Length).Replace("|||", "");
 
-                            appWord.Selection.Range.InsertCaption("Figure", "", false, null, true);
+                            appWord.Selection.Range.InsertCaption("Figure", "", "", WdCaptionPosition.wdCaptionPositionAbove, 1);
 
                             appWord.Selection.HomeKey();
                             appWord.Selection.Text = textFound;
