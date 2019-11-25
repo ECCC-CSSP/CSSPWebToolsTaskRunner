@@ -205,6 +205,47 @@ namespace CSSPWebToolsTaskRunner
                     if (!string.IsNullOrWhiteSpace(DavidHalliwellErrorMessage))
                     {
                         _RichTextBoxStatus.AppendText("David Halliwell issue: " + DavidHalliwellErrorMessage);
+
+                        MailMessage mail = new MailMessage();
+
+                        //mail.To.Add("Shawn.Donohue@Canada.ca");
+                        mail.To.Add("David.Halliwell@canada.ca");
+                        mail.Bcc.Add("Charles.LeBlanc2@Canada.ca");
+
+                        mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                        mail.IsBodyHtml = true;
+
+                        SmtpClient myClient = new System.Net.Mail.SmtpClient();
+
+                        //myClient.Host = "smtp.ctst.email-courriel.canada.ca";
+                        myClient.Host = "smtp.email-courriel.canada.ca";
+                        myClient.Port = 587;
+                        //myClient.Credentials = new System.Net.NetworkCredential("yourusername", "yourpassword");
+                        //myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@ctst.canada.ca", "5y3Q^z+B4a7T$F+nQ@9N+r6uE!E87s");
+                        myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                        myClient.EnableSsl = true;
+
+                        string subject = "David Halliwell Issue from CSSPWebToolsTaskRunner";
+
+                        StringBuilder msg = new StringBuilder();
+
+                        msg.AppendLine("<h2>David Halliwell Issue Email</h2>");
+                        msg.AppendLine("<h4>Date of issue: " + DateTime.Now + "</h4>");
+                        msg.AppendLine("<hr />");
+                        msg.AppendLine(DavidHalliwellErrorMessage);
+                        msg.AppendLine("<hr />");
+
+                        //msg.AppendLine("<h4>Exception Message: " + ex.Message + "</h4>");
+                        //msg.AppendLine("<h4>Exception Inner Message: " + (ex.InnerException != null ? ex.InnerException.Message : "empty") + "</h4>");
+
+                        msg.AppendLine(@"<br>");
+                        msg.AppendLine(@"<p>Auto email from CSSPWebTools.</p>");
+
+                        mail.Subject = subject;
+                        mail.Body = msg.ToString();
+                        myClient.Send(mail);
+
+
                     }
                 }
                 catch (Exception ex)
