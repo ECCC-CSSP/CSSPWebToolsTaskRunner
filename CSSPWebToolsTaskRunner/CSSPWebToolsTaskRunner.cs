@@ -232,7 +232,7 @@ namespace CSSPWebToolsTaskRunner
                         msg.AppendLine("<h2>David Halliwell Issue Email</h2>");
                         msg.AppendLine("<h4>Date of issue: " + DateTime.Now + "</h4>");
                         msg.AppendLine("<hr />");
-                        msg.AppendLine(DavidHalliwellErrorMessage);
+                        msg.AppendLine("<pre>" + DavidHalliwellErrorMessage+ "</pre>");
                         msg.AppendLine("<hr />");
 
                         //msg.AppendLine("<h4>Exception Message: " + ex.Message + "</h4>");
