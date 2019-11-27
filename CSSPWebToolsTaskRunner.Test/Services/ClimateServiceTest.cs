@@ -545,6 +545,65 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 break;
             }
         }
+        [TestMethod]
+        public void ClimateService_ParseCoCoRaHSExportData2_Test()
+        {
+            // AppTaskID	TVItemID	TVItemID2	AppTaskCommand	AppTaskStatus	PercentCompleted	Parameters	Language	StartDateTime_UTC	EndDateTime_UTC	EstimatedLength_second	RemainingTime_second	LastUpdateDate_UTC	LastUpdateContactTVItemID
+            // 14922	7	2018	26	1	1	|||ProvinceTVItemID,7|||Year,2018|||	1	2018-10-23 12:13:31.377	NULL	NULL	NULL	2018-10-23 12:13:31.377	2            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            foreach (LanguageEnum LanguageRequest in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+            {
+                int ProvinceTVItemID = 7;
+                int Year = 2019;
+
+                AppTaskModel appTaskModel = new AppTaskModel()
+                {
+                    AppTaskID = 0,
+                    TVItemID = ProvinceTVItemID,
+                    TVItemID2 = ProvinceTVItemID,
+                    AppTaskCommand = AppTaskCommandEnum.Error,
+                    AppTaskStatus = AppTaskStatusEnum.Created,
+                    PercentCompleted = 1,
+                    Parameters = $"|||ProvinceTVItemID,{ ProvinceTVItemID }|||Year,{ Year }|||",
+                    Language = LanguageRequest,
+                    StartDateTime_UTC = DateTime.Now,
+                    EndDateTime_UTC = null,
+                    EstimatedLength_second = null,
+                    RemainingTime_second = null,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                };
+
+                appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+
+                BWObj bwObj = new BWObj()
+                {
+                    Index = 1,
+                    appTaskModel = appTaskModel,
+                    appTaskCommand = appTaskModel.AppTaskCommand,
+                    TextLanguageList = new List<TextLanguage>(),
+                    bw = new BackgroundWorker(),
+                };
+
+                TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                {
+                    bwObj
+                });
+
+                taskRunnerBaseService._BWObj = bwObj;
+
+                ClimateService _ClimateService = new ClimateService(taskRunnerBaseService);
+
+                FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\CoCoRaHS\CAN_nov_2019.csv");
+                StreamReader sr = fi.OpenText();
+                string TextToParse = sr.ReadToEnd();
+                sr.Close();
+
+                _ClimateService.ParseCoCoRaHSExportData(TextToParse, "CAN");
+                Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+
+                break;
+            }
+        }
         //    [TestMethod]
         //    public void ClimateService_UpdateClimateSiteInformation_Test()
         //    {

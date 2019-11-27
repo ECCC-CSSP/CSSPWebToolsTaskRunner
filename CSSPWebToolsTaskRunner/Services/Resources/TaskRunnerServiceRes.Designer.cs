@@ -538,6 +538,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ClimateID.
+        /// </summary>
+        public static string ClimateID {
+            get {
+                return ResourceManager.GetString("ClimateID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClimateSite.
         /// </summary>
         public static string ClimateSite {
