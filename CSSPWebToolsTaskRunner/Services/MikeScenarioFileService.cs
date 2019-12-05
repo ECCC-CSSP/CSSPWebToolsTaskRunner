@@ -4414,7 +4414,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     PFSSection pfsSection3 = pfsSection2.GetSection("SCATTER_DATA_I", i);
                     PFSKeyword keyword = pfsSection3.GetKeyword("File_name");
                     PFSParameter param = keyword.GetParameter(1);
-                    string PartialFileName = param.ToString();
+                    string PartialFileName = param.ToFileName();
                     string ClientFullPathNew = ClientFullPath.Substring(0, ClientFullPath.LastIndexOf(@"\") + 1);
 
                     FileInfo fiClient = new FileInfo(ClientFullPathNew + @"\" + PartialFileName);

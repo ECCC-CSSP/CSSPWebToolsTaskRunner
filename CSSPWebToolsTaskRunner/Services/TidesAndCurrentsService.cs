@@ -811,14 +811,14 @@ namespace CSSPWebToolsTaskRunner.Services
             FileInfo fiTemp = null;
             using (PFS pfs = new PFS(fiServer))
             {
-                fiTemp = pfs.GetVariableFileInfo("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name", 1);
+                fiTemp = pfs.GetVariableFileInfoResult("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name", 1);
                 if (fiTemp == null)
                 {
                     return;
                 }
             }
 
-            FileInfo fiDfsu = new FileInfo(tvFileService.ChoseEDriveOrCDrive(fiTemp.FullName));
+            FileInfo fiDfsu = new FileInfo(tvFileService.ChoseEDriveOrCDrive(fiServer.Directory + "\\" + fiTemp.Name));
 
             if (!fiDfsu.Exists)
             {
