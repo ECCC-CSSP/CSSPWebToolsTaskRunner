@@ -4067,7 +4067,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             return;
                         }
 
-                        string TVText = "CoCoRaHS " + coCoRaHSSite.StationName + "(" + coCoRaHSSite.StationNumber + ")";
+                        string TVText = "CoCoRaHS " + coCoRaHSSite.StationName + " (" + coCoRaHSSite.StationNumber + ")";
 
                         TVItemModel tvItemModelClimateSite = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelProvince.TVItemID, TVText, TVTypeEnum.ClimateSite);
                         if (!string.IsNullOrEmpty(tvItemModelClimateSite.Error)) // climate site does not exist
@@ -4135,7 +4135,7 @@ namespace CSSPWebToolsTaskRunner.Services
             return;
         }
 
-    }
+        #endregion Functions private
 
-    #endregion Functions private
+    }
 }

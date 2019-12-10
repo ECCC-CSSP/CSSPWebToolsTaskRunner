@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using CSSPDBDLL;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
+using System.Diagnostics;
 
 namespace CSSPWebToolsTaskRunner.Test.Services
 {
@@ -604,224 +605,126 @@ namespace CSSPWebToolsTaskRunner.Test.Services
                 break;
             }
         }
-        //    [TestMethod]
-        //    public void ClimateService_UpdateClimateSiteInformation_Test()
-        //    {
-        //        foreach (string LanguageRequest in new List<string>() { "en" /*, "fr" */ })
-        //        {
-        //            // Arrange 
-        //            SetupTest(LanguageRequest);
-        //            Assert.IsNotNull(csspWebToolsTaskRunner);
 
-        //            csspWebToolsTaskRunner._RichTextBoxStatus.Text = "";
+        [TestMethod]
+        public void ClimateService_GetClimateSitesDataForSubsectorRunsOfYear_TEMP_TO_BE_REMOVED_Test()
+        {
+            int SubsectorTVItemID = 774;
+            int Year = 2019;
 
-        //            csspWebToolsTaskRunner.StopTimer();
+            AppTaskModel appTaskModel = new AppTaskModel()
+            {
+                AppTaskID = 0,
+                TVItemID = SubsectorTVItemID,
+                TVItemID2 = SubsectorTVItemID,
+                AppTaskCommand = AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear,
+                AppTaskStatus = AppTaskStatusEnum.Created,
+                PercentCompleted = 1,
+                Parameters = $"|||SubsectorTVItemID,{SubsectorTVItemID}|||Year,{Year}|||",
+                Language = LanguageEnum.en,
+                StartDateTime_UTC = DateTime.Now,
+                EndDateTime_UTC = null,
+                EstimatedLength_second = null,
+                RemainingTime_second = null,
+                LastUpdateDate_UTC = DateTime.Now,
+                LastUpdateContactTVItemID = 2, // Charles LeBlanc
+            };
 
-        //            //using (TransactionScope ts = new TransactionScope())
-        //            //{
-        //            RemoveAllTask();
+            appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
 
-        //            TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelForLocationDB();
-        //            Assert.AreEqual("", tvItemModelRoot.Error);
+            BWObj bwObj = new BWObj()
+            {
+                Index = 1,
+                appTaskModel = appTaskModel,
+                appTaskCommand = appTaskModel.AppTaskCommand,
+                TextLanguageList = new List<TextLanguage>(),
+                bw = new BackgroundWorker(),
+            };
 
-        //            TVItemModel tvItemModelProvince = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID,
-        //"Prince Edward Island", TVTypeEnum.Province);
-        //            Assert.AreEqual("", tvItemModelProvince.Error);
+            TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+            {
+                bwObj
+            });
 
-        //            climateSiteService.LanguageRequest = LanguageRequest;
-        //            string retStr = climateSiteService.UpdateClimateSitesInformationForProvinceTVItemIDDB(tvItemModelProvince.TVItemID);
-        //            Assert.AreEqual("", retStr);
+            taskRunnerBaseService._BWObj = bwObj;
 
-        //            SetupBWObj(tvItemModelProvince.TVItemID, LanguageRequest, AppTaskCommandEnum.UpdateClimateSiteInformation, DateTime.Now, DateTime.Now);
+            TVItemService tvItemService = new TVItemService(LanguageEnum.en, taskRunnerBaseService._User);
+            MWQMRunService mwqmRunService = new MWQMRunService(LanguageEnum.en, taskRunnerBaseService._User);
 
-        //            climateService = new ClimateService(csspWebToolsTaskRunner._TaskRunnerBaseService);
-        //            Assert.IsNotNull(climateService);
-        //            Assert.AreEqual(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, climateService._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
 
-        //            climateService.UpdateClimateSitesInformationForProvinceTVItemID();
-        //            Assert.IsTrue(climateService._TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0);
+            TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelDB();
+            if (!string.IsNullOrWhiteSpace(tvItemModelRoot.Error))
+            {
+                return;
+            }
 
-        //            RemoveAllTask();
+            TVItemModel tvItemModelProv = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID, "British Columbia", TVTypeEnum.Province);
+            if (!string.IsNullOrWhiteSpace(tvItemModelProv.Error))
+            {
+                return;
+            }
 
-        //            //}
-        //        }
-        //    }
-        //    [TestMethod]
-        //    public void ClimateService_UpdateClimateSiteDailyAndHourlyFromStartDateToEndDate_Test()
-        //    {
-        //        foreach (string LanguageRequest in new List<string>() { "en" /*, "fr" */ })
-        //        {
-        //            // Arrange 
-        //            SetupTest(LanguageRequest);
-        //            Assert.IsNotNull(csspWebToolsTaskRunner);
+            List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProv.TVItemID, TVTypeEnum.Subsector).ToList();
+            if (tvItemModelSubsectorList.Count == 0)
+            {
+                return;
+            }
 
-        //            csspWebToolsTaskRunner._RichTextBoxStatus.Text = "";
+            foreach (TVItemModel tvItemModelSS in tvItemModelSubsectorList.OrderBy(c => c.TVText))
+            {
+                List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(tvItemModelSS.TVItemID);
 
-        //            csspWebToolsTaskRunner.StopTimer();
+                List<int> yearList = (from c in mwqmRunModelList
+                                      select c.DateTime_Local.Year).Distinct().ToList();
 
-        //            //using (TransactionScope ts = new TransactionScope())
-        //            //{
-        //            RemoveAllTask();
+                foreach (int year in yearList.OrderBy(c => c))
+                {
+                    appTaskModel = new AppTaskModel()
+                    {
+                        AppTaskID = 0,
+                        TVItemID = tvItemModelSS.TVItemID,
+                        TVItemID2 = tvItemModelSS.TVItemID,
+                        AppTaskCommand = AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear,
+                        AppTaskStatus = AppTaskStatusEnum.Created,
+                        PercentCompleted = 1,
+                        Parameters = $"|||SubsectorTVItemID,{tvItemModelSS.TVItemID}|||Year,{year}|||",
+                        Language = LanguageEnum.en,
+                        StartDateTime_UTC = DateTime.Now,
+                        EndDateTime_UTC = null,
+                        EstimatedLength_second = null,
+                        RemainingTime_second = null,
+                        LastUpdateDate_UTC = DateTime.Now,
+                        LastUpdateContactTVItemID = 2, // Charles LeBlanc
+                    };
 
-        //            TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelForLocationDB();
-        //            Assert.AreEqual("", tvItemModelRoot.Error);
+                    appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
 
-        //            TVItemModel tvItemModelProvince = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID,
-        //(LanguageRequest == "fr" ? "Île-du-Prince-Édouard" : "Prince Edward Island"), TVTypeEnum.Province);
-        //            Assert.AreEqual("", tvItemModelProvince.Error);
+                    bwObj = new BWObj()
+                    {
+                        Index = 1,
+                        appTaskModel = appTaskModel,
+                        appTaskCommand = appTaskModel.AppTaskCommand,
+                        TextLanguageList = new List<TextLanguage>(),
+                        bw = new BackgroundWorker(),
+                    };
 
-        //            TVItemModel tvItemModelClimateSite = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelProvince.TVItemID,
-        //(LanguageRequest == "fr" ? "NORTH CAPE" : "NORTH CAPE"), TVTypeEnum.ClimateSite);
-        //            Assert.AreEqual("", tvItemModelClimateSite.Error);
+                    taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+                    {
+                        bwObj
+                    });
 
-        //            DateTime StartDate = new DateTime(2015, 1, 1);
-        //            DateTime EndDate = new DateTime(2015, 2, 1);
+                    taskRunnerBaseService._BWObj = bwObj;
 
-        //            climateSiteService.LanguageRequest = LanguageRequest;
-        //            string retStr = climateSiteService.UpdateClimateSiteDailyAndHourlyFromStartDateToEndDateDB(tvItemModelClimateSite.TVItemID, StartDate, EndDate);
-        //            Assert.AreEqual("", retStr);
+                    ClimateService _ClimateService = new ClimateService(taskRunnerBaseService);
+                    Debug.WriteLine($"Doing Subsector {tvItemModelSS.TVText} --- Year {year}");
+                    _ClimateService.GetClimateSitesDataForSubsectorRunsOfYear(tvItemModelSS.TVItemID, year);
+                    Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+                    Debug.WriteLine($"Done...");
 
-        //            SetupBWObj(tvItemModelClimateSite.TVItemID, LanguageRequest, AppTaskCommandEnum.UpdateClimateSiteDailyAndHourlyFromStartDateToEndDate, StartDate, EndDate);
+                }
+            }         
+        }
 
-        //            climateService = new ClimateService(csspWebToolsTaskRunner._TaskRunnerBaseService);
-        //            Assert.IsNotNull(climateService);
-        //            Assert.AreEqual(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, climateService._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-
-        //            climateService.UpdateClimateSiteDailyAndHourlyFromStartDateToEndDate();
-        //            Assert.IsTrue(climateService._TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0);
-        //            //}
-        //        }
-        //    }
-        //    [TestMethod]
-        //    public void ClimateService_UpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDate_Test()
-        //    {
-        //        foreach (string LanguageRequest in new List<string>() { "en" /*, "fr" */ })
-        //        {
-        //            // Arrange 
-        //            SetupTest(LanguageRequest);
-        //            Assert.IsNotNull(csspWebToolsTaskRunner);
-
-        //            csspWebToolsTaskRunner._RichTextBoxStatus.Text = "";
-
-        //            csspWebToolsTaskRunner.StopTimer();
-
-        //            //using (TransactionScope ts = new TransactionScope())
-        //            //{
-        //            RemoveAllTask();
-
-        //            TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelForLocationDB();
-        //            Assert.AreEqual("", tvItemModelRoot.Error);
-
-        //            List<string> provList = new List<string>() { "Prince Edward Island", "New Brunswick", "Nova Scotia", "Newfoundland and Labrador", "Québec", "British Columbia" };
-
-        //            foreach (string Prov in provList)
-        //            {
-        //                TVItemModel tvItemModelProvince = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID, Prov, TVTypeEnum.Province);
-
-        //                Assert.AreEqual("", tvItemModelProvince.Error);
-
-        //                List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProvince.TVItemID, TVTypeEnum.Subsector);
-
-        //                Assert.IsTrue(tvItemModelSubsectorList.Count > 0);
-
-        //                //bool proceed = false;
-        //                foreach (TVItemModel tvItemModelSubsector in tvItemModelSubsectorList)
-        //                {
-        //                    //if (tvItemModelSubsector.TVItemID == 1483)
-        //                    //    proceed = true;
-
-        //                    //if (!proceed)
-        //                    //    continue;
-
-        //                    List<YearMinMaxDate> yearMinMaxDateList = new List<YearMinMaxDate>();
-
-        //                    Application.DoEvents();
-
-        //                    List<int> mwqmSampleModelYearList = (from c in mwqmSampleService.db.TVItems
-        //                                                         from si in mwqmSampleService.db.MWQMSites
-        //                                                         from sa in mwqmSampleService.db.MWQMSamples
-        //                                                         where c.ParentID == tvItemModelSubsector.TVItemID
-        //                                                         && c.TVItemID == si.MWQMSiteTVItemID
-        //                                                         && si.MWQMSiteTVItemID == sa.MWQMSiteTVItemID
-        //                                                         orderby sa.SampleDateTime_Local
-        //                                                         select sa.SampleDateTime_Local.Year).Distinct().ToList();
-
-        //                    foreach (int year in mwqmSampleModelYearList)
-        //                    {
-        //                        DateTime Earliest = (from c in mwqmSampleService.db.TVItems
-        //                                             from si in mwqmSampleService.db.MWQMSites
-        //                                             from sa in mwqmSampleService.db.MWQMSamples
-        //                                             where c.ParentID == tvItemModelSubsector.TVItemID
-        //                                             && c.TVItemID == si.MWQMSiteTVItemID
-        //                                             && si.MWQMSiteTVItemID == sa.MWQMSiteTVItemID
-        //                                             && sa.SampleDateTime_Local.Year == year
-        //                                             orderby sa.SampleDateTime_Local
-        //                                             select sa.SampleDateTime_Local).FirstOrDefault();
-
-        //                        DateTime Latest = (from c in mwqmSampleService.db.TVItems
-        //                                           from si in mwqmSampleService.db.MWQMSites
-        //                                           from sa in mwqmSampleService.db.MWQMSamples
-        //                                           where c.ParentID == tvItemModelSubsector.TVItemID
-        //                                           && c.TVItemID == si.MWQMSiteTVItemID
-        //                                           && si.MWQMSiteTVItemID == sa.MWQMSiteTVItemID
-        //                                           && sa.SampleDateTime_Local.Year == year
-        //                                           orderby sa.SampleDateTime_Local descending
-        //                                           select sa.SampleDateTime_Local).FirstOrDefault();
-
-        //                        YearMinMaxDate yearMinMaxDate = (from c in yearMinMaxDateList
-        //                                                         where c.Year == year
-        //                                                         select c).FirstOrDefault();
-
-        //                        if (yearMinMaxDate == null)
-        //                        {
-        //                            YearMinMaxDate yearMinMaxDateNew = new YearMinMaxDate()
-        //                            {
-        //                                Year = year,
-        //                                MinDateTime = Earliest,
-        //                                MaxDateTime = Latest,
-        //                            };
-
-        //                            yearMinMaxDateList.Add(yearMinMaxDateNew);
-        //                        }
-        //                        else
-        //                        {
-        //                            if (yearMinMaxDate.MinDateTime > Earliest)
-        //                            {
-        //                                yearMinMaxDate.MinDateTime = Earliest;
-        //                            }
-        //                            if (yearMinMaxDate.MaxDateTime < Latest)
-        //                            {
-        //                                yearMinMaxDate.MaxDateTime = Latest;
-        //                            }
-        //                        }
-        //                    }
-        //                    yearMinMaxDateList = (from c in yearMinMaxDateList orderby c.Year select c).ToList();
-
-        //                    foreach (YearMinMaxDate yearMinMaxDate in yearMinMaxDateList)
-        //                    {
-        //                        RemoveAllTask();
-
-        //                        climateSiteService.LanguageRequest = LanguageRequest;
-        //                        string retStr = climateSiteService.UpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDateDB(tvItemModelSubsector.TVItemID, yearMinMaxDate.MinDateTime, yearMinMaxDate.MaxDateTime);
-        //                        Assert.AreEqual("", retStr);
-
-        //                        SetupBWObj(tvItemModelSubsector.TVItemID, LanguageRequest, AppTaskCommandEnum.UpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDate, yearMinMaxDate.MinDateTime, yearMinMaxDate.MaxDateTime);
-
-        //                        climateService = new ClimateService(csspWebToolsTaskRunner._TaskRunnerBaseService);
-        //                        Assert.IsNotNull(climateService);
-        //                        Assert.AreEqual(csspWebToolsTaskRunner._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, climateService._TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
-
-        //                        climateService.UpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDate();
-        //                        Assert.IsTrue(climateService._TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0);
-
-        //                        RemoveAllTask();
-
-        //                    }
-        //                }
-        //            }
-        //            //}
-        //        }
-        //    }
         #endregion Functions public
 
         #region Functions private
