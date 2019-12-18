@@ -609,120 +609,120 @@ namespace CSSPWebToolsTaskRunner.Test.Services
         [TestMethod]
         public void ClimateService_GetClimateSitesDataForSubsectorRunsOfYear_TEMP_TO_BE_REMOVED_Test()
         {
-            int SubsectorTVItemID = 774;
-            int Year = 2019;
+            //int SubsectorTVItemID = 774;
+            //int Year = 2019;
 
-            AppTaskModel appTaskModel = new AppTaskModel()
-            {
-                AppTaskID = 0,
-                TVItemID = SubsectorTVItemID,
-                TVItemID2 = SubsectorTVItemID,
-                AppTaskCommand = AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear,
-                AppTaskStatus = AppTaskStatusEnum.Created,
-                PercentCompleted = 1,
-                Parameters = $"|||SubsectorTVItemID,{SubsectorTVItemID}|||Year,{Year}|||",
-                Language = LanguageEnum.en,
-                StartDateTime_UTC = DateTime.Now,
-                EndDateTime_UTC = null,
-                EstimatedLength_second = null,
-                RemainingTime_second = null,
-                LastUpdateDate_UTC = DateTime.Now,
-                LastUpdateContactTVItemID = 2, // Charles LeBlanc
-            };
+            //AppTaskModel appTaskModel = new AppTaskModel()
+            //{
+            //    AppTaskID = 0,
+            //    TVItemID = SubsectorTVItemID,
+            //    TVItemID2 = SubsectorTVItemID,
+            //    AppTaskCommand = AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear,
+            //    AppTaskStatus = AppTaskStatusEnum.Created,
+            //    PercentCompleted = 1,
+            //    Parameters = $"|||SubsectorTVItemID,{SubsectorTVItemID}|||Year,{Year}|||",
+            //    Language = LanguageEnum.en,
+            //    StartDateTime_UTC = DateTime.Now,
+            //    EndDateTime_UTC = null,
+            //    EstimatedLength_second = null,
+            //    RemainingTime_second = null,
+            //    LastUpdateDate_UTC = DateTime.Now,
+            //    LastUpdateContactTVItemID = 2, // Charles LeBlanc
+            //};
 
-            appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+            //appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
 
-            BWObj bwObj = new BWObj()
-            {
-                Index = 1,
-                appTaskModel = appTaskModel,
-                appTaskCommand = appTaskModel.AppTaskCommand,
-                TextLanguageList = new List<TextLanguage>(),
-                bw = new BackgroundWorker(),
-            };
+            //BWObj bwObj = new BWObj()
+            //{
+            //    Index = 1,
+            //    appTaskModel = appTaskModel,
+            //    appTaskCommand = appTaskModel.AppTaskCommand,
+            //    TextLanguageList = new List<TextLanguage>(),
+            //    bw = new BackgroundWorker(),
+            //};
 
-            TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
-            {
-                bwObj
-            });
+            //TaskRunnerBaseService taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+            //{
+            //    bwObj
+            //});
 
-            taskRunnerBaseService._BWObj = bwObj;
+            //taskRunnerBaseService._BWObj = bwObj;
 
-            TVItemService tvItemService = new TVItemService(LanguageEnum.en, taskRunnerBaseService._User);
-            MWQMRunService mwqmRunService = new MWQMRunService(LanguageEnum.en, taskRunnerBaseService._User);
+            //TVItemService tvItemService = new TVItemService(LanguageEnum.en, taskRunnerBaseService._User);
+            //MWQMRunService mwqmRunService = new MWQMRunService(LanguageEnum.en, taskRunnerBaseService._User);
 
 
-            TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelDB();
-            if (!string.IsNullOrWhiteSpace(tvItemModelRoot.Error))
-            {
-                return;
-            }
+            //TVItemModel tvItemModelRoot = tvItemService.GetRootTVItemModelDB();
+            //if (!string.IsNullOrWhiteSpace(tvItemModelRoot.Error))
+            //{
+            //    return;
+            //}
 
-            TVItemModel tvItemModelProv = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID, "British Columbia", TVTypeEnum.Province);
-            if (!string.IsNullOrWhiteSpace(tvItemModelProv.Error))
-            {
-                return;
-            }
+            //TVItemModel tvItemModelProv = tvItemService.GetChildTVItemModelWithTVItemIDAndTVTextStartWithAndTVTypeDB(tvItemModelRoot.TVItemID, "British Columbia", TVTypeEnum.Province);
+            //if (!string.IsNullOrWhiteSpace(tvItemModelProv.Error))
+            //{
+            //    return;
+            //}
 
-            List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProv.TVItemID, TVTypeEnum.Subsector).ToList();
-            if (tvItemModelSubsectorList.Count == 0)
-            {
-                return;
-            }
+            //List<TVItemModel> tvItemModelSubsectorList = tvItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelProv.TVItemID, TVTypeEnum.Subsector).ToList();
+            //if (tvItemModelSubsectorList.Count == 0)
+            //{
+            //    return;
+            //}
 
-            foreach (TVItemModel tvItemModelSS in tvItemModelSubsectorList.OrderBy(c => c.TVText))
-            {
-                List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(tvItemModelSS.TVItemID);
+            //foreach (TVItemModel tvItemModelSS in tvItemModelSubsectorList.Where(c => c.TVText.StartsWith("A-")).OrderBy(c => c.TVText))
+            //{
+            //    List<MWQMRunModel> mwqmRunModelList = mwqmRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(tvItemModelSS.TVItemID);
 
-                List<int> yearList = (from c in mwqmRunModelList
-                                      select c.DateTime_Local.Year).Distinct().ToList();
+            //    List<int> yearList = (from c in mwqmRunModelList
+            //                          select c.DateTime_Local.Year).Distinct().ToList();
 
-                foreach (int year in yearList.OrderBy(c => c))
-                {
-                    appTaskModel = new AppTaskModel()
-                    {
-                        AppTaskID = 0,
-                        TVItemID = tvItemModelSS.TVItemID,
-                        TVItemID2 = tvItemModelSS.TVItemID,
-                        AppTaskCommand = AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear,
-                        AppTaskStatus = AppTaskStatusEnum.Created,
-                        PercentCompleted = 1,
-                        Parameters = $"|||SubsectorTVItemID,{tvItemModelSS.TVItemID}|||Year,{year}|||",
-                        Language = LanguageEnum.en,
-                        StartDateTime_UTC = DateTime.Now,
-                        EndDateTime_UTC = null,
-                        EstimatedLength_second = null,
-                        RemainingTime_second = null,
-                        LastUpdateDate_UTC = DateTime.Now,
-                        LastUpdateContactTVItemID = 2, // Charles LeBlanc
-                    };
+            //    foreach (int year in yearList.OrderBy(c => c))
+            //    {
+            //        appTaskModel = new AppTaskModel()
+            //        {
+            //            AppTaskID = 0,
+            //            TVItemID = tvItemModelSS.TVItemID,
+            //            TVItemID2 = tvItemModelSS.TVItemID,
+            //            AppTaskCommand = AppTaskCommandEnum.GetClimateSitesDataForRunsOfYear,
+            //            AppTaskStatus = AppTaskStatusEnum.Created,
+            //            PercentCompleted = 1,
+            //            Parameters = $"|||SubsectorTVItemID,{tvItemModelSS.TVItemID}|||Year,{year}|||",
+            //            Language = LanguageEnum.en,
+            //            StartDateTime_UTC = DateTime.Now,
+            //            EndDateTime_UTC = null,
+            //            EstimatedLength_second = null,
+            //            RemainingTime_second = null,
+            //            LastUpdateDate_UTC = DateTime.Now,
+            //            LastUpdateContactTVItemID = 2, // Charles LeBlanc
+            //        };
 
-                    appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
+            //        appTaskModel.AppTaskStatus = AppTaskStatusEnum.Running;
 
-                    bwObj = new BWObj()
-                    {
-                        Index = 1,
-                        appTaskModel = appTaskModel,
-                        appTaskCommand = appTaskModel.AppTaskCommand,
-                        TextLanguageList = new List<TextLanguage>(),
-                        bw = new BackgroundWorker(),
-                    };
+            //        bwObj = new BWObj()
+            //        {
+            //            Index = 1,
+            //            appTaskModel = appTaskModel,
+            //            appTaskCommand = appTaskModel.AppTaskCommand,
+            //            TextLanguageList = new List<TextLanguage>(),
+            //            bw = new BackgroundWorker(),
+            //        };
 
-                    taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
-                    {
-                        bwObj
-                    });
+            //        taskRunnerBaseService = new TaskRunnerBaseService(new List<BWObj>()
+            //        {
+            //            bwObj
+            //        });
 
-                    taskRunnerBaseService._BWObj = bwObj;
+            //        taskRunnerBaseService._BWObj = bwObj;
 
-                    ClimateService _ClimateService = new ClimateService(taskRunnerBaseService);
-                    Debug.WriteLine($"Doing Subsector {tvItemModelSS.TVText} --- Year {year}");
-                    _ClimateService.GetClimateSitesDataForSubsectorRunsOfYear(tvItemModelSS.TVItemID, year);
-                    Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
-                    Debug.WriteLine($"Done...");
+            //        ClimateService _ClimateService = new ClimateService(taskRunnerBaseService);
+            //        Debug.WriteLine($"Doing Subsector {tvItemModelSS.TVText} --- Year {year}");
+            //        _ClimateService.GetClimateSitesDataForSubsectorRunsOfYear(tvItemModelSS.TVItemID, year);
+            //        Assert.AreEqual(0, taskRunnerBaseService._BWObj.TextLanguageList.Count);
+            //        Debug.WriteLine($"Done...");
 
-                }
-            }         
+            //    }
+            //}         
         }
 
         #endregion Functions public

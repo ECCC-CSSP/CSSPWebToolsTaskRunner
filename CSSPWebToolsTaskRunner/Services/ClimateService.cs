@@ -792,6 +792,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                         foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList)
                         {
+
                             DateTime RunDate = new DateTime(mwqmRunModel.DateTime_Local.Year, mwqmRunModel.DateTime_Local.Month, mwqmRunModel.DateTime_Local.Day);
                             DateTime RunDateMinus10 = RunDate.AddDays(-10);
 
