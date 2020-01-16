@@ -204,7 +204,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                                     PolyObj polyObj = new PolyObj();
 
                                                     polyObj.Subsector = CurrentSubsector;
-                                                    polyObj.Classification = CurrentGroupingMWQMSitesAndPolSourceSites.ToUpper();
+                                                    polyObj.Classification = CurrentGroupingMWQMSitesAndPolSourceSites.ToUpper().Trim();
 
                                                     foreach (XmlNode n3 in n2222.ChildNodes)
                                                     {

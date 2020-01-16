@@ -209,7 +209,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                             PolyObj polyObj = new PolyObj();
 
                                             polyObj.Subsector = CurrentSubsector;
-                                            polyObj.Classification = CurrentClassification.ToUpper();
+                                            polyObj.Classification = CurrentClassification.ToUpper().Trim();
 
                                             foreach (XmlNode n3 in n2.ChildNodes)
                                             {
@@ -244,14 +244,6 @@ namespace CSSPWebToolsTaskRunner.Services
                                                                                               && c.MinLng <= Lng
                                                                                               && c.MaxLng >= Lng
                                                                                               select c).ToList();
-
-                                                            if (polyObj.Subsector.StartsWith("NB-01-020-003"))
-                                                            {
-                                                                if (polyObj.Classification == "A")
-                                                                {
-                                                                    int slfj = 34;
-                                                                }
-                                                            }
 
                                                             double distMin = 10000000D;
                                                             foreach (PolyObj polyObjClose in polyObjCloseList)
@@ -307,11 +299,6 @@ namespace CSSPWebToolsTaskRunner.Services
             string Status = appTaskModel.StatusText;
             foreach (TVItemModel tvItemModelSS in tvitemModelSSList)
             {
-                if (tvItemModelSS.TVText.StartsWith("NB-01-020-003"))
-                {
-                    int lseijf = 345;
-                }
-
                 CountSS += 1;
                 if (CountSS % 1 == 0)
                 {
