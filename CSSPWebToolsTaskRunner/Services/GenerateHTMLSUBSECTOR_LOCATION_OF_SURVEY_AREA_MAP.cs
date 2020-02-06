@@ -42,12 +42,19 @@ namespace CSSPWebToolsTaskRunner.Services
             HideSubsectorName = GetParameters("HideSubsectorName", ParamValueList);
 
             string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
+            if (!string.IsNullOrEmpty(SubsectorTVText))
+            {
+                if (SubsectorTVText.Contains(" "))
+                {
+                    SubsectorTVText = SubsectorTVText.Substring(0, SubsectorTVText.IndexOf(" "));
+                }
+            }
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
             List<TVFileModel> tvFileModelList = _TVFileService.GetTVFileModelListWithParentTVItemIDDB(TVItemID).OrderByDescending(c => c.ServerFileName).ToList();
             string FileFoundName = "";
-            string StartText = "Location_of_Survey_Area_Map_";
+            string StartText = $"{SubsectorTVText}_Location_of_Survey_Area_Map_";
             bool FileExist = false;
             int FileYear = 0;
             foreach (TVFileModel tvFileModel in tvFileModelList)
