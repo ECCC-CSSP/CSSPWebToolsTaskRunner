@@ -132,7 +132,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Province,Sector,SiteID,Site,Lat,Long");
+            sb.AppendLine("Province,Sector_Secteur,Site,Status_Etat_Code,Latitude,Longitude");
 
             if (fi.Exists)
             {
@@ -233,10 +233,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     foreach (var mwqmSite in MonitoringSiteList.Where(c => c.t.ParentID == tvItemSS.t.TVItemID).OrderBy(c => c.tl.TVText))
                     {
                         string MN = mwqmSite.tl.TVText;
-                        string MSID = mwqmSite.t.TVItemID.ToString();
+                        string IsActive = mwqmSite.t.IsActive == true ? "1" : "0";
                         string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
                         string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
-                        sb.AppendLine($"{ProvInit},{Subsector},{MSID},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
+                        sb.AppendLine($"{ProvInit},{Subsector},{ProvInit}_{MN},{IsActive},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
                     }
                 }
             }
@@ -487,7 +487,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Province,Sector,Site_ID,Site_Name,Date_UTC,Date_Local,FC_MPN_CF_NPP_100_mL,Temp_C,Sal_PPT_PPM,Depth_Profondeur_m,pH");
+            sb.AppendLine("Province,Sector_Secteur,Site,Date,FC_MPN_CF_NPP_100_mL,Temp_C,Sal_PPT_PPM");
 
             if (fi.Exists)
             {
@@ -655,7 +655,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 string Sal = (mwqmSample.Salinity_PPT != null ? ((double)mwqmSample.Salinity_PPT).ToString("F1").Replace(",", ".") : "");
                                 string pH = (mwqmSample.PH != null ? ((double)mwqmSample.PH).ToString("F1").Replace(",", ".") : "");
                                 string Depth = (mwqmSample.Depth_m != null ? ((double)mwqmSample.Depth_m).ToString("F1").Replace(",", ".") : "");
-                                sb.AppendLine($"{ProvInit},{Subsector},{mwqmSite.t.TVItemID},{ProvInit}_{MN},{Date_UTC_Text},{Date_Local_Text},{FC},{Temp},{Sal},{Depth},{pH}");
+                                sb.AppendLine($"{ProvInit},{Subsector},{ProvInit}_{MN},{Date_Local_Text},{FC},{Temp},{Sal}");
                             }
                         }
                     }
