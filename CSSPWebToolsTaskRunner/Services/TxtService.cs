@@ -298,7 +298,7 @@ namespace CSSPWebToolsTaskRunner.Services
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
                 return;
 
-            sb.AppendLine("Province,Sector,SiteID,Site,Lat,Long");
+            sb.AppendLine("Province,Sector_Subsector,Site,Latitude,Longitude");
 
             int CountProv = 0;
             foreach (TVItemModel tvItemModelProv in tvItemModelProvList)
@@ -416,7 +416,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             string MSID = mwqmSite.t.TVItemID.ToString();
                             string Lat = (mwqmSite.mip != null ? mwqmSite.mip.Lat.ToString("F6") : "");
                             string Lng = (mwqmSite.mip != null ? mwqmSite.mip.Lng.ToString("F6") : "");
-                            sb.AppendLine($"{ProvInit},{Subsector},{MSID},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
+                            sb.AppendLine($"{ProvInit},{Subsector},{ProvInit}_{MN},{Lat.Replace(",", ".")},{Lng.Replace(",", ".")}");
                         }
                     }
                 }
@@ -598,7 +598,8 @@ namespace CSSPWebToolsTaskRunner.Services
                             foreach (MWQMSample mwqmSample in sampleList)
                             {
                                 DateTime Date_Local = mwqmSample.SampleDateTime_Local;
-                                string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd HH:mm:ss");
+                                //string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd HH:mm:ss");
+                                string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd 12:00:00 PM");
 
                                 string Date_UTC_Text = "";
                                 if (ProvInit == "NL")
