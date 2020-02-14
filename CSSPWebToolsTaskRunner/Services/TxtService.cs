@@ -599,7 +599,7 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 DateTime Date_Local = mwqmSample.SampleDateTime_Local;
                                 //string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd HH:mm:ss");
-                                string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd 12:00:00 PM");
+                                string Date_Local_Text = Date_Local.ToString("yyyy-MM-dd") + " 12:00:00 PM";
 
                                 string Date_UTC_Text = "";
                                 if (ProvInit == "NL")
