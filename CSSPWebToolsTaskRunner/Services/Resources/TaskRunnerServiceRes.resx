@@ -2049,4 +2049,16 @@
   <data name="ClimateID" xml:space="preserve">
     <value>ClimateID</value>
   </data>
+  <data name="LiftStations" xml:space="preserve">
+    <value>Lift Stations</value>
+  </data>
+  <data name="LineOverflows" xml:space="preserve">
+    <value>Line Overflows</value>
+  </data>
+  <data name="NoInfrastructure" xml:space="preserve">
+    <value>No infrastructure</value>
+  </data>
+  <data name="WWTPs" xml:space="preserve">
+    <value>WWTPs</value>
+  </data>
 </root>

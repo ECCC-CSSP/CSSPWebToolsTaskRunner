@@ -2047,4 +2047,16 @@ Animation estimée des chemins de drogue</value>
   <data name="ClimateID" xml:space="preserve">
     <value>ClimateID</value>
   </data>
+  <data name="LiftStations" xml:space="preserve">
+    <value>Poste de pompage</value>
+  </data>
+  <data name="LineOverflows" xml:space="preserve">
+    <value>Débordement de ligne</value>
+  </data>
+  <data name="NoInfrastructure" xml:space="preserve">
+    <value>Aucun infrastructure</value>
+  </data>
+  <data name="WWTPs" xml:space="preserve">
+    <value>UTEU</value>
+  </data>
 </root>

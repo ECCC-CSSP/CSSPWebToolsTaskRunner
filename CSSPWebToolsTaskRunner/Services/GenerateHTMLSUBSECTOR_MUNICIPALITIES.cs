@@ -44,18 +44,74 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
-            List<TVItemModel> tvItemModelListMunicipality = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Municipality).Where(c => c.IsActive == true).ToList();
+            List<UseOfSiteModel> useOfSiteModelList = _UseOfSiteService.GetUseOfSiteModelListWithTVTypeAndSubsectorTVItemIDDB(TVTypeEnum.Municipality, tvItemModelSubsector.TVItemID);
 
-            if (tvItemModelListMunicipality.Count > 0)
+            if (useOfSiteModelList.Count > 0)
             {
-                foreach (TVItemModel tvItemModel in tvItemModelListMunicipality)
+                foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
                 {
-                    sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText }</h3>");
+                    TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(useOfSiteModel.SiteTVItemID);
 
-                    sbTemp.AppendLine($@"<p> --- need to add all the section text of subsector municipality</p>");
+                    if (string.IsNullOrWhiteSpace(tvItemModel.Error)) // municipality exist
+                    {
+                        sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText }</h3>");
 
-                    sbTemp.AppendLine($@"<p>{ TaskRunnerServiceRes.NotImplementedYet }</p>");
+                        List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelList = _InfrastructureService.GetInfrastructureTVItemAndTVItemLinkAndInfrastructureTypeListWithMunicipalityTVItemIDDB(tvItemModel.TVItemID);
 
+                        List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelListDone = new List<TVItemModelInfrastructureTypeTVItemLinkModel>();
+
+                        foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType != InfrastructureTypeEnum.Other && c.InfrastructureType != InfrastructureTypeEnum.SeeOtherMunicipality && c.TVItemModelLinkList.Count == 0))
+                        {
+                            next(tvItemModelInfrastructureTypeTVItemLinkModel, tvItemModelInfrastructureTypeTVItemLinkModelList, tvItemModelInfrastructureTypeTVItemLinkModelListDone);
+                        }
+
+                        List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelListFloating = new List<TVItemModelInfrastructureTypeTVItemLinkModel>();
+
+                        foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType != InfrastructureTypeEnum.Other && c.InfrastructureType != InfrastructureTypeEnum.SeeOtherMunicipality))
+                        {
+                            if (!tvItemModelInfrastructureTypeTVItemLinkModelListDone.Contains(tvItemModelInfrastructureTypeTVItemLinkModel))
+                            {
+                                tvItemModelInfrastructureTypeTVItemLinkModelListFloating.Add(tvItemModelInfrastructureTypeTVItemLinkModel);
+                            }
+                        }
+
+                        if (tvItemModelInfrastructureTypeTVItemLinkModelList.Count == 0)
+                        {
+                            sbTemp.AppendLine($@"<h3>{ TaskRunnerServiceRes.NoInfrastructure }</span>");
+                        }
+                        else
+                        {
+                            sbTemp.AppendLine($@"<ul>");
+                            sbTemp.AppendLine($@"    <li><label>{ TaskRunnerServiceRes.Legend }</label></li>");
+                            sbTemp.AppendLine($@"    <li>W - { TaskRunnerServiceRes.WWTPs }</li>");
+                            sbTemp.AppendLine($@"    <li>LS - { TaskRunnerServiceRes.LiftStations }</li>");
+                            sbTemp.AppendLine($@"    <li>LO - { TaskRunnerServiceRes.LineOverflows }</li>");
+                            sbTemp.AppendLine($@"</ul>");
+
+                            foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType != InfrastructureTypeEnum.Other && c.InfrastructureType != InfrastructureTypeEnum.SeeOtherMunicipality && c.TVItemModelLinkList.Count == 0))
+                            {
+                                InfrastructureItem(sbTemp, tvItemModelInfrastructureTypeTVItemLinkModel, tvItemModelInfrastructureTypeTVItemLinkModelList, true);
+                            }
+
+                            foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModelListFloating)
+                            {
+                                InfrastructureItem(sbTemp, tvItemModelInfrastructureTypeTVItemLinkModel, tvItemModelInfrastructureTypeTVItemLinkModelListFloating, false);
+                            }
+
+                            if (tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType == InfrastructureTypeEnum.SeeOtherMunicipality).ToList().Count > 0)
+                            {
+                                sbTemp.AppendLine($@"<div>");
+                                foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType == InfrastructureTypeEnum.SeeOtherMunicipality))
+                                {
+                                    if (tvItemModelInfrastructureTypeTVItemLinkModel.SeeOtherMunicipalityTVItemID != null)
+                                    {
+                                        InfrastructureItem(sbTemp, tvItemModelInfrastructureTypeTVItemLinkModel, tvItemModelInfrastructureTypeTVItemLinkModelList, true);
+                                    }
+                                }
+                                sbTemp.AppendLine($@"</div>");
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -79,6 +135,64 @@ namespace CSSPWebToolsTaskRunner.Services
             sw.Close();
 
             return retBool;
+        }
+
+        private void next(TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel, List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelList, List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelListDone)
+        {
+            if (!tvItemModelInfrastructureTypeTVItemLinkModelListDone.Contains(tvItemModelInfrastructureTypeTVItemLinkModel))
+            {
+                tvItemModelInfrastructureTypeTVItemLinkModelListDone.Add(tvItemModelInfrastructureTypeTVItemLinkModel);
+            }
+            foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModelNext in tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.FlowTo == tvItemModelInfrastructureTypeTVItemLinkModel).ToList())
+            {
+                next(tvItemModelInfrastructureTypeTVItemLinkModelNext, tvItemModelInfrastructureTypeTVItemLinkModelList, tvItemModelInfrastructureTypeTVItemLinkModelListDone);
+            }
+        }
+        private void InfrastructureItem(StringBuilder sbTemp, TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel, List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelList, bool DoNext)
+        {
+
+            string BorderColor = "";
+            bool HasOtherThanOutfall = false;
+
+            if (tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModelLinkList.Count > 0)
+            {
+                foreach (TVItemLinkModel tvItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModelLinkList)
+                {
+                    if (tvItemModelInfrastructureTypeTVItemLinkModel.InfrastructureType != InfrastructureTypeEnum.WWTP)
+                    {
+                        HasOtherThanOutfall = true;
+                    }
+                }
+            }
+            switch (tvItemModelInfrastructureTypeTVItemLinkModel.InfrastructureType)
+            {
+                case InfrastructureTypeEnum.LiftStation:
+                    BorderColor = "BorderLiftStation";
+                    break;
+                case InfrastructureTypeEnum.Other:
+                    BorderColor = "BorderOtherInfrastructure";
+                    break;
+                case InfrastructureTypeEnum.LineOverflow:
+                    BorderColor = "BorderLineOverflow";
+                    break;
+                case InfrastructureTypeEnum.WWTP:
+                    BorderColor = "BorderWWTP";
+                    break;
+                default:
+                    break;
+            }
+
+            sbTemp.AppendLine($@"<ul>");
+            sbTemp.AppendLine($@"<li>{tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModel.TVText}</li>");
+
+            if (DoNext)
+            {
+                foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModelNext in tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.FlowTo == tvItemModelInfrastructureTypeTVItemLinkModel).ToList())
+                {
+                    InfrastructureItem(sbTemp, tvItemModelInfrastructureTypeTVItemLinkModelNext, tvItemModelInfrastructureTypeTVItemLinkModelList, true);
+                }
+            }
+            sbTemp.AppendLine($@"</ul>");
         }
     }
 }

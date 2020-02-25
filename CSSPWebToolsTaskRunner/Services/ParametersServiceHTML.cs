@@ -578,6 +578,18 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    background-color: #000000;");
             sb.AppendLine(@"    color: #ffffff;");
             sb.AppendLine(@"}");
+            sb.AppendLine(@".wwtp {");
+            sb.AppendLine(@"    background-color: #ff0000;");
+            sb.AppendLine(@"    color: #ffffff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".ls {");
+            sb.AppendLine(@"    background-color: #00ff00;");
+            sb.AppendLine(@"    color: #ffffff;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@".lo {");
+            sb.AppendLine(@"    background-color: #0000ff;");
+            sb.AppendLine(@"    color: #ffffff;");
+            sb.AppendLine(@"}");
             sb.AppendLine(@"    </style>");
             sb.AppendLine(@"</head>");
             sb.AppendLine(@"<body>");

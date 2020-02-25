@@ -2554,11 +2554,29 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lift Stations.
+        /// </summary>
+        public static string LiftStations {
+            get {
+                return ResourceManager.GetString("LiftStations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line not starting with {0}. Current line is {1} in {2} at line {3}.
         /// </summary>
         public static string LineNotStartingWith_CurrentLineIs_In_AtLine_ {
             get {
                 return ResourceManager.GetString("LineNotStartingWith_CurrentLineIs_In_AtLine_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line Overflows.
+        /// </summary>
+        public static string LineOverflows {
+            get {
+                return ResourceManager.GetString("LineOverflows", resourceCulture);
             }
         }
         
@@ -3450,6 +3468,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NoDFSUFileFound {
             get {
                 return ResourceManager.GetString("NoDFSUFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No infrastructure.
+        /// </summary>
+        public static string NoInfrastructure {
+            get {
+                return ResourceManager.GetString("NoInfrastructure", resourceCulture);
             }
         }
         
@@ -5799,6 +5826,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string WTNodeNumb {
             get {
                 return ResourceManager.GetString("WTNodeNumb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WWTPs.
+        /// </summary>
+        public static string WWTPs {
+            get {
+                return ResourceManager.GetString("WWTPs", resourceCulture);
             }
         }
         
