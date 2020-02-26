@@ -468,6 +468,20 @@ namespace CSSPWebToolsTaskRunner.Services
                         int MWQMSampleCount = mwqmSampleAnalysisForSiteModelToUseList.Count;
                         int? MaxYear = mwqmSampleAnalysisForSiteModelToUseList[0].SampleDateTime_Local.Year;
                         int? MinYear = mwqmSampleAnalysisForSiteModelToUseList[mwqmSampleAnalysisForSiteModelToUseList.Count - 1].SampleDateTime_Local.Year;
+                        if (MaxYear != null)
+                        {
+                            if (StatEndYear < MaxYear)
+                            {
+                                StatEndYear = (int)MaxYear;
+                            }
+                        }
+                        if (MinYear != null)
+                        {
+                            if (StatStartYear > MinYear)
+                            {
+                                StatStartYear = (int)MinYear;
+                            }
+                        }
                         int? MinFC = (from c in mwqmSampleAnalysisForSiteModelToUseList select c.FecCol_MPN_100ml).Min();
                         int? MaxFC = (from c in mwqmSampleAnalysisForSiteModelToUseList select c.FecCol_MPN_100ml).Max();
 

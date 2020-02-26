@@ -39,6 +39,59 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
+            List<TVItemModel> tvItemModelParentList = _TVItemService.GetParentsTVItemModelList(tvItemModelSubsector.TVPath);
+            TVItemModel tvItemModelProv = new TVItemModel();
+            foreach (TVItemModel tvItemModel in tvItemModelParentList)
+            {
+                if (tvItemModel.TVType == TVTypeEnum.Province)
+                {
+                    tvItemModelProv = tvItemModel;
+                }
+            }
+
+            string ProvInitCap = "";
+            switch (tvItemModelProv.TVText)
+            {
+                case "New Brunswick":
+                case "Nouveau-Brunswick":
+                    {
+                        ProvInitCap = "NB";
+                    }
+                    break;
+                case "Newfoundland and Labrador":
+                case "Terre-Neuve_et-Labrador":
+                    {
+                        ProvInitCap = "NL";
+                    }
+                    break;
+                case "Nova Scotia":
+                case "Nouvelle-Écosse":
+                    {
+                        ProvInitCap = "NS";
+                    }
+                    break;
+                case "Prince Edward Island":
+                case "Île-du-Prince-Édouard":
+                    {
+                        ProvInitCap = "PE";
+                    }
+                    break;
+                case "British Columbia":
+                case "Colombie-Britannique":
+                    {
+                        ProvInitCap = "BC";
+                    }
+                    break;
+                case "Quebec":
+                case "Québec":
+                    {
+                        ProvInitCap = "QC";
+                    }
+                    break;
+                default:
+                    break;
+            }
+
             TVItemModel tvItemModelRoot = _TVItemService.GetRootTVItemModelDB();
             if (!string.IsNullOrWhiteSpace(tvItemModelRoot.Error))
             {
@@ -66,20 +119,54 @@ namespace CSSPWebToolsTaskRunner.Services
                 return false;
             }
 
-            TVFileModel tvFileModelFullReportCoverPageCanadaBanner = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, "CanadaBanner.png");
-            if (!string.IsNullOrWhiteSpace(tvFileModelFullReportCoverPageCanadaBanner.Error))
+            TVFileModel tvFileModelFullReportCoverPageLeafRight = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, "LeafRight.png");
+            if (!string.IsNullOrWhiteSpace(tvFileModelFullReportCoverPageLeafRight.Error))
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ServerPath + "CanadaBanner.png");
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ServerPath + "CanadaBanner.png");
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ServerPath + "LeafRight.png");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ServerPath + "LeafRight.png");
                 return false;
             }
 
-            FileInfo fiFullReportCoverPageImageCanadaBanner = new FileInfo(tvFileModelFullReportCoverPageCanadaBanner.ServerFilePath + tvFileModelFullReportCoverPageCanadaBanner.ServerFileName);
+            FileInfo fiFullReportCoverPageImageLeafRight = new FileInfo(tvFileModelFullReportCoverPageLeafRight.ServerFilePath + tvFileModelFullReportCoverPageLeafRight.ServerFileName);
 
-            if (!fiFullReportCoverPageImageCanadaBanner.Exists)
+            if (!fiFullReportCoverPageImageLeafRight.Exists)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFullReportCoverPageImageCanadaBanner.FullName);
-                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiFullReportCoverPageImageCanadaBanner.FullName);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFullReportCoverPageImageLeafRight.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiFullReportCoverPageImageLeafRight.FullName);
+                return false;
+            }
+
+            TVFileModel tvFileModelFullReportCoverPageBarTopBottom = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, "BarTopBottom.png");
+            if (!string.IsNullOrWhiteSpace(tvFileModelFullReportCoverPageBarTopBottom.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ServerPath + "BarTopBottom.png");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ServerPath + "BarTopBottom.png");
+                return false;
+            }
+
+            FileInfo fiFullReportCoverPageImageBarTopBottom = new FileInfo(tvFileModelFullReportCoverPageBarTopBottom.ServerFilePath + tvFileModelFullReportCoverPageBarTopBottom.ServerFileName);
+
+            if (!fiFullReportCoverPageImageBarTopBottom.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFullReportCoverPageImageBarTopBottom.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiFullReportCoverPageImageBarTopBottom.FullName);
+                return false;
+            }
+
+            TVFileModel tvFileModelFullReportCoverPageThreeImagesBottom = _TVFileService.GetTVFileModelWithServerFilePathAndServerFileNameDB(ServerPath, "ThreeImagesBottom.png");
+            if (!string.IsNullOrWhiteSpace(tvFileModelFullReportCoverPageThreeImagesBottom.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, ServerPath + "ThreeImagesBottom.png");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", ServerPath + "ThreeImagesBottom.png");
+                return false;
+            }
+
+            FileInfo fiFullReportCoverPageImageThreeImagesBottom = new FileInfo(tvFileModelFullReportCoverPageThreeImagesBottom.ServerFilePath + tvFileModelFullReportCoverPageThreeImagesBottom.ServerFileName);
+
+            if (!fiFullReportCoverPageImageThreeImagesBottom.Exists)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFullReportCoverPageImageThreeImagesBottom.FullName);
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiFullReportCoverPageImageThreeImagesBottom.FullName);
                 return false;
             }
 
@@ -95,7 +182,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (!fiFullReportCoverPageImageCanadaWithFlag.Exists)
             {
-                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFullReportCoverPageImageCanadaBanner.FullName);
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFindFile_, fiFullReportCoverPageImageCanadaWithFlag.FullName);
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("CouldNotFindFile_", fiFullReportCoverPageImageCanadaWithFlag.FullName);
                 return false;
             }
@@ -132,45 +219,43 @@ namespace CSSPWebToolsTaskRunner.Services
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
 
             sbTemp.AppendLine($@" <table>");
-            sbTemp.AppendLine($@"    <tr> ");
-            sbTemp.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,45|height,20|||</td> ");
-            sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><p style=""font-size: 0.8em"">Environment and <br />Climate Change Canada</p></td>");
-            sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;</td>");
-            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><p style=""font-size: 0.8em"">Environnement et <br />Changement climatique Canada</p></td>");
+            sbTemp.AppendLine($@"    <tr>");
+            sbTemp.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageCanadaFlag.FullName }|width,45|height,20|||<br /><br /><br /><br /><br /></td> ");
+            sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;<br /><br /><br /><br /><br /></td>");
+            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><p style=""font-size: 0.8em"">Environment and <br />Climate Change Canada</p><br /><br /><br /><br /></td>");
+            sbTemp.AppendLine($@"        <td>&nbsp;&nbsp;&nbsp;<br /><br /><br /><br /><br /></td>");
+            sbTemp.AppendLine($@"        <td class=""textAlignLeft""><p style=""font-size: 0.8em"">Environnement et <br />Changement climatique Canada</p><br /><br /><br /><br /></td>");
+            sbTemp.AppendLine($@"        <td>|||Image|FileName,{ fiFullReportCoverPageImageLeafRight.FullName }|width,76|height,60|||</td> ");
+            sbTemp.AppendLine($@"    </tr>");
+            sbTemp.AppendLine($@"    <tr>");
+            sbTemp.AppendLine($@"        <td colspan=""6"">|||Image|FileName,{ fiFullReportCoverPageImageBarTopBottom.FullName }|width,348|height,10|||</td> ");
             sbTemp.AppendLine($@"    </tr>");
             sbTemp.AppendLine($@" </table>");
-            sbTemp.AppendLine($@" <div class=""textAlignLeft"">");
-            sbTemp.AppendLine($@"        |||Image|FileName,{ fiFullReportCoverPageImageCanadaBanner.FullName }|width,480|height,48|||");
+            sbTemp.AppendLine($@" <div>");
+            sbTemp.AppendLine($@"   <p>&nbsp;</p>");
+            sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;"">");
+            sbTemp.AppendLine($@"       <strong>{ TaskRunnerServiceRes.ShellfishWaterClassificationProgram } ({ TaskRunnerServiceRes.SWCP }) </strong>");
+            sbTemp.AppendLine($@"   </p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;"">");
+            sbTemp.AppendLine($@"       <strong>{ TaskRunnerServiceRes.ReEvaluationReport }</strong>&nbsp;&nbsp;|||STATISTICS_REPORT_PERIOD|||");
+            sbTemp.AppendLine($@"   </p>");
+            sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||PROVINCE_INITIAL||| { TaskRunnerServiceRes.ShellfishGrowingArea}</strong></p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||SUBSECTOR_NAME_SHORT|||</strong></p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||SUBSECTOR_NAME_TEXT|||</strong></p>");
+            sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Authors }:</strong>&nbsp;&nbsp;||||{ProvInitCap}_AUTHORS|||</p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ReportID }:</strong> { TaskRunnerServiceRes.ReEvaluation } ({ SubsectorShort }) { DateTime.Now.ToString("MMMM") } { Year }</p>");
+            sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
+            sbTemp.AppendLine($@"   <p>&nbsp;</p>");
             sbTemp.AppendLine($@" </div>");
             sbTemp.AppendLine($@" <div>");
-            sbTemp.AppendLine($@"   <br />");
-            sbTemp.AppendLine($@"   <br />");
-            sbTemp.AppendLine($@"   <blockquote>");
-            sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;"">");
-            sbTemp.AppendLine($@"           <strong>{ TaskRunnerServiceRes.ShellfishWaterClassificationProgram } ({ TaskRunnerServiceRes.SWCP }) </strong>");
-            sbTemp.AppendLine($@"       </p>");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;"">");
-            sbTemp.AppendLine($@"           <strong>{ TaskRunnerServiceRes.ReEvaluationReport }</strong>");
-            sbTemp.AppendLine($@"       </p>");
-            sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ tvItemModelProvince.TVText } { TaskRunnerServiceRes.ShellfishGrowingArea}</strong></p>");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ SubsectorShort }</strong></p>");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ SubsectorEndPart }</strong></p>");
-            sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"       <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Authors }:</strong> { tvItemModelProvince.TVText } { TaskRunnerServiceRes.SWCP } { TaskRunnerServiceRes.Staff }</p>");
-            sbTemp.AppendLine($@"       <hr />");
-            sbTemp.AppendLine($@"   </blockquote>");
-            for (int i = 0; i < 8; i++)
-            {
-                sbTemp.AppendLine($@"   <p>&nbsp;</p>");
-            }
-            sbTemp.AppendLine($@"   <p class=""textAlignRight"" style=""font-size: 1.2em;"">");
-            sbTemp.AppendLine($@"       <strong>{ TaskRunnerServiceRes.ReportID }:</strong> { TaskRunnerServiceRes.ReEvaluation } ({ SubsectorShort }) { DateTime.Now.ToString("MMMM") } { Year }");
-            sbTemp.AppendLine($@"   </p>");
+            sbTemp.AppendLine($@" |||Image|FileName,{ fiFullReportCoverPageImageThreeImagesBottom.FullName }|width,448|height,100|||");
             sbTemp.AppendLine($@" </div>");
-            sbTemp.AppendLine($@" <div class=""textAlignRight"">|||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,22|||</div>");
+            sbTemp.AppendLine($@" <div class=""textAlignRight"">");
+            sbTemp.AppendLine($@" |||Image|FileName,{ fiFullReportCoverPageImageCanadaWithFlag.FullName }|width,76|height,22|||");
+            sbTemp.AppendLine($@" </div>");
 
             return true;
         }

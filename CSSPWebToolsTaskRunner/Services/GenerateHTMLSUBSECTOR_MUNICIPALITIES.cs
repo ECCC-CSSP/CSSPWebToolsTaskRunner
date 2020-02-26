@@ -50,13 +50,23 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
                 {
-                    TVItemModel tvItemModel = _TVItemService.GetTVItemModelWithTVItemIDDB(useOfSiteModel.SiteTVItemID);
+                    TVItemModel tvItemModelMuni = _TVItemService.GetTVItemModelWithTVItemIDDB(useOfSiteModel.SiteTVItemID);
 
-                    if (string.IsNullOrWhiteSpace(tvItemModel.Error)) // municipality exist
+                    if (string.IsNullOrWhiteSpace(tvItemModelMuni.Error)) // municipality exist
                     {
-                        sbTemp.AppendLine($@"<h3>{ tvItemModel.TVText }</h3>");
+                        sbTemp.AppendLine($@"<h3>{ tvItemModelMuni.TVText }</h3>");
 
-                        List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelList = _InfrastructureService.GetInfrastructureTVItemAndTVItemLinkAndInfrastructureTypeListWithMunicipalityTVItemIDDB(tvItemModel.TVItemID);
+                        List<TVItemLinkModel> tvItemLinkModelList = _TVItemLinkService.GetTVItemLinkModelListWithFromTVItemIDDB(tvItemModelMuni.TVItemID);
+
+                        foreach (TVItemLinkModel tvItemLinkModel in tvItemLinkModelList)
+                        {
+                            if (tvItemLinkModel.ToTVType == TVTypeEnum.Contact)
+                            {
+                                ContactItem(sbTemp, tvItemLinkModel.ToTVItemID);
+                            }
+                        }
+
+                        List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelList = _InfrastructureService.GetInfrastructureTVItemAndTVItemLinkAndInfrastructureTypeListWithMunicipalityTVItemIDDB(tvItemModelMuni.TVItemID);
 
                         List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelListDone = new List<TVItemModelInfrastructureTypeTVItemLinkModel>();
 
@@ -148,42 +158,257 @@ namespace CSSPWebToolsTaskRunner.Services
                 next(tvItemModelInfrastructureTypeTVItemLinkModelNext, tvItemModelInfrastructureTypeTVItemLinkModelList, tvItemModelInfrastructureTypeTVItemLinkModelListDone);
             }
         }
+        private void ContactItem(StringBuilder sbTemp, int ContactTVItemID)
+        {
+            ContactModel contactModel = _ContactService.GetContactModelWithContactTVItemIDDB(ContactTVItemID);
+            if (string.IsNullOrWhiteSpace(contactModel.Error))
+            {
+                string initial = string.IsNullOrWhiteSpace(contactModel.Initial) ? "" : $"{ contactModel.Initial}, ";
+                string contactText = $"{contactModel.FirstName} {initial} {contactModel.LastName}";
+                sbTemp.AppendLine($@"<ul>");
+                sbTemp.AppendLine($@"<li>");
+                sbTemp.AppendLine($@"<h4>{ contactText }</h4>");
+
+                List<TVItemLinkModel> tvItemLinkModelList = _TVItemLinkService.GetTVItemLinkModelListWithFromTVItemIDDB(ContactTVItemID);
+                if (tvItemLinkModelList.Where(c => c.ToTVType == TVTypeEnum.Tel).Any())
+                {
+                    sbTemp.AppendLine($@"<ul>");
+                    sbTemp.AppendLine($@"<li>");
+                    foreach (TVItemLinkModel tvItemLinkModel in tvItemLinkModelList)
+                    {
+                        if (tvItemLinkModel.ToTVType == TVTypeEnum.Tel)
+                        {
+                            TelModel telModel = _TelService.GetTelModelWithTelTVItemIDDB(tvItemLinkModel.ToTVItemID);
+
+                            sbTemp.AppendLine($@"<span class=""white-space: nowrap;"">{telModel.TelNumber} ({_BaseEnumService.GetEnumText_TelTypeEnum(telModel.TelType)})</span>");
+                        }
+                    }
+                    sbTemp.AppendLine($@"</li>");
+                    sbTemp.AppendLine($@"</ul>");
+                }
+
+                if (tvItemLinkModelList.Where(c => c.ToTVType == TVTypeEnum.Email).Any())
+                {
+                    sbTemp.AppendLine($@"<ul>");
+                    sbTemp.AppendLine($@"<li>");
+                    foreach (TVItemLinkModel tvItemLinkModel in tvItemLinkModelList)
+                    {
+                        if (tvItemLinkModel.ToTVType == TVTypeEnum.Email)
+                        {
+                            EmailModel emailModel = _EmailService.GetEmailModelWithEmailTVItemIDDB(tvItemLinkModel.ToTVItemID);
+
+                            sbTemp.AppendLine($@"<span class=""white-space: nowrap;"">{emailModel.EmailAddress} ({_BaseEnumService.GetEnumText_EmailTypeEnum(emailModel.EmailType)})</span>");
+                        }
+                    }
+                    sbTemp.AppendLine($@"</li>");
+                    sbTemp.AppendLine($@"</ul>");
+                }
+
+                if (tvItemLinkModelList.Where(c => c.ToTVType == TVTypeEnum.Address).Any())
+                {
+                    sbTemp.AppendLine($@"<ul>");
+                    sbTemp.AppendLine($@"<li>");
+                    foreach (TVItemLinkModel tvItemLinkModel in tvItemLinkModelList)
+                    {
+                        if (tvItemLinkModel.ToTVType == TVTypeEnum.Address)
+                        {
+                            AddressModel addressModel = _AddressService.GetAddressModelWithAddressTVItemIDDB(tvItemLinkModel.ToTVItemID);
+
+                            if (string.IsNullOrWhiteSpace(addressModel.Error))
+                            {
+                                string CivicAddress = "";
+                                if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+                                {
+                                    CivicAddress = $"{addressModel.StreetNumber} {addressModel.StreetName} {_BaseEnumService.GetEnumText_StreetTypeEnum(addressModel.StreetType)} {addressModel.MunicipalityTVText} {addressModel.ProvinceTVText} {addressModel.CountryTVText} {addressModel.PostalCode}";
+                                }
+                                else
+                                {
+                                    CivicAddress = $"{addressModel.StreetNumber} {addressModel.StreetName} {_BaseEnumService.GetEnumText_StreetTypeEnum(addressModel.StreetType)} {addressModel.MunicipalityTVText} {addressModel.ProvinceTVText} {addressModel.CountryTVText} {addressModel.PostalCode}";
+                                }
+                                _AddressService.CreateTVText(addressModel);
+                                sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.CivicAddress }:</b>&nbsp;&nbsp;{CivicAddress}");
+                            }
+                        }
+                    }
+                    sbTemp.AppendLine($@"</li>");
+                    sbTemp.AppendLine($@"</ul>");
+                }
+
+                sbTemp.AppendLine($@"</li>");
+                sbTemp.AppendLine($@"</ul>");
+            }
+        }
         private void InfrastructureItem(StringBuilder sbTemp, TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel, List<TVItemModelInfrastructureTypeTVItemLinkModel> tvItemModelInfrastructureTypeTVItemLinkModelList, bool DoNext)
         {
 
-            string BorderColor = "";
-            bool HasOtherThanOutfall = false;
-
-            if (tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModelLinkList.Count > 0)
-            {
-                foreach (TVItemLinkModel tvItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModelLinkList)
-                {
-                    if (tvItemModelInfrastructureTypeTVItemLinkModel.InfrastructureType != InfrastructureTypeEnum.WWTP)
-                    {
-                        HasOtherThanOutfall = true;
-                    }
-                }
-            }
+            string InfType = "";
+            TVTypeEnum tvType = TVTypeEnum.Error;
             switch (tvItemModelInfrastructureTypeTVItemLinkModel.InfrastructureType)
             {
                 case InfrastructureTypeEnum.LiftStation:
-                    BorderColor = "BorderLiftStation";
-                    break;
-                case InfrastructureTypeEnum.Other:
-                    BorderColor = "BorderOtherInfrastructure";
+                    {
+                        InfType = "(LS)";
+                        tvType = TVTypeEnum.LiftStation;
+                    }
                     break;
                 case InfrastructureTypeEnum.LineOverflow:
-                    BorderColor = "BorderLineOverflow";
+                    {
+                        InfType = "(LO)";
+                        tvType = TVTypeEnum.LineOverflow;
+                    }
                     break;
                 case InfrastructureTypeEnum.WWTP:
-                    BorderColor = "BorderWWTP";
+                    {
+                        InfType = "(W)";
+                        tvType = TVTypeEnum.WasteWaterTreatmentPlant;
+                    }
                     break;
                 default:
                     break;
             }
 
             sbTemp.AppendLine($@"<ul>");
-            sbTemp.AppendLine($@"<li>{tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModel.TVText}</li>");
+            sbTemp.AppendLine($@"<li>");
+            sbTemp.AppendLine($@"<h3>{InfType} - <b>{tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModel.TVText}</b></h3>");
+            InfrastructureModel infrastructureModel = _InfrastructureService.GetInfrastructureModelWithInfrastructureTVItemIDDB(tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModel.TVItemID);
+            if (string.IsNullOrWhiteSpace(infrastructureModel.Error))
+            {
+                sbTemp.AppendLine($@"<h4>Information</h4>");
+
+                List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModel.TVItemID, tvType, MapInfoDrawTypeEnum.Point);
+                List<MapInfoPointModel> mapInfoPointModelListOut = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelInfrastructureTypeTVItemLinkModel.TVItemModel.TVItemID, TVTypeEnum.Outfall, MapInfoDrawTypeEnum.Point);
+
+                if (mapInfoPointModelList.Count > 0 && mapInfoPointModelListOut.Count > 0)
+                {
+                    sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.Structure } { TaskRunnerServiceRes.Lat } { TaskRunnerServiceRes.Long }:</b>&nbsp;&nbsp;{mapInfoPointModelList[0].Lat} {mapInfoPointModelList[0].Lng}");
+                    sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.Outfall } { TaskRunnerServiceRes.Lat } { TaskRunnerServiceRes.Long }:</b>&nbsp;&nbsp;{mapInfoPointModelListOut[0].Lat} {mapInfoPointModelListOut[0].Lng}<br />");
+                }
+                else if (mapInfoPointModelListOut.Count > 0)
+                {
+                    sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.Structure } { TaskRunnerServiceRes.Lat } { TaskRunnerServiceRes.Long }:</b>&nbsp;&nbsp;{mapInfoPointModelList[0].Lat} {mapInfoPointModelList[0].Lng}<br />");
+                }
+                else
+                {
+                    //sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.NoCoordinates }<br />");
+                }
+                if (infrastructureModel.CivicAddressTVItemID != null)
+                {
+                    AddressModel addressModel = _AddressService.GetAddressModelWithAddressTVItemIDDB((int)infrastructureModel.CivicAddressTVItemID);
+                    if (string.IsNullOrWhiteSpace(addressModel.Error))
+                    {
+                        string CivicAddress = "";
+                        if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+                        {
+                            CivicAddress = $"{addressModel.StreetNumber} {addressModel.StreetName} {_BaseEnumService.GetEnumText_StreetTypeEnum(addressModel.StreetType)} {addressModel.MunicipalityTVText} {addressModel.ProvinceTVText} {addressModel.CountryTVText} {addressModel.PostalCode}";
+                        }
+                        else
+                        {
+                            CivicAddress = $"{addressModel.StreetNumber} {addressModel.StreetName} {_BaseEnumService.GetEnumText_StreetTypeEnum(addressModel.StreetType)} {addressModel.MunicipalityTVText} {addressModel.ProvinceTVText} {addressModel.CountryTVText} {addressModel.PostalCode}";
+                        }
+                        _AddressService.CreateTVText(addressModel);
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.CivicAddress }:</b>&nbsp;&nbsp;{CivicAddress}");
+                    }
+                }
+                if (infrastructureModel.FacilityType == null)
+                {
+                    sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.InfrastructureType }:</b>&nbsp;&nbsp;{TaskRunnerServiceRes.Empty}");
+                }
+                else
+                {
+                    sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.InfrastructureType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_InfrastructureTypeEnum(infrastructureModel.InfrastructureType)}");
+                    if (infrastructureModel.FacilityType != null)
+                    {
+                        sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.FacilityType }:</b>&nbsp;&nbsp;{TaskRunnerServiceRes.Empty}");
+                    }
+                    else
+                    {
+                        sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.FacilityType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_FacilityTypeEnum(infrastructureModel.FacilityType)}");
+                        if (infrastructureModel.FacilityType == FacilityTypeEnum.Lagoon)
+                        {
+                            if (infrastructureModel.IsMechanicallyAerated != null)
+                            {
+                                sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.IsMechanicallyAerated }:</b>&nbsp;&nbsp;{infrastructureModel.IsMechanicallyAerated}");
+                                if ((bool)infrastructureModel.IsMechanicallyAerated)
+                                {
+                                    sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.AerationType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_AerationTypeEnum(infrastructureModel.AerationType)}");
+                                }
+                            }
+                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.NumberOfCells }:</b>&nbsp;&nbsp;{infrastructureModel.NumberOfCells}");
+                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.NumberOfAeratedCells }:</b>&nbsp;&nbsp;{infrastructureModel.NumberOfAeratedCells}");
+                        }
+                        else if (infrastructureModel.FacilityType == FacilityTypeEnum.Plant)
+                        {
+                            if (infrastructureModel.PreliminaryTreatmentType != null)
+                            {
+                                sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.PreliminaryTreatmentType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_PreliminaryTreatmentTypeEnum(infrastructureModel.PreliminaryTreatmentType)}");
+                            }
+                            if (infrastructureModel.PrimaryTreatmentType != null)
+                            {
+                                sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.PrimaryTreatmentType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_PrimaryTreatmentTypeEnum(infrastructureModel.PrimaryTreatmentType)}");
+                            }
+                            if (infrastructureModel.SecondaryTreatmentType != null)
+                            {
+                                sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.SecondaryTreatmentType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_SecondaryTreatmentTypeEnum(infrastructureModel.SecondaryTreatmentType)}");
+                            }
+                            if (infrastructureModel.TertiaryTreatmentType != null)
+                            {
+                                sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.TertiaryTreatmentType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_TertiaryTreatmentTypeEnum(infrastructureModel.TertiaryTreatmentType)}");
+                            }
+                        }
+                        if (infrastructureModel.DisinfectionType != null)
+                        {
+                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.DisinfectionType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_DisinfectionTypeEnum(infrastructureModel.DisinfectionType)}");
+                        }
+                        if (infrastructureModel.CollectionSystemType != null)
+                        {
+                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.CollectionSystemType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_CollectionSystemTypeEnum(infrastructureModel.CollectionSystemType)}");
+                        }
+                        sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.DesignFlow }:</b>&nbsp;&nbsp;{infrastructureModel.DesignFlow_m3_day} (m<sup>3</sup>/{TaskRunnerServiceRes.day})");
+                        sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.AverageFlow }:</b>&nbsp;&nbsp;{infrastructureModel.AverageFlow_m3_day} (m<sup>3</sup>/{TaskRunnerServiceRes.day})");
+                        sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.PeakFlow }:</b>&nbsp;&nbsp;{infrastructureModel.PeakFlow_m3_day} (m<sup>3</sup>/{TaskRunnerServiceRes.day})");
+                        sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.PercentOfFlow }:</b>&nbsp;&nbsp;{infrastructureModel.PercFlowOfTotal} %");
+                        sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.PopulationServed }:</b>&nbsp;&nbsp;{infrastructureModel.PopServed}");
+                        if (infrastructureModel.AlarmSystemType != null)
+                        {
+                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.AlarmSystemType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_AlarmSystemTypeEnum(infrastructureModel.AlarmSystemType)}");
+                        }
+                        if (infrastructureModel.CanOverflow != null)
+                        {
+                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.CanOverflow }:</b>&nbsp;&nbsp;{infrastructureModel.CanOverflow}");
+                            if (infrastructureModel.ValveType != null)
+                            {
+                                sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.ValveType }:</b>&nbsp;&nbsp;{_BaseEnumService.GetEnumText_ValveTypeEnum(infrastructureModel.ValveType)}");
+                            }
+                        }
+                        if (infrastructureModel.HasBackupPower != null)
+                        {
+                            sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;<b>{ TaskRunnerServiceRes.HasBackupPower }:</b>&nbsp;&nbsp;{infrastructureModel.HasBackupPower}");
+                        }
+                        if (!string.IsNullOrWhiteSpace(infrastructureModel.Comment))
+                        {
+                            sbTemp.AppendLine($@"<br /><h4>{ TaskRunnerServiceRes.Comments }</h4>{infrastructureModel.Comment}<br />");
+                        }
+
+                        sbTemp.AppendLine($@"<h4>Outfall</h4>");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.AverageDepth }:</b>&nbsp;&nbsp;{infrastructureModel.AverageDepth_m} (m)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.DecayRate }:</b>&nbsp;&nbsp;{infrastructureModel.DecayRate_per_day} (/{ TaskRunnerServiceRes.day})");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.DistanceFromShore }:</b>&nbsp;&nbsp;{infrastructureModel.DistanceFromShore_m} (m)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.FarFieldVelocity }:</b>&nbsp;&nbsp;{infrastructureModel.FarFieldVelocity_m_s} (m/s)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.HorizontalAngle }:</b>&nbsp;&nbsp;{infrastructureModel.HorizontalAngle_deg} (deg)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.NearFieldVelocity }:</b>&nbsp;&nbsp;{infrastructureModel.NearFieldVelocity_m_s} (m/s)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.NumberOfPorts }:</b>&nbsp;&nbsp;{infrastructureModel.NumberOfPorts}");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.PortDiameter }:</b>&nbsp;&nbsp;{infrastructureModel.PortDiameter_m} (m)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.PortElevation }:</b>&nbsp;&nbsp;{infrastructureModel.PortElevation_m} (m)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.PortSpacing }:</b>&nbsp;&nbsp;{infrastructureModel.PortSpacing_m} (m)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.ReceivingWater }:</b>&nbsp;&nbsp;{infrastructureModel.ReceivingWater_MPN_per_100ml} (MPN/100 mL)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.ReceivingWaterSalinity }:</b>&nbsp;&nbsp;{infrastructureModel.ReceivingWaterSalinity_PSU} (PSU)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.ReceivingWaterTemperature }:</b>&nbsp;&nbsp;{infrastructureModel.ReceivingWaterTemperature_C} (ºC)");
+                        sbTemp.AppendLine($@"<b>{ TaskRunnerServiceRes.VerticalAngle }:</b>&nbsp;&nbsp;{infrastructureModel.VerticalAngle_deg} (deg)");
+
+                    }
+                }
+            }
+            sbTemp.AppendLine($@"</li>");
 
             if (DoNext)
             {

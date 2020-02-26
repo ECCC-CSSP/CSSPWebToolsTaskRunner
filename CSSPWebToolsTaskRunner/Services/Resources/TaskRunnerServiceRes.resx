@@ -2061,4 +2061,121 @@
   <data name="WWTPs" xml:space="preserve">
     <value>WWTPs</value>
   </data>
+  <data name="AerationType" xml:space="preserve">
+    <value>Aeration type</value>
+  </data>
+  <data name="AlarmSystemType" xml:space="preserve">
+    <value>Alarm system type</value>
+  </data>
+  <data name="AverageDepth" xml:space="preserve">
+    <value>Average depth</value>
+  </data>
+  <data name="AverageFlow" xml:space="preserve">
+    <value>Average flow</value>
+  </data>
+  <data name="CanOverflow" xml:space="preserve">
+    <value>Can overflow</value>
+  </data>
+  <data name="CollectionSystemType" xml:space="preserve">
+    <value>Collection system type</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="day" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="DecayRate" xml:space="preserve">
+    <value>Decay rate</value>
+  </data>
+  <data name="DesignFlow" xml:space="preserve">
+    <value>Design flow</value>
+  </data>
+  <data name="DisinfectionType" xml:space="preserve">
+    <value>Disinfection type</value>
+  </data>
+  <data name="DistanceFromShore" xml:space="preserve">
+    <value>Distance from shore</value>
+  </data>
+  <data name="FacilityType" xml:space="preserve">
+    <value>Facility type</value>
+  </data>
+  <data name="FarFieldVelocity" xml:space="preserve">
+    <value>Far field velocity</value>
+  </data>
+  <data name="HasBackupPower" xml:space="preserve">
+    <value>Has backup power</value>
+  </data>
+  <data name="HorizontalAngle" xml:space="preserve">
+    <value>Horizontal angle</value>
+  </data>
+  <data name="InfrastructureType" xml:space="preserve">
+    <value>Infrastructure type</value>
+  </data>
+  <data name="IsMechanicallyAerated" xml:space="preserve">
+    <value>Is mechanically aerated</value>
+  </data>
+  <data name="NearFieldVelocity" xml:space="preserve">
+    <value>Near field velocity</value>
+  </data>
+  <data name="NumberOfAeratedCells" xml:space="preserve">
+    <value>Number of aerated cells</value>
+  </data>
+  <data name="NumberOfCells" xml:space="preserve">
+    <value>Number of cells</value>
+  </data>
+  <data name="NumberOfPorts" xml:space="preserve">
+    <value>Number of ports</value>
+  </data>
+  <data name="Outfall" xml:space="preserve">
+    <value>Outfall</value>
+  </data>
+  <data name="PeakFlow" xml:space="preserve">
+    <value>Peak flow</value>
+  </data>
+  <data name="PercentOfFlow" xml:space="preserve">
+    <value>Percent of flow</value>
+  </data>
+  <data name="PopulationServed" xml:space="preserve">
+    <value>Population served</value>
+  </data>
+  <data name="PortDiameter" xml:space="preserve">
+    <value>Port diameter</value>
+  </data>
+  <data name="PortElevation" xml:space="preserve">
+    <value>Port elevation</value>
+  </data>
+  <data name="PortSpacing" xml:space="preserve">
+    <value>Port spacing</value>
+  </data>
+  <data name="PreliminaryTreatmentType" xml:space="preserve">
+    <value>Preliminary treatment type</value>
+  </data>
+  <data name="PrimaryTreatmentType" xml:space="preserve">
+    <value>Primary treatment type</value>
+  </data>
+  <data name="ReceivingWater" xml:space="preserve">
+    <value>Receiving water</value>
+  </data>
+  <data name="ReceivingWaterSalinity" xml:space="preserve">
+    <value>Receiving water salinity</value>
+  </data>
+  <data name="ReceivingWaterTemperature" xml:space="preserve">
+    <value>Receiving water temperature</value>
+  </data>
+  <data name="SecondaryTreatmentType" xml:space="preserve">
+    <value>Secondary treatment type</value>
+  </data>
+  <data name="Structure" xml:space="preserve">
+    <value>Structure</value>
+  </data>
+  <data name="TertiaryTreatmentType" xml:space="preserve">
+    <value>Tertiary treatment type</value>
+  </data>
+  <data name="ValveType" xml:space="preserve">
+    <value>Valve type</value>
+  </data>
+  <data name="VerticalAngle" xml:space="preserve">
+    <value>Vertical angle</value>
+  </data>
 </root>

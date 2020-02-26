@@ -27,9 +27,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
         #region Properties
         private TaskRunnerBaseService _TaskRunnerBaseService { get; set; }
+        private BaseEnumService _BaseEnumService { get; set; }
+
         private AddressService _AddressService { get; set; }
+        private ContactService _ContactService { get; set; }
         private TVFileService _TVFileService { get; set; }
         private TVItemService _TVItemService { get; set; }
+        private TVItemLinkService _TVItemLinkService { get; set; }
         private ReportTypeService _ReportTypeService { get; set; }
         private ReportSectionService _ReportSectionService { get; set; }
         private MWQMSubsectorService _MWQMSubsectorService { get; set; }
@@ -44,18 +48,22 @@ namespace CSSPWebToolsTaskRunner.Services
         private PolSourceObservationService _PolSourceObservationService { get; set; }
         private PolSourceObservationIssueService _PolSourceObservationIssueService { get; set; }
         private MWQMSiteService _MWQMSiteService { get; set; }
-        private InfrastructureService _InfrastructureService { get; set; }
         private MWQMSampleService _MWQMSampleService { get; set; }
+        private InfrastructureService _InfrastructureService { get; set; }
         private UseOfSiteService _UseOfSiteService { get; set; }
         private ClimateSiteService _ClimateSiteService { get; set; }
         private ClimateDataValueService _ClimateDataValueService { get; set; }
         private TidesAndCurrentsService _TidesAndCurrentsService { get; set; }
         private TideSiteService _TideSiteService { get; set; }
-        private BaseEnumService _BaseEnumService { get; set; }
+        private TelService _TelService { get; set; }
+        private EmailService _EmailService { get; set; }
+
         public FileInfo fi { get; set; }
         public ReportTypeModel reportTypeModel { get; set; }
         public int TVItemID { get; set; }
         public int Year { get; set; }
+        public int StatStartYear { get; set; }
+        public int StatEndYear { get; set; }
         public string Parameters { get; set; }
         public StringBuilder sb { get; set; }
         public string FileNameExtra { get; set; }
@@ -89,8 +97,13 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             _TaskRunnerBaseService = taskRunnerBaseService;
+            _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
+
+            _AddressService = new AddressService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _ContactService = new ContactService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _TVFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _TVItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _TVItemLinkService = new TVItemLinkService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _ReportTypeService = new ReportTypeService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _ReportSectionService = new ReportSectionService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMSubsectorService = new MWQMSubsectorService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
@@ -106,13 +119,15 @@ namespace CSSPWebToolsTaskRunner.Services
             _PolSourceObservationIssueService = new PolSourceObservationIssueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMSiteService = new MWQMSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _MWQMSampleService = new MWQMSampleService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            _BaseEnumService = new BaseEnumService(_TaskRunnerBaseService._BWObj.appTaskModel.Language);
             _InfrastructureService = new InfrastructureService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _UseOfSiteService = new UseOfSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _ClimateSiteService = new ClimateSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _ClimateDataValueService = new ClimateDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
-            _TideSiteService = new TideSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
             _TidesAndCurrentsService = new TidesAndCurrentsService(_TaskRunnerBaseService);
+            _TideSiteService = new TideSiteService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _TelService = new TelService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            _EmailService = new EmailService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
             RunSiteInfoList = new List<RunSiteInfo>();
         }
         #endregion Constructors
@@ -361,6 +376,31 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
             CreateDocxWithHTMLDoREPORT_YEARTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoNL_AUTHORSTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoNB_AUTHORSTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoNS_AUTHORSTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoPE_AUTHORSTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoSTATISTICS_REPORT_PERIODTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
@@ -1070,6 +1110,116 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
                     appWord.Selection.Text = REPORT_YEAR;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoNL_AUTHORSTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||NL_AUTHORS|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = $"D. Curtis, G. Perchard, M.Glavine";
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoNB_AUTHORSTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||NB_AUTHORS|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = $"B.Richard, P. Godin, K. Martell, J. Pomeroy, C. LeBlanc, J.A. Richard";
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoNS_AUTHORSTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||NS_AUTHORS|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = $"D.MacArthur, L.Pothier, R. Alexanders, P.Densmore";
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoPE_AUTHORSTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||PE_AUTHORS|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = $"D.MacArthur, L.Pothier, R. Alexanders";
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoSTATISTICS_REPORT_PERIODTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||STATISTICS_REPORT_PERIOD|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = $"{StatStartYear} - {StatEndYear}";
                 }
                 else
                 {
