@@ -400,7 +400,12 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
-            CreateDocxWithHTMLDoSTATISTICS_REPORT_PERIODTag(appWord, _Document);
+            CreateDocxWithHTMLDoSTATISTICS_LAST_YEARTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoSTATISTICS_PERIODTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
@@ -1131,7 +1136,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
-                    appWord.Selection.Text = $"D. Curtis, G. Perchard, M.Glavine";
+                    appWord.Selection.Text = $"D. Curtis, G. Perchard, M. Glavine";
                 }
                 else
                 {
@@ -1153,7 +1158,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
-                    appWord.Selection.Text = $"B.Richard, P. Godin, K. Martell, J. Pomeroy, C. LeBlanc, J.A. Richard";
+                    appWord.Selection.Text = $"B. Richard, P. Godin, K. Martell, J. Pomeroy, C. LeBlanc, J.A. Richard";
                 }
                 else
                 {
@@ -1175,7 +1180,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
-                    appWord.Selection.Text = $"D.MacArthur, L.Pothier, R. Alexanders, P.Densmore";
+                    appWord.Selection.Text = $"D. MacArthur, L. Pothier, R. Alexanders, P. Densmore";
                 }
                 else
                 {
@@ -1197,7 +1202,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
-                    appWord.Selection.Text = $"D.MacArthur, L.Pothier, R. Alexanders";
+                    appWord.Selection.Text = $"D. MacArthur, L. Pothier, R. Alexanders";
                 }
                 else
                 {
@@ -1209,9 +1214,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             }
         }
-        private void CreateDocxWithHTMLDoSTATISTICS_REPORT_PERIODTag(Application appWord, Document document)
+        private void CreateDocxWithHTMLDoSTATISTICS_PERIODTag(Application appWord, Document document)
         {
-            string SearchMarker = "|||STATISTICS_REPORT_PERIOD|||";
+            string SearchMarker = "|||STATISTICS_PERIOD|||";
             bool Found = true;
             while (Found)
             {
@@ -1219,7 +1224,29 @@ namespace CSSPWebToolsTaskRunner.Services
                 appWord.Selection.Find.Replacement.ClearFormatting();
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
-                    appWord.Selection.Text = $"{StatStartYear} - {StatEndYear}";
+                    appWord.Selection.Text = $"{StatEndYear} - {StatStartYear}";
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoSTATISTICS_LAST_YEARTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||STATISTICS_LAST_YEAR|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = $"{StatEndYear}";
                 }
                 else
                 {
