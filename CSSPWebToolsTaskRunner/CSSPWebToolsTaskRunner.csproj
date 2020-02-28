@@ -238,7 +238,6 @@
     <Compile Include="Services\GenerateHTMLSUBSECTOR_CSSP_LOGO.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_ECCC_AND_SWCP_LOGO.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_CURRENT_CLASSIFICATION_AND_SAMPLING_LOCATION_MAP.cs" />
-    <Compile Include="Services\GenerateHTMLSUBSECTOR_MUNICIPALITY_WWTP_COLLECTION_SYSTEM_MAP.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_RECOMMENDED_CLASSIFICATION_MAP.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_LOCATION_OF_SURVEY_AREA_MAP.cs" />
@@ -250,10 +249,8 @@
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_DRY.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_WET.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_FC_SUMMARY_STAT_ALL.cs" />
-    <Compile Include="Services\GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL.cs" />
-    <Compile Include="Services\GenerateHTMLSUBSECTOR_MUNICIPALITY_CONTACTS.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP.cs" />
-    <Compile Include="Services\GenerateHTMLSUBSECTOR_MUNICIPALITIES.cs" />
+    <Compile Include="Services\GenerateHTMLSUBSECTOR_MUNICIPALITIES_COMPACT_AND_FULL.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_TEMPERATURE_TABLE.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_SALINITY_TABLE.cs" />
     <Compile Include="Services\GenerateHTMLSUBSECTOR_MWQM_SITES_FC_TABLE.cs" />

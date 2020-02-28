@@ -311,9 +311,17 @@ namespace CSSPWebToolsTaskRunner.Services
                                     sb.Insert(StartPos, sbTemp);
                                 }
                                 break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITIES:
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITIES_COMPACT:
                                 {
-                                    GenerateHTMLSUBSECTOR_MUNICIPALITIES(sbTemp);
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITIES_COMPACT_AND_FULL(sbTemp, true /* compact = true */);
+
+                                    sb.Remove(StartPos, EndPos - StartPos);
+                                    sb.Insert(StartPos, sbTemp);
+                                }
+                                break;
+                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITIES_FULL:
+                                {
+                                    GenerateHTMLSUBSECTOR_MUNICIPALITIES_COMPACT_AND_FULL(sbTemp, false /* compact = false */);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
@@ -322,22 +330,6 @@ namespace CSSPWebToolsTaskRunner.Services
                             case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP:
                                 {
                                     GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_MAP(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_CONTACTS:
-                                {
-                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_CONTACTS(sbTemp);
-
-                                    sb.Remove(StartPos, EndPos - StartPos);
-                                    sb.Insert(StartPos, sbTemp);
-                                }
-                                break;
-                            case ReportGenerateObjectsKeywordEnum.SUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL:
-                                {
-                                    GenerateHTMLSUBSECTOR_MUNICIPALITY_INFRASTRUCTURE_DETAIL(sbTemp);
 
                                     sb.Remove(StartPos, EndPos - StartPos);
                                     sb.Insert(StartPos, sbTemp);
