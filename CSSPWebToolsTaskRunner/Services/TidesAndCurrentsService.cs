@@ -811,7 +811,7 @@ namespace CSSPWebToolsTaskRunner.Services
             FileInfo fiTemp = null;
             using (PFS pfs = new PFS(fiServer))
             {
-                fiTemp = pfs.GetVariableFileInfoResult("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name", 1);
+                fiTemp = pfs.GetVariableFileInfo("FemEngineHD/TRANSPORT_MODULE/OUTPUTS/OUTPUT_1", "file_name", 1);
                 if (fiTemp == null)
                 {
                     return;
