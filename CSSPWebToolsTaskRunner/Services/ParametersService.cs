@@ -430,6 +430,10 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
+            // renumbering the Tables and Figures
+            appWord.Selection.WholeStory();
+            appWord.Selection.Fields.Update();
+
             CreateDocxWithHTMLDoLIST_OF_TABLESTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
@@ -659,15 +663,16 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             textFound = textFound.Substring("|||TableCaption|".Length).Replace("|||", "");
 
-                            appWord.Selection.Range.InsertCaption("Tableau", "", "", WdCaptionPosition.wdCaptionPositionBelow, 1);
+                            appWord.Selection.Range.InsertCaption("Table", textFound, "", WdCaptionPosition.wdCaptionPositionBelow, 0);
+                            //appWord.Selection.Range.InsertCaption("Table", textFound, "InsertCaption1", WdCaptionPosition.wdCaptionPositionBelow, 0);
 
-                            appWord.Selection.HomeKey();
-                            appWord.Selection.Text = textFound;
-                            appWord.Selection.EndKey();
-                            appWord.Selection.MoveLeft(Extend: true);
-                            appWord.Selection.Font.Color = WdColor.wdColorWhite;
-                            appWord.Selection.MoveRight();
-                            appWord.Selection.MoveDown();
+                            //appWord.Selection.HomeKey();
+                            //appWord.Selection.Text = textFound;
+                            //appWord.Selection.EndKey();
+                            //appWord.Selection.MoveLeft(Extend: true);
+                            //appWord.Selection.Font.Color = WdColor.wdColorWhite;
+                            //appWord.Selection.MoveRight();
+                            //appWord.Selection.MoveDown();
                         }
                         else if (textFound.StartsWith("|||FigureCaption|"))
                         {
@@ -675,15 +680,16 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             textFound = textFound.Substring("|||FigureCaption|".Length).Replace("|||", "");
 
-                            appWord.Selection.Range.InsertCaption("Figure", "", "", WdCaptionPosition.wdCaptionPositionAbove, 1);
+                            appWord.Selection.Range.InsertCaption("Figure", textFound, "", WdCaptionPosition.wdCaptionPositionBelow, 0);
+                            //appWord.Selection.Range.InsertCaption("Figure", textFound, "InsertCaption2", WdCaptionPosition.wdCaptionPositionBelow, 0);
 
-                            appWord.Selection.HomeKey();
-                            appWord.Selection.Text = textFound;
-                            appWord.Selection.EndKey();
-                            appWord.Selection.MoveLeft(Extend: true);
-                            appWord.Selection.Font.Color = WdColor.wdColorWhite;
-                            appWord.Selection.MoveRight();
-                            appWord.Selection.MoveDown();
+                            //appWord.Selection.HomeKey();
+                            //appWord.Selection.Text = textFound;
+                            //appWord.Selection.EndKey();
+                            //appWord.Selection.MoveLeft(Extend: true);
+                            //appWord.Selection.Font.Color = WdColor.wdColorWhite;
+                            //appWord.Selection.MoveRight();
+                            //appWord.Selection.MoveDown();
                         }
                     }
                 }

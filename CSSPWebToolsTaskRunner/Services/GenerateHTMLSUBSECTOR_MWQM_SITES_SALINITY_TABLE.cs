@@ -117,23 +117,26 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 if (mwqmRunModelList2.Count > 0 && HasGreen)
                 {
-                    sbTemp.AppendLine($@"|||TableCaption|Table { TaskRunnerServiceRes.Appendix } B 1.{ TableCount }: { TaskRunnerServiceRes.Salinity }|||");
-
                     TableCount += 1;
+
+                    bool hasNoData = false;
+                    bool hasNotUsed = false;
+
+                    sbTemp.AppendLine($@"|||TableCaption| { TaskRunnerServiceRes.Salinity } #{TableCount}|||");
 
                     sbTemp.AppendLine($@" <table class=""FCSalTempDataTableClass"">");
                     sbTemp.AppendLine($@" <tr>");
                     sbTemp.AppendLine($@" <th class=""rightBottomBorder"">{ TaskRunnerServiceRes.Site }</th>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
-                        bool showGreenText = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID).Any() ? true : false;
+                        bool runUsed = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID).Any() ? true : false;
 
-                        if (showGreenText)
+                        if (runUsed)
                         {
-                            sbTemp.AppendLine($@" <th class=""bottomBorderGreentext"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
-                        }
-                        else
-                        {
+                            //    sbTemp.AppendLine($@" <th class=""bottomBorderGreentext"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
+                            //}
+                            //else
+                            //{
                             sbTemp.AppendLine($@" <th class=""bottomBorder"">{ mwqmRunModel.DateTime_Local.ToString("yyyy") }<br />{ mwqmRunModel.DateTime_Local.ToString("MMM") }<br />{ mwqmRunModel.DateTime_Local.ToString("dd") }</th>");
                         }
                     }
@@ -158,21 +161,48 @@ namespace CSSPWebToolsTaskRunner.Services
                         sbTemp.AppendLine($@" <td class=""rightBorder"">{ siteNameWithoutZeros }</td>");
                         foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                         {
-                            bool showTextGreen = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID && c.SiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID).Any() ? true : false;
+                            bool runUsed = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID).Any() ? true : false;
+
+                            bool siteUsed = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID && c.SiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID).Any() ? true : false;
 
                             float? value = (float?)(from s in mwqmSampleModelList
-                                            where s.MWQMRunTVItemID == mwqmRunModel.MWQMRunTVItemID
-                                            && s.MWQMSiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID
-                                            select s.Salinity_PPT).FirstOrDefault();
+                                                    where s.MWQMRunTVItemID == mwqmRunModel.MWQMRunTVItemID
+                                                    && s.MWQMSiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID
+                                                    select s.Salinity_PPT).FirstOrDefault();
 
                             string valueStr = value != null ? (((float)value).ToString("F1")) : "--";
-                            if (showTextGreen)
+                            //if (showTextGreen)
+                            //{
+                            //    sbTemp.AppendLine($@" <td class=""textGreen"">{ valueStr }</td>");
+                            //}
+                            //else
+                            //{
+                            //    sbTemp.AppendLine($@" <td>{ valueStr }</td>");
+                            //}
+
+                            if (runUsed)
                             {
-                                sbTemp.AppendLine($@" <td class=""textGreen"">{ valueStr }</td>");
-                            }
-                            else
-                            {
-                                sbTemp.AppendLine($@" <td>{ valueStr }</td>");
+                                if (siteUsed)
+                                {
+                                    sbTemp.AppendLine($@" <td>{ valueStr }</td>");
+                                    if (valueStr == "--")
+                                    {
+                                        hasNoData = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if (valueStr == "--")
+                                    {
+                                        sbTemp.AppendLine($@" <td>{ valueStr }</td>");
+                                        hasNoData = true;
+                                    }
+                                    else
+                                    {
+                                        sbTemp.AppendLine($@" <td>NU</td>");
+                                        hasNotUsed = true;
+                                    }
+                                }
                             }
                         }
                         sbTemp.AppendLine($@" </tr>");
@@ -181,9 +211,14 @@ namespace CSSPWebToolsTaskRunner.Services
                     sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.StartTide }<br />{ TaskRunnerServiceRes.EndTide }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
-                        string StartTide = GetTideInitial(mwqmRunModel.Tide_Start);
-                        string EndTide = GetTideInitial(mwqmRunModel.Tide_End);
-                        sbTemp.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
+                        bool runUsed = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID).Any() ? true : false;
+
+                        if (runUsed)
+                        {
+                            string StartTide = GetTideInitial(mwqmRunModel.Tide_Start);
+                            string EndTide = GetTideInitial(mwqmRunModel.Tide_End);
+                            sbTemp.AppendLine($@" <td class=""topRightBorder"">{ StartTide }<br />{ EndTide }</td>");
+                        }
                     }
                     sbTemp.AppendLine($@" </tr>");
 
@@ -191,138 +226,153 @@ namespace CSSPWebToolsTaskRunner.Services
                     sbTemp.AppendLine($@" <td class=""topRightBorder"">{ TaskRunnerServiceRes.Rain }(mm)<br />{ TaskRunnerServiceRes.Minus1Day }<br />{ TaskRunnerServiceRes.Minus2Day }<br />{ TaskRunnerServiceRes.Minus3Day }<br />{ TaskRunnerServiceRes.Minus4Day }<br />{ TaskRunnerServiceRes.Minus5Day }</td>");
                     foreach (MWQMRunModel mwqmRunModel in mwqmRunModelList2)
                     {
-                        string sup1 = "";
-                        string sup2 = "";
-                        string sup3 = "";
-                        string sup4 = "";
-                        string sup5 = "";
-                        DateTime Date1 = mwqmRunModel.DateTime_Local.AddDays(-1);
-                        DateTime Date2 = mwqmRunModel.DateTime_Local.AddDays(-2);
-                        DateTime Date3 = mwqmRunModel.DateTime_Local.AddDays(-3);
-                        DateTime Date4 = mwqmRunModel.DateTime_Local.AddDays(-4);
-                        DateTime Date5 = mwqmRunModel.DateTime_Local.AddDays(-5);
+                        bool runUsed = RunSiteInfoList.Where(c => c.RunTVItemID == mwqmRunModel.MWQMRunTVItemID).Any() ? true : false;
 
-                        // RainDay1
-                        for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
+                        if (runUsed)
                         {
-                            if ((from c in climateDataValueModelList
-                                 where c.DateTime_Local.Year == Date1.Year
-                                 && c.DateTime_Local.Month == Date1.Month
-                                 && c.DateTime_Local.Day == Date1.Day
-                                 && c.TotalPrecip_mm_cm != null
-                                 && mwqmRunModel.RainDay1_mm != null
-                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay1_mm
-                                 && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
-                                 select c).Any())
-                            {
-                                sup1 = Letters[i];
-                                if (!ClimateSiteUsedList.Contains(i))
-                                {
-                                    ClimateSiteUsedList.Add(i);
-                                }
-                                break;
-                            }
-                        }
+                            string sup1 = "";
+                            string sup2 = "";
+                            string sup3 = "";
+                            string sup4 = "";
+                            string sup5 = "";
+                            DateTime Date1 = mwqmRunModel.DateTime_Local.AddDays(-1);
+                            DateTime Date2 = mwqmRunModel.DateTime_Local.AddDays(-2);
+                            DateTime Date3 = mwqmRunModel.DateTime_Local.AddDays(-3);
+                            DateTime Date4 = mwqmRunModel.DateTime_Local.AddDays(-4);
+                            DateTime Date5 = mwqmRunModel.DateTime_Local.AddDays(-5);
 
-                        // RainDay2
-                        for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
-                        {
-                            if ((from c in climateDataValueModelList
-                                 where c.DateTime_Local.Year == Date2.Year
-                                 && c.DateTime_Local.Month == Date2.Month
-                                 && c.DateTime_Local.Day == Date2.Day
-                                 && c.TotalPrecip_mm_cm != null
-                                 && mwqmRunModel.RainDay2_mm != null
-                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay2_mm
-                                 && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
-                                 select c).Any())
+                            // RainDay1
+                            for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
                             {
-                                sup2 = Letters[i];
-                                if (!ClimateSiteUsedList.Contains(i))
+                                if ((from c in climateDataValueModelList
+                                     where c.DateTime_Local.Year == Date1.Year
+                                     && c.DateTime_Local.Month == Date1.Month
+                                     && c.DateTime_Local.Day == Date1.Day
+                                     && c.TotalPrecip_mm_cm != null
+                                     && mwqmRunModel.RainDay1_mm != null
+                                     && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay1_mm
+                                     && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
+                                     select c).Any())
                                 {
-                                    ClimateSiteUsedList.Add(i);
+                                    sup1 = Letters[i];
+                                    if (!ClimateSiteUsedList.Contains(i))
+                                    {
+                                        ClimateSiteUsedList.Add(i);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
-                        }
 
-                        // RainDay3
-                        for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
-                        {
-                            if ((from c in climateDataValueModelList
-                                 where c.DateTime_Local.Year == Date3.Year
-                                 && c.DateTime_Local.Month == Date3.Month
-                                 && c.DateTime_Local.Day == Date3.Day
-                                 && c.TotalPrecip_mm_cm != null
-                                 && mwqmRunModel.RainDay3_mm != null
-                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay3_mm
-                                 && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
-                                 select c).Any())
+                            // RainDay2
+                            for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
                             {
-                                sup3 = Letters[i];
-                                if (!ClimateSiteUsedList.Contains(i))
+                                if ((from c in climateDataValueModelList
+                                     where c.DateTime_Local.Year == Date2.Year
+                                     && c.DateTime_Local.Month == Date2.Month
+                                     && c.DateTime_Local.Day == Date2.Day
+                                     && c.TotalPrecip_mm_cm != null
+                                     && mwqmRunModel.RainDay2_mm != null
+                                     && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay2_mm
+                                     && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
+                                     select c).Any())
                                 {
-                                    ClimateSiteUsedList.Add(i);
+                                    sup2 = Letters[i];
+                                    if (!ClimateSiteUsedList.Contains(i))
+                                    {
+                                        ClimateSiteUsedList.Add(i);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
-                        }
 
-                        // RainDay4
-                        for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
-                        {
-                            if ((from c in climateDataValueModelList
-                                 where c.DateTime_Local.Year == Date4.Year
-                                 && c.DateTime_Local.Month == Date4.Month
-                                 && c.DateTime_Local.Day == Date4.Day
-                                 && c.TotalPrecip_mm_cm != null
-                                 && mwqmRunModel.RainDay4_mm != null
-                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay4_mm
-                                 && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
-                                 select c).Any())
+                            // RainDay3
+                            for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
                             {
-                                sup4 = Letters[i];
-                                if (!ClimateSiteUsedList.Contains(i))
+                                if ((from c in climateDataValueModelList
+                                     where c.DateTime_Local.Year == Date3.Year
+                                     && c.DateTime_Local.Month == Date3.Month
+                                     && c.DateTime_Local.Day == Date3.Day
+                                     && c.TotalPrecip_mm_cm != null
+                                     && mwqmRunModel.RainDay3_mm != null
+                                     && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay3_mm
+                                     && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
+                                     select c).Any())
                                 {
-                                    ClimateSiteUsedList.Add(i);
+                                    sup3 = Letters[i];
+                                    if (!ClimateSiteUsedList.Contains(i))
+                                    {
+                                        ClimateSiteUsedList.Add(i);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
-                        }
 
-                        // RainDay5
-                        for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
-                        {
-                            if ((from c in climateDataValueModelList
-                                 where c.DateTime_Local.Year == Date5.Year
-                                 && c.DateTime_Local.Month == Date5.Month
-                                 && c.DateTime_Local.Day == Date5.Day
-                                 && c.TotalPrecip_mm_cm != null
-                                 && mwqmRunModel.RainDay5_mm != null
-                                 && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay5_mm
-                                 && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
-                                 select c).Any())
+                            // RainDay4
+                            for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
                             {
-                                sup5 = Letters[i];
-                                if (!ClimateSiteUsedList.Contains(i))
+                                if ((from c in climateDataValueModelList
+                                     where c.DateTime_Local.Year == Date4.Year
+                                     && c.DateTime_Local.Month == Date4.Month
+                                     && c.DateTime_Local.Day == Date4.Day
+                                     && c.TotalPrecip_mm_cm != null
+                                     && mwqmRunModel.RainDay4_mm != null
+                                     && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay4_mm
+                                     && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
+                                     select c).Any())
                                 {
-                                    ClimateSiteUsedList.Add(i);
+                                    sup4 = Letters[i];
+                                    if (!ClimateSiteUsedList.Contains(i))
+                                    {
+                                        ClimateSiteUsedList.Add(i);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
-                        }
 
-                        string RainDay1 = mwqmRunModel.RainDay1_mm != null ? ((double)mwqmRunModel.RainDay1_mm).ToString("F0") : "--";
-                        string RainDay2 = mwqmRunModel.RainDay2_mm != null ? ((double)mwqmRunModel.RainDay2_mm).ToString("F0") : "--";
-                        string RainDay3 = mwqmRunModel.RainDay3_mm != null ? ((double)mwqmRunModel.RainDay3_mm).ToString("F0") : "--";
-                        string RainDay4 = mwqmRunModel.RainDay4_mm != null ? ((double)mwqmRunModel.RainDay4_mm).ToString("F0") : "--";
-                        string RainDay5 = mwqmRunModel.RainDay5_mm != null ? ((double)mwqmRunModel.RainDay5_mm).ToString("F0") : "--";
-                        sbTemp.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<sup>{ sup1 }</sup><br />{ RainDay2 }<sup>{ sup2 }</sup><br />{ RainDay3 }<sup>{ sup3 }</sup><br />{ RainDay4 }<sup>{ sup4 }</sup><br />{ RainDay5 }<sup>{ sup5 }</sup></td>");
+                            // RainDay5
+                            for (int i = 0, count = climateSiteModelList.Count; i < count; i++)
+                            {
+                                if ((from c in climateDataValueModelList
+                                     where c.DateTime_Local.Year == Date5.Year
+                                     && c.DateTime_Local.Month == Date5.Month
+                                     && c.DateTime_Local.Day == Date5.Day
+                                     && c.TotalPrecip_mm_cm != null
+                                     && mwqmRunModel.RainDay5_mm != null
+                                     && c.TotalPrecip_mm_cm == mwqmRunModel.RainDay5_mm
+                                     && c.ClimateSiteID == climateSiteModelList[i].ClimateSiteID
+                                     select c).Any())
+                                {
+                                    sup5 = Letters[i];
+                                    if (!ClimateSiteUsedList.Contains(i))
+                                    {
+                                        ClimateSiteUsedList.Add(i);
+                                    }
+                                    break;
+                                }
+                            }
+
+                            string RainDay1 = mwqmRunModel.RainDay1_mm != null ? ((double)mwqmRunModel.RainDay1_mm).ToString("F0") : "--";
+                            string RainDay2 = mwqmRunModel.RainDay2_mm != null ? ((double)mwqmRunModel.RainDay2_mm).ToString("F0") : "--";
+                            string RainDay3 = mwqmRunModel.RainDay3_mm != null ? ((double)mwqmRunModel.RainDay3_mm).ToString("F0") : "--";
+                            string RainDay4 = mwqmRunModel.RainDay4_mm != null ? ((double)mwqmRunModel.RainDay4_mm).ToString("F0") : "--";
+                            string RainDay5 = mwqmRunModel.RainDay5_mm != null ? ((double)mwqmRunModel.RainDay5_mm).ToString("F0") : "--";
+                            sbTemp.AppendLine($@" <td class=""topRightBorder"">&nbsp;<br />{ RainDay1 }<sup>{ sup1 }</sup><br />{ RainDay2 }<sup>{ sup2 }</sup><br />{ RainDay3 }<sup>{ sup3 }</sup><br />{ RainDay4 }<sup>{ sup4 }</sup><br />{ RainDay5 }<sup>{ sup5 }</sup></td>");
+                        }
                     }
                     sbTemp.AppendLine($@" </tr>");
 
                     sbTemp.AppendLine($@" </table>");
-                    sbTemp.AppendLine($@" <p><span class=""textGreen"">({ TaskRunnerServiceRes.DataUsedForStatistics })</span>");
+                    //sbTemp.AppendLine($@" <p><span class=""textGreen"">({ TaskRunnerServiceRes.DataUsedForStatistics })</span>");
+                    sbTemp.AppendLine($@" <p><span>");
+                    if (hasNoData)
+                    {
+                        sbTemp.AppendLine($@" -- ({TaskRunnerServiceRes.NoData})</span>");
+                    }
+                    if (hasNotUsed)
+                    {
+                        sbTemp.AppendLine($@" NU ({TaskRunnerServiceRes.NotUsed})");
+                    }
+                    sbTemp.AppendLine($@" </span>");
                     sbTemp.AppendLine($@" <span>&nbsp;&nbsp;&nbsp;{ TaskRunnerServiceRes.ClimateSite }</span>: ");
                     foreach (int i in ClimateSiteUsedList)
                     {
@@ -357,6 +407,6 @@ namespace CSSPWebToolsTaskRunner.Services
             sw.Close();
 
             return retBool;
-        }  
+        }
     }
 }

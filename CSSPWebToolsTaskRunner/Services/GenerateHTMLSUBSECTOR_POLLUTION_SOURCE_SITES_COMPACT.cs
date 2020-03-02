@@ -70,6 +70,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
 
+            sbTemp.AppendLine($@"|||TableCaption| { TaskRunnerServiceRes.PollutionSourcesSiteInventory }|||");
+
             sbTemp.AppendLine($@"<table class=""PolSourceSiteCompact"">");
             sbTemp.AppendLine($@"   <tr> ");
             sbTemp.AppendLine($@"       <th class=""allBordersNoWrap"">{ TaskRunnerServiceRes.Site }</th>");

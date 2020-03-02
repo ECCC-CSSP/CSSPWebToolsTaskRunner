@@ -3616,6 +3616,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No data.
+        /// </summary>
+        public static string NoData {
+            get {
+                return ResourceManager.GetString("NoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Node.
         /// </summary>
         public static string Node {
@@ -3738,6 +3747,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string NotShown {
             get {
                 return ResourceManager.GetString("NotShown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not used.
+        /// </summary>
+        public static string NotUsed {
+            get {
+                return ResourceManager.GetString("NotUsed", resourceCulture);
             }
         }
         
@@ -4206,6 +4224,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string PollutionSourceSites {
             get {
                 return ResourceManager.GetString("PollutionSourceSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pollution sources site inventory.
+        /// </summary>
+        public static string PollutionSourcesSiteInventory {
+            get {
+                return ResourceManager.GetString("PollutionSourcesSiteInventory", resourceCulture);
             }
         }
         

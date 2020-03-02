@@ -52,7 +52,7 @@
 
 //            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 40);
 
-//            sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.MWQMSitesInformation }|||");
+//            sbTemp.AppendLine($@"|||TableCaption| { TaskRunnerServiceRes.MWQMSitesInformation }|||");
 
 //            sbTemp.AppendLine($@" <table cellpadding=""5"" class=""textAlignCenter"">");
 //            sbTemp.AppendLine($@" <tr>");

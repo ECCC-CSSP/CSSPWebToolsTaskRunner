@@ -135,7 +135,7 @@ namespace CSSPWebToolsTaskRunner.Services
             chartPage.Export(fiImageNumberOfRunsByYearStat.FullName, "PNG", false);
 
             sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfRunsByYearStat.FullName }|width,400|height,150|||</div>");
-            sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 100.100 { TaskRunnerServiceRes.NumberOfMWQMRunsByYear }|||</div>");
+            sbTemp.AppendLine($@"<div>|||FigureCaption| { TaskRunnerServiceRes.NumberOfMWQMRunsByYear }|||</div>");
 
 
             Percent = 80;

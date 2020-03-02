@@ -127,7 +127,7 @@ namespace CSSPWebToolsTaskRunner.Services
             chartPage.Export(fiImageNumberOfSamplesByYearStat.FullName, "PNG", false);
 
             sbTemp.AppendLine($@"<div class=""textAlignCenter"">|||Image|FileName,{ fiImageNumberOfSamplesByYearStat.FullName }|width,400|height,150|||</div>");
-            sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 200.200 { TaskRunnerServiceRes.NumberOfSamplesByYear }|||</div>");
+            sbTemp.AppendLine($@"<div>|||FigureCaption| { TaskRunnerServiceRes.NumberOfSamplesByYear }|||</div>");
 
             Percent = 80;
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);

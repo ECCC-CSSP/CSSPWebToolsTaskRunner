@@ -2178,4 +2178,13 @@
   <data name="VerticalAngle" xml:space="preserve">
     <value>Vertical angle</value>
   </data>
+  <data name="NoData" xml:space="preserve">
+    <value>No data</value>
+  </data>
+  <data name="NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="PollutionSourcesSiteInventory" xml:space="preserve">
+    <value>Pollution sources site inventory</value>
+  </data>
 </root>

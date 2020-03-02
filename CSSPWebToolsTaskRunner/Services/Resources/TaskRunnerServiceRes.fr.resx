@@ -2176,4 +2176,13 @@ Animation estimée des chemins de drogue</value>
   <data name="VerticalAngle" xml:space="preserve">
     <value>Angle vertical</value>
   </data>
+  <data name="NoData" xml:space="preserve">
+    <value>Aucune donnée</value>
+  </data>
+  <data name="NotUsed" xml:space="preserve">
+    <value>Non utilisée</value>
+  </data>
+  <data name="PollutionSourcesSiteInventory" xml:space="preserve">
+    <value>Inventaire des sites de source de pollution</value>
+  </data>
 </root>

@@ -49,7 +49,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<MWQMRunModel> mwqmRunModelList = _MWQMRunService.GetMWQMRunModelListWithSubsectorTVItemIDDB(TVItemID);
             List<MWQMSampleModel> mwqmSampleModelList = _MWQMSampleService.GetMWQMSampleModelListWithSubsectorTVItemIDDB(TVItemID);
 
-            sbTemp.AppendLine($@"|||TableCaption|: { TaskRunnerServiceRes.MWQMSiteSampleDataAvailability  }|||");
+            sbTemp.AppendLine($@"|||TableCaption| { TaskRunnerServiceRes.MWQMSiteSampleDataAvailability  }|||");
 
             sbTemp.AppendLine($@" <table class=""DataAvailabilityTableClass"">");
             sbTemp.AppendLine($@" <tr>");

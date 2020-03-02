@@ -82,13 +82,13 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (Year == FileYear)
                 {
                     sbTemp.AppendLine($@"<div>|||Image|FileName,{ FileFoundName }|width,600|height,440|||</div>");
-                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 8.2.0: { TaskRunnerServiceRes.RecommendedShellfishGrowingAreaClassification }|||</div>");
+                    sbTemp.AppendLine($@"<div>|||FigureCaption| { TaskRunnerServiceRes.RecommendedShellfishGrowingAreaClassification }|||</div>");
                 }
                 else
                 {
                     sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.From } { FileYear } { TaskRunnerServiceRes.Report }. ({ TaskRunnerServiceRes.Below })</p>");
                     sbTemp.AppendLine($@"<div>|||Image|FileName,{ FileFoundName }|width,600|height,440|||</div>");
-                    sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 8.2.0: { TaskRunnerServiceRes.RecommendedShellfishGrowingAreaClassification }|||</div>");
+                    sbTemp.AppendLine($@"<div>|||FigureCaption| { TaskRunnerServiceRes.RecommendedShellfishGrowingAreaClassification }|||</div>");
                     sbTemp.Append($@"<p class=""bgyellow"">{ TaskRunnerServiceRes.From } { FileYear } { TaskRunnerServiceRes.Report }. ({ TaskRunnerServiceRes.Above })</p>");
                 }
             }
@@ -125,7 +125,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
 
                 sbTemp.AppendLine($@"<div>|||Image|FileName,{ googleMapToPNG.DirName }{ googleMapToPNG.FileNameFullAnnotated }|width,400|height,400|||</div>");
-                sbTemp.AppendLine($@"<div>|||FigureCaption|Figure 8.2.0: { TaskRunnerServiceRes.RecommendedShellfishGrowingAreaClassification }|||</div>");
+                sbTemp.AppendLine($@"<div>|||FigureCaption| { TaskRunnerServiceRes.RecommendedShellfishGrowingAreaClassification }|||</div>");
             }
 
             Percent = 70;
