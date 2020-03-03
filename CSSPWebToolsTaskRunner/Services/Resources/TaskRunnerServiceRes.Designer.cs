@@ -2788,7 +2788,7 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Location of survey area.
+        ///   Looks up a localized string similar to Location of Survey Area.
         /// </summary>
         public static string LocationOfSurveyArea {
             get {

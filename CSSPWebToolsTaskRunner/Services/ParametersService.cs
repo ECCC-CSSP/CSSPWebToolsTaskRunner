@@ -658,12 +658,18 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         else if (textFound.StartsWith("|||TableCaption|"))
                         {
-
                             appWord.Selection.Text = "";
 
                             textFound = textFound.Substring("|||TableCaption|".Length).Replace("|||", "");
 
                             appWord.Selection.Range.InsertCaption("Table", textFound, "", WdCaptionPosition.wdCaptionPositionBelow, 0);
+                            appWord.Selection.HomeKey(WdUnits.wdLine);
+                            appWord.Selection.EndKey(WdUnits.wdLine, WdMovementType.wdExtend);
+                            appWord.Selection.Font.Italic = 0;
+                            appWord.Selection.Font.Name = "Arial";
+                            appWord.Selection.Font.Size = 11;
+                            appWord.Selection.Font.Color = 0;
+                            appWord.Selection.MoveRight();
                             //appWord.Selection.Range.InsertCaption("Table", textFound, "InsertCaption1", WdCaptionPosition.wdCaptionPositionBelow, 0);
 
                             //appWord.Selection.HomeKey();
@@ -681,6 +687,13 @@ namespace CSSPWebToolsTaskRunner.Services
                             textFound = textFound.Substring("|||FigureCaption|".Length).Replace("|||", "");
 
                             appWord.Selection.Range.InsertCaption("Figure", textFound, "", WdCaptionPosition.wdCaptionPositionBelow, 0);
+                            appWord.Selection.HomeKey(WdUnits.wdLine);
+                            appWord.Selection.EndKey(WdUnits.wdLine, WdMovementType.wdExtend);
+                            appWord.Selection.Font.Italic = 0;
+                            appWord.Selection.Font.Name = "Arial";
+                            appWord.Selection.Font.Size = 11;
+                            appWord.Selection.Font.Color = 0;
+                            appWord.Selection.MoveRight();
                             //appWord.Selection.Range.InsertCaption("Figure", textFound, "InsertCaption2", WdCaptionPosition.wdCaptionPositionBelow, 0);
 
                             //appWord.Selection.HomeKey();
