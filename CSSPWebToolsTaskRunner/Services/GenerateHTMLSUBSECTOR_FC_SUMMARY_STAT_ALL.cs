@@ -172,29 +172,29 @@ namespace CSSPWebToolsTaskRunner.Services
                 sbTemp.AppendLine(@"<table class=""FCStatTableClass"">");
                 sbTemp.AppendLine(@"    <thead>");
                 sbTemp.AppendLine(@"        <tr>");
-                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Site }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.Site }&nbsp;&nbsp;</th>");
                 if (string.IsNullOrWhiteSpace(HideClassificationColumn))
                 {
-                    sbTemp.AppendLine($@"            <th></th>");
+                    sbTemp.AppendLine($@"            <th class=""BottomBorder""></th>");
                 }
-                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Samples }&nbsp;&nbsp;</th>");
-                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Period }&nbsp;&nbsp;</th>");
-                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.MinFC }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.Samples }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.Period }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.MinFC }&nbsp;&nbsp;</th>");
                 if (string.IsNullOrWhiteSpace(HideMaxFCColumn))
                 {
-                    sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.MaxFC }&nbsp;&nbsp;</th>");
+                    sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.MaxFC }&nbsp;&nbsp;</th>");
                 }
-                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.GMean }&nbsp;&nbsp;</th>");
-                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.Median }&nbsp;&nbsp;</th> ");
-                sbTemp.AppendLine($@"            <th>{ TaskRunnerServiceRes.P90 }&nbsp;&nbsp;</th>");
-                sbTemp.AppendLine($@"            <th>% &gt; 43&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.GMean }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.Median }&nbsp;&nbsp;</th> ");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">{ TaskRunnerServiceRes.P90 }&nbsp;&nbsp;</th>");
+                sbTemp.AppendLine($@"            <th class=""BottomBorder"">% &gt; 43&nbsp;&nbsp;</th>");
                 if (string.IsNullOrWhiteSpace(HideOver260Column))
                 {
-                    sbTemp.AppendLine($@"            <th>% &gt; 260&nbsp;&nbsp;</th>");
+                    sbTemp.AppendLine($@"            <th class=""BottomBorder"">% &gt; 260&nbsp;&nbsp;</th>");
                 }
                 if (string.IsNullOrWhiteSpace(HideAnalysisColorAndLetterColumn))
                 {
-                    sbTemp.AppendLine($@"            <th></th>");
+                    sbTemp.AppendLine($@"            <th class=""BottomBorder""></th>");
                 }
                 sbTemp.AppendLine(@"        </tr>");
                 sbTemp.AppendLine(@"    </thead>");
@@ -436,7 +436,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         Letter = mwqmSampleAnalysisForSiteModelToUseList.Count.ToString();
                         sbTemp.AppendLine(@"        <tr>");
-                        sbTemp.AppendLine($@"            <td>{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
+                        sbTemp.AppendLine($@"            <td class=""RightBorder"">{ mwqmSiteAnalysisModel.MWQMSiteTVText }</td>");
                         if (string.IsNullOrWhiteSpace(HideClassificationColumn))
                         {
                             sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");
@@ -621,7 +621,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
 
                         sbTemp.AppendLine(@"        <tr>");
-                        sbTemp.AppendLine($@"            <td>{ siteNameWithoutZeros }</td>");
+                        sbTemp.AppendLine($@"            <td class=""RightBorder"">{ siteNameWithoutZeros }</td>");
                         if (string.IsNullOrWhiteSpace(HideClassificationColumn))
                         {
                             sbTemp.AppendLine($@"            <td class=""{ classificationColor }"">{ classificationLetter }</td>");

@@ -541,7 +541,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
                     appWord.Selection.Font.Name = "Arial";
-                    appWord.Selection.Font.Size = 12;
+                    appWord.Selection.Font.Size = 14;
                     appWord.Selection.Text = TaskRunnerServiceRes.ListOfFigures;
                     appWord.Selection.Start = appWord.Selection.End;
                     appWord.Selection.InsertParagraph();
@@ -577,7 +577,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 if (appWord.Selection.Find.Execute(SearchMarker))
                 {
                     appWord.Selection.Font.Name = "Arial";
-                    appWord.Selection.Font.Size = 12;
+                    appWord.Selection.Font.Size = 14;
                     appWord.Selection.Text = TaskRunnerServiceRes.ListOfTables;
                     appWord.Selection.Start = appWord.Selection.End;
                     appWord.Selection.InsertParagraph();

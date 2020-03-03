@@ -242,8 +242,8 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"   </p>");
             sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
             sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||PROVINCE_INITIAL||| { TaskRunnerServiceRes.ShellfishGrowingArea}</strong></p>");
-            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||SUBSECTOR_NAME_SHORT|||</strong></p>");
-            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||SUBSECTOR_NAME_TEXT|||</strong></p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;"">|||SUBSECTOR_NAME_SHORT|||</p>");
+            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;"">|||SUBSECTOR_NAME_TEXT|||</p>");
             sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
             sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Authors }:</strong>&nbsp;|||{ProvInitCap}_AUTHORS|||</p>");
             sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ReportID }:</strong>&nbsp;R-|||STATISTICS_LAST_YEAR|||&nbsp;({ SubsectorShort })&nbsp;Created&nbsp;{ DateTime.Now.ToString("MMMM dd, yyyy") }</p>");

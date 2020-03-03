@@ -592,7 +592,7 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ClimateSite.
+        ///   Looks up a localized string similar to Climate Site.
         /// </summary>
         public static string ClimateSite {
             get {

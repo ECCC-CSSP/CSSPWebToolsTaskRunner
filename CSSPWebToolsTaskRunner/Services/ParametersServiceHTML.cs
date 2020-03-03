@@ -430,6 +430,12 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    width: 100%;");
             sb.AppendLine(@"    border-collapse: collapse;");
             sb.AppendLine(@"}");
+            sb.AppendLine(@"th.BottomBorder {");
+            sb.AppendLine(@"    border-bottom: 1px solid black;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"td.RightBorder {");
+            sb.AppendLine(@"    border-right: 1px solid black;");
+            sb.AppendLine(@"}");
             sb.AppendLine(@"table.PolSourceSiteCompact {");
             sb.AppendLine(@"    font: normal 10px arial, helvetica, sans-serif;");
             sb.AppendLine(@"    border: 1px solid black;");
