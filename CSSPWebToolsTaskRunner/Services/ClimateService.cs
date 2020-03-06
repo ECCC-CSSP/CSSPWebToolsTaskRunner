@@ -3768,7 +3768,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                                    where c.ClimateID == StationNumber
                                                    select c).FirstOrDefault();
 
-                        if (climateSite2 != null && climateSite2.DailyEndDate_Local > ObservationDateAndTime)
+                        if (climateSite2 != null && climateSite2.DailyEndDate_Local < ObservationDateAndTime)
                         {
 
                             using (CSSPDBEntities db2 = new CSSPDBEntities())
