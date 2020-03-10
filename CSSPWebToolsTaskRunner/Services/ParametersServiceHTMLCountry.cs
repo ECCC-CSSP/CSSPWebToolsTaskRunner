@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "CountryTestDocx":
+                case "CountryTestFRDOCX":
+                case "CountryTestENDOCX":
                     {
                         if (!GenerateHTMLCountry_CountryTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "CountryTestExcel":
+                case "CountryTestExcelFRXLSX":
+                case "CountryTestExcelENXLSX":
                     {
                         if (!GenerateHTMLCountry_CountryTestXlsx())
                         {

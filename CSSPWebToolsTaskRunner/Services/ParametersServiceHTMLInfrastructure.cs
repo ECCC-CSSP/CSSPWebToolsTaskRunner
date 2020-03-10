@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "InfrastructureTestDocx":
+                case "InfrastructureTestFRDOCX":
+                case "InfrastructureTestENDOCX":
                     {
                         if (!GenerateHTMLInfrastructure_InfrastructureTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "InfrastructureTestExcel":
+                case "InfrastructureTestExcelFRXLSX":
+                case "InfrastructureTestExcelENXLSX":
                     {
                         if (!GenerateHTMLInfrastructure_InfrastructureTestXlsx())
                         {

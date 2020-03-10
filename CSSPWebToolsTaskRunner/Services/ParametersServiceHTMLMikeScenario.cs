@@ -25,7 +25,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "MikeScenarioParametersAtOnePointXLSX":
+                case "MikeScenarioParametersAtOnePointFRXLSX":
+                case "MikeScenarioParametersAtOnePointENXLSX":
                     {
                         if (!GenerateHTMLMikeScenario_MikeScenarioParametersAtOnePointXLSX())
                         {

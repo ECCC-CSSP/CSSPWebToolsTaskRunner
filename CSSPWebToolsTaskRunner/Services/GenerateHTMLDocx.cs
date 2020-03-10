@@ -51,7 +51,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<ReportSectionModel> reportSectionModelList = new List<ReportSectionModel>();
             if (reportSectionModel.ReportSectionID == 0)
             {
-                reportSectionModelList = _ReportSectionService.GetReportSectionModelListWithReportTypeIDAndTVItemIDAndYearDB(reportTypeModel.ReportTypeID, null, null).Where(c => c.ParentReportSectionID == null).OrderBy(c => c.Ordinal).ToList();
+                reportSectionModelList = _ReportSectionService.GetReportSectionModelListWithReportTypeIDAndTVItemIDAndYearDB(reportTypeModel.ReportTypeID, reportTypeModel.Language, null, null).Where(c => c.ParentReportSectionID == null).OrderBy(c => c.Ordinal).ToList();
             }
             else
             {
@@ -77,7 +77,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         sb.Append(reportSectionModelTemp.ReportSectionText);
                     }
 
-                    List<ReportSectionModel> reportSectionModelAllChildrenList = _ReportSectionService.GetReportSectionModelListWithParentReportSectionIDDB(reportSectionModelTemp.ReportSectionID).OrderBy(c => c.Ordinal).ToList();
+                    List<ReportSectionModel> reportSectionModelAllChildrenList = _ReportSectionService.GetReportSectionModelListWithParentReportSectionIDDB(reportSectionModelTemp.ReportSectionID, reportSectionModelTemp.Language).OrderBy(c => c.Ordinal).ToList();
 
                     ReportSectionModel reportSectionModelNonStaticChild = (from c in reportSectionModelAllChildrenList
                                                                            where c.TVItemID == TVItemID

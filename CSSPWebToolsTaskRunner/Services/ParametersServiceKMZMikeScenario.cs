@@ -30,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "MikeScenarioBoundaryConditionsKMZ":
+                case "MikeScenarioBoundaryConditionsFRKMZ":
+                case "MikeScenarioBoundaryConditionsENKMZ":
                     {
                         if (!GenerateMikeScenarioBoundaryConditionsKMZ())
                         {
@@ -38,7 +39,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeScenarioMeshKMZ":
+                case "MikeScenarioMeshFRKMZ":
+                case "MikeScenarioMeshENKMZ":
                     {
                         if (!GenerateMikeScenarioMeshKMZ())
                         {
@@ -46,7 +48,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeScenarioPollutionLimitKMZ":
+                case "MikeScenarioPollutionLimitFRKMZ":
+                case "MikeScenarioPollutionLimitENKMZ":
                     {
                         if (!GenerateMikeScenarioPollutionLimitKMZ())
                         {
@@ -54,7 +57,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeScenarioPollutionAnimationKMZ":
+                case "MikeScenarioPollutionAnimationFRKMZ":
+                case "MikeScenarioPollutionAnimationENKMZ":
                     {
                         if (!GenerateMikeScenarioPollutionAnimationKMZ())
                         {
@@ -62,7 +66,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeScenarioStudyAreaKMZ":
+                case "MikeScenarioStudyAreaFRKMZ":
+                case "MikeScenarioStudyAreaENKMZ":
                     {
                         if (!GenerateMikeScenarioStudyAreaKMZ())
                         {
@@ -70,7 +75,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeScenarioCurrentsAnimationKMZ":
+                case "MikeScenarioCurrentsAnimationFRKMZ":
+                case "MikeScenarioCurrentsAnimationENKMZ":
                     {
                         if (!GenerateMikeScenarioCurrentsAnimationKMZ())
                         {
@@ -78,7 +84,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeScenarioEstimatedDroguePathsAnimationKMZ":
+                case "MikeScenarioEstimatedDroguePathsAnimationFRKMZ":
+                case "MikeScenarioEstimatedDroguePathsAnimationENKMZ":
                     {
                         if (!GenerateMikeScenarioEstimatedDroguePathsAnimationKMZ())
                         {
@@ -86,7 +93,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeScenarioTestKMZ":
+                case "MikeScenarioTestFRKMZ":
+                case "MikeScenarioTestENKMZ":
                     {
                         if (!GenerateKMZMikeScenario_MikeScenarioTestKMZ())
                         {

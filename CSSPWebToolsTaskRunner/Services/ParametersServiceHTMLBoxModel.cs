@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "BoxModelTestDocx":
+                case "BoxModelTestFRDOCX":
+                case "BoxModelTestENDOCX":
                     {
                         if (!GenerateHTMLBoxModel_BoxModelTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "BoxModelTestExcel":
+                case "BoxModelTestExcelFRXLSX":
+                case "BoxModelTestExcelENXLSX":
                     {
                         if (!GenerateHTMLBoxModel_BoxModelTestXlsx())
                         {

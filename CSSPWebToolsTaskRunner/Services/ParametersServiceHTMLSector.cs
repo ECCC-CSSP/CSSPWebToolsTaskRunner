@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "SectorTestDocx":
+                case "SectorTestFRDOCX":
+                case "SectorTestENDOCX":
                     {
                         if (!GenerateHTMLSector_SectorTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "SectorTestExcel":
+                case "SectorTestExcelFRXLSX":
+                case "SectorTestExcelENXLSX":
                     {
                         if (!GenerateHTMLSector_SectorTestXlsx())
                         {

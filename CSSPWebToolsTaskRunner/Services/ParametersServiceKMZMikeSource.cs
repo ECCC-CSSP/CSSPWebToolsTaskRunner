@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "MikeSourceTestKMZ":
+                case "MikeSourceTestFRKMZ":
+                case "MikeSourceTestENKMZ":
                     {
                         if (!GenerateKMZMikeSource_MikeSourceTestKMZ(fi, sbKMZ, parameters, reportTypeModel))
                         {

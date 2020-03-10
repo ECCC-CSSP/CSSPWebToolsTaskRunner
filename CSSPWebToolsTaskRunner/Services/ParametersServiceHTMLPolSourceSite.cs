@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "PolSourceSiteTestDocx":
+                case "PolSourceSiteTestFRDOCX":
+                case "PolSourceSiteTestENDOCX":
                     {
                         if (!GenerateHTMLPolSourceSite_PolSourceSiteTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "PolSourceSiteTestExcel":
+                case "PolSourceSiteTestExcelFRXLSX":
+                case "PolSourceSiteTestExcelENXLSX":
                     {
                         if (!GenerateHTMLPolSourceSite_PolSourceSiteTestXlsx())
                         {

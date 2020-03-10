@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "VisualPlumesScenarioTestDocx":
+                case "VisualPlumesScenarioTestFRDOCX":
+                case "VisualPlumesScenarioTestENDOCX":
                     {
                         if (!GenerateHTMLVisualPlumesScenario_VisualPlumesScenarioTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "VisualPlumesScenarioTestExcel":
+                case "VisualPlumesScenarioTestExcelFRXLSX":
+                case "VisualPlumesScenarioTestExcelENXLSX":
                     {
                         if (!GenerateHTMLVisualPlumesScenario_VisualPlumesScenarioTestXlsx())
                         {

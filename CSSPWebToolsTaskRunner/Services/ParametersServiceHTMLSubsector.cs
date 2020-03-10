@@ -22,11 +22,15 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "TestObjectsDocx":
-                case "FCSummaryStatDocx":
-                case "ReEvaluationDocx":
-                case "AnnualReviewDocx":
-                //case "SubsectorMunicipalityDocx":
+                case "TestObjectsFRDOCX":
+                case "TestObjectsENDOCX":
+                case "FCSummaryStatFRDOCX":
+                case "FCSummaryStatENDOCX":
+                case "ReEvaluationFRDOCX":
+                case "ReEvaluationENDOCX":
+                case "AnnualReviewFRDOCX":
+                case "AnnualReviewENDOCX":
+                    //case "SubsectorMunicipalityDocx":
                     {
                         if (!GenerateHTMLDocx())
                         {
@@ -34,7 +38,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "FCSummaryStatXlsx":
+                case "FCSummaryStatFRXLSX":
+                case "FCSummaryStatENXLSX":
                     {
                         if (!GenerateHTMLSubsector_SubsectorTestXlsx())
                         {

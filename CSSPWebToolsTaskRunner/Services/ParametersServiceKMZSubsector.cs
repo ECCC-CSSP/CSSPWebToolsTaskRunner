@@ -26,7 +26,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "SubsectorInformationKMZ":
+                case "SubsectorInformationFRKMZ":
+                case "SubsectorInformationENKMZ":
                     {
                         if (!GenerateSubsectorInformationKMZ())
                         {

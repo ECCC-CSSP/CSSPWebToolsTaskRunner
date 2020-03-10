@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "MikeSourceTestDocx":
+                case "MikeSourceTestFRDOCX":
+                case "MikeSourceTestENDOCX":
                     {
                         if (!GenerateHTMLMikeSource_MikeSourceTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MikeSourceTestExcel":
+                case "MikeSourceTestExcelFRXLSX":
+                case "MikeSourceTestExcelENXLSX":
                     {
                         if (!GenerateHTMLMikeSource_MikeSourceTestXlsx())
                         {

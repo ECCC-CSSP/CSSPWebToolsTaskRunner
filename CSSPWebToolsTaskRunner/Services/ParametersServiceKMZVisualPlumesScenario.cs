@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "VisualPlumesScenarioTestKMZ":
+                case "VisualPlumesScenarioTestFRKMZ":
+                case "VisualPlumesScenarioTestENKMZ":
                     {
                         if (!GenerateKMZVisualPlumesScenario_VisualPlumesScenarioTestKMZ(fi, sbKMZ, parameters, reportTypeModel))
                         {

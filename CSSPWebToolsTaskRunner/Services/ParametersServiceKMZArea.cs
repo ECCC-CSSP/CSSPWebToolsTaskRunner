@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "AreaTestKMZ":
+                case "AreaTestFRKMZ":
+                case "AreaTestENKMZ":
                     {
                         if (!GenerateKMZArea_AreaTestKMZ(fi, sbKMZ, parameters, reportTypeModel))
                         {

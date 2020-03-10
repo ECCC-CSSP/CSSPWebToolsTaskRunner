@@ -38,7 +38,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             switch (reportTypeModel.UniqueCode)
             {
-                case "MunicipalityTestDocx":
+                case "MunicipalityTestFRDOCX":
+                case "MunicipalityTestENDOCX":
                     {
                         if (!GenerateHTMLMunicipality_MunicipalityTestDocx())
                         {
@@ -46,7 +47,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MunicipalityHighestAndLowestMonthlyTidesXLSX":
+                case "MunicipalityHighestAndLowestMonthlyTidesFRXLSX":
+                case "MunicipalityHighestAndLowestMonthlyTidesENXLSX":
                     {
                         if (!GenerateHTMLMunicipality_MunicipalityHighestAndLowestMonthlyTidesXLSX())
                         {

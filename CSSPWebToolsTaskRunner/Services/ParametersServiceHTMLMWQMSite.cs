@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "MWQMSiteTestDocx":
+                case "MWQMSiteTestFRDOCX":
+                case "MWQMSiteTestENDOCX":
                     {
                         if (!GenerateHTMLMWQMSite_MWQMSiteTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "MWQMSiteTestExcel":
+                case "MWQMSiteTestExcelFRXLSX":
+                case "MWQMSiteTestExcelENXLSX":
                     {
                         if (!GenerateHTMLMWQMSite_MWQMSiteTestXlsx())
                         {

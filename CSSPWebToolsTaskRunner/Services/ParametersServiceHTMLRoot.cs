@@ -21,7 +21,8 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             switch (reportTypeModel.UniqueCode)
             {
-                case "RootTestDocx":
+                case "RootTestFRDOCX":
+                case "RootTestENDOCX":
                     {
                         if (!GenerateHTMLRoot_RootTestDocx())
                         {
@@ -29,7 +30,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
-                case "RootTestExcel":
+                case "RootTestExcelFRXLSX":
+                case "RootTestExcelENXLSX":
                     {
                         if (!GenerateHTMLRoot_RootTestXlsx())
                         {
