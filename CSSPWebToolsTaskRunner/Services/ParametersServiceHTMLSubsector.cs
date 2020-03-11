@@ -30,7 +30,6 @@ namespace CSSPWebToolsTaskRunner.Services
                 case "ReEvaluationENDOCX":
                 case "AnnualReviewFRDOCX":
                 case "AnnualReviewENDOCX":
-                    //case "SubsectorMunicipalityDocx":
                     {
                         if (!GenerateHTMLDocx())
                         {

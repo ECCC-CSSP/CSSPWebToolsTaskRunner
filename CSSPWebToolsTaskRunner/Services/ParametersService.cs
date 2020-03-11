@@ -14,6 +14,8 @@ using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Services;
 using Microsoft.Office.Interop.Word;
+using System.Threading;
+using System.Globalization;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -180,6 +182,19 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
+            if (reportTypeModel.Language == LanguageEnum.fr)
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-CA");
+                _TaskRunnerBaseService._BWObj.appTaskModel.Language = LanguageEnum.fr;
+            }
+            else
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-CA");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
+                _TaskRunnerBaseService._BWObj.appTaskModel.Language = LanguageEnum.en;
+            }
+
             // doing TVItemID
             TVItemIDText = GetParameters("TVItemID", ParamValueList);
 
@@ -226,9 +241,9 @@ namespace CSSPWebToolsTaskRunner.Services
             }
 
             DateTime CD = DateTime.Now;
-            string Language = "_" + _TaskRunnerBaseService._BWObj.appTaskModel.Language;
+            //string Language = "_" + _TaskRunnerBaseService._BWObj.appTaskModel.Language;
 
-            string DateText = "_" + CD.Year.ToString() +
+            string DateText = CD.Year.ToString() +
                 "_" + (CD.Month > 9 ? CD.Month.ToString() : "0" + CD.Month.ToString()) +
                 "_" + (CD.Day > 9 ? CD.Day.ToString() : "0" + CD.Day.ToString()) +
                 "_" + (CD.Hour > 9 ? CD.Hour.ToString() : "0" + CD.Hour.ToString()) +
@@ -239,14 +254,14 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".html");
+            fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName.Replace("{datecreated}", DateText) + ".html");
 
             if (fi.Exists)
             {
                 try
                 {
                     fi.Delete();
-                    fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName + DateText + Language + ".html");
+                    fi = new FileInfo(ServerFilePath + reportTypeModel.StartOfFileName.Replace("{datecreated}", DateText) + ".html");
                 }
                 catch (Exception ex)
                 {
