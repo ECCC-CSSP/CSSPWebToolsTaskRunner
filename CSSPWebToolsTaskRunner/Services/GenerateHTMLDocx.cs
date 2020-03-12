@@ -51,7 +51,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<ReportSectionModel> reportSectionModelList = new List<ReportSectionModel>();
             if (reportSectionModel.ReportSectionID == 0)
             {
-                reportSectionModelList = _ReportSectionService.GetReportSectionModelListWithReportTypeIDAndTVItemIDAndYearDB(reportTypeModel.ReportTypeID, reportTypeModel.Language, null, null).Where(c => c.ParentReportSectionID == null).OrderBy(c => c.Ordinal).ToList();
+                reportSectionModelList = _ReportSectionService.GetReportSectionModelListWithReportTypeIDAndTVItemIDAndYearDB(reportTypeModel.ReportTypeID, null, null).Where(c => c.ParentReportSectionID == null).OrderBy(c => c.Ordinal).ToList();
             }
             else
             {
