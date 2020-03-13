@@ -13,6 +13,8 @@ using CSSPDBDLL.Services;
 using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using System.Windows.Forms;
+using System.Threading;
+using System.Globalization;
 //using System.Web.Helpers;
 
 namespace CSSPWebToolsTaskRunner.Services
@@ -241,12 +243,26 @@ namespace CSSPWebToolsTaskRunner.Services
             sbTemp.AppendLine($@"       <strong>{ TaskRunnerServiceRes.ReEvaluationReport }</strong>&nbsp;|||STATISTICS_LAST_YEAR|||");
             sbTemp.AppendLine($@"   </p>");
             sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
-            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||PROVINCE_INITIAL||| { TaskRunnerServiceRes.ShellfishGrowingArea}</strong></p>");
+            if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fr")
+            {
+                sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ShellfishGrowingArea} (|||PROVINCE_INITIAL|||)</strong></p>");
+            }
+            else
+            {
+                sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>|||PROVINCE_INITIAL||| { TaskRunnerServiceRes.ShellfishGrowingArea}</strong></p>");
+            }
             sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;"">|||SUBSECTOR_NAME_SHORT|||</p>");
             sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;"">|||SUBSECTOR_NAME_TEXT|||</p>");
             sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
             sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.Authors }:</strong>&nbsp;|||{ProvInitCap}_AUTHORS|||</p>");
-            sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ReportID }:</strong>&nbsp;R-|||STATISTICS_LAST_YEAR|||&nbsp;({ SubsectorShort })&nbsp;Created&nbsp;{ DateTime.Now.ToString("MMMM dd, yyyy") }</p>");
+            if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fr")
+            {
+                sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ReportID }:</strong>&nbsp;RE-|||STATISTICS_LAST_YEAR|||&nbsp;({ SubsectorShort })&nbsp;{ TaskRunnerServiceRes.Created }&nbsp;{ DateTime.Now.ToString("dd MMMM, yyyy") }</p>");
+            }
+            else
+            {
+                sbTemp.AppendLine($@"   <p class=""textAlignLeft"" style=""font-size: 1.2em;""><strong>{ TaskRunnerServiceRes.ReportID }:</strong>&nbsp;RE-|||STATISTICS_LAST_YEAR|||&nbsp;({ SubsectorShort })&nbsp;{ TaskRunnerServiceRes.Created }&nbsp;{ DateTime.Now.ToString("MMMM dd, yyyy") }</p>");
+            }
             sbTemp.AppendLine($@"   <hr style=""color: blue"" />");
             sbTemp.AppendLine($@"   <p>&nbsp;</p>");
             sbTemp.AppendLine($@" </div>");

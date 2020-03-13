@@ -472,7 +472,7 @@
     <value>Animation des courants</value>
   </data>
   <data name="CurrentShellfishGrowingAreaClassificationAndWaterQualitySamplingSiteLocations" xml:space="preserve">
-    <value>Classification actuelle des zones de croissance des mollusques et échantillonnage de la qualité de l'eau</value>
+    <value>Classification actuelle et emplacement des sites d'échantillonnage</value>
   </data>
   <data name="CurrentURLNotTheSameInDocumentCompletedEvent" xml:space="preserve">
     <value>L'URL actuelle n'est pas la même dans l'événement de document terminé</value>
@@ -628,7 +628,7 @@
     <value>Commentaire d'extra</value>
   </data>
   <data name="FCDensities" xml:space="preserve">
-    <value>Densités FC</value>
+    <value>Densités CF</value>
   </data>
   <data name="FCFormAutoGenerate" xml:space="preserve">
     <value>Génération automatique de la feuille de laboratoire</value>
@@ -856,13 +856,13 @@
     <value>Liste des figures</value>
   </data>
   <data name="ListOfTables" xml:space="preserve">
-    <value>Liste des tableau</value>
+    <value>Liste des tableaux</value>
   </data>
   <data name="LocalTime" xml:space="preserve">
     <value>temps local</value>
   </data>
   <data name="LocationOfSurveyArea" xml:space="preserve">
-    <value>Lieu de la zone de sondage</value>
+    <value>Emplacement de l'aire d'étude bactériologique</value>
   </data>
   <data name="Long" xml:space="preserve">
     <value>Long</value>
@@ -1279,7 +1279,7 @@
     <value>Limites de pollution</value>
   </data>
   <data name="PollutionSourceLocation" xml:space="preserve">
-    <value>Lieu de la source de pollution</value>
+    <value>Emplacement des sites de source de pollution</value>
   </data>
   <data name="PollutionSourceSites" xml:space="preserve">
     <value>Sites de source de pollution</value>
@@ -1336,7 +1336,7 @@
     <value>Lecture du journal d'exploitation complétée</value>
   </data>
   <data name="RecommendedShellfishGrowingAreaClassification" xml:space="preserve">
-    <value>Classification des zones de croissances des crustacé recommandé</value>
+    <value>Classification recommandée de l’aire de croissance des mollusques</value>
   </data>
   <data name="Recreation" xml:space="preserve">
     <value>Récréative</value>
@@ -1573,7 +1573,7 @@
     <value>SharedString est requis</value>
   </data>
   <data name="ShellfishGrowingArea" xml:space="preserve">
-    <value>Zone de croissance de crustacées</value>
+    <value>Aire de croissance de mollusques</value>
   </data>
   <data name="ShellfishWaterClassificationProgram" xml:space="preserve">
     <value>Programme de classification des eaux coquillières</value>
@@ -1678,7 +1678,7 @@
     <value>SubsectorTVItemID</value>
   </data>
   <data name="SummaryStatisticsOfFCDensities" xml:space="preserve">
-    <value>Statistiques sommaire de densités de CF</value>
+    <value>Statistiques sommaires de densités de CF</value>
   </data>
   <data name="SWCP" xml:space="preserve">
     <value>PCEC</value>
@@ -2184,5 +2184,8 @@ Animation estimée des chemins de drogue</value>
   </data>
   <data name="PollutionSourcesSiteInventory" xml:space="preserve">
     <value>Inventaire des sites de source de pollution</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>créé</value>
   </data>
 </root>

@@ -455,6 +455,14 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
+            if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fr")
+            {
+                CreateDocxWithHTMLDoTableRenamingInFRTag(appWord, _Document);
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+
             // renumbering the Tables and Figures
             appWord.Selection.WholeStory();
             appWord.Selection.Fields.Update();
@@ -687,7 +695,14 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             textFound = textFound.Substring("|||TableCaption|".Length).Replace("|||", "");
 
-                            appWord.Selection.Range.InsertCaption("Table", textFound, "", WdCaptionPosition.wdCaptionPositionBelow, 0);
+                            if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fr")
+                            {
+                                appWord.Selection.Range.InsertCaption("Table", textFound, "", WdCaptionPosition.wdCaptionPositionBelow, 0);
+                            }
+                            else
+                            {
+                                appWord.Selection.Range.InsertCaption("Table", textFound, "", WdCaptionPosition.wdCaptionPositionBelow, 0);
+                            }
                             appWord.Selection.HomeKey(WdUnits.wdLine);
                             appWord.Selection.EndKey(WdUnits.wdLine, WdMovementType.wdExtend);
                             appWord.Selection.Font.Italic = 0;
@@ -695,15 +710,6 @@ namespace CSSPWebToolsTaskRunner.Services
                             appWord.Selection.Font.Size = 11;
                             appWord.Selection.Font.Color = 0;
                             appWord.Selection.MoveRight();
-                            //appWord.Selection.Range.InsertCaption("Table", textFound, "InsertCaption1", WdCaptionPosition.wdCaptionPositionBelow, 0);
-
-                            //appWord.Selection.HomeKey();
-                            //appWord.Selection.Text = textFound;
-                            //appWord.Selection.EndKey();
-                            //appWord.Selection.MoveLeft(Extend: true);
-                            //appWord.Selection.Font.Color = WdColor.wdColorWhite;
-                            //appWord.Selection.MoveRight();
-                            //appWord.Selection.MoveDown();
                         }
                         else if (textFound.StartsWith("|||FigureCaption|"))
                         {
@@ -719,15 +725,6 @@ namespace CSSPWebToolsTaskRunner.Services
                             appWord.Selection.Font.Size = 11;
                             appWord.Selection.Font.Color = 0;
                             appWord.Selection.MoveRight();
-                            //appWord.Selection.Range.InsertCaption("Figure", textFound, "InsertCaption2", WdCaptionPosition.wdCaptionPositionBelow, 0);
-
-                            //appWord.Selection.HomeKey();
-                            //appWord.Selection.Text = textFound;
-                            //appWord.Selection.EndKey();
-                            //appWord.Selection.MoveLeft(Extend: true);
-                            //appWord.Selection.Font.Color = WdColor.wdColorWhite;
-                            //appWord.Selection.MoveRight();
-                            //appWord.Selection.MoveDown();
                         }
                     }
                 }
@@ -735,6 +732,29 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     Found = false;
                 }
+            }
+        }
+        private void CreateDocxWithHTMLDoTableRenamingInFRTag(Application appWord, Document document)
+        {
+            // Renaming Table to Tableau in french
+            string SearchMarker = "Table ";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Text = "Tableau ";
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             }
         }
         private void CreateDocxWithHTMLDoMUNICIPALITY_NAMETag(Application appWord, Document document)
@@ -895,8 +915,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         appWord.Selection.Delete();
                     }
 
-                    appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-                    HeaderFooter headerFooter = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
+                    appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdSectionBreakContinuous);
+                    HeaderFooter headerFooter = appWord.ActiveDocument.Sections[appWord.ActiveDocument.Sections.Count - 1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
                     headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleLowercaseRoman;
                     headerFooter.PageNumbers.HeadingLevelForChapter = 0;
                     headerFooter.PageNumbers.IncludeChapterNumber = false;
@@ -938,8 +958,8 @@ namespace CSSPWebToolsTaskRunner.Services
                         appWord.Selection.Delete();
                     }
 
-                    appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-                    HeaderFooter headerFooter = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
+                    appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdSectionBreakContinuous);
+                    HeaderFooter headerFooter = appWord.ActiveDocument.Sections[appWord.ActiveDocument.Sections.Count - 1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
                     headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleArabic;
                     headerFooter.PageNumbers.HeadingLevelForChapter = 0;
                     headerFooter.PageNumbers.IncludeChapterNumber = false;

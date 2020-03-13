@@ -165,7 +165,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 string RunText = TaskRunnerServiceRes.Runs + " (" + mwqmAnalysisReportParameterModel.NumberOfRuns.ToString() + ")";
 
                 string AllWetDryText = mwqmAnalysisReportParameterModel.AnalysisCalculationType != AnalysisCalculationTypeEnum.AllAllAll ? AllWetDry : "";
-                sbTemp.AppendLine($@"|||TableCaption| { TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL) ({ AllWetDryText } { RunText })|||");
+                sbTemp.AppendLine($@"|||TableCaption| { TaskRunnerServiceRes.SummaryStatisticsOfFCDensities } ({ TaskRunnerServiceRes.MPN }/100 mL)|||"); /// ({ AllWetDryText } { RunText })|||");
 
                 sbTemp.AppendLine(@"<table class=""textAlignCenter"">");
                 sbTemp.AppendLine(@"        <tr>");
