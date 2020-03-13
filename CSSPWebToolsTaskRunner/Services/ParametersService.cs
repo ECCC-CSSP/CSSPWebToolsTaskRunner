@@ -440,6 +440,16 @@ namespace CSSPWebToolsTaskRunner.Services
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
             appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
 
+            CreateDocxWithHTMLDoPAGE_NUMBERING_ROMANTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
+            CreateDocxWithHTMLDoPAGE_NUMBERING_NORMALTag(appWord, _Document);
+            appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+            appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+
             CreateDocxWithHTMLDoImageTag(appWord, _Document);
             appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
             appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
@@ -854,6 +864,93 @@ namespace CSSPWebToolsTaskRunner.Services
                     appWord.Selection.InsertBreak(WdBreakType.wdSectionBreakNextPage);
                     appWord.Selection.PageSetup.SectionStart = WdSectionStart.wdSectionNewPage;
                     appWord.Selection.PageSetup.Orientation = WdOrientation.wdOrientPortrait;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoPAGE_NUMBERING_ROMANTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||PAGE_NUMBERING_ROMAN|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                appWord.Selection.Find.MatchWildcards = true;
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Delete();
+
+                    appWord.Selection.Find.MatchWildcards = false;
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+
+                    appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                    HeaderFooter headerFooter = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
+                    headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleLowercaseRoman;
+                    headerFooter.PageNumbers.HeadingLevelForChapter = 0;
+                    headerFooter.PageNumbers.IncludeChapterNumber = false;
+                    headerFooter.PageNumbers.ChapterPageSeparator = Microsoft.Office.Interop.Word.WdSeparatorType.wdSeparatorHyphen;
+                    headerFooter.PageNumbers.RestartNumberingAtSection = true;
+                    headerFooter.PageNumbers.StartingNumber = 1;
+
+                    Microsoft.Office.Interop.Word.Range footerRange = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                    footerRange.Fields.Add(footerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
+                    footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                }
+                else
+                {
+                    Found = false;
+                }
+
+                appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                appWord.Selection.MoveDown(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+                appWord.Selection.MoveUp(Microsoft.Office.Interop.Word.WdUnits.wdLine, 1);
+            }
+        }
+        private void CreateDocxWithHTMLDoPAGE_NUMBERING_NORMALTag(Application appWord, Document document)
+        {
+            string SearchMarker = "|||PAGE_NUMBERING_NORMAL|||";
+            bool Found = true;
+            while (Found)
+            {
+                appWord.Selection.Find.ClearFormatting();
+                appWord.Selection.Find.Replacement.ClearFormatting();
+                appWord.Selection.Find.MatchWildcards = true;
+                if (appWord.Selection.Find.Execute(SearchMarker))
+                {
+                    appWord.Selection.Delete();
+
+                    appWord.Selection.Find.MatchWildcards = false;
+                    appWord.Selection.Find.ClearFormatting();
+                    if (appWord.Selection.Find.Execute("^p"))
+                    {
+                        appWord.Selection.Delete();
+                    }
+
+                    appWord.Selection.HomeKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+                    HeaderFooter headerFooter = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
+                    headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleArabic;
+                    headerFooter.PageNumbers.HeadingLevelForChapter = 0;
+                    headerFooter.PageNumbers.IncludeChapterNumber = false;
+                    headerFooter.PageNumbers.ChapterPageSeparator = Microsoft.Office.Interop.Word.WdSeparatorType.wdSeparatorHyphen;
+                    headerFooter.PageNumbers.RestartNumberingAtSection = true;
+                    headerFooter.PageNumbers.StartingNumber = 1;
+
+                    Microsoft.Office.Interop.Word.Range footerRange = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                    footerRange.Fields.Add(footerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
+                    footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+
                 }
                 else
                 {
