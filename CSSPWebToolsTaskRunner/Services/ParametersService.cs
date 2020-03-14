@@ -916,17 +916,36 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
 
                     appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdSectionBreakContinuous);
-                    HeaderFooter headerFooter = appWord.ActiveDocument.Sections[appWord.ActiveDocument.Sections.Count - 1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
-                    headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleLowercaseRoman;
-                    headerFooter.PageNumbers.HeadingLevelForChapter = 0;
-                    headerFooter.PageNumbers.IncludeChapterNumber = false;
-                    headerFooter.PageNumbers.ChapterPageSeparator = Microsoft.Office.Interop.Word.WdSeparatorType.wdSeparatorHyphen;
-                    headerFooter.PageNumbers.RestartNumberingAtSection = true;
-                    headerFooter.PageNumbers.StartingNumber = 1;
+                    for (int i = 1; i <= 2; i++)
+                    {
+                        HeaderFooter headerFooter = appWord.ActiveDocument.Sections[i].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
 
-                    Microsoft.Office.Interop.Word.Range footerRange = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                    footerRange.Fields.Add(footerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
-                    footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                        headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleLowercaseRoman;
+                        headerFooter.PageNumbers.HeadingLevelForChapter = 0;
+                        headerFooter.PageNumbers.IncludeChapterNumber = false;
+                        headerFooter.PageNumbers.ChapterPageSeparator = Microsoft.Office.Interop.Word.WdSeparatorType.wdSeparatorHyphen;
+                        if (i == 1)
+                        {
+                            headerFooter.PageNumbers.RestartNumberingAtSection = false;
+                            //headerFooter.PageNumbers.StartingNumber = 1;
+
+                            Microsoft.Office.Interop.Word.Range footerRange = appWord.ActiveDocument.Sections[i].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                            for (int j = 1; j <= footerRange.Fields.Count; j++)
+                            {
+                                footerRange.Text = "";
+                                footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                            }
+                        }
+                        else
+                        {
+                            headerFooter.PageNumbers.RestartNumberingAtSection = true;
+                            headerFooter.PageNumbers.StartingNumber = 1;
+
+                            Microsoft.Office.Interop.Word.Range footerRange = appWord.ActiveDocument.Sections[i].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                            footerRange.Fields.Add(footerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
+                            footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                        }
+                    }
                 }
                 else
                 {
@@ -959,18 +978,30 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
 
                     appWord.Selection.InsertBreak(Microsoft.Office.Interop.Word.WdBreakType.wdSectionBreakContinuous);
-                    HeaderFooter headerFooter = appWord.ActiveDocument.Sections[appWord.ActiveDocument.Sections.Count - 1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
-                    headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleArabic;
-                    headerFooter.PageNumbers.HeadingLevelForChapter = 0;
-                    headerFooter.PageNumbers.IncludeChapterNumber = false;
-                    headerFooter.PageNumbers.ChapterPageSeparator = Microsoft.Office.Interop.Word.WdSeparatorType.wdSeparatorHyphen;
-                    headerFooter.PageNumbers.RestartNumberingAtSection = true;
-                    headerFooter.PageNumbers.StartingNumber = 1;
 
-                    Microsoft.Office.Interop.Word.Range footerRange = appWord.Selection.Sections[1].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                    footerRange.Fields.Add(footerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
-                    footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    for (int i = 3; i <= appWord.ActiveDocument.Sections.Count; i++)
+                    {
+                        HeaderFooter headerFooter = appWord.ActiveDocument.Sections[i].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
 
+                        headerFooter.PageNumbers.NumberStyle = Microsoft.Office.Interop.Word.WdPageNumberStyle.wdPageNumberStyleArabic;
+                        headerFooter.PageNumbers.HeadingLevelForChapter = 0;
+                        headerFooter.PageNumbers.IncludeChapterNumber = false;
+                        headerFooter.PageNumbers.ChapterPageSeparator = Microsoft.Office.Interop.Word.WdSeparatorType.wdSeparatorHyphen;
+                        if (i == 3)
+                        {
+                            headerFooter.PageNumbers.RestartNumberingAtSection = true;
+                            headerFooter.PageNumbers.StartingNumber = 1;
+                        }
+                        else
+                        {
+                            headerFooter.PageNumbers.RestartNumberingAtSection = false;
+                            //headerFooter.PageNumbers.StartingNumber = 1;
+                        }
+
+                        Microsoft.Office.Interop.Word.Range footerRange = appWord.ActiveDocument.Sections[i].Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                        footerRange.Fields.Add(footerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
+                        footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    }
                 }
                 else
                 {
