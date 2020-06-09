@@ -840,7 +840,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            ReportBaseService reportBaseService = new ReportBaseService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, new TreeView(), _TaskRunnerBaseService._User);
+            //ReportBaseService reportBaseService = new ReportBaseService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, new TreeView(), _TaskRunnerBaseService._User);
 
             List<ElementLayer> elementLayerList = new List<ElementLayer>();
             List<Element> elementList = new List<Element>();
@@ -848,7 +848,7 @@ namespace CSSPWebToolsTaskRunner.Services
             List<NodeLayer> topNodeLayerList = new List<NodeLayer>();
             List<NodeLayer> bottomNodeLayerList = new List<NodeLayer>();
 
-            ReportTag reportTag = new ReportTag();
+            //ReportTag reportTag = new ReportTag();
 
             ParametersService parametersService = new ParametersService(_TaskRunnerBaseService);
 
