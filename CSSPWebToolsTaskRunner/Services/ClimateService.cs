@@ -3062,7 +3062,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             ClimateDataValueService climateDataValueService = new ClimateDataValueService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
 
-            using (CoCoRaHSEntities dbcoco = new CoCoRaHSEntities())
+            using (CSSPDBEntities dbcoco = new CSSPDBEntities())
             {
                 CoCoRaHSSite cocoRaHSSite = (from c in dbcoco.CoCoRaHSSites
                                              where c.StationNumber == climateSiteModel.ClimateID
@@ -3359,7 +3359,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string NotUsed = "";
             DateTime LatestDateWithData = new DateTime(1980, 1, 1);
-            using (CoCoRaHSEntities CoCoRaHSDB = new CoCoRaHSEntities())
+            using (CSSPDBEntities CoCoRaHSDB = new CSSPDBEntities())
             {
                 LatestDateWithData = (from c in CoCoRaHSDB.CoCoRaHSValues
                                       orderby c.ObservationDateAndTime descending
@@ -3474,7 +3474,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                    select c).ToList();
             }
 
-            using (CoCoRaHSEntities dbcoco = new CoCoRaHSEntities())
+            using (CSSPDBEntities dbcoco = new CSSPDBEntities())
             {
                 cocoRaHSSiteList = (from c in dbcoco.CoCoRaHSSites
                                     where c.StationNumber.StartsWith(Country)
@@ -3728,7 +3728,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         return;
                                     }
 
-                                    using (CoCoRaHSEntities dbcoco = new CoCoRaHSEntities())
+                                    using (CSSPDBEntities dbcoco = new CSSPDBEntities())
                                     {
                                         cocoRaHSSite = (from c in dbcoco.CoCoRaHSSites
                                                         where c.StationNumber == StationNumber
@@ -3983,7 +3983,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                    select c).ToList();
             }
 
-            using (CoCoRaHSEntities db2 = new CoCoRaHSEntities())
+            using (CSSPDBEntities db2 = new CSSPDBEntities())
             {
                 foreach (CoCoRaHSSite coCoRaHSSite in coCoRaHSSiteList)
                 {
