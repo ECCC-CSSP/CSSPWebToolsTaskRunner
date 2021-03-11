@@ -14,6 +14,7 @@ using CSSPEnumsDLL.Enums;
 using CSSPModelsDLL.Models;
 using CSSPEnumsDLL.Services;
 using CSSPDBDLL;
+using Microsoft.Office.Interop.Excel;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -818,6 +819,10 @@ namespace CSSPWebToolsTaskRunner.Services
 
             using (CSSPDBEntities db = new CSSPDBEntities())
             {
+                List<UseOfSite> useMuniList = (from c in db.UseOfSites
+                                               where c.TVType == (int)TVTypeEnum.Municipality
+                                               select c).ToList();
+
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
                                   where c.TVItemID == cl.TVItemID
@@ -870,6 +875,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"LiftStations_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
                 _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemSubsectorList = (from t in db.TVItems
+                                           from tl in db.TVItemLanguages
+                                           where t.TVItemID == tl.TVItemID
+                                           && tl.Language == (int)LanguageEnum.en
+                                           && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                           && t.TVType == (int)TVTypeEnum.Subsector
+                                           && t.IsActive == Active
+                                           orderby tl.TVText
+                                           select new { t, tl }).ToList();
 
                 var tvItemMuniList = (from t in db.TVItems
                                       from tl in db.TVItemLanguages
@@ -950,7 +965,36 @@ namespace CSSPWebToolsTaskRunner.Services
                         string AD = (!string.IsNullOrWhiteSpace(liftStation.add) ? liftStation.add.Replace(",", "_") + " --- " + MN : "");
                         string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
                         string C = (liftStation.infLang != null && !string.IsNullOrWhiteSpace(liftStation.infLang.Comment) ? liftStation.infLang.Comment.Replace(",", "_") : "");
-                        sb.AppendLine($"{MN},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+
+                        List<UseOfSite> useMuniSubList = (from c in useMuniList
+                                                          where c.SiteTVItemID == tvItemMuni.t.TVItemID
+                                                          select c).ToList();
+                        if (useMuniSubList.Count == 0)
+                        {
+                            sb.AppendLine($"XX-01-010-001,{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                        }
+                        else
+                        {
+                            foreach (UseOfSite useOfSite in useMuniSubList)
+                            {
+                                TVItemLanguage tvItemSubsect = (from c in tvItemSubsectorList
+                                                                where c.t.TVItemID == useOfSite.SubsectorTVItemID
+                                                                && c.tl.Language == (int)LanguageEnum.en
+                                                                select c.tl).FirstOrDefault();
+
+                                if (tvItemSubsect == null)
+                                {
+                                    sb.AppendLine($"XX-01-010-001,{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                                }
+                                else
+                                {
+                                    string Locator = tvItemSubsect.TVText.Substring(0, tvItemSubsect.TVText.IndexOf(" "));
+
+                                    sb.AppendLine($"{Locator},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                                }
+                            }
+                        }
+
                     }
                 }
             }
@@ -1629,10 +1673,14 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Municipality,WWTPName,Lat,Lng,OutLat,OutLng,CanOverflow,AlarmSystemType,FacilityType,AerationType,DisinfectionType,CollectionSystemType,AverageFlowInM3PerD,PeakFlowInM3PerD,Address,CSSPUrl,Comment");
+            sb.AppendLine("Subsector,Municipality,WWTPName,Lat,Lng,OutLat,OutLng,CanOverflow,AlarmSystemType,FacilityType,AerationType,DisinfectionType,CollectionSystemType,AverageFlowInM3PerD,PeakFlowInM3PerD,Address,CSSPUrl,Comment");
 
             using (CSSPDBEntities db = new CSSPDBEntities())
             {
+                List<UseOfSite> useMuniList = (from c in db.UseOfSites
+                                               where c.TVType == (int)TVTypeEnum.Municipality
+                                               select c).ToList();
+
                 var tvItemProv = (from c in db.TVItems
                                   from cl in db.TVItemLanguages
                                   where c.TVItemID == cl.TVItemID
@@ -1685,6 +1733,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", BasePath + @"WWTPs_" + ProvInit + "_" + (Active ? "Active" : "Inactive") + ".csv");
 
                 _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemSubsectorList = (from t in db.TVItems
+                                           from tl in db.TVItemLanguages
+                                           where t.TVItemID == tl.TVItemID
+                                           && tl.Language == (int)LanguageEnum.en
+                                           && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                           && t.TVType == (int)TVTypeEnum.Subsector
+                                           && t.IsActive == Active
+                                           orderby tl.TVText
+                                           select new { t, tl }).ToList();
 
                 var tvItemMuniList = (from t in db.TVItems
                                       from tl in db.TVItemLanguages
@@ -1751,6 +1809,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     Count2 += 1;
 
+
                     foreach (var wwtp in WWTPList.Where(c => c.c.ParentID == tvItemMuni.t.TVItemID))
                     {
                         string MN = tvItemMuni.tl.TVText.Replace(",", "_");
@@ -1770,7 +1829,35 @@ namespace CSSPWebToolsTaskRunner.Services
                         string AD = (!string.IsNullOrWhiteSpace(wwtp.add) ? wwtp.add.Replace(",", "_") + " --- " + MN : "");
                         string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
                         string C = (wwtp.infLang != null && !string.IsNullOrWhiteSpace(wwtp.infLang.Comment) ? wwtp.infLang.Comment.Replace(",", "_") : "");
-                        sb.AppendLine($"{MN},{WN},{Lat},{Lng},{LatOut},{LngOut},{CO},{AS},{FT},{AT},{DT},{CST},{AF},{PF},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+
+                        List<UseOfSite> useMuniSubList = (from c in useMuniList
+                                                          where c.SiteTVItemID == tvItemMuni.t.TVItemID
+                                                          select c).ToList();
+                        if (useMuniSubList.Count == 0)
+                        {
+                            sb.AppendLine($"XX-01-010-001,{MN},{WN},{Lat},{Lng},{LatOut},{LngOut},{CO},{AS},{FT},{AT},{DT},{CST},{AF},{PF},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                        }
+                        else
+                        {
+                            foreach (UseOfSite useOfSite in useMuniSubList)
+                            {
+                                TVItemLanguage tvItemSubsect = (from c in tvItemSubsectorList
+                                                                where c.t.TVItemID == useOfSite.SubsectorTVItemID
+                                                                && c.tl.Language == (int)LanguageEnum.en
+                                                                select c.tl).FirstOrDefault();
+
+                                if (tvItemSubsect == null)
+                                {
+                                    sb.AppendLine($"XX-01-010-001,{MN},{WN},{Lat},{Lng},{LatOut},{LngOut},{CO},{AS},{FT},{AT},{DT},{CST},{AF},{PF},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                                }
+                                else
+                                {
+                                    string Locator = tvItemSubsect.TVText.Substring(0, tvItemSubsect.TVText.IndexOf(" "));
+
+                                    sb.AppendLine($"{Locator},{MN},{WN},{Lat},{Lng},{LatOut},{LngOut},{CO},{AS},{FT},{AT},{DT},{CST},{AF},{PF},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                                }
+                            }
+                        }
                     }
                 }
             }
