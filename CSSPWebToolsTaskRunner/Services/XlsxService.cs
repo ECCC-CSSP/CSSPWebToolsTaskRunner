@@ -815,7 +815,7 @@ namespace CSSPWebToolsTaskRunner.Services
             string NotUsed = "";
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("Muni,LSName,Lat,Lng,PercFlow,OutLat,OutLng,AlarmSystemType,CanOverFlow,Address,CSSPUrl,Comment");
+            sb.AppendLine("Subsector,Muni,LSName,Lat,Lng,PercFlow,OutLat,OutLng,AlarmSystemType,CanOverFlow,Address,CSSPUrl,Comment");
 
             using (CSSPDBEntities db = new CSSPDBEntities())
             {
