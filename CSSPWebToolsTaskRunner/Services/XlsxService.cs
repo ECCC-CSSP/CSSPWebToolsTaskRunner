@@ -882,7 +882,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                            && tl.Language == (int)LanguageEnum.en
                                            && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                            && t.TVType == (int)TVTypeEnum.Subsector
-                                           && t.IsActive == Active
+                                           //&& t.IsActive == Active
                                            orderby tl.TVText
                                            select new { t, tl }).ToList();
 
@@ -1740,7 +1740,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                            && tl.Language == (int)LanguageEnum.en
                                            && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
                                            && t.TVType == (int)TVTypeEnum.Subsector
-                                           && t.IsActive == Active
+                                           //&& t.IsActive == Active
                                            orderby tl.TVText
                                            select new { t, tl }).ToList();
 
