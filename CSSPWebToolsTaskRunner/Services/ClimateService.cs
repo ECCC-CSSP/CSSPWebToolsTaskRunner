@@ -2802,29 +2802,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         LookupTxt = "Station Name";
                         if (lineValueArr[2] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[2] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[2] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                         LookupTxt = "Climate ID";
                         if (lineValueArr[3] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[3] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[3] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                         LookupTxt = "Date/Time";
                         if (lineValueArr[4] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
-                            return;
-                        }
-                        LookupTxt = "Date/Time";
-                        if (lineValueArr[4] != LookupTxt)
-                        {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[4] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[4] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                     }
@@ -2833,15 +2826,15 @@ namespace CSSPWebToolsTaskRunner.Services
                         LookupTxt = climateSiteModel.ClimateSiteName;
                         if (lineValueArr[2] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[2] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[2] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                         LookupTxt = climateSiteModel.ClimateID;
                         if (lineValueArr[3] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[3] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[3] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
 
@@ -3174,15 +3167,15 @@ namespace CSSPWebToolsTaskRunner.Services
                         LookupTxt = "Station Name";
                         if (lineValueArr[0] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[0], countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[0] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[0] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                         LookupTxt = climateSiteModel.ClimateSiteName;
                         if (lineValueArr[1] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                     }
@@ -3191,15 +3184,15 @@ namespace CSSPWebToolsTaskRunner.Services
                         LookupTxt = "Province";
                         if (lineValueArr[0] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[0] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[0] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                         LookupTxt = lineValueArr[1];
                         if (!FullProvList.Contains(LookupTxt))
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                             return;
                         }
                         for (int i = 0; i < 6; i++)
@@ -3208,8 +3201,8 @@ namespace CSSPWebToolsTaskRunner.Services
                             {
                                 if (climateSiteModel.Province != ShortProvList[i])
                                 {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.Province_NotEqualTo_AtLine_, ShortProvList[i], climateSiteModel.Province, countLine.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                                    NotUsed = string.Format(TaskRunnerServiceRes.Province_NotEqualTo_AtLine_, ShortProvList[i] + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, climateSiteModel.Province, countLine.ToString());
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                                     return;
                                 }
                             }
@@ -3226,8 +3219,8 @@ namespace CSSPWebToolsTaskRunner.Services
                                 LookupTxt = climateSiteModel.ClimateID;
                                 if (lineValueArr[1] != climateSiteModel.ClimateID)
                                 {
-                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
-                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
+                                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
+                                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt + " is " + lineValueArr[1] + " ClimateID: " + climateSiteModel.ClimateID, countLine.ToString());
                                     return;
                                 }
                             }
