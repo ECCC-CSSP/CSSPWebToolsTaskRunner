@@ -971,7 +971,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                                           select c).ToList();
                         if (useMuniSubList.Count == 0)
                         {
-                            sb.AppendLine($"XX-01-010-001,{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                            sb.AppendLine($"XX-01-010-001,{MN},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
                         }
                         else
                         {
@@ -984,13 +984,13 @@ namespace CSSPWebToolsTaskRunner.Services
 
                                 if (tvItemSubsect == null)
                                 {
-                                    sb.AppendLine($"XX-01-010-001,{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                                    sb.AppendLine($"XX-01-010-001,{MN},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
                                 }
                                 else
                                 {
                                     string Locator = tvItemSubsect.TVText.Substring(0, tvItemSubsect.TVText.IndexOf(" "));
 
-                                    sb.AppendLine($"{Locator},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
+                                    sb.AppendLine($"{Locator},{MN},{LN},{Lat},{Lng},{PF},{LatOut},{LngOut},{AS},{CO},{AD},{URL},{C}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
                                 }
                             }
                         }

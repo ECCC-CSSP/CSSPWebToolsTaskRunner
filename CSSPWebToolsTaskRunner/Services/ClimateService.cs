@@ -3174,7 +3174,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         LookupTxt = "Station Name";
                         if (lineValueArr[0] != LookupTxt)
                         {
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt, countLine.ToString());
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_AtLine_, LookupTxt + " is " + lineValueArr[0], countLine.ToString());
                             _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotFind_AtLine_", LookupTxt, countLine.ToString());
                             return;
                         }
