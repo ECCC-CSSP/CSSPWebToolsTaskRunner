@@ -426,7 +426,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
             }
             catch (Exception ex)
             {
@@ -582,7 +582,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
             }
             catch (Exception ex)
             {
@@ -788,7 +788,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
             }
             catch (Exception ex)
             {
@@ -1776,7 +1776,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF8);
+                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
             }
             catch (Exception ex)
             {
