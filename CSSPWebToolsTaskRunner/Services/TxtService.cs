@@ -243,7 +243,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                using (StreamWriter sw = new StreamWriter(File.Open(fi.FullName, FileMode.Create), Encoding.Default))
+                {
+                    sw.Write(sb.ToString());
+                }
+                //File.WriteAllText(fi.FullName, sb.ToString(), Encoding.Default);
             }
             catch (Exception ex)
             {
@@ -424,7 +428,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                using (StreamWriter sw = new StreamWriter(File.Open(fi.FullName, FileMode.Create), Encoding.Default))
+                {
+                    sw.Write(sb.ToString());
+                }
+                //File.WriteAllText(fi.FullName, sb.ToString(), Encoding.Default);
             }
             catch (Exception ex)
             {
@@ -665,7 +673,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                using (StreamWriter sw = new StreamWriter(File.Open(fi.FullName, FileMode.Create), Encoding.Default))
+                {
+                    sw.Write(sb.ToString());
+                }
+                //File.WriteAllText(fi.FullName, sb.ToString(), Encoding.Default);
             }
             catch (Exception ex)
             {
@@ -912,7 +924,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                using (StreamWriter sw = new StreamWriter(File.Open(fi.FullName, FileMode.Create), Encoding.Default))
+                {
+                    sw.Write(sb.ToString());
+                }
+                //File.WriteAllText(fi.FullName, sb.ToString(), Encoding.Default);
             }
             catch (Exception ex)
             {

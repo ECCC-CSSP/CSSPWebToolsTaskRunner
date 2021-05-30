@@ -129,7 +129,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 IEnumerable<WaterLevelResult> WLResults = null;
 
                 GoogleTimeZoneJSON googleTimeZoneJSON = new GoogleTimeZoneJSON();
-                using (WebClient webClient = new WebClient() { Encoding = Encoding.UTF7 })
+                using (WebClient webClient = new WebClient() { Encoding = Encoding.Default })
                 {
                     WebProxy webProxy = new WebProxy();
                     webClient.Proxy = webProxy;
@@ -146,7 +146,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
                             mapInfoPointList[0].Lat.ToString("F5") + "," + mapInfoPointList[0].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                         byte[] responseBytes = webClient.DownloadData(url);
-                        json_data = Encoding.UTF7.GetString(responseBytes);
+                        json_data = Encoding.Default.GetString(responseBytes);
                     }
                     catch (Exception)
                     {
@@ -3304,7 +3304,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             if (!GoogleLoaded)
                             {
-                                using (WebClient webClient = new WebClient() { Encoding = Encoding.UTF7 })
+                                using (WebClient webClient = new WebClient() { Encoding = Encoding.Default })
                                 {
                                     WebProxy webProxy = new WebProxy();
                                     webClient.Proxy = webProxy;
@@ -3321,7 +3321,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
                                             mapInfoPointModelBC[i].Lat.ToString("F5") + "," + mapInfoPointModelBC[i].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                                         byte[] responseBytes = webClient.DownloadData(url);
-                                        json_data = Encoding.UTF7.GetString(responseBytes);
+                                        json_data = Encoding.Default.GetString(responseBytes);
                                     }
                                     catch (Exception)
                                     {
@@ -3444,7 +3444,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             if (!GoogleLoaded)
                             {
-                                using (WebClient webClient = new WebClient() { Encoding = Encoding.UTF7 })
+                                using (WebClient webClient = new WebClient() { Encoding = Encoding.Default })
                                 {
                                     WebProxy webProxy = new WebProxy();
                                     webClient.Proxy = webProxy;
@@ -3461,7 +3461,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
                                             mapInfoPointModelBC[i].Lat.ToString("F5") + "," + mapInfoPointModelBC[i].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                                         byte[] responseBytes = webClient.DownloadData(url);
-                                        json_data = Encoding.UTF7.GetString(responseBytes);
+                                        json_data = Encoding.Default.GetString(responseBytes);
                                     }
                                     catch (Exception)
                                     {
@@ -6622,7 +6622,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<WaterLevelResult> WLResults = null;
 
                 GoogleTimeZoneJSON googleTimeZoneJSON = new GoogleTimeZoneJSON();
-                using (WebClient webClient = new WebClient() { Encoding = Encoding.UTF7 })
+                using (WebClient webClient = new WebClient() { Encoding = Encoding.Default })
                 {
                     WebProxy webProxy = new WebProxy();
                     webClient.Proxy = webProxy;
@@ -6639,7 +6639,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         string url = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
                             mapInfoPointList[0].Lat.ToString("F5") + "," + mapInfoPointList[0].Lng.ToString("F5") + "&timestamp=" + timeStamp + "&key=AIzaSyAwPGpdSM6z0A7DFdWPbS3vIDTk2mxINaA";
                         byte[] responseBytes = webClient.DownloadData(url);
-                        json_data = Encoding.UTF7.GetString(responseBytes);
+                        json_data = Encoding.Default.GetString(responseBytes);
                     }
                     catch (Exception)
                     {
