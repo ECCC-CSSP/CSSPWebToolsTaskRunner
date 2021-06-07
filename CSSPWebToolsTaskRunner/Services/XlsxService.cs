@@ -1019,7 +1019,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1189,7 +1191,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1341,7 +1345,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1649,7 +1655,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1882,7 +1890,9 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName, sb.ToString(), Encoding.UTF7);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
