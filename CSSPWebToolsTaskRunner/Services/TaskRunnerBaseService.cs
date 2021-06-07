@@ -462,6 +462,22 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                     }
                     break;
+                case AppTaskCommandEnum.GenerateClassificationInputs_XX_FromDB_kmlFromDataInCSSPDB:
+                    {
+                        AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+                        AppTaskModel appTaskModel = appTaskService.GetAppTaskModelWithAppTaskIDDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID);
+                        ClassificationGenerateService classificationGenerateService = new ClassificationGenerateService(_TaskRunnerBaseService);
+                        classificationGenerateService.GenerateClassificationInputs_XX_FromDB_kmlFromDataInCSSPDB();
+                        if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count == 0)
+                        {
+                            appTaskService.PostDeleteAppTaskDB(appTaskModel.AppTaskID);
+                        }
+                        else
+                        {
+                            SendErrorTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+                        }
+                    }
+                    break;
                 case AppTaskCommandEnum.GenerateLinksBetweenMWQMSitesAndPolSourceSitesForCSSPWebToolsVisualization:
                     {
                         AppTaskService appTaskService = new AppTaskService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);

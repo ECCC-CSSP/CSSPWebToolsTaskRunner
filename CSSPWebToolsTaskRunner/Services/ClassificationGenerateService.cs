@@ -827,6 +827,316 @@ namespace CSSPWebToolsTaskRunner.Services
             }
         }
 
+        public void GenerateClassificationInputs_XX_FromDB_kmlFromDataInCSSPDB()
+        {
+            string NotUsed = "";
+            string ProvInit = "";
+            List<string> ProvInitList = new List<string>()
+            {
+                "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+            };
+            List<string> ProvList = new List<string>()
+            {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+            };
+
+            TVItemService tvItemService = new TVItemService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+            TVFileService tvFileService = new TVFileService(_TaskRunnerBaseService._BWObj.appTaskModel.Language, _TaskRunnerBaseService._User);
+
+            int TVItemID = _TaskRunnerBaseService._BWObj.appTaskModel.TVItemID;
+
+            if (TVItemID == 0)
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.Parameter_NotFound, "TVItemID");
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Parameter_NotFound", "TVItemID");
+                return;
+            }
+
+
+            TVItemModel tvItemModel = tvItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
+            if (!string.IsNullOrWhiteSpace(tvItemModel.Error))
+            {
+                NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotDeleteFile_Error_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                return;
+            }
+
+            for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+            {
+                if (ProvList[i] == tvItemModel.TVText)
+                {
+                    ProvInit = ProvInitList[i];
+                    break;
+                }
+            }
+
+            string ServerFilePath = tvFileService.GetServerFilePath(TVItemID);
+
+            FileInfo fi = new FileInfo(tvFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"ClassificationInputs_{ProvInit}_FromDB.kml");
+
+            TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
+            if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                return;
+
+            // loop through all the MWQMSites etc...
+
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fi.FullName, ex.Message + (ex.InnerException != null ? " InnerException: " + ex.InnerException.Message : ""));
+                    return;
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+            sb.AppendLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2"" xmlns:gx=""http://www.google.com/kml/ext/2.2"" xmlns:kml=""http://www.opengis.net/kml/2.2"" xmlns:atom=""http://www.w3.org/2005/Atom"">");
+            sb.AppendLine(@"<Document>");
+            sb.AppendLine(@"  <name>" + fi.Name.Replace("_FromDB", "") + "</name>");
+            sb.AppendLine(@"  <open>1</open>");
+            sb.AppendLine(@"  <Style id=""A"">");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ff00ff00</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"  	</LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"  	  <color>ff00ff00</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+            sb.AppendLine(@"  <Style id=""R"">");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ff0000ff</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"      <color>ff0000ff</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+            sb.AppendLine(@"  <Style id=""P"">");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ffcccccc</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"      <color>ffcccccc</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+            sb.AppendLine(@"  <Style id=""CA"">");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ff00ffff</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"     <color>ff00ffff</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+            sb.AppendLine(@"  <Style id=""CR"">");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ffff00aa</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"      <color>ffff00aa</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+            sb.AppendLine(@"  <Style id=""SS"">");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ff00ff00</color>");
+            sb.AppendLine(@"      <width>2</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"      <color>ff00ff00</color>");
+            sb.AppendLine(@"      <fill>0</fill>");
+            sb.AppendLine(@" </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+            sb.AppendLine(@"  <Folder>");
+            sb.AppendLine($@"    <name>{ProvInit} Subsectors</name>");
+            sb.AppendLine(@"    <open>1</open>");
+
+            using (CSSPDBEntities db = new CSSPDBEntities())
+            {
+                var tvItemProv = (from c in db.TVItems
+                                  from cl in db.TVItemLanguages
+                                  where c.TVItemID == cl.TVItemID
+                                  && c.TVItemID == TVItemID
+                                  && cl.Language == (int)LanguageEnum.en
+                                  && c.TVType == (int)TVTypeEnum.Province
+                                  select new { c, cl }).FirstOrDefault();
+
+                if (tvItemProv == null)
+                {
+                    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotFind_With_Equal_, TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat3List("CouldNotFind_With_Equal_", TaskRunnerServiceRes.TVItem, TaskRunnerServiceRes.TVItemID, TVItemID.ToString());
+                    return;
+                }
+
+                for (int i = 0, countProv = ProvList.Count; i < countProv; i++)
+                {
+                    if (ProvList[i] == tvItemProv.cl.TVText)
+                    {
+                        ProvInit = ProvInitList[i];
+                        break;
+                    }
+                }
+
+                NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name);
+                List<TextLanguage> TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name);
+
+                _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+
+                var tvItemSSList = (from t in db.TVItems
+                                    from tl in db.TVItemLanguages
+                                    where t.TVItemID == tl.TVItemID
+                                    && tl.Language == (int)LanguageEnum.en
+                                    && t.TVPath.StartsWith(tvItemProv.c.TVPath + "p")
+                                    && t.TVType == (int)TVTypeEnum.Subsector
+                                    orderby tl.TVText
+                                    select new { t, tl }).ToList();
+
+
+                int TotalCount2 = tvItemSSList.Count;
+                int Count2 = 0;
+                foreach (var tvItemSS in tvItemSSList)
+                {
+                    sb.AppendLine("  <Folder>");
+                    sb.AppendLine($"  <name>{ tvItemSS.tl.TVText }</name>");
+
+                    if (Count2 % 20 == 0)
+                    {
+                        _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, (int)(100.0f * ((float)Count2 / (float)TotalCount2)));
+
+                        NotUsed = string.Format(TaskRunnerServiceRes.Creating_, fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+                        TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", fi.Name + " --- doing " + tvItemSS.tl.TVText + "");
+
+                        _TaskRunnerBaseService.SendStatusTextToDB(TextLanguageList);
+                    }
+
+                    List<MapInfoPoint> mapInfoPointList = (from t in db.TVItems
+                                                           from mi in db.MapInfos
+                                                           from mip in db.MapInfoPoints
+                                                           where mi.TVItemID == t.TVItemID
+                                                           && mi.MapInfoID == mip.MapInfoID
+                                                           && mi.TVItemID == tvItemSS.t.TVItemID
+                                                           && t.TVType == (int)TVTypeEnum.Subsector
+                                                           && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Polygon
+                                                           select mip).ToList();
+
+
+                    sb.AppendLine("    <Placemark>");
+                    sb.AppendLine("      <name>Subsector Polygon</name>");
+                    sb.AppendLine("      <styleUrl>#SS</styleUrl>");
+                    sb.AppendLine("      <Polygon>");
+                    sb.AppendLine("    	   <tessellate>1</tessellate>");
+                    sb.AppendLine("    	   <outerBoundaryIs>");
+                    sb.AppendLine("    	     <LinearRing>");
+                    sb.AppendLine("    	       <coordinates>");
+                    foreach (MapInfoPoint mapInfoPoint in mapInfoPointList)
+                    {
+                        sb.AppendLine($"{mapInfoPoint.Lng},{mapInfoPoint.Lat},0 ");
+                    }
+                    sb.AppendLine("            </coordinates>");
+                    sb.AppendLine("          </LinearRing>");
+                    sb.AppendLine("        </outerBoundaryIs>");
+                    sb.AppendLine("      </Polygon>");
+                    sb.AppendLine("    </Placemark>");
+
+                    Count2 += 1;
+
+                    var ClassificationList = (from t in db.TVItems
+                                              from c in db.Classifications
+                                              from mi in db.MapInfos
+                                              let mipList = (from mip in db.MapInfoPoints
+                                                             where mip.MapInfoID == mi.MapInfoID
+                                                             select mip).ToList()
+                                              where c.ClassificationTVItemID == t.TVItemID
+                                              && mi.TVItemID == t.TVItemID
+                                              && t.TVPath.StartsWith(tvItemSS.t.TVPath + "p")
+                                              && t.TVType == (int)TVTypeEnum.Classification
+                                              && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Polyline
+                                              select new { t, mipList, c }).ToList();
+
+
+                    foreach (var classification in ClassificationList)
+                    {
+                        string TVText = "";
+
+                        switch (((ClassificationTypeEnum)classification.c.ClassificationType))
+                        {
+                            case ClassificationTypeEnum.Approved:
+                                {
+                                    TVText = "A";
+                                }
+                                break;
+                            case ClassificationTypeEnum.Restricted:
+                                {
+                                    TVText = "R";
+                                }
+                                break;
+                            case ClassificationTypeEnum.Prohibited:
+                                {
+                                    TVText = "P";
+                                }
+                                break;
+                            case ClassificationTypeEnum.ConditionallyApproved:
+                                {
+                                    TVText = "CA";
+                                }
+                                break;
+                            case ClassificationTypeEnum.ConditionallyRestricted:
+                                {
+                                    TVText = "CR";
+                                }
+                                break;
+                            default:
+                                {
+                                    TVText = "E";
+                                }
+                                break;
+                        }
+
+                        //string style = "msn_ylw-pushpin";
+
+                        mapInfoPointList = classification.mipList.OrderBy(c => c.Ordinal).ToList();
+
+                        sb.AppendLine(@"    <Placemark>");
+                        sb.AppendLine($@"      <name>{ TVText }</name>");
+                        sb.AppendLine($@"      <styleUrl>#{ TVText }</styleUrl>");
+                        sb.AppendLine("        <LineString>");
+                        sb.AppendLine("          <tessellate>1</tessellate>");
+                        sb.AppendLine("          <coordinates>");
+                        foreach (MapInfoPoint mapInfoPoint in mapInfoPointList)
+                        {
+                            sb.AppendLine($"{mapInfoPoint.Lng},{mapInfoPoint.Lat},0 ");
+                        }
+                        sb.AppendLine("          </coordinates>");
+                        sb.AppendLine("        </LineString>");
+                        sb.AppendLine("      </Placemark>");
+                    }
+                    sb.AppendLine("    </Folder>");
+                }
+
+                sb.AppendLine("  </Folder>");
+                sb.AppendLine(@"</Document>");
+                sb.AppendLine(@"</kml>");
+
+                StreamWriter sw = fi.CreateText();
+                sw.Write(sb.ToString());
+                sw.Close();
+
+                _TaskRunnerBaseService.UpdateOrCreateTVFile(_TaskRunnerBaseService._BWObj.appTaskModel.TVItemID, fi, tvItemModelFile, TaskRunnerServiceRes.KMZClassViewCheck, FilePurposeEnum.Information);
+                if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
+                    return;
+            }
+        }
+
         public struct GeoLocation
         {
             public double Latitude { get; set; }
