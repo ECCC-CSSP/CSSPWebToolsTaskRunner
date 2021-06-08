@@ -190,6 +190,10 @@ namespace CSSPWebToolsTaskRunner.Services
                                 if (n22.Name == "name")
                                 {
                                     CurrentSubsector = n22.InnerText;
+                                    if (CurrentSubsector.Contains(" "))
+                                    {
+                                        CurrentSubsector = CurrentSubsector.Substring(0, CurrentSubsector.IndexOf(" "));
+                                    }
                                 }
 
                                 if (n22.Name == "Placemark")
@@ -322,7 +326,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     TVTypeEnum tvType = TVTypeEnum.Error;
                     ClassificationTypeEnum classificationType = ClassificationTypeEnum.Error;
 
-                    switch (polyObj.Classification)
+                    switch (polyObj.Classification.ToUpper())
                     {
                         case "R":
                             {
@@ -1006,8 +1010,15 @@ namespace CSSPWebToolsTaskRunner.Services
                 int Count2 = 0;
                 foreach (var tvItemSS in tvItemSSList)
                 {
+                    string TVText2 = tvItemSS.tl.TVText;
+
+                    if (TVText2.Contains(" "))
+                    {
+                        TVText2 = TVText2.Substring(0, TVText2.IndexOf(" "));
+                    }
+
                     sb.AppendLine("  <Folder>");
-                    sb.AppendLine($"  <name>{ tvItemSS.tl.TVText }</name>");
+                    sb.AppendLine($"  <name>{ TVText2 }</name>");
 
                     if (Count2 % 20 == 0)
                     {
