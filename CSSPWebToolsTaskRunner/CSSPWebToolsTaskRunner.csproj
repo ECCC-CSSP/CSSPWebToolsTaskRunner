@@ -767,7 +767,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="HTMLPage1.html" />
-    <Content Include="Services\HTMLPage1.html" />
     <Content Include="settings.ico" />
   </ItemGroup>
   <ItemGroup>

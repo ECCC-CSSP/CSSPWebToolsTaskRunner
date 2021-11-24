@@ -2188,4 +2188,7 @@ Animation estimée des chemins de drogue</value>
   <data name="Created" xml:space="preserve">
     <value>créé</value>
   </data>
+  <data name="Doing_" xml:space="preserve">
+    <value>Travail sur  {0}</value>
+  </data>
 </root>

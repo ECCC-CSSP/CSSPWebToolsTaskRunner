@@ -16,6 +16,7 @@ using CSSPEnumsDLL.Services;
 using Microsoft.Office.Interop.Word;
 using System.Threading;
 using System.Globalization;
+using CSSPDBDLL;
 
 namespace CSSPWebToolsTaskRunner.Services
 {
@@ -61,6 +62,7 @@ namespace CSSPWebToolsTaskRunner.Services
         private EmailService _EmailService { get; set; }
 
         public FileInfo fi { get; set; }
+        public FileInfo fi2 { get; set; }
         public ReportTypeModel reportTypeModel { get; set; }
         public int TVItemID { get; set; }
         public int Year { get; set; }
@@ -68,6 +70,7 @@ namespace CSSPWebToolsTaskRunner.Services
         public int StatEndYear { get; set; }
         public string Parameters { get; set; }
         public StringBuilder sb { get; set; }
+        public StringBuilder sb2 { get; set; }
         public string FileNameExtra { get; set; }
         public Microsoft.Office.Interop.Excel._Application xlApp { get; set; }
         public Microsoft.Office.Interop.Excel.Workbook workbook { get; set; }
@@ -90,6 +93,7 @@ namespace CSSPWebToolsTaskRunner.Services
             Parameters = "";
             fi = new FileInfo(@"C:\DoesNotExist.txt");
             sb = new StringBuilder();
+            sb2 = new StringBuilder();
             FileNameExtra = "";
 
             Random random = new Random();
@@ -1635,6 +1639,45 @@ namespace CSSPWebToolsTaskRunner.Services
                 else
                 {
                     reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{municipality}", "ERROR municipality");
+                }
+            }
+            else if (reportTypeModel.TVType == TVTypeEnum.Province)
+            {
+                string provinceinit = "";
+                List<string> ProvInitList = new List<string>()
+                {
+                    "BC", "ME", "NB", "NL", "NS", "PE", "QC",
+                };
+                List<string> ProvList = new List<string>()
+                {
+                "British Columbia", "Maine", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Prince Edward Island", "Québec",
+                };
+                using (CSSPDBEntities db2 = new CSSPDBEntities())
+                {
+                    var provItem = (from c in db2.TVItems
+                                    from cl in db2.TVItemLanguages
+                                    where c.TVItemID == cl.TVItemID
+                                    && c.TVItemID == TVItemID
+                                    && cl.Language == (int)LanguageEnum.en
+                                    select new { c, cl }).FirstOrDefault();
+
+                    for (int i = 0; i < ProvList.Count; i++)
+                    {
+                        if (ProvList[i] == provItem.cl.TVText)
+                        {
+                            provinceinit = ProvInitList[i];
+                            break;
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(provinceinit))
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{provinceinit}", provinceinit);
+                }
+                else
+                {
+                    reportTypeModel.StartOfFileName = reportTypeModel.StartOfFileName.Replace("{provinceinit}", "ERROR municipality");
                 }
             }
             else
