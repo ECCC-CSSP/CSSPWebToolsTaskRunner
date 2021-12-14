@@ -235,6 +235,9 @@ namespace CSSPWebToolsTaskRunner.Services
                 sb.AppendLine("# Rain runs<br/> &ge; 12mm <br/>24-48 hrs");
                 sb.AppendLine("</th>");
                 sb.AppendLine("<th>");
+                sb.AppendLine("# Rain runs<br/> &ge; 25mm <br/>0-24 hrs");
+                sb.AppendLine("</th>");
+                sb.AppendLine("<th>");
                 sb.AppendLine("Missing Rain data <br/>in Webtools <br/>(Yes/No)");
                 sb.AppendLine("</th>");
                 sb.AppendLine("<th>");
@@ -776,6 +779,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     sb.AppendLine("</td>");
                     int countRainDay = 0;
                     int countRainDay24h = 0;
+                    int countRainDay24hOver25mm = 0;
                     int countRainDay48h = 0;
                     bool rainDataMissing = false;
 
@@ -816,6 +820,11 @@ namespace CSSPWebToolsTaskRunner.Services
                             countRainDay24h += 1;
                         }
 
+                        if (mwqmRun.RainDay1_mm >= 25)
+                        {
+                            countRainDay24hOver25mm += 1;
+                        }
+
                         if (mwqmRun.RainDay2_mm >= 12)
                         {
                             countRainDay48h += 1;
@@ -830,6 +839,9 @@ namespace CSSPWebToolsTaskRunner.Services
                     sb.AppendLine("</td>");
                     sb.AppendLine("<td>");
                     sb.AppendLine($"{ countRainDay48h }");
+                    sb.AppendLine("</td>");
+                    sb.AppendLine("<td>");
+                    sb.AppendLine($"{ countRainDay24hOver25mm }");
                     sb.AppendLine("</td>");
                     sb.AppendLine("<td>");
                     sb.AppendLine(rainDataMissing ? "Yes" : "No");
