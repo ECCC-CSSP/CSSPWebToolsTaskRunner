@@ -1053,14 +1053,14 @@ namespace CSSPWebToolsTaskRunner.Services
                     continue;
                 }
 
-                mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
                 mail.IsBodyHtml = true;
 
                 SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
-                myClient.Host = "smtp.email-courriel.canada.ca";
+                myClient.Host = "mail.ec.gc.ca";
                 myClient.Port = 587;
-                myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                myClient.Credentials = new System.Net.NetworkCredential("pccsm-cssp@ec.gc.ca", "Gt=UJZ3g]8_P86Q]::p0F(%=$_OL_Y");
                 myClient.EnableSsl = true;
 
                 DateTime RunDate = new DateTime(labSheetModel.Year, labSheetModel.Month, labSheetModel.Day);

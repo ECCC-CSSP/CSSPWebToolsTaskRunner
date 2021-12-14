@@ -209,20 +209,20 @@ namespace CSSPWebToolsTaskRunner
                     //    MailMessage mail = new MailMessage();
 
                     //    //mail.To.Add("Shawn.Donohue@Canada.ca");
-                    //    mail.To.Add("David.Halliwell@canada.ca");
+                    //    mail.To.Add("David.Halliwell@ec.gc.ca");
                     //    mail.Bcc.Add("Charles.LeBlanc2@Canada.ca");
 
-                    //    mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                    //    mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
                     //    mail.IsBodyHtml = true;
 
                     //    SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
                     //    //myClient.Host = "smtp.ctst.email-courriel.canada.ca";
-                    //    myClient.Host = "smtp.email-courriel.canada.ca";
+                    //    myClient.Host = "mail.ec.gc.ca";
                     //    myClient.Port = 587;
                     //    //myClient.Credentials = new System.Net.NetworkCredential("yourusername", "yourpassword");
                     //    //myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@ctst.canada.ca", "5y3Q^z+B4a7T$F+nQ@9N+r6uE!E87s");
-                    //    myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                    //    myClient.Credentials = new System.Net.NetworkCredential("pccsm-cssp@ec.gc.ca", "Gt=UJZ3g]8_P86Q]::p0F(%=$_OL_Y");
                     //    myClient.EnableSsl = true;
 
                     //    string subject = "David Halliwell Issue from CSSPWebToolsTaskRunner";
@@ -254,21 +254,20 @@ namespace CSSPWebToolsTaskRunner
 
                     MailMessage mail = new MailMessage();
 
-                    //mail.To.Add("Shawn.Donohue@Canada.ca");
-                    mail.To.Add("David.Halliwell@canada.ca");
-                    mail.Bcc.Add("Charles.LeBlanc2@Canada.ca");
+                    mail.To.Add("David.Halliwell@ec.gc.ca");
+                    mail.Bcc.Add("Charles.LeBlanc@ec.gc.ca");
 
-                    mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                    mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
                     mail.IsBodyHtml = true;
 
                     SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
                     //myClient.Host = "smtp.ctst.email-courriel.canada.ca";
-                    myClient.Host = "smtp.email-courriel.canada.ca";
+                    myClient.Host = "mail.ec.gc.ca";
                     myClient.Port = 587;
                     //myClient.Credentials = new System.Net.NetworkCredential("yourusername", "yourpassword");
                     //myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@ctst.canada.ca", "5y3Q^z+B4a7T$F+nQ@9N+r6uE!E87s");
-                    myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                    myClient.Credentials = new System.Net.NetworkCredential("pccsm-cssp@ec.gc.ca", "Gt=UJZ3g]8_P86Q]::p0F(%=$_OL_Y");
                     myClient.EnableSsl = true;
 
                     string subject = "David Halliwell Issue from CSSPWebToolsTaskRunner";
@@ -903,14 +902,14 @@ namespace CSSPWebToolsTaskRunner
                     continue;
                 }
 
-                mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
                 mail.IsBodyHtml = true;
 
                 SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
-                myClient.Host = "smtp.email-courriel.canada.ca";
+                myClient.Host = "mail.ec.gc.ca";
                 myClient.Port = 587;
-                myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                myClient.Credentials = new System.Net.NetworkCredential("pccsm-cssp@ec.gc.ca", "Gt=UJZ3g]8_P86Q]::p0F(%=$_OL_Y");
                 myClient.EnableSsl = true;
 
                 mail.Priority = MailPriority.High;
@@ -1033,14 +1032,14 @@ namespace CSSPWebToolsTaskRunner
                     continue;
                 }
 
-                mail.From = new MailAddress("ec.pccsm-cssp.ec@canada.ca");
+                mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
                 mail.IsBodyHtml = true;
 
                 SmtpClient myClient = new System.Net.Mail.SmtpClient();
 
-                myClient.Host = "smtp.email-courriel.canada.ca";
+                myClient.Host = "mail.ec.gc.ca";
                 myClient.Port = 587;
-                myClient.Credentials = new System.Net.NetworkCredential("ec.pccsm-cssp.ec@canada.ca", "H^9h6g@Gy$N57k=Dr@J7=F2y6p6b!T");
+                myClient.Credentials = new System.Net.NetworkCredential("pccsm-cssp@ec.gc.ca", "Gt=UJZ3g]8_P86Q]::p0F(%=$_OL_Y");
                 myClient.EnableSsl = true;
 
                 int FirstSpace = tvItemModelSubsector.TVText.IndexOf(" ");
