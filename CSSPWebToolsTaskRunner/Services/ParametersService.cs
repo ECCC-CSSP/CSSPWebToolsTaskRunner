@@ -556,9 +556,13 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     catch (Exception ex)
                     {
-                        NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiToDelete.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                        _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiToDelete.FullName, ex.Message + ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "");
-                        return false;
+                        if (false) // just skipping this for now
+                        {
+                            string inner = ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "";
+                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiToDelete.FullName, ex.Message + inner);
+                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiToDelete.FullName, ex.Message + inner);
+                            return false;
+                        }
                     }
                 }
             }
