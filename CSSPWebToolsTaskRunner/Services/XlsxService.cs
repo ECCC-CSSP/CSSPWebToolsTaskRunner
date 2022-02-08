@@ -1019,9 +1019,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                var data = Encoding.UTF8.GetBytes(sb.ToString());
+                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1191,9 +1194,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                var data = Encoding.UTF8.GetBytes(sb.ToString());
+                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1345,9 +1351,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                var data = Encoding.UTF8.GetBytes(sb.ToString());
+                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1374,7 +1383,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl,C0,C250,C500,C750,C1000,C1250,C1500,C1750,C2000,C2250,C2500,C2750,C3000,C3250,C3500,C3750");
             //sb.AppendLine("Subsector,Site,Type,SubType,Risk,Lat,Lng,OBS,Address,CSSPUrl");
-            sb.AppendLine("Subsector,Desc,Site,IN,Type,Path,Prob,Risk,Lat,Lng,ObsDate,CSSPUrl");
+            sb.AppendLine("Subsector,Descrip,Site,IssN,IssType,Path,Prob,Risk,Lat,Lng,ObsDate,CSSPUrl");
 
             using (CSSPDBEntities db = new CSSPDBEntities())
             {
@@ -1655,9 +1664,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                var data = Encoding.UTF8.GetBytes(sb.ToString());
+                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1890,9 +1902,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                var data = Encoding.UTF8.GetBytes(sb.ToString());
+                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
