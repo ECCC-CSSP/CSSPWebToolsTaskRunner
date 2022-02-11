@@ -1019,12 +1019,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                var data = Encoding.UTF8.GetBytes(sb.ToString());
-                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
-                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
-                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                //var data = Encoding.UTF8.GetBytes(sb.ToString());
+                //var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                //File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1194,12 +1194,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                var data = Encoding.UTF8.GetBytes(sb.ToString());
-                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
-                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
-                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                //var data = Encoding.UTF8.GetBytes(sb.ToString());
+                //var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                //File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1351,12 +1351,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                var data = Encoding.UTF8.GetBytes(sb.ToString());
-                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
-                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
-                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                //var data = Encoding.UTF8.GetBytes(sb.ToString());
+                //var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                //File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1664,12 +1664,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                var data = Encoding.UTF8.GetBytes(sb.ToString());
-                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
-                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
-                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                //var data = Encoding.UTF8.GetBytes(sb.ToString());
+                //var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                //File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
@@ -1902,12 +1902,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
             try
             {
-                var data = Encoding.UTF8.GetBytes(sb.ToString());
-                var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
-                File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
-                //File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
-                //File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
-                //File.Delete(fi.FullName.Replace(".csv", "a.csv"));
+                //var data = Encoding.UTF8.GetBytes(sb.ToString());
+                //var result = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                //File.WriteAllBytes(fi.FullName.Replace(".csv", "a.csv"), result);
+                File.WriteAllText(fi.FullName.Replace(".csv", "a.csv"), sb.ToString(), Encoding.UTF8);
+                File.Copy(fi.FullName.Replace(".csv", "a.csv"), fi.FullName);
+                File.Delete(fi.FullName.Replace(".csv", "a.csv"));
             }
             catch (Exception ex)
             {
