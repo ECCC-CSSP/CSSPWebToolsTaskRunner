@@ -876,7 +876,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string ServerFilePath = tvFileService.GetServerFilePath(TVItemID);
 
-            FileInfo fi = new FileInfo(tvFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"ClassificationInputs_{ProvInit}_FromDB.kml");
+            FileInfo fi = new FileInfo(tvFileService.ChoseEDriveOrCDrive(ServerFilePath) + $"Copy_ClassificationInputs_{ProvInit}_FromDB.kml");
 
             TVItemModel tvItemModelFile = _TaskRunnerBaseService.CreateFileTVItem(fi);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
