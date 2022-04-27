@@ -381,68 +381,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
 
-
-                /*
-                <!DOCTYPE html>
-                <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-
-                <head>
-                    <meta charset="utf-8" />
-                    <title>NB-06-02-002 Site Photo Album</title>
-                </head>
-
-                <body>
-                    <h2>NB-06-02-002 Bouctouche (Bouctouche River and Harbour)</h2>
-                    <table style="width: '95%'; height: '95%';">
-                        <tr style="height: 32%">
-                            <td style="width: '45%'; border: 1px solid red">
-                                <img width="45%" height="32%"
-                                    src="http://localhost:11562/en-CA/File/FileDownload?TVFileTVItemID=331295">
-                                <br>
-                                <span>testingljs eflijs feli </span>
-                            </td>
-                            <td style="width: '45%'; border: 1px solid blue">
-                                <img width="45%" height="32%"
-                                    src="http://localhost:11562/en-CA/File/FileDownload?TVFileTVItemID=331295">
-                                <br>
-                                <span>testingljs eflijs feli </span>
-                            </td>
-                        </tr>
-                        <tr style="height: 32%">
-                            <td style="width: '45%'; border: 1px solid red">
-                                <img width="45%" height="32%"
-                                    src="http://localhost:11562/en-CA/File/FileDownload?TVFileTVItemID=331295">
-                                <br>
-                                <span>testingljs eflijs feli </span>
-                            </td>
-                            <td style="width: '45%'; border: 1px solid blue">
-                                <img width="45%" height="32%"
-                                    src="http://localhost:11562/en-CA/File/FileDownload?TVFileTVItemID=331295">
-                                <br>
-                                <span>testingljs eflijs feli </span>
-                            </td>
-                        </tr>
-                        <tr style="height: 32%">
-                            <td style="width: '45%'; border: 1px solid red">
-                                <img width="45%" height="32%"
-                                    src="http://localhost:11562/en-CA/File/FileDownload?TVFileTVItemID=331295">
-                                <br>
-                                <span>testingljs eflijs feli </span>
-                            </td>
-                            <td style="width: '45%'; border: 1px solid blue">
-                                <img width="45%" height="32%"
-                                    src="http://localhost:11562/en-CA/File/FileDownload?TVFileTVItemID=331295">
-                                <br>
-                                <span>testingljs eflijs feli </span>
-                            </td>
-                        </tr>
-                    </table>
-                </body>
-
-                </html> 
-                 */
-
-
                 sb.AppendLine("<!DOCTYPE html>");
                 sb.AppendLine("");
                 sb.AppendLine(@"<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">");
@@ -487,7 +425,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         {
                             var tvFileItem = (from c in tvFileList
                                               where c.c.TVPath.Contains(tvItemList[i + j].c.TVPath + "p")
-                                              && c.cf.ServerFileName.Contains("monitoring.jpg")
+                                              && c.cf.ServerFileName.ToLower().Contains("monitoring.jpg")
                                               select c).FirstOrDefault();
 
                             if (tvFileItem == null)
