@@ -1830,12 +1830,12 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 if (IsMWQMSite)
                 {
-                    sb.AppendLine(@"<h3 style=""text-align:center""><a href=""" + @"http://wmon01dtchlebl2/csspwebtools/en-CA/MWQM/_mwqmSiteSampleMovingAverageStat?MWQMSiteTVItemID=" + TVItemID + @""" target=""_blank"">Open Data Table</a></h3>");
+                    sb.AppendLine(@"<h3 style=""text-align:center""><a href=""" + @"http://131.235.1.167/csspwebtools/en-CA/MWQM/_mwqmSiteSampleMovingAverageStat?MWQMSiteTVItemID=" + TVItemID + @""" target=""_blank"">Open Data Table</a></h3>");
                 }
 
                 foreach (TVFileModel tvFileModel in tvFileModelList)
                 {
-                    string src = @"http://wmon01dtchlebl2/csspwebtools/en-CA/File/ShowImage?TVFileTVItemID=" + tvFileModel.TVFileTVItemID;
+                    string src = @"http://131.235.1.167/csspwebtools/en-CA/File/ShowImage?TVFileTVItemID=" + tvFileModel.TVFileTVItemID;
                     sb.AppendLine($@"                <p><img src="""" data-src=""{src}"" width=""500"" height=""500""></p>");
                 }
 

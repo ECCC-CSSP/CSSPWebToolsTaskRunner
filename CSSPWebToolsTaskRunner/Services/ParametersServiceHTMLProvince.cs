@@ -658,7 +658,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sb.AppendLine("<tr>");
                     sb.AppendLine("<td>");
-                    sb.Append($@"<a href=""http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||");
+                    sb.Append($@"<a href=""http://131.235.1.167/csspwebtools/en-CA/#!View/a|||");
                     sb.Append($@"{ subsector.c.TVItemID }|||00000000001000000000000000000000"">{ locator }</a>");
                     sb.AppendLine("</td>");
                     sb.AppendLine("<td>");

@@ -48,7 +48,7 @@ namespace CSSPWebToolsTaskRunner.Services
         {
             _TaskRunnerBaseService = this;
             _BWObjList = bwObjList;
-            _User = new GenericPrincipal(new GenericIdentity("Charles.LeBlanc2@Canada.ca", "Forms"), null);
+            _User = new GenericPrincipal(new GenericIdentity("Charles.LeBlanc@ec.gc.ca", "Forms"), null);
         }
         #endregion Constructors
 
@@ -1363,7 +1363,7 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         public string GetUrlFromTVItem(TVItemModel tvItemModel)
         {
-            return "http://wmon01dtchlebl2/csspwebtools/" + _BWObj.appTaskModel.Language + "-CA/#!View/" + tvItemModel.TVText + "/A|||" + tvItemModel.TVItemID + "/1|||000000000000000000000000000000|||20101970"; ;
+            return "http://131.235.1.167/csspwebtools/" + _BWObj.appTaskModel.Language + "-CA/#!View/" + tvItemModel.TVText + "/A|||" + tvItemModel.TVItemID + "/1|||000000000000000000000000000000|||20101970"; ;
         }
         public string RunTaskForDavidHalliwell()
         {

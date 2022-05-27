@@ -963,7 +963,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         string AS = (liftStation.inf.AlarmSystemType != null && liftStation.inf.AlarmSystemType > 0 ? (_BaseEnumService.GetEnumText_AlarmSystemTypeEnum((AlarmSystemTypeEnum)liftStation.inf.AlarmSystemType)) : "");
                         string CO = (liftStation.inf.CanOverflow != null ? ((bool)liftStation.inf.CanOverflow).ToString() : "");
                         string AD = (!string.IsNullOrWhiteSpace(liftStation.add) ? liftStation.add.Replace(",", "_") + " --- " + MN : "");
-                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                        string URL = @"http://131.235.1.167/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
                         string C = (liftStation.infLang != null && !string.IsNullOrWhiteSpace(liftStation.infLang.Comment) ? liftStation.infLang.Comment.Replace(",", "_") : "");
 
                         List<UseOfSite> useMuniSubList = (from c in useMuniList
@@ -1168,7 +1168,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         string MED = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.Median != null ? ((double)tvItemMoreInfoMWQMSiteModel.Median).ToString("F1") : "");
                         string P90 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.P90 != null ? ((double)tvItemMoreInfoMWQMSiteModel.P90).ToString("F1") : "");
                         string PO43 = (tvItemMoreInfoMWQMSiteModel != null && tvItemMoreInfoMWQMSiteModel.PercOver43 != null ? ((double)tvItemMoreInfoMWQMSiteModel.PercOver43).ToString("F1") : "");
-                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + mwqmSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                        string URL = @"http://131.235.1.167/csspwebtools/en-CA/#!View/a|||" + mwqmSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
                         sb.AppendLine($"{SS},{MS},{DESC},{Lat},{Lng},{CC},{L},{COL},{AsOf},{StatPeriod},{GM},{MED},{P90},{PO43},{URL}".Replace("\r", "   ").Replace("\n", " ").Replace("empty", "").Replace("Empty", ""));
                     }
                 }
@@ -1326,7 +1326,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     string MN = tvItemMuni.tl.TVText.Replace(",", "_");
                     string Lat = (tvItemMuni.mip != null ? tvItemMuni.mip.Lat.ToString("F5") : "");
                     string Lng = (tvItemMuni.mip != null ? tvItemMuni.mip.Lng.ToString("F5") : "");
-                    string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                    string URL = @"http://131.235.1.167/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
                     sb.AppendLine($"{MN},{Lat},{Lng},{URL}".Replace("\r", "   ").Replace("\n", "").Replace("empty", "").Replace("Empty", ""));
                 }
             }
@@ -1534,7 +1534,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         }
                         string Lat = (polSourceSite.mip != null ? polSourceSite.mip.Lat.ToString("F5") : "");
                         string Lng = (polSourceSite.mip != null ? polSourceSite.mip.Lng.ToString("F5") : "");
-                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + polSourceSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                        string URL = @"http://131.235.1.167/csspwebtools/en-CA/#!View/a|||" + polSourceSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
 
                         string TVText = "";
 
@@ -1847,7 +1847,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         string AF = (wwtp.inf.AverageFlow_m3_day != null ? ((double)wwtp.inf.AverageFlow_m3_day).ToString("F3") : "");
                         string PF = (wwtp.inf.PeakFlow_m3_day != null ? ((double)wwtp.inf.PeakFlow_m3_day).ToString("F3") : "");
                         string AD = (!string.IsNullOrWhiteSpace(wwtp.add) ? wwtp.add.Replace(",", "_") + " --- " + MN : "");
-                        string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                        string URL = @"http://131.235.1.167/csspwebtools/en-CA/#!View/a|||" + tvItemMuni.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
                         string C = (wwtp.infLang != null && !string.IsNullOrWhiteSpace(wwtp.infLang.Comment) ? wwtp.infLang.Comment.Replace(",", "_") : "");
 
                         List<UseOfSite> useMuniSubList = (from c in useMuniList

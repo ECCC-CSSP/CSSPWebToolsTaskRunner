@@ -165,7 +165,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     string Lat = (polSourceSite.mip != null ? polSourceSite.mip.Lat.ToString("F5") : "");
                     string Lng = (polSourceSite.mip != null ? polSourceSite.mip.Lng.ToString("F5") : "");
-                    string URL = @"http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/a|||" + polSourceSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
+                    string URL = @"http://131.235.1.167/csspwebtools/en-CA/#!View/a|||" + polSourceSite.t.TVItemID.ToString() + @"|||30010100004000000000000000000000";
 
                     string TVText = "";
 

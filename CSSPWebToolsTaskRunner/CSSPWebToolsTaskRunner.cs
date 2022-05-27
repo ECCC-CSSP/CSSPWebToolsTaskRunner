@@ -52,7 +52,7 @@ namespace CSSPWebToolsTaskRunner
         {
             InitializeComponent();
             AppInit();
-            _User = new GenericPrincipal(new GenericIdentity("Charles.LeBlanc2@Canada.ca", "Forms"), null);
+            _User = new GenericPrincipal(new GenericIdentity("Charles.LeBlanc@ec.gc.ca", "Forms"), null);
             LanguageRequest = LanguageEnum.en;
         }
         #endregion Constructors
@@ -210,7 +210,7 @@ namespace CSSPWebToolsTaskRunner
 
                     //    //mail.To.Add("Shawn.Donohue@Canada.ca");
                     //    mail.To.Add("David.Halliwell@ec.gc.ca");
-                    //    mail.Bcc.Add("Charles.LeBlanc2@Canada.ca");
+                    //    mail.Bcc.Add("Charles.LeBlanc@ec.gc.ca");
 
                     //    mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
                     //    mail.IsBodyHtml = true;
@@ -847,7 +847,7 @@ namespace CSSPWebToolsTaskRunner
                             ts.Complete();
                         }
 
-                        string href = "http://wmon01dtchlebl2/csspwebtools/en-CA/#!View/" + (tvItemModelCountry.TVText + "-" + tvItemModelProvince.TVText).Replace(" ", "-") + "|||" + tvItemModelProvince.TVItemID.ToString() + "|||010003030200000000000000000000";
+                        string href = "http://131.235.1.167/csspwebtools/en-CA/#!View/" + (tvItemModelCountry.TVText + "-" + tvItemModelProvince.TVText).Replace(" ", "-") + "|||" + tvItemModelProvince.TVItemID.ToString() + "|||010003030200000000000000000000";
 
                         if (labSheetModelAndA1Sheet.LabSheetA1Sheet.LabSheetA1MeasurementList.Where(c => c.MPN != null && c.MPN >= MPNLimitForEmail).Any())
                         {
