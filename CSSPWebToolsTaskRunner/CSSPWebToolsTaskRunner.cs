@@ -209,7 +209,7 @@ namespace CSSPWebToolsTaskRunner
                     //    MailMessage mail = new MailMessage();
 
                     //    //mail.To.Add("Shawn.Donohue@Canada.ca");
-                    //    mail.To.Add("David.Halliwell@ec.gc.ca");
+                    //    mail.To.Add("Daniel.Bastarache@ec.gc.ca");
                     //    mail.Bcc.Add("Charles.LeBlanc@ec.gc.ca");
 
                     //    mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
@@ -254,7 +254,7 @@ namespace CSSPWebToolsTaskRunner
 
                     MailMessage mail = new MailMessage();
 
-                    mail.To.Add("David.Halliwell@ec.gc.ca");
+                    mail.To.Add("Daniel.Bastarache@ec.gc.ca");
                     mail.Bcc.Add("Charles.LeBlanc@ec.gc.ca");
 
                     mail.From = new MailAddress("pccsm-cssp@ec.gc.ca");
