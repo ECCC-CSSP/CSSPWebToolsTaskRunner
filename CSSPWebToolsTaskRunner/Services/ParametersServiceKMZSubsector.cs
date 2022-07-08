@@ -77,164 +77,115 @@ namespace CSSPWebToolsTaskRunner.Services
 
             sb.AppendLine(@"	<name>" + fi.Name + "</name>");
 
-            sb.AppendLine(@"    <StyleMap id=""msn_ylw-pushpin"">");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>normal</key>");
-            sb.AppendLine(@"			<styleUrl>#sn_ylw-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>highlight</key>");
-            sb.AppendLine(@"			<styleUrl>#sh_ylw-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"	</StyleMap>");
-            sb.AppendLine(@"	<Style id=""sh_ylw-pushpin"">");
-            sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.2</scale>");
-            sb.AppendLine(@"		</IconStyle>");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff00ff00</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>0000ff00</color>");
-            sb.AppendLine(@"		</PolyStyle>");
-            sb.AppendLine(@"	</Style>");
-            sb.AppendLine(@"	<Style id=""sn_ylw-pushpin"">");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff00ff00</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>0000ff00</color>");
-            sb.AppendLine(@"		</PolyStyle>");
-            sb.AppendLine(@"	</Style>");
-
-            sb.AppendLine(@"    <StyleMap id=""msn_grn-pushpin"">");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>normal</key>");
-            sb.AppendLine(@"			<styleUrl>#sn_grn-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>highlight</key>");
-            sb.AppendLine(@"			<styleUrl>#sh_grn-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"	</StyleMap>");
-            sb.AppendLine(@"	<Style id=""sh_grn-pushpin"">");
-            sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.2</scale>");
-            sb.AppendLine(@"		</IconStyle>");
-            sb.AppendLine(@"		<LineStyle>");
+            // red polyline
+            sb.AppendLine(@"	<Style id=""red-polyline"">");
+            sb.AppendLine(@"        <LineStyle>");
             sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>000000ff</color>");
-            sb.AppendLine(@"		</PolyStyle>");
-            sb.AppendLine(@"	</Style>");
-            sb.AppendLine(@"	<Style id=""sn_grn-pushpin"">");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
+            sb.AppendLine(@"			<width>2</width>");
             sb.AppendLine(@"		</LineStyle>");
             sb.AppendLine(@"		<PolyStyle>");
             sb.AppendLine(@"			<color>000000ff</color>");
             sb.AppendLine(@"		</PolyStyle>");
             sb.AppendLine(@"	</Style>");
 
-            sb.AppendLine(@"    <StyleMap id=""msn_blue-pushpin"">");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>normal</key>");
-            sb.AppendLine(@"			<styleUrl>#sn_blue-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>highlight</key>");
-            sb.AppendLine(@"			<styleUrl>#sh_blue-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"	</StyleMap>");
-            sb.AppendLine(@"	<Style id=""sh_blue-pushpin"">");
-            sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.2</scale>");
-            sb.AppendLine(@"		</IconStyle>");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>000000ff</color>");
-            sb.AppendLine(@"		</PolyStyle>");
-            sb.AppendLine(@"	</Style>");
-            sb.AppendLine(@"	<Style id=""sn_blue-pushpin"">");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>000000ff</color>");
-            sb.AppendLine(@"		</PolyStyle>");
+            // Municipality
+            sb.AppendLine(@"	<Style id=""municipality"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ff00ff00</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
-            sb.AppendLine(@"    <StyleMap id=""msn_ltblu-pushpin"">");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>normal</key>");
-            sb.AppendLine(@"			<styleUrl>#sn_ltblu-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>highlight</key>");
-            sb.AppendLine(@"			<styleUrl>#sh_ltblu-pushpin</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"	</StyleMap>");
-            sb.AppendLine(@"	<Style id=""sh_ltblu-pushpin"">");
-            sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.2</scale>");
-            sb.AppendLine(@"		</IconStyle>");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>000000ff</color>");
-            sb.AppendLine(@"		</PolyStyle>");
-            sb.AppendLine(@"	</Style>");
-            sb.AppendLine(@"	<Style id=""sn_ltblu-pushpin"">");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>000000ff</color>");
-            sb.AppendLine(@"		</PolyStyle>");
+            // WWTP
+            sb.AppendLine(@"	<Style id=""wwtp"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ffff0000</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
-            sb.AppendLine(@"    <StyleMap id=""msn_wht-blank"">");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>normal</key>");
-            sb.AppendLine(@"			<styleUrl>#sn_wht-blank</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"		<Pair>");
-            sb.AppendLine(@"			<key>highlight</key>");
-            sb.AppendLine(@"			<styleUrl>#sh_wht-blank</styleUrl>");
-            sb.AppendLine(@"		</Pair>");
-            sb.AppendLine(@"	</StyleMap>");
-            sb.AppendLine(@"	<Style id=""sh_wht-blank"">");
-            sb.AppendLine(@"		<IconStyle>");
-            sb.AppendLine(@"			<scale>1.2</scale>");
-            sb.AppendLine(@"		</IconStyle>");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>000000ff</color>");
-            sb.AppendLine(@"		</PolyStyle>");
+            // Outfall can overflow
+            sb.AppendLine(@"	<Style id=""outfallcanoverflow"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ffff0000</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/target.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
-            sb.AppendLine(@"	<Style id=""sn_wht-blank"">");
-            sb.AppendLine(@"		<LineStyle>");
-            sb.AppendLine(@"			<color>ff0000ff</color>");
-            sb.AppendLine(@"			<width>1.5</width>");
-            sb.AppendLine(@"		</LineStyle>");
-            sb.AppendLine(@"		<PolyStyle>");
-            sb.AppendLine(@"			<color>000000ff</color>");
-            sb.AppendLine(@"		</PolyStyle>");
+
+            // Outfall can not overflow
+            sb.AppendLine(@"	<Style id=""outfallcannotoverflow"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ff00ff00</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/target.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // Outfall unknown
+            sb.AppendLine(@"	<Style id=""outfallunknown"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ffffff00</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/target.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // Lift station
+            sb.AppendLine(@"	<Style id=""liftstation"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ff0000ff</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // Line overflow
+            sb.AppendLine(@"	<Style id=""lineoverflow"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ff00ff00</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // Default Infrastructure
+            sb.AppendLine(@"	<Style id=""defaultinfrastructure"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ffffff00</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // Pollution source site
+            sb.AppendLine(@"	<Style id=""pollutionsourcesite"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ff00ff00</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/square.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // Monitoring site
+            sb.AppendLine(@"	<Style id=""monitoringsite"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<color>ff00ff00</color>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/arrow.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
@@ -250,88 +201,11 @@ namespace CSSPWebToolsTaskRunner.Services
                 TVText = tvItemModelSubsector.TVText.Substring(0, pos);
             }
 
-            // Doing Point
-            sb.AppendLine(@"	<Placemark>");
-            sb.AppendLine(@"	    <name>" + TaskRunnerServiceRes.GeneralStatAndInfo + "</name>");
-            sb.AppendLine(@"        <styleUrl>#msn_blue-pushpin</styleUrl>");
-            sb.AppendLine(@"	    <description>");
-            sb.AppendLine(@"            <![CDATA[");
-            sb.AppendLine(@"                <h2><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelSubsector) + @""">" + tvItemModelSubsector.TVText + "</a></h2>");
-
-            List<TVItemModel> tvItemModelMunicipalityList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Municipality);
-
-            sb.AppendLine(@"                <h3>" + TaskRunnerServiceRes.Municipalities + " (" + tvItemModelMunicipalityList.Count + ")</h3>");
-            sb.AppendLine(@"                <ul>");
-
-
-            foreach (TVItemModel tvItemModelMunicipality in tvItemModelMunicipalityList)
-            {
-                sb.AppendLine(@"                    <li>");
-                sb.AppendLine(@"                        <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelMunicipality) + @""">" + tvItemModelMunicipality.TVText + "</a></p>");
-
-                List<TVItemModel> tvItemModelInfrastructureList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelMunicipality.TVItemID, TVTypeEnum.Infrastructure);
-
-                List<InfrastructureModel> infrastructureModelList = new List<InfrastructureModel>();
-                foreach (TVItemModel tvItemModelInfrastructure in tvItemModelInfrastructureList)
-                {
-                    infrastructureModelList.Add(_InfrastructureService.GetInfrastructureModelWithInfrastructureTVItemIDDB(tvItemModelInfrastructure.TVItemID));
-                }
-
-                sb.AppendLine(@"                <h4>" + TaskRunnerServiceRes.Infrastructures + " (" + infrastructureModelList.Count + ")</h4>");
-                sb.AppendLine(@"                        <ul>");
-                foreach (TVItemModel tvItemModelInfrastructure in tvItemModelInfrastructureList)
-                {
-                    sb.AppendLine(@"                            <li>");
-                    sb.AppendLine(@"                                <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelInfrastructure) + @""">" + tvItemModelInfrastructure.TVText + "</a></p>");
-                    sb.AppendLine(@"                            </li>");
-                }
-                sb.AppendLine(@"                        </ul>");
-                
-                sb.AppendLine(@"                    </li>");
-            }
-            sb.AppendLine(@"                </ul>");
-
-            List<TVItemModel> tvItemModelMWQMSiteList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite);
-
-            sb.AppendLine(@"                <h3>" + TaskRunnerServiceRes.MWQMSites + " (" + tvItemModelMWQMSiteList.Count + ")</h3>");
-            sb.AppendLine(@"                <ul>");
-
-
-            foreach (TVItemModel tvItemModelMWQMSite in tvItemModelMWQMSiteList)
-            {
-                sb.AppendLine(@"                    <li>");
-                sb.AppendLine(@"                        <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelMWQMSite) + @""">" + tvItemModelMWQMSite.TVText + "</a></p>");
-                sb.AppendLine(@"                    </li>");
-            }
-
-            sb.AppendLine(@"                </ul>");
-
-            List<TVItemModel> tvItemModelPolSourceSiteList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.PolSourceSite);
-
-            sb.AppendLine(@"                <h3>" + TaskRunnerServiceRes.PollutionSourceSites + " (" + tvItemModelPolSourceSiteList.Count + ")</h3>");
-            sb.AppendLine(@"                <ul>");
-
-
-            foreach (TVItemModel tvItemModelPollutionSourceSite in tvItemModelPolSourceSiteList)
-            {
-                sb.AppendLine(@"                    <li>");
-                sb.AppendLine(@"                        <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelPollutionSourceSite) + @""">" + tvItemModelPollutionSourceSite.TVText + "</a></p>");
-                sb.AppendLine(@"                    </li>");
-            }
-
-            sb.AppendLine(@"                </ul>");
-
-            sb.AppendLine(@"            ]]> ");
-            sb.AppendLine(@"	    </description>");
-            sb.AppendLine(@"	    <Point>");
-            sb.AppendLine(@"	    	<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
-            sb.AppendLine(@"	    </Point>");
-            sb.AppendLine(@"	</Placemark>");
 
             // Doing Polygon
             sb.AppendLine(@"	<Placemark>");
-            sb.AppendLine(@"		<name>" + TVText + " (poly)</name>");
-            sb.AppendLine(@"        <styleUrl>#msn_ylw-pushpin</styleUrl>");
+            sb.AppendLine(@"		<name>" + TVText + "</name>");
+            sb.AppendLine(@"        <styleUrl>#red-polyline</styleUrl>");
             sb.AppendLine(@"		<Polygon>");
             sb.AppendLine(@"			<outerBoundaryIs>");
             sb.AppendLine(@"				<LinearRing>");
@@ -350,18 +224,30 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"		</Polygon>");
             sb.AppendLine(@"	</Placemark>");
 
+            List<UseOfSiteModel> useOfSiteModelList = _UseOfSiteService.GetUseOfSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
+
+            List<TVItemModel> tvItemModelMunicipalityList = new List<TVItemModel>();
+
+            foreach (UseOfSiteModel useOfSiteModel in useOfSiteModelList)
+            {
+                if (useOfSiteModel.TVType == TVTypeEnum.Municipality)
+                {
+                    tvItemModelMunicipalityList.Add(_TVItemService.GetTVItemModelWithTVItemIDDB(useOfSiteModel.SiteTVItemID));
+                }
+            }
+
             // Doing Municipalities
             sb.AppendLine(@" <Folder>");
             sb.AppendLine(@"	<name>Municipalities</name>");
 
-            foreach (TVItemModel tvItemModelMunicipality in tvItemModelMunicipalityList)
+            foreach (TVItemModel tvItemModelMunicipality in tvItemModelMunicipalityList.OrderBy(c => c.TVText))
             {
                 sb.AppendLine(@" <Folder>");
                 sb.AppendLine(@"	<name>" + tvItemModelMunicipality.TVText + "</name>");
                 // Doing point
                 sb.AppendLine(@"	<Placemark>");
                 sb.AppendLine(@"	<name>" + tvItemModelMunicipality.TVText + " ( Point)</name>");
-                sb.AppendLine(@"<styleUrl>#msn_blue-pushpin</styleUrl>");
+                sb.AppendLine(@"    <styleUrl>#municipality</styleUrl>");
 
                 mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelMunicipality.TVItemID, TVTypeEnum.Municipality, MapInfoDrawTypeEnum.Point);
 
@@ -384,64 +270,79 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>" + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"<styleUrl>#msn_blue-pushpin</styleUrl>");
+
+                    switch (infrastructureModel.InfrastructureType)
+                    {
+                        case InfrastructureTypeEnum.WWTP:
+                            sb.AppendLine(@"    <styleUrl>#wwtp</styleUrl>");
+                            break;
+                        case InfrastructureTypeEnum.LiftStation:
+                            sb.AppendLine(@"    <styleUrl>#liftstation</styleUrl>");
+                            break;
+                        case InfrastructureTypeEnum.LineOverflow:
+                            sb.AppendLine(@"    <styleUrl>#lineoverflow</styleUrl>");
+                            break;
+                        default:
+                            sb.AppendLine(@"    <styleUrl>#defaultinfrastructure</styleUrl>");
+                            break;
+                    }
 
                     sb.AppendLine(@"	<description>");
                     sb.AppendLine(@"<![CDATA[");
-                    sb.AppendLine(@"<pre>");
-                    sb.AppendLine(@"Alarm System Type: " + (infrastructureModel.AlarmSystemType != null && infrastructureModel.AlarmSystemType != 0 ? _BaseEnumService.GetEnumText_AlarmSystemTypeEnum(infrastructureModel.AlarmSystemType) : "") + "\r\n");
-                    sb.AppendLine(@"Can overflow: " + infrastructureModel.CanOverflow.ToString() + "\r\n");
-                    sb.AppendLine(@"Category: " + infrastructureModel.InfrastructureCategory + "\r\n");
-                    sb.AppendLine(@"Collection System Type: " + (infrastructureModel.CollectionSystemType != null && infrastructureModel.CollectionSystemType != 0 ? _BaseEnumService.GetEnumText_CollectionSystemTypeEnum(infrastructureModel.CollectionSystemType) : "") + "\r\n");
-                    sb.AppendLine(@"Comments: " + infrastructureModel.Comment + "\r\n");
-                    sb.AppendLine(@"DesignFlow (m3/day): " + infrastructureModel.DesignFlow_m3_day + "\r\n");
-                    sb.AppendLine(@"Disinfection Type: " + (infrastructureModel.DisinfectionType != null && infrastructureModel.DisinfectionType != 0 ? _BaseEnumService.GetEnumText_DisinfectionTypeEnum(infrastructureModel.DisinfectionType) : "") + "\r\n");
-                    sb.AppendLine(@"Infrastructure Type: " + (infrastructureModel.InfrastructureType != null && infrastructureModel.InfrastructureType != 0 ? _BaseEnumService.GetEnumText_InfrastructureTypeEnum(infrastructureModel.InfrastructureType) : "") + "\r\n");
-                    sb.AppendLine(@"Average Flow (m3/day): " + infrastructureModel.AverageFlow_m3_day + "\r\n");
-                    sb.AppendLine(@"AverageFlow_m3_day: " + infrastructureModel.PeakFlow_m3_day + "\r\n");
-                    sb.AppendLine(@"Percent Flow Of Total (%): " + infrastructureModel.PercFlowOfTotal + "\r\n");
-                    sb.AppendLine(@"Population Served: " + infrastructureModel.PopServed + "\r\n");
-                    sb.AppendLine(@"Time Zone: " + infrastructureModel.TimeOffset_hour + "\r\n");
-                    sb.AppendLine(@"Treatment Type: " + (infrastructureModel.TreatmentType != null && infrastructureModel.TreatmentType != 0 ? _BaseEnumService.GetEnumText_TreatmentTypeEnum(infrastructureModel.TreatmentType) : "") + "\r\n");
+                    //sb.AppendLine(@"<pre>");
+                    sb.AppendLine(@"<strong>Alarm System Type:</strong> " + (infrastructureModel.AlarmSystemType != null && infrastructureModel.AlarmSystemType != 0 ? _BaseEnumService.GetEnumText_AlarmSystemTypeEnum(infrastructureModel.AlarmSystemType) : "") + "<br>");
+                    sb.AppendLine(@"<strong>Can overflow:</strong> " + infrastructureModel.CanOverflow.ToString() + "<br>");
+                    sb.AppendLine(@"<strong>Category:</strong> " + infrastructureModel.InfrastructureCategory + "<br>");
+                    sb.AppendLine(@"<strong>Collection System Type:</strong> " + (infrastructureModel.CollectionSystemType != null && infrastructureModel.CollectionSystemType != 0 ? _BaseEnumService.GetEnumText_CollectionSystemTypeEnum(infrastructureModel.CollectionSystemType) : "") + "<br>");
+                    sb.AppendLine(@"<strong>Comments:</strong> " + infrastructureModel.Comment + "<br>");
+                    sb.AppendLine(@"<strong>DesignFlow (m3/day):</strong> " + infrastructureModel.DesignFlow_m3_day + "<br>");
+                    sb.AppendLine(@"<strong>Disinfection Type:</strong> " + (infrastructureModel.DisinfectionType != null && infrastructureModel.DisinfectionType != 0 ? _BaseEnumService.GetEnumText_DisinfectionTypeEnum(infrastructureModel.DisinfectionType) : "") + "<br>");
+                    sb.AppendLine(@"<strong>Infrastructure Type:</strong> " + (infrastructureModel.InfrastructureType != null && infrastructureModel.InfrastructureType != 0 ? _BaseEnumService.GetEnumText_InfrastructureTypeEnum(infrastructureModel.InfrastructureType) : "") + "<br>");
+                    sb.AppendLine(@"<strong>Average Flow (m3/day):</strong> " + infrastructureModel.AverageFlow_m3_day + "<br>");
+                    sb.AppendLine(@"<strong>AverageFlow_m3_day:</strong> " + infrastructureModel.PeakFlow_m3_day + "<br>");
+                    sb.AppendLine(@"<strong>Percent Flow Of Total (%):</strong> " + infrastructureModel.PercFlowOfTotal + "<br>");
+                    sb.AppendLine(@"<strong>Population Served:</strong> " + infrastructureModel.PopServed + "<br>");
+                    sb.AppendLine(@"<strong>Time Zone:</strong> " + infrastructureModel.TimeOffset_hour + "<br>");
+                    sb.AppendLine(@"<strong>Treatment Type:</strong> " + (infrastructureModel.TreatmentType != null && infrastructureModel.TreatmentType != 0 ? _BaseEnumService.GetEnumText_TreatmentTypeEnum(infrastructureModel.TreatmentType) : "") + "<br>");
 
                     List<MapInfoPointModel> mapInfoPointModelInfrastructureList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(infrastructureModel.InfrastructureTVItemID, TVTypeEnum.WasteWaterTreatmentPlant, MapInfoDrawTypeEnum.Point);
 
                     if (mapInfoPointModelInfrastructureList.Count > 0)
                     {
-                        sb.AppendLine(@"Latitude Longitude: " + mapInfoPointModelInfrastructureList[0].Lat + " " + mapInfoPointModelInfrastructureList[0].Lng + "\r\n");
+                        sb.AppendLine(@"<strong>Latitude Longitude:</strong> " + mapInfoPointModelInfrastructureList[0].Lat + " " + mapInfoPointModelInfrastructureList[0].Lng + "<br>");
                     }
                     else
                     {
-                        sb.AppendLine("Latitude Longitude: \r\n");
+                        sb.AppendLine("<strong>Latitude Longitude:</strong> <br>");
                     }
 
                     List<MapInfoPointModel> mapInfoPointModelInfrastructureOutfallList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(infrastructureModel.InfrastructureTVItemID, TVTypeEnum.Outfall, MapInfoDrawTypeEnum.Point);
 
                     if (mapInfoPointModelInfrastructureOutfallList.Count > 0)
                     {
-                        sb.AppendLine(@"Outfall: Latitude Longitude: " + mapInfoPointModelInfrastructureOutfallList[0].Lat + " " + mapInfoPointModelInfrastructureOutfallList[0].Lng + "\r\n");
+                        sb.AppendLine(@"<strong>Outfall:</strong> Latitude Longitude: " + mapInfoPointModelInfrastructureOutfallList[0].Lat + " " + mapInfoPointModelInfrastructureOutfallList[0].Lng + "<br>");
                     }
                     else
                     {
-                        sb.AppendLine("Outfall: Latitude Longitude: \r\n");
+                        sb.AppendLine("<strong>Outfall:</strong> Latitude Longitude: <br>");
                     }
-                    sb.AppendLine("\r\n\r\n");
-                    sb.AppendLine("Outfall Information\r\n\r\n");
-                    sb.AppendLine(@"Average Depth (m): " + infrastructureModel.AverageDepth_m + "\r\n");
-                    sb.AppendLine(@"Decay Rate (/day): " + infrastructureModel.DecayRate_per_day + "\r\n");
-                    sb.AppendLine(@"Distance From Shore (m): " + infrastructureModel.DistanceFromShore_m + "\r\n");
-                    sb.AppendLine(@"Far Field Velocity (m/s): " + infrastructureModel.FarFieldVelocity_m_s + "\r\n");
-                    sb.AppendLine(@"Horizontal Angle (deg): " + infrastructureModel.HorizontalAngle_deg + "\r\n");
-                    sb.AppendLine(@"Near Field Velocity (m/s): " + infrastructureModel.NearFieldVelocity_m_s + "\r\n");
-                    sb.AppendLine(@"Number Of Ports: " + infrastructureModel.NumberOfPorts + "\r\n");
-                    sb.AppendLine(@"Port Diameter (m): " + infrastructureModel.PortDiameter_m + "\r\n");
-                    sb.AppendLine(@"Port Elevation (m): " + infrastructureModel.PortElevation_m + "\r\n");
-                    sb.AppendLine(@"Port Spacing (m): " + infrastructureModel.PortSpacing_m + "\r\n");
-                    sb.AppendLine(@"Receiving Water Concentration (FC /100 ml): " + infrastructureModel.ReceivingWater_MPN_per_100ml + "\r\n");
-                    sb.AppendLine(@"Receiving Water Salinity (PSU): " + infrastructureModel.ReceivingWaterSalinity_PSU + "\r\n");
-                    sb.AppendLine(@"Receiving Water Temperature (ºC): " + infrastructureModel.ReceivingWaterTemperature_C + "\r\n");
-                    sb.AppendLine(@"Vertical Angle (deg): " + infrastructureModel.VerticalAngle_deg + "\r\n");
-                    sb.AppendLine(@"</pre>");
+                    sb.AppendLine("<br><br>");
+                    sb.AppendLine("<h2>Outfall Information</h2>");
+                    sb.AppendLine(@"<strong>Average Depth (m):</strong> " + infrastructureModel.AverageDepth_m + "<br>");
+                    sb.AppendLine(@"<strong>Decay Rate (/day):</strong> " + infrastructureModel.DecayRate_per_day + "<br>");
+                    sb.AppendLine(@"<strong>Distance From Shore (m):</strong> " + infrastructureModel.DistanceFromShore_m + "<br>");
+                    sb.AppendLine(@"<strong>Far Field Velocity (m/s):</strong> " + infrastructureModel.FarFieldVelocity_m_s + "<br>");
+                    sb.AppendLine(@"<strong>Horizontal Angle (deg):</strong> " + infrastructureModel.HorizontalAngle_deg + "<br>");
+                    sb.AppendLine(@"<strong>Near Field Velocity (m/s):</strong> " + infrastructureModel.NearFieldVelocity_m_s + "<br>");
+                    sb.AppendLine(@"<strong>Number Of Ports:</strong> " + infrastructureModel.NumberOfPorts + "<br>");
+                    sb.AppendLine(@"<strong>Port Diameter (m):</strong> " + infrastructureModel.PortDiameter_m + "<br>");
+                    sb.AppendLine(@"<strong>Port Elevation (m):</strong> " + infrastructureModel.PortElevation_m + "<br>");
+                    sb.AppendLine(@"<strong>Port Spacing (m):</strong> " + infrastructureModel.PortSpacing_m + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Concentration (FC /100 ml):</strong> " + infrastructureModel.ReceivingWater_MPN_per_100ml + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Salinity (PSU):</strong> " + infrastructureModel.ReceivingWaterSalinity_PSU + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Temperature (ºC):</strong> " + infrastructureModel.ReceivingWaterTemperature_C + "<br>");
+                    sb.AppendLine(@"<strong>Vertical Angle (deg):</strong> " + infrastructureModel.VerticalAngle_deg + "<br>");
+                    //sb.AppendLine(@"</pre>");
                     sb.AppendLine(@"]]>");
                     sb.AppendLine(@"	</description>");
 
@@ -452,7 +353,22 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>Outfall " + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"<styleUrl>#msn_grn-pushpin</styleUrl>");
+                    
+                    if (infrastructureModel.CanOverflow == null)
+                    {
+                        sb.AppendLine(@"    <styleUrl>#outfallunknown</styleUrl>");
+                    }
+                    else
+                    {
+                        if (!(bool)infrastructureModel.CanOverflow)
+                        {
+                            sb.AppendLine(@"    <styleUrl>#outfallcannotoverflow</styleUrl>");
+                        }
+                        else
+                        {
+                            sb.AppendLine(@"    <styleUrl>#outfallcanoverflow</styleUrl>");
+                        }
+                    }
 
                     sb.AppendLine(@"		<Point>");
                     sb.AppendLine(@"			<coordinates>" + mapInfoPointModelInfrastructureOutfallList[0].Lng + "," + mapInfoPointModelInfrastructureOutfallList[0].Lat + ",0</coordinates>");
@@ -466,57 +382,57 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>" + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"<styleUrl>#msn_ylw-pushpin</styleUrl>");
+                    sb.AppendLine(@"    <styleUrl>#liftstation</styleUrl>");
 
                     sb.AppendLine(@"	<description>");
                     sb.AppendLine(@"<![CDATA[");
-                    sb.AppendLine(@"<pre>");
-                    sb.AppendLine(@"Alarm System Type: " + (infrastructureModel.AlarmSystemType != null && infrastructureModel.AlarmSystemType != 0 ? _BaseEnumService.GetEnumText_AlarmSystemTypeEnum(infrastructureModel.AlarmSystemType) : "") + "\r\n");
-                    sb.AppendLine(@"Can overflow: " + infrastructureModel.CanOverflow.ToString() + "\r\n");
-                    sb.AppendLine(@"Category: " + infrastructureModel.InfrastructureCategory + "\r\n");
-                    sb.AppendLine(@"Collection System Type: " + (infrastructureModel.CollectionSystemType != null && infrastructureModel.CollectionSystemType != 0 ? _BaseEnumService.GetEnumText_CollectionSystemTypeEnum(infrastructureModel.CollectionSystemType) : "") + "\r\n");
-                    sb.AppendLine(@"Comments: " + infrastructureModel.Comment + "\r\n");
-                    sb.AppendLine(@"Infrastructure Type: " + (infrastructureModel.InfrastructureType != null && infrastructureModel.InfrastructureType != 0 ? _BaseEnumService.GetEnumText_InfrastructureTypeEnum(infrastructureModel.InfrastructureType) : "") + "\r\n");
-                    sb.AppendLine(@"Percent Flow Of Total (%): " + infrastructureModel.PercFlowOfTotal + "\r\n");
+                    //sb.AppendLine(@"<pre>");
+                    sb.AppendLine(@"<strong>Alarm System Type:</strong> " + (infrastructureModel.AlarmSystemType != null && infrastructureModel.AlarmSystemType != 0 ? _BaseEnumService.GetEnumText_AlarmSystemTypeEnum(infrastructureModel.AlarmSystemType) : "") + "<br>");
+                    sb.AppendLine(@"<strong>Can overflow:</strong> " + infrastructureModel.CanOverflow.ToString() + "<br>");
+                    sb.AppendLine(@"<strong>Category:</strong> " + infrastructureModel.InfrastructureCategory + "<br>");
+                    sb.AppendLine(@"<strong>Collection System Type:</strong> " + (infrastructureModel.CollectionSystemType != null && infrastructureModel.CollectionSystemType != 0 ? _BaseEnumService.GetEnumText_CollectionSystemTypeEnum(infrastructureModel.CollectionSystemType) : "") + "<br>");
+                    sb.AppendLine(@"<strong>Comments:</strong> " + infrastructureModel.Comment + "<br>");
+                    sb.AppendLine(@"<strong>Infrastructure Type:</strong> " + (infrastructureModel.InfrastructureType != null && infrastructureModel.InfrastructureType != 0 ? _BaseEnumService.GetEnumText_InfrastructureTypeEnum(infrastructureModel.InfrastructureType) : "") + "<br>");
+                    sb.AppendLine(@"<strong>Percent Flow Of Total (%):</strong> " + infrastructureModel.PercFlowOfTotal + "<br>");
 
                     List<MapInfoPointModel> mapInfoPointModelInfrastructureList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(infrastructureModel.InfrastructureTVItemID, TVTypeEnum.LiftStation, MapInfoDrawTypeEnum.Point);
 
                     if (mapInfoPointModelInfrastructureList.Count > 0)
                     {
-                        sb.AppendLine(@"Latitude Longitude: " + mapInfoPointModelInfrastructureList[0].Lat + " " + mapInfoPointModelInfrastructureList[0].Lng + "\r\n");
+                        sb.AppendLine(@"<strong>Latitude Longitude:</strong> " + mapInfoPointModelInfrastructureList[0].Lat + " " + mapInfoPointModelInfrastructureList[0].Lng + "<br>");
                     }
                     else
                     {
-                        sb.AppendLine("Latitude Longitude: \r\n");
+                        sb.AppendLine("<strong>Latitude Longitude:</strong> <br>");
                     }
 
                     List<MapInfoPointModel> mapInfoPointModelInfrastructureOutfallList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(infrastructureModel.InfrastructureTVItemID, TVTypeEnum.Outfall, MapInfoDrawTypeEnum.Point);
 
                     if (mapInfoPointModelInfrastructureOutfallList.Count > 0)
                     {
-                        sb.AppendLine(@"Outfall: Latitude Longitude: " + mapInfoPointModelInfrastructureOutfallList[0].Lat + " " + mapInfoPointModelInfrastructureOutfallList[0].Lng + "\r\n");
+                        sb.AppendLine(@"<strong>Outfall:</strong> Latitude Longitude: " + mapInfoPointModelInfrastructureOutfallList[0].Lat + " " + mapInfoPointModelInfrastructureOutfallList[0].Lng + "<br>");
                     }
                     else
                     {
-                        sb.AppendLine("Outfall: Latitude Longitude: \r\n");
+                        sb.AppendLine("<strong>Outfall:</strong> Latitude Longitude: <br>");
                     }
-                    sb.AppendLine("\r\n\r\n");
-                    sb.AppendLine("Outfall Information\r\n\r\n");
-                    sb.AppendLine(@"Average Depth (m): " + infrastructureModel.AverageDepth_m + "\r\n");
-                    sb.AppendLine(@"Decay Rate (/day): " + infrastructureModel.DecayRate_per_day + "\r\n");
-                    sb.AppendLine(@"Distance From Shore (m): " + infrastructureModel.DistanceFromShore_m + "\r\n");
-                    sb.AppendLine(@"Far Field Velocity (m/s): " + infrastructureModel.FarFieldVelocity_m_s + "\r\n");
-                    sb.AppendLine(@"Horizontal Angle (deg): " + infrastructureModel.HorizontalAngle_deg + "\r\n");
-                    sb.AppendLine(@"Near Field Velocity (m/s): " + infrastructureModel.NearFieldVelocity_m_s + "\r\n");
-                    sb.AppendLine(@"Number Of Ports: " + infrastructureModel.NumberOfPorts + "\r\n");
-                    sb.AppendLine(@"Port Diameter (m): " + infrastructureModel.PortDiameter_m + "\r\n");
-                    sb.AppendLine(@"Port Elevation (m): " + infrastructureModel.PortElevation_m + "\r\n");
-                    sb.AppendLine(@"Port Spacing (m): " + infrastructureModel.PortSpacing_m + "\r\n");
-                    sb.AppendLine(@"Receiving Water Concentration (FC /100 ml): " + infrastructureModel.ReceivingWater_MPN_per_100ml + "\r\n");
-                    sb.AppendLine(@"Receiving Water Salinity (PSU): " + infrastructureModel.ReceivingWaterSalinity_PSU + "\r\n");
-                    sb.AppendLine(@"Receiving Water Temperature (ºC): " + infrastructureModel.ReceivingWaterTemperature_C + "\r\n");
-                    sb.AppendLine(@"Vertical Angle (deg): " + infrastructureModel.VerticalAngle_deg + "\r\n");
-                    sb.AppendLine(@"</pre>");
+                    sb.AppendLine("<br><br>");
+                    sb.AppendLine("<h2>Outfall Information</h2>");
+                    sb.AppendLine(@"<strong>Average Depth (m):</strong> " + infrastructureModel.AverageDepth_m + "<br>");
+                    sb.AppendLine(@"<strong>Decay Rate (/day):</strong> " + infrastructureModel.DecayRate_per_day + "<br>");
+                    sb.AppendLine(@"<strong>Distance From Shore (m):</strong> " + infrastructureModel.DistanceFromShore_m + "<br>");
+                    sb.AppendLine(@"<strong>Far Field Velocity (m/s):</strong> " + infrastructureModel.FarFieldVelocity_m_s + "<br>");
+                    sb.AppendLine(@"<strong>Horizontal Angle (deg):</strong> " + infrastructureModel.HorizontalAngle_deg + "<br>");
+                    sb.AppendLine(@"<strong>Near Field Velocity (m/s):</strong> " + infrastructureModel.NearFieldVelocity_m_s + "<br>");
+                    sb.AppendLine(@"<strong>Number Of Ports:</strong> " + infrastructureModel.NumberOfPorts + "<br>");
+                    sb.AppendLine(@"<strong>Port Diameter (m):</strong> " + infrastructureModel.PortDiameter_m + "<br>");
+                    sb.AppendLine(@"<strong>Port Elevation (m):</strong> " + infrastructureModel.PortElevation_m + "<br>");
+                    sb.AppendLine(@"<strong>Port Spacing (m):</strong> " + infrastructureModel.PortSpacing_m + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Concentration (FC /100 ml):</strong> " + infrastructureModel.ReceivingWater_MPN_per_100ml + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Salinity (PSU):</strong> " + infrastructureModel.ReceivingWaterSalinity_PSU + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Temperature (ºC):</strong> " + infrastructureModel.ReceivingWaterTemperature_C + "<br>");
+                    sb.AppendLine(@"<strong>Vertical Angle (deg):</strong> " + infrastructureModel.VerticalAngle_deg + "<br>");
+                    //sb.AppendLine(@"</pre>");
                     sb.AppendLine(@"]]>");
                     sb.AppendLine(@"	</description>");
 
@@ -527,8 +443,22 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>Outfall " + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"<styleUrl>#msn_grn-pushpin</styleUrl>");
-
+                    
+                    if (infrastructureModel.CanOverflow == null)
+                    {
+                        sb.AppendLine(@"    <styleUrl>#outfallunknown</styleUrl>");
+                    }
+                    else
+                    {
+                        if (!(bool)infrastructureModel.CanOverflow)
+                        {
+                            sb.AppendLine(@"    <styleUrl>#outfallcannotoverflow</styleUrl>");
+                        }
+                        else
+                        {
+                            sb.AppendLine(@"    <styleUrl>#outfallcanoverflow</styleUrl>");
+                        }
+                    }
                     sb.AppendLine(@"		<Point>");
                     sb.AppendLine(@"			<coordinates>" + mapInfoPointModelInfrastructureOutfallList[0].Lng + "," + mapInfoPointModelInfrastructureOutfallList[0].Lat + ",0</coordinates>");
                     sb.AppendLine(@"		</Point>");
@@ -540,57 +470,57 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>" + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"<styleUrl>#msn_grn-pushpin</styleUrl>");
+                    sb.AppendLine(@"    <styleUrl>#lineoverflow</styleUrl>");
 
                     sb.AppendLine(@"	<description>");
                     sb.AppendLine(@"<![CDATA[");
-                    sb.AppendLine(@"<pre>");
-                    sb.AppendLine(@"Alarm System Type: " + _BaseEnumService.GetEnumText_AlarmSystemTypeEnum(infrastructureModel.AlarmSystemType) + "\r\n");
-                    sb.AppendLine(@"Can overflow: " + infrastructureModel.CanOverflow.ToString() + "\r\n");
-                    sb.AppendLine(@"Category: " + infrastructureModel.InfrastructureCategory + "\r\n");
-                    sb.AppendLine(@"Collection System Type: " + _BaseEnumService.GetEnumText_CollectionSystemTypeEnum(infrastructureModel.CollectionSystemType) + "\r\n");
-                    sb.AppendLine(@"Comments: " + infrastructureModel.Comment + "\r\n");
-                    sb.AppendLine(@"Infrastructure Type: " + _BaseEnumService.GetEnumText_InfrastructureTypeEnum(infrastructureModel.InfrastructureType) + "\r\n");
-                    sb.AppendLine(@"Percent Flow Of Total (%): " + infrastructureModel.PercFlowOfTotal + "\r\n");
+                    //sb.AppendLine(@"<pre>");
+                    sb.AppendLine(@"<strong>Alarm System Type:</strong> " + _BaseEnumService.GetEnumText_AlarmSystemTypeEnum(infrastructureModel.AlarmSystemType) + "<br>");
+                    sb.AppendLine(@"<strong>Can overflow:</strong> " + infrastructureModel.CanOverflow.ToString() + "<br>");
+                    sb.AppendLine(@"<strong>Category:</strong> " + infrastructureModel.InfrastructureCategory + "<br>");
+                    sb.AppendLine(@"<strong>Collection System Type:</strong> " + _BaseEnumService.GetEnumText_CollectionSystemTypeEnum(infrastructureModel.CollectionSystemType) + "<br>");
+                    sb.AppendLine(@"<strong>Comments:</strong> " + infrastructureModel.Comment + "<br>");
+                    sb.AppendLine(@"<strong>Infrastructure Type:</strong> " + _BaseEnumService.GetEnumText_InfrastructureTypeEnum(infrastructureModel.InfrastructureType) + "<br>");
+                    sb.AppendLine(@"<strong>Percent Flow Of Total (%):</strong> " + infrastructureModel.PercFlowOfTotal + "<br>");
 
                     List<MapInfoPointModel> mapInfoPointModelInfrastructureList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(infrastructureModel.InfrastructureTVItemID, TVTypeEnum.LineOverflow, MapInfoDrawTypeEnum.Point);
 
                     if (mapInfoPointModelInfrastructureList.Count > 0)
                     {
-                        sb.AppendLine(@"Latitude Longitude: " + mapInfoPointModelInfrastructureList[0].Lat + " " + mapInfoPointModelInfrastructureList[0].Lng + "\r\n");
+                        sb.AppendLine(@"<strong>Latitude Longitude:</strong> " + mapInfoPointModelInfrastructureList[0].Lat + " " + mapInfoPointModelInfrastructureList[0].Lng + "<br>");
                     }
                     else
                     {
-                        sb.AppendLine("Latitude Longitude: \r\n");
+                        sb.AppendLine("<strong>Latitude Longitude:</strong> <br>");
                     }
 
                     List<MapInfoPointModel> mapInfoPointModelInfrastructureOutfallList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(infrastructureModel.InfrastructureTVItemID, TVTypeEnum.Outfall, MapInfoDrawTypeEnum.Point);
 
                     if (mapInfoPointModelInfrastructureOutfallList.Count > 0)
                     {
-                        sb.AppendLine(@"Outfall: Latitude Longitude: " + mapInfoPointModelInfrastructureOutfallList[0].Lat + " " + mapInfoPointModelInfrastructureOutfallList[0].Lng + "\r\n");
+                        sb.AppendLine(@"<strong>Outfall:</strong> Latitude Longitude: " + mapInfoPointModelInfrastructureOutfallList[0].Lat + " " + mapInfoPointModelInfrastructureOutfallList[0].Lng + "<br>");
                     }
                     else
                     {
-                        sb.AppendLine("Outfall: Latitude Longitude: \r\n");
+                        sb.AppendLine("<strong>Outfall:</strong> Latitude Longitude: <br>");
                     }
-                    sb.AppendLine("\r\n\r\n");
-                    sb.AppendLine("Outfall Information\r\n\r\n");
-                    sb.AppendLine(@"Average Depth (m): " + infrastructureModel.AverageDepth_m + "\r\n");
-                    sb.AppendLine(@"Decay Rate (/day): " + infrastructureModel.DecayRate_per_day + "\r\n");
-                    sb.AppendLine(@"Distance From Shore (m): " + infrastructureModel.DistanceFromShore_m + "\r\n");
-                    sb.AppendLine(@"Far Field Velocity (m/s): " + infrastructureModel.FarFieldVelocity_m_s + "\r\n");
-                    sb.AppendLine(@"Horizontal Angle (deg): " + infrastructureModel.HorizontalAngle_deg + "\r\n");
-                    sb.AppendLine(@"Near Field Velocity (m/s): " + infrastructureModel.NearFieldVelocity_m_s + "\r\n");
-                    sb.AppendLine(@"Number Of Ports: " + infrastructureModel.NumberOfPorts + "\r\n");
-                    sb.AppendLine(@"Port Diameter (m): " + infrastructureModel.PortDiameter_m + "\r\n");
-                    sb.AppendLine(@"Port Elevation (m): " + infrastructureModel.PortElevation_m + "\r\n");
-                    sb.AppendLine(@"Port Spacing (m): " + infrastructureModel.PortSpacing_m + "\r\n");
-                    sb.AppendLine(@"Receiving Water Concentration (FC /100 ml): " + infrastructureModel.ReceivingWater_MPN_per_100ml + "\r\n");
-                    sb.AppendLine(@"Receiving Water Salinity (PSU): " + infrastructureModel.ReceivingWaterSalinity_PSU + "\r\n");
-                    sb.AppendLine(@"Receiving Water Temperature (ºC): " + infrastructureModel.ReceivingWaterTemperature_C + "\r\n");
-                    sb.AppendLine(@"Vertical Angle (deg): " + infrastructureModel.VerticalAngle_deg + "\r\n");
-                    sb.AppendLine(@"</pre>");
+                    sb.AppendLine("<br><br>");
+                    sb.AppendLine(@"<h2>Outfall Information</h2>");
+                    sb.AppendLine(@"<strong>Average Depth (m):</strong> " + infrastructureModel.AverageDepth_m + "<br>");
+                    sb.AppendLine(@"<strong>Decay Rate (/day):</strong> " + infrastructureModel.DecayRate_per_day + "<br>");
+                    sb.AppendLine(@"<strong>Distance From Shore (m):</strong> " + infrastructureModel.DistanceFromShore_m + "<br>");
+                    sb.AppendLine(@"<strong>Far Field Velocity (m/s):</strong> " + infrastructureModel.FarFieldVelocity_m_s + "<br>");
+                    sb.AppendLine(@"<strong>Horizontal Angle (deg):</strong> " + infrastructureModel.HorizontalAngle_deg + "<br>");
+                    sb.AppendLine(@"<strong>Near Field Velocity (m/s):</strong> " + infrastructureModel.NearFieldVelocity_m_s + "<br>");
+                    sb.AppendLine(@"<strong>Number Of Ports:</strong> " + infrastructureModel.NumberOfPorts + "<br>");
+                    sb.AppendLine(@"<strong>Port Diameter (m):</strong> " + infrastructureModel.PortDiameter_m + "<br>");
+                    sb.AppendLine(@"<strong>Port Elevation (m):</strong> " + infrastructureModel.PortElevation_m + "<br>");
+                    sb.AppendLine(@"<strong>Port Spacing (m):</strong> " + infrastructureModel.PortSpacing_m + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Concentration (FC/100 ml):</strong> " + infrastructureModel.ReceivingWater_MPN_per_100ml + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Salinity (PSU):</strong> " + infrastructureModel.ReceivingWaterSalinity_PSU + "<br>");
+                    sb.AppendLine(@"<strong>Receiving Water Temperature (ºC):</strong> " + infrastructureModel.ReceivingWaterTemperature_C + "<br>");
+                    sb.AppendLine(@"<strong>Vertical Angle (deg):</strong> " + infrastructureModel.VerticalAngle_deg + "<br>");
+                    //sb.AppendLine(@"</pre>");
                     sb.AppendLine(@"]]>");
                     sb.AppendLine(@"	</description>");
 
@@ -601,8 +531,22 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>Outfall " + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"<styleUrl>#msn_grn-pushpin</styleUrl>");
-
+                    
+                    if (infrastructureModel.CanOverflow == null)
+                    {
+                        sb.AppendLine(@"    <styleUrl>#outfallunknown</styleUrl>");
+                    }
+                    else
+                    {
+                        if (!(bool)infrastructureModel.CanOverflow)
+                        {
+                            sb.AppendLine(@"    <styleUrl>#outfallcannotoverflow</styleUrl>");
+                        }
+                        else
+                        {
+                            sb.AppendLine(@"    <styleUrl>#outfallcanoverflow</styleUrl>");
+                        }
+                    }
                     sb.AppendLine(@"		<Point>");
                     sb.AppendLine(@"			<coordinates>" + mapInfoPointModelInfrastructureOutfallList[0].Lng + "," + mapInfoPointModelInfrastructureOutfallList[0].Lat + ",0</coordinates>");
                     sb.AppendLine(@"		</Point>");
@@ -612,99 +556,56 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             sb.AppendLine(@" </Folder>");
 
-            // Doing Short Pollution Source Site
-            sb.AppendLine(@" <Folder>");
-            sb.AppendLine(@"	<name>Short Pollution Source Sites</name>");
-            List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
-
-            foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList.OrderBy(c => c.Site).ToList())
-            {
-                // Doing point
-                sb.AppendLine(@"	<Placemark>");
-                sb.AppendLine(@"	<name>" + polSourceSiteModel.Site.ToString() + "</name>");
-                sb.AppendLine(@"<styleUrl>#msn_ylw-pushpin</styleUrl>");
-                sb.AppendLine(@"	<description>");
-                sb.AppendLine(@"<![CDATA[");
-                sb.AppendLine(@"<pre>");
-
-                PolSourceObservationModel polSourceObservationModel = _PolSourceSiteService._PolSourceObservationService.GetPolSourceObservationModelLatestWithPolSourceSiteIDDB(polSourceSiteModel.PolSourceSiteID);
-                if (polSourceObservationModel != null)
-                {
-                    List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceSiteService._PolSourceObservationService._PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithPolSourceObservationIDDB(polSourceObservationModel.PolSourceObservationID);
-
-                    string SelectedObservation = "Selected: \r\n";
-                    foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList)
-                    {
-                        foreach (PolSourceObsInfoEnum polSourceObsInfo in polSourceObservationIssueModel.PolSourceObsInfoList)
-                        {
-                            SelectedObservation += _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum(polSourceObsInfo);
-                        }
-                        SelectedObservation += "\r\n\r\n";
-                    }
-
-                    sb.AppendLine("Written: \r\n" + (string.IsNullOrWhiteSpace(polSourceObservationModel.Observation_ToBeDeleted) ? "" : polSourceObservationModel.Observation_ToBeDeleted.ToString()) + "\r\n\r\n" + SelectedObservation);
-                }
-                else
-                {
-                    string SelectedObservation = "Selected: \r\n";
-                    sb.AppendLine("Written: \r\n\r\n" + SelectedObservation);
-                }
-
-                sb.AppendLine(@"</pre>");
-                sb.AppendLine(@"]]>");
-                sb.AppendLine(@"	</description>");
-
-                mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(polSourceSiteModel.PolSourceSiteTVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-
-                sb.AppendLine(@"		<Point>");
-                sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
-                sb.AppendLine(@"		</Point>");
-                sb.AppendLine(@"	</Placemark>");
-
-            }
-            sb.AppendLine(@" </Folder>");
-
             // Doing Long Pollution Source Site
             sb.AppendLine(@" <Folder>");
-            sb.AppendLine(@"	<name>Long Pollution Source Sites</name>");
-            polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
+            sb.AppendLine(@"	<name>Pollution Source Sites</name>");
+            List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
+            List<TVItemModel> tvItemModelListPolSourceSite = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.PolSourceSite);
 
             foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList.OrderBy(c => c.Site).ToList())
             {
-                TVItemModel tvItemModelPolSourceSite = _TVItemService.GetTVItemModelWithTVItemIDDB(polSourceSiteModel.PolSourceSiteTVItemID);
+                TVItemModel tvItemModelPolSourceSite = (from c in tvItemModelListPolSourceSite
+                                                        where c.TVItemID == polSourceSiteModel.PolSourceSiteTVItemID
+                                                        select c).FirstOrDefault();
+
+                string labelPolSourceSite = tvItemModelPolSourceSite.TVText;
+                if (labelPolSourceSite.Contains(" "))
+                {
+                    labelPolSourceSite = labelPolSourceSite.Substring(0, labelPolSourceSite.IndexOf(" "));
+                }
 
                 // Doing point
                 sb.AppendLine(@"	<Placemark>");
-                sb.AppendLine(@"	<name>" + tvItemModelPolSourceSite.TVText + "</name>");
-                sb.AppendLine(@"<styleUrl>#msn_ltblu-pushpin</styleUrl>");
+                sb.AppendLine(@"	<name>" + labelPolSourceSite + "</name>");
+                sb.AppendLine(@"    <styleUrl>#pollutionsourcesite</styleUrl>");
                 sb.AppendLine(@"	<description>");
                 sb.AppendLine(@"<![CDATA[");
-                sb.AppendLine(@"<pre>");
+                //sb.AppendLine(@"<pre>");
 
                 PolSourceObservationModel polSourceObservationModel = _PolSourceSiteService._PolSourceObservationService.GetPolSourceObservationModelLatestWithPolSourceSiteIDDB(polSourceSiteModel.PolSourceSiteID);
                 if (polSourceObservationModel != null)
                 {
                     List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceSiteService._PolSourceObservationService._PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithPolSourceObservationIDDB(polSourceObservationModel.PolSourceObservationID);
 
-                    string SelectedObservation = "Selected: \r\n";
+                    string SelectedObservation = "<strong>Selected:</strong> <br>";
                     foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList)
                     {
                         foreach (PolSourceObsInfoEnum polSourceObsInfo in polSourceObservationIssueModel.PolSourceObsInfoList)
                         {
                             SelectedObservation += _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum(polSourceObsInfo);
                         }
-                        SelectedObservation += "\r\n\r\n";
+                        SelectedObservation += "<br><br>";
                     }
 
-                    sb.AppendLine("Written: \r\n" + (string.IsNullOrWhiteSpace(polSourceObservationModel.Observation_ToBeDeleted) ? "" : polSourceObservationModel.Observation_ToBeDeleted.ToString()) + "\r\n\r\n" + SelectedObservation);
+                    sb.AppendLine("<strong>Written:</strong> <br>" + (string.IsNullOrWhiteSpace(polSourceObservationModel.Observation_ToBeDeleted) ? "" : polSourceObservationModel.Observation_ToBeDeleted.ToString()) + "<br><br>" + SelectedObservation);
                 }
                 else
                 {
-                    string SelectedObservation = "Selected: \r\n";
-                    sb.AppendLine("Written: \r\n\r\n" + SelectedObservation);
+                    string SelectedObservation = "<strong>Selected:</strong> <br>";
+                    sb.AppendLine("<strong>Written:</strong> <br><br>" + SelectedObservation);
                 }
 
-                sb.AppendLine(@"</pre>");
+                //sb.AppendLine(@"</pre>");
                 sb.AppendLine(@"]]>");
                 sb.AppendLine(@"	</description>");
 
@@ -718,22 +619,23 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             sb.AppendLine(@" </Folder>");
 
+            List<TVItemModel> tvItemModelMWQMSiteList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite);
 
             // Doing MWQM Site
             sb.AppendLine(@" <Folder>");
             sb.AppendLine(@"	<name>MWQM Sites</name>");
 
-            foreach (TVItemModel tvItemModelMWQMSite in tvItemModelMWQMSiteList)
+            foreach (TVItemModel tvItemModelMWQMSite in tvItemModelMWQMSiteList.Where(c => c.IsActive))
             {
                 // Doing point
                 sb.AppendLine(@"	<Placemark>");
                 sb.AppendLine(@"	<name>" + tvItemModelMWQMSite.TVText + "</name>");
-                sb.AppendLine(@"<styleUrl>#msn_wht-blank</styleUrl>");
-                sb.AppendLine(@"	<description>");
-                sb.AppendLine(@"<![CDATA[");
-                sb.AppendLine(@"                                <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelMWQMSite) + @""">" + tvItemModelMWQMSite.TVText + "</a></p>");
-                sb.AppendLine(@"]]>");
-                sb.AppendLine(@"	</description>");
+                sb.AppendLine(@"    <styleUrl>#monitoringsite</styleUrl>");
+                //sb.AppendLine(@"	<description>");
+                //sb.AppendLine(@"<![CDATA[");
+                //sb.AppendLine(@"                                <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelMWQMSite) + @""">" + tvItemModelMWQMSite.TVText + "</a></p>");
+                //sb.AppendLine(@"]]>");
+                //sb.AppendLine(@"	</description>");
 
                 mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelMWQMSite.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
 
@@ -768,6 +670,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             return true;
         }
+
         private bool GenerateKMZSubsector_NotImplementedKMZ()
         {
             string NotUsed = "";
