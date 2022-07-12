@@ -2191,4 +2191,25 @@ Animation estimée des chemins de drogue</value>
   <data name="Doing_" xml:space="preserve">
     <value>Travail sur  {0}</value>
   </data>
+  <data name="DoingClassification" xml:space="preserve">
+    <value>Écriture de classification</value>
+  </data>
+  <data name="DoingMonitoringSites" xml:space="preserve">
+    <value>Écriture des sites de monitoring</value>
+  </data>
+  <data name="DoingMunicipalities" xml:space="preserve">
+    <value>Écriture des municipalités</value>
+  </data>
+  <data name="DoingPollutionSourceSites" xml:space="preserve">
+    <value>Écriture des sites de source de pollution</value>
+  </data>
+  <data name="DoingStyle" xml:space="preserve">
+    <value>Écriture de style</value>
+  </data>
+  <data name="DoingSubsectorPolygon" xml:space="preserve">
+    <value>Écriture du polygon du sous-secteur</value>
+  </data>
+  <data name="SavingDocument" xml:space="preserve">
+    <value>Sauvegarde du document</value>
+  </data>
 </root>

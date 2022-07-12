@@ -74,9 +74,13 @@ namespace CSSPWebToolsTaskRunner.Services
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-CA");
             }
 
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 10);
+            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("DoingStyle");
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
 
             sb.AppendLine(@"	<name>" + fi.Name + "</name>");
 
+            #region style
             // red polyline
             sb.AppendLine(@"	<Style id=""red-polyline"">");
             sb.AppendLine(@"        <LineStyle>");
@@ -88,12 +92,44 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"		</PolyStyle>");
             sb.AppendLine(@"	</Style>");
 
+            // red polygon
+            sb.AppendLine(@"	<Style id=""red-polygon"">");
+            sb.AppendLine(@"        <LineStyle>");
+            sb.AppendLine(@"			<color>ff0000ff</color>");
+            sb.AppendLine(@"			<width>2</width>");
+            sb.AppendLine(@"		</LineStyle>");
+            sb.AppendLine(@"		<PolyStyle>");
+            sb.AppendLine(@"			<color>ff0000ff</color>");
+            sb.AppendLine(@"		</PolyStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // green polygon
+            sb.AppendLine(@"	<Style id=""green-polygon"">");
+            sb.AppendLine(@"        <LineStyle>");
+            sb.AppendLine(@"			<color>00ff00ff</color>");
+            sb.AppendLine(@"			<width>2</width>");
+            sb.AppendLine(@"		</LineStyle>");
+            sb.AppendLine(@"		<PolyStyle>");
+            sb.AppendLine(@"			<color>00ff00ff</color>");
+            sb.AppendLine(@"		</PolyStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            // blue polygon
+            sb.AppendLine(@"	<Style id=""blue-polygon"">");
+            sb.AppendLine(@"        <LineStyle>");
+            sb.AppendLine(@"			<color>0000ffff</color>");
+            sb.AppendLine(@"			<width>2</width>");
+            sb.AppendLine(@"		</LineStyle>");
+            sb.AppendLine(@"		<PolyStyle>");
+            sb.AppendLine(@"			<color>0000ffff</color>");
+            sb.AppendLine(@"		</PolyStyle>");
+            sb.AppendLine(@"	</Style>");
+
             // Municipality
             sb.AppendLine(@"	<Style id=""municipality"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ff00ff00</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal3/icon28.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
@@ -101,97 +137,192 @@ namespace CSSPWebToolsTaskRunner.Services
             // WWTP
             sb.AppendLine(@"	<Style id=""wwtp"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ffff0000</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal5/icon22.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
             // Outfall can overflow
-            sb.AppendLine(@"	<Style id=""outfallcanoverflow"">");
+            sb.AppendLine(@"	<Style id=""outfall_can_overflow"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ffff0000</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/target.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal5/icon38.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
             // Outfall can not overflow
-            sb.AppendLine(@"	<Style id=""outfallcannotoverflow"">");
+            sb.AppendLine(@"	<Style id=""outfall_cannot_overflow"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ff00ff00</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/target.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal4/icon17.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
             // Outfall unknown
-            sb.AppendLine(@"	<Style id=""outfallunknown"">");
+            sb.AppendLine(@"	<Style id=""outfall_unknown"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ffffff00</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/target.png</href>");
+            sb.AppendLine(@"            <href>	https://maps.google.com/mapfiles/kml/pal3/icon49.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
             // Lift station
-            sb.AppendLine(@"	<Style id=""liftstation"">");
+            sb.AppendLine(@"	<Style id=""lift_station"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ff0000ff</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"            <href>	https://maps.google.com/mapfiles/kml/pal5/icon35.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
             // Line overflow
-            sb.AppendLine(@"	<Style id=""lineoverflow"">");
+            sb.AppendLine(@"	<Style id=""line_overflow"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ff00ff00</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal4/icon58.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
             // Default Infrastructure
-            sb.AppendLine(@"	<Style id=""defaultinfrastructure"">");
+            sb.AppendLine(@"	<Style id=""default_infrastructure"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ffffff00</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal5/icon32.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
-            // Pollution source site
-            sb.AppendLine(@"	<Style id=""pollutionsourcesite"">");
+            // Pollution source site (High Risk)
+            sb.AppendLine(@"	<Style id=""pollutionsourcesite_high_risk"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ff00ff00</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/square.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal3/icon39.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");      
+
+            // Pollution source site (Moderate Risk)
+            sb.AppendLine(@"	<Style id=""pollutionsourcesite_moderate_risk"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal3/icon33.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
 
-            // Monitoring site
-            sb.AppendLine(@"	<Style id=""monitoringsite"">");
+            // Pollution source site (Low Risk)
+            sb.AppendLine(@"	<Style id=""pollutionsourcesite_low_risk"">");
             sb.AppendLine(@"	    <IconStyle>");
-            sb.AppendLine(@"	    	<color>ff00ff00</color>");
             sb.AppendLine(@"	    	<Icon>");
-            sb.AppendLine(@"            <href>http://maps.google.com/mapfiles/kml/shapes/arrow.png</href>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal3/icon42.png</href>");
             sb.AppendLine(@"	    	</Icon>");
             sb.AppendLine(@"        </IconStyle>");
             sb.AppendLine(@"	</Style>");
+
+            // Pollution source site (Unknown Risk)
+            sb.AppendLine(@"	<Style id=""pollutionsourcesite_unknown_risk"">");
+            sb.AppendLine(@"	    <IconStyle>");
+            sb.AppendLine(@"	    	<Icon>");
+            sb.AppendLine(@"            <href>https://maps.google.com/mapfiles/kml/pal3/icon35.png</href>");
+            sb.AppendLine(@"	    	</Icon>");
+            sb.AppendLine(@"        </IconStyle>");
+            sb.AppendLine(@"	</Style>");
+
+            sb.AppendLine(@"  <Style id=""A"">");
+            sb.AppendLine(@"	<IconStyle>");
+            sb.AppendLine(@"		<Icon>");
+            sb.AppendLine(@"        <href>https://maps.google.com/mapfiles/kml/paddle/grn-blank.png</href>");
+            sb.AppendLine(@"		</Icon>");
+            sb.AppendLine(@"    </IconStyle>");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ff00ff00</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"  	</LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"  	  <color>ff00ff00</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+
+            sb.AppendLine(@"  <Style id=""R"">");
+            sb.AppendLine(@"	<IconStyle>");
+            sb.AppendLine(@"		<Icon>");
+            sb.AppendLine(@"        <href>https://maps.google.com/mapfiles/kml/paddle/red-blank.png</href>");
+            sb.AppendLine(@"		</Icon>");
+            sb.AppendLine(@"    </IconStyle>");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ff0000ff</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"      <color>ff0000ff</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+
+            sb.AppendLine(@"  <Style id=""P"">");
+            sb.AppendLine(@"	<IconStyle>");
+            sb.AppendLine(@"		<Icon>");
+            sb.AppendLine(@"        <href>https://maps.google.com/mapfiles/kml/paddle/purple-blank.png</href>");
+            sb.AppendLine(@"		</Icon>");
+            sb.AppendLine(@"    </IconStyle>");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ffcccccc</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"      <color>ffcccccc</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+
+            sb.AppendLine(@"  <Style id=""CA"">");
+            sb.AppendLine(@"	<IconStyle>");
+            sb.AppendLine(@"		<Icon>");
+            sb.AppendLine(@"        <href>https://maps.google.com/mapfiles/kml/paddle/grn-blank.png</href>");
+            sb.AppendLine(@"		</Icon>");
+            sb.AppendLine(@"    </IconStyle>");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ff00ffff</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"     <color>ff00ffff</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+
+            sb.AppendLine(@"  <Style id=""CR"">");
+            sb.AppendLine(@"	<IconStyle>");
+            sb.AppendLine(@"		<Icon>");
+            sb.AppendLine(@"        <href>https://maps.google.com/mapfiles/kml/paddle/red-blank.png</href>");
+            sb.AppendLine(@"		</Icon>");
+            sb.AppendLine(@"    </IconStyle>");
+            sb.AppendLine(@"    <LineStyle>");
+            sb.AppendLine(@"      <color>ffff00aa</color>");
+            sb.AppendLine(@"      <width>1</width>");
+            sb.AppendLine(@"    </LineStyle>");
+            sb.AppendLine(@"    <PolyStyle>");
+            sb.AppendLine(@"      <color>ffff00aa</color>");
+            sb.AppendLine(@"    </PolyStyle>");
+            sb.AppendLine(@"  </Style>");
+
+            #endregion style
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 15);
+            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("DoingSubsectorPolygon");
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+
+
+
+            sb.AppendLine(@"	<Folder>");
+
+            #region subsector
 
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Subsector, MapInfoDrawTypeEnum.Point);
 
-            sb.AppendLine(@"	<Folder>");
             sb.AppendLine(@"	<name>" + tvItemModelSubsector.TVText + "</name>");
 
             int pos = tvItemModelSubsector.TVText.IndexOf(" ");
@@ -200,7 +331,6 @@ namespace CSSPWebToolsTaskRunner.Services
             {
                 TVText = tvItemModelSubsector.TVText.Substring(0, pos);
             }
-
 
             // Doing Polygon
             sb.AppendLine(@"	<Placemark>");
@@ -224,6 +354,309 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"		</Polygon>");
             sb.AppendLine(@"	</Placemark>");
 
+            #endregion subsector
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 20);
+            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("DoingClassification");
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+
+            #region classification
+
+            // Doing Long Pollution Source Site
+            sb.AppendLine("     <Folder>");
+            sb.AppendLine($"        <name>Classification</name>");
+
+            var ClassificationList = (from t in _MapInfoService.db.TVItems
+                                      from c in _MapInfoService.db.Classifications
+                                      from mi in _MapInfoService.db.MapInfos
+                                      let mipList = (from mip in _MapInfoService.db.MapInfoPoints
+                                                     where mip.MapInfoID == mi.MapInfoID
+                                                     select mip).ToList()
+                                      where c.ClassificationTVItemID == t.TVItemID
+                                      && mi.TVItemID == t.TVItemID
+                                      && t.TVPath.StartsWith(tvItemModelSubsector.TVPath + "p")
+                                      && t.TVType == (int)TVTypeEnum.Classification
+                                      && mi.MapInfoDrawType == (int)MapInfoDrawTypeEnum.Polyline
+                                      select new { t, mipList, c }).ToList();
+
+
+            foreach (var classification in ClassificationList)
+            {
+                string TVTextClass = "";
+
+                switch (((ClassificationTypeEnum)classification.c.ClassificationType))
+                {
+                    case ClassificationTypeEnum.Approved:
+                        {
+                            TVTextClass = "A";
+                        }
+                        break;
+                    case ClassificationTypeEnum.Restricted:
+                        {
+                            TVTextClass = "R";
+                        }
+                        break;
+                    case ClassificationTypeEnum.Prohibited:
+                        {
+                            TVTextClass = "P";
+                        }
+                        break;
+                    case ClassificationTypeEnum.ConditionallyApproved:
+                        {
+                            TVTextClass = "CA";
+                        }
+                        break;
+                    case ClassificationTypeEnum.ConditionallyRestricted:
+                        {
+                            TVTextClass = "CR";
+                        }
+                        break;
+                    default:
+                        {
+                            TVTextClass = "E";
+                        }
+                        break;
+                }
+
+                //string style = "msn_ylw-pushpin";
+
+                List<MapInfoPoint> mapInfoPointList = classification.mipList.OrderBy(c => c.Ordinal).ToList();
+
+                for (int i = 0, count = mapInfoPointList.Count - 1; i < count; i++)
+                {
+                    GeoLocation geo1 = new GeoLocation() { Latitude = (float)classification.mipList[i].Lat, Longitude = (float)classification.mipList[i].Lng };
+                    GeoLocation geo2 = new GeoLocation() { Latitude = (float)classification.mipList[i + 1].Lat, Longitude = (float)classification.mipList[i + 1].Lng };
+                    GeoLocation geo3 = new GeoLocation();
+                    GeoLocation geo4 = new GeoLocation();
+
+                    geo3.Longitude = (geo1.Longitude + geo2.Longitude) / 2.0D;
+                    geo3.Latitude = (geo1.Latitude + geo2.Latitude) / 2.0D;
+
+                    double xDiff = geo2.Longitude - geo1.Longitude;
+                    double yDiff = geo2.Latitude - geo1.Latitude;
+                    double rad = Math.Atan2(yDiff, xDiff);
+
+                    double ABY = geo2.Latitude - geo1.Latitude;
+                    double ABX = geo2.Longitude - geo1.Longitude;
+                    double Len = Math.Sqrt(ABY * ABY + ABX * ABX);
+                    geo4.Longitude = geo3.Longitude + 0.001D * ABY / Len;
+                    geo4.Latitude = geo3.Latitude - 0.001D * ABX / Len;
+
+                    sb.AppendLine(@"        <Placemark>");
+                    sb.AppendLine($@"            <name>{TVTextClass}</name>");
+                    sb.AppendLine($@"            <styleUrl>#{TVTextClass}</styleUrl>");
+                    sb.AppendLine(@"            <Polygon>");
+                    sb.AppendLine(@"		    	<tessellate>1</tessellate>");
+                    sb.AppendLine(@"		    	<outerBoundaryIs>");
+                    sb.AppendLine(@"		    		<LinearRing>");
+                    sb.AppendLine(@"		    			<coordinates>");
+                    sb.AppendLine($@"		    				{geo1.Longitude},{geo1.Latitude},0 {geo2.Longitude},{geo2.Latitude},0 {geo4.Longitude},{geo4.Latitude},0 {geo1.Longitude},{geo1.Latitude},0 ");
+                    sb.AppendLine(@"		    			</coordinates>");
+                    sb.AppendLine(@"		    		</LinearRing>");
+                    sb.AppendLine(@"		    	</outerBoundaryIs>");
+                    sb.AppendLine(@"		    </Polygon>");
+                    sb.AppendLine(@"        </Placemark>");
+
+                }
+            }
+            sb.AppendLine("     </Folder>");
+
+            #endregion classification
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 40);
+            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("DoingPollutionSourceSite");
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+
+            #region pollution source site
+
+            // Doing Long Pollution Source Site
+            sb.AppendLine(@" <Folder>");
+            sb.AppendLine(@"	<name>Pollution Source Sites</name>");
+            List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
+            List<TVItemModel> tvItemModelListPolSourceSite = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.PolSourceSite);
+
+            foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList.OrderBy(c => c.Site).ToList())
+            {
+                TVItemModel tvItemModelPolSourceSite = (from c in tvItemModelListPolSourceSite
+                                                        where c.TVItemID == polSourceSiteModel.PolSourceSiteTVItemID
+                                                        select c).FirstOrDefault();
+
+                if (tvItemModelPolSourceSite == null) continue;
+                if (!tvItemModelPolSourceSite.IsActive) continue;
+
+                string labelPolSourceSite = tvItemModelPolSourceSite.TVText;
+                if (labelPolSourceSite.Contains(" "))
+                {
+                    labelPolSourceSite = labelPolSourceSite.Substring(0, labelPolSourceSite.IndexOf(" "));
+                }
+
+                // Doing point
+
+                PolSourceObservationModel polSourceObservationModel = _PolSourceSiteService._PolSourceObservationService.GetPolSourceObservationModelLatestWithPolSourceSiteIDDB(polSourceSiteModel.PolSourceSiteID);
+                if (polSourceObservationModel != null)
+                {
+                    List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceSiteService._PolSourceObservationService._PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithPolSourceObservationIDDB(polSourceObservationModel.PolSourceObservationID);
+
+                    string risk = "unknown";
+
+                    if (polSourceObservationIssueModelList.Count > 0)
+                    {
+                        if (polSourceObservationIssueModelList[0].PolSourceObsInfoList.Contains(PolSourceObsInfoEnum.RiskHigh))
+                        {
+                            risk = "high";
+                        }
+
+                        if (polSourceObservationIssueModelList[0].PolSourceObsInfoList.Contains(PolSourceObsInfoEnum.RiskModerate))
+                        {
+                            risk = "moderate";
+                        }
+
+                        if (polSourceObservationIssueModelList[0].PolSourceObsInfoList.Contains(PolSourceObsInfoEnum.RiskLow))
+                        {
+                            risk = "low";
+                        }
+                    }
+
+                    sb.AppendLine(@"	<Placemark>");
+                    sb.AppendLine($@"	<name>{ labelPolSourceSite } ({ risk })</name>");
+                    sb.AppendLine($@"    <styleUrl>#pollutionsourcesite_{risk}_risk</styleUrl>");
+                    sb.AppendLine(@"	<description>");
+                    sb.AppendLine(@"<![CDATA[");
+                    string SelectedObservation = "<strong>Selected:</strong> <br>";
+                    foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList)
+                    {
+                        foreach (PolSourceObsInfoEnum polSourceObsInfo in polSourceObservationIssueModel.PolSourceObsInfoList)
+                        {
+                            SelectedObservation += _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum(polSourceObsInfo);
+                        }
+                        SelectedObservation += "<br><br>";
+                    }
+
+                    sb.AppendLine("<strong>Written:</strong> <br>" + (string.IsNullOrWhiteSpace(polSourceObservationModel.Observation_ToBeDeleted) ? "" : polSourceObservationModel.Observation_ToBeDeleted.ToString()) + "<br><br>" + SelectedObservation);
+                    sb.AppendLine(@"]]>");
+                    sb.AppendLine(@"	</description>");
+                }
+                else
+                {
+                    sb.AppendLine(@"	<Placemark>");
+                    sb.AppendLine($@"	<name>{labelPolSourceSite} (unknown)</name>");
+                    sb.AppendLine(@"    <styleUrl>#pollutionsourcesite_unknown_risk</styleUrl>");
+                    sb.AppendLine(@"	<description>");
+                    sb.AppendLine(@"<![CDATA[");
+                    string SelectedObservation = "<strong>Selected:</strong> <br>";
+                    sb.AppendLine("<strong>Written:</strong> <br><br>" + SelectedObservation);
+                    sb.AppendLine(@"]]>");
+                    sb.AppendLine(@"	</description>");
+                }
+
+
+                mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelPolSourceSite.TVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
+
+                sb.AppendLine(@"		<Point>");
+                sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
+                sb.AppendLine(@"		</Point>");
+                sb.AppendLine(@"	</Placemark>");
+
+            }
+            sb.AppendLine(@" </Folder>");
+
+            #endregion pollution source site
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 60);
+            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("DoingMonitoringSites");
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+
+            #region MWQM site
+
+            List<TVItemModel> tvItemModelMWQMSiteList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite);
+            List<MWQMSiteModel> mwqmSiteModelList = _MWQMSiteService.GetMWQMSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
+
+
+            // Doing MWQM Site
+            sb.AppendLine(@" <Folder>");
+            sb.AppendLine(@"	<name>MWQM Sites</name>");
+
+            foreach (TVItemModel tvItemModelMWQMSite in tvItemModelMWQMSiteList.Where(c => c.IsActive))
+            {
+                MWQMSiteModel mwqmSiteModel = (from c in mwqmSiteModelList
+                                               where c.MWQMSiteTVItemID == tvItemModelMWQMSite.TVItemID
+                                               select c).FirstOrDefault();
+
+                string TVTextCurrentClass = "E";
+
+                switch ((MWQMSiteLatestClassificationEnum)mwqmSiteModel.MWQMSiteLatestClassification)
+                {
+                    case MWQMSiteLatestClassificationEnum.Approved:
+                        {
+                            TVTextCurrentClass = "A";
+                        }
+                        break;
+                    case MWQMSiteLatestClassificationEnum.Restricted:
+                        {
+                            TVTextCurrentClass = "R";
+                        }
+                        break;
+                    case MWQMSiteLatestClassificationEnum.Prohibited:
+                        {
+                            TVTextCurrentClass = "P";
+                        }
+                        break;
+                    case MWQMSiteLatestClassificationEnum.ConditionallyApproved:
+                        {
+                            TVTextCurrentClass = "CA";
+                        }
+                        break;
+                    case MWQMSiteLatestClassificationEnum.ConditionallyRestricted:
+                        {
+                            TVTextCurrentClass = "CR";
+                        }
+                        break;
+                    default:
+                        {
+                            TVTextCurrentClass = "E";
+                        }
+                        break;
+                }
+
+                // Doing point
+                sb.AppendLine(@"	<Placemark>");
+                sb.AppendLine($@"	<name>{tvItemModelMWQMSite.TVText} ({ TVTextCurrentClass})</name>");
+                sb.AppendLine($@"    <styleUrl>#{ TVTextCurrentClass}</styleUrl>");
+                //sb.AppendLine(@"	<description>");
+                //sb.AppendLine(@"<![CDATA[");
+                //sb.AppendLine(@"                                <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelMWQMSite) + @""">" + tvItemModelMWQMSite.TVText + "</a></p>");
+                //sb.AppendLine(@"]]>");
+                //sb.AppendLine(@"	</description>");
+
+                mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelMWQMSite.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
+
+                sb.AppendLine(@"		<Point>");
+                if (mapInfoPointModelList.Count == 0)
+                {
+                    sb.AppendLine(@"			<coordinates>0,0,0</coordinates>");
+                }
+                else
+                {
+                    sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
+                }
+                sb.AppendLine(@"		</Point>");
+                sb.AppendLine(@"	</Placemark>");
+
+            }
+            sb.AppendLine(@" </Folder>");
+
+            #endregion MWQM site
+
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 80);
+            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("DoingMunicipalities");
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
+
+            #region municipality
+
+            // Doing Municipalities
+            sb.AppendLine(@" <Folder>");
+            sb.AppendLine(@"	<name>Municipalities</name>");
+
             List<UseOfSiteModel> useOfSiteModelList = _UseOfSiteService.GetUseOfSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
 
             List<TVItemModel> tvItemModelMunicipalityList = new List<TVItemModel>();
@@ -235,10 +668,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     tvItemModelMunicipalityList.Add(_TVItemService.GetTVItemModelWithTVItemIDDB(useOfSiteModel.SiteTVItemID));
                 }
             }
-
-            // Doing Municipalities
-            sb.AppendLine(@" <Folder>");
-            sb.AppendLine(@"	<name>Municipalities</name>");
 
             foreach (TVItemModel tvItemModelMunicipality in tvItemModelMunicipalityList.OrderBy(c => c.TVText))
             {
@@ -277,13 +706,13 @@ namespace CSSPWebToolsTaskRunner.Services
                             sb.AppendLine(@"    <styleUrl>#wwtp</styleUrl>");
                             break;
                         case InfrastructureTypeEnum.LiftStation:
-                            sb.AppendLine(@"    <styleUrl>#liftstation</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#lift_station</styleUrl>");
                             break;
                         case InfrastructureTypeEnum.LineOverflow:
-                            sb.AppendLine(@"    <styleUrl>#lineoverflow</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#line_overflow</styleUrl>");
                             break;
                         default:
-                            sb.AppendLine(@"    <styleUrl>#defaultinfrastructure</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#default_infrastructure</styleUrl>");
                             break;
                     }
 
@@ -353,20 +782,20 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>Outfall " + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    
+
                     if (infrastructureModel.CanOverflow == null)
                     {
-                        sb.AppendLine(@"    <styleUrl>#outfallunknown</styleUrl>");
+                        sb.AppendLine(@"    <styleUrl>#outfall_unknown</styleUrl>");
                     }
                     else
                     {
                         if (!(bool)infrastructureModel.CanOverflow)
                         {
-                            sb.AppendLine(@"    <styleUrl>#outfallcannotoverflow</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#outfall_cannot_overflow</styleUrl>");
                         }
                         else
                         {
-                            sb.AppendLine(@"    <styleUrl>#outfallcanoverflow</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#outfall_can_overflow</styleUrl>");
                         }
                     }
 
@@ -382,7 +811,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>" + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"    <styleUrl>#liftstation</styleUrl>");
+                    sb.AppendLine(@"    <styleUrl>#lift_station</styleUrl>");
 
                     sb.AppendLine(@"	<description>");
                     sb.AppendLine(@"<![CDATA[");
@@ -443,20 +872,20 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>Outfall " + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    
+
                     if (infrastructureModel.CanOverflow == null)
                     {
-                        sb.AppendLine(@"    <styleUrl>#outfallunknown</styleUrl>");
+                        sb.AppendLine(@"    <styleUrl>#outfall_unknown</styleUrl>");
                     }
                     else
                     {
                         if (!(bool)infrastructureModel.CanOverflow)
                         {
-                            sb.AppendLine(@"    <styleUrl>#outfallcannotoverflow</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#outfall_cannot_overflow</styleUrl>");
                         }
                         else
                         {
-                            sb.AppendLine(@"    <styleUrl>#outfallcanoverflow</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#outfall_can_overflow</styleUrl>");
                         }
                     }
                     sb.AppendLine(@"		<Point>");
@@ -470,7 +899,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 {
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>" + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    sb.AppendLine(@"    <styleUrl>#lineoverflow</styleUrl>");
+                    sb.AppendLine(@"    <styleUrl>#line_overflow</styleUrl>");
 
                     sb.AppendLine(@"	<description>");
                     sb.AppendLine(@"<![CDATA[");
@@ -531,20 +960,20 @@ namespace CSSPWebToolsTaskRunner.Services
 
                     sb.AppendLine(@"	<Placemark>");
                     sb.AppendLine(@"	<name>Outfall " + tvItemModelInfrastructureList.Where(c => c.TVItemID == infrastructureModel.InfrastructureTVItemID).Select(c => c.TVText).FirstOrDefault() + "</name>");
-                    
+
                     if (infrastructureModel.CanOverflow == null)
                     {
-                        sb.AppendLine(@"    <styleUrl>#outfallunknown</styleUrl>");
+                        sb.AppendLine(@"    <styleUrl>#outfall_unknown</styleUrl>");
                     }
                     else
                     {
                         if (!(bool)infrastructureModel.CanOverflow)
                         {
-                            sb.AppendLine(@"    <styleUrl>#outfallcannotoverflow</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#outfall_cannot_overflow</styleUrl>");
                         }
                         else
                         {
-                            sb.AppendLine(@"    <styleUrl>#outfallcanoverflow</styleUrl>");
+                            sb.AppendLine(@"    <styleUrl>#outfall_can_overflow</styleUrl>");
                         }
                     }
                     sb.AppendLine(@"		<Point>");
@@ -556,107 +985,15 @@ namespace CSSPWebToolsTaskRunner.Services
             }
             sb.AppendLine(@" </Folder>");
 
-            // Doing Long Pollution Source Site
-            sb.AppendLine(@" <Folder>");
-            sb.AppendLine(@"	<name>Pollution Source Sites</name>");
-            List<PolSourceSiteModel> polSourceSiteModelList = _PolSourceSiteService.GetPolSourceSiteModelListWithSubsectorTVItemIDDB(tvItemModelSubsector.TVItemID);
-            List<TVItemModel> tvItemModelListPolSourceSite = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.PolSourceSite);
+            #endregion municipality
 
-            foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelList.OrderBy(c => c.Site).ToList())
-            {
-                TVItemModel tvItemModelPolSourceSite = (from c in tvItemModelListPolSourceSite
-                                                        where c.TVItemID == polSourceSiteModel.PolSourceSiteTVItemID
-                                                        select c).FirstOrDefault();
-
-                string labelPolSourceSite = tvItemModelPolSourceSite.TVText;
-                if (labelPolSourceSite.Contains(" "))
-                {
-                    labelPolSourceSite = labelPolSourceSite.Substring(0, labelPolSourceSite.IndexOf(" "));
-                }
-
-                // Doing point
-                sb.AppendLine(@"	<Placemark>");
-                sb.AppendLine(@"	<name>" + labelPolSourceSite + "</name>");
-                sb.AppendLine(@"    <styleUrl>#pollutionsourcesite</styleUrl>");
-                sb.AppendLine(@"	<description>");
-                sb.AppendLine(@"<![CDATA[");
-                //sb.AppendLine(@"<pre>");
-
-                PolSourceObservationModel polSourceObservationModel = _PolSourceSiteService._PolSourceObservationService.GetPolSourceObservationModelLatestWithPolSourceSiteIDDB(polSourceSiteModel.PolSourceSiteID);
-                if (polSourceObservationModel != null)
-                {
-                    List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceSiteService._PolSourceObservationService._PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithPolSourceObservationIDDB(polSourceObservationModel.PolSourceObservationID);
-
-                    string SelectedObservation = "<strong>Selected:</strong> <br>";
-                    foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList)
-                    {
-                        foreach (PolSourceObsInfoEnum polSourceObsInfo in polSourceObservationIssueModel.PolSourceObsInfoList)
-                        {
-                            SelectedObservation += _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum(polSourceObsInfo);
-                        }
-                        SelectedObservation += "<br><br>";
-                    }
-
-                    sb.AppendLine("<strong>Written:</strong> <br>" + (string.IsNullOrWhiteSpace(polSourceObservationModel.Observation_ToBeDeleted) ? "" : polSourceObservationModel.Observation_ToBeDeleted.ToString()) + "<br><br>" + SelectedObservation);
-                }
-                else
-                {
-                    string SelectedObservation = "<strong>Selected:</strong> <br>";
-                    sb.AppendLine("<strong>Written:</strong> <br><br>" + SelectedObservation);
-                }
-
-                //sb.AppendLine(@"</pre>");
-                sb.AppendLine(@"]]>");
-                sb.AppendLine(@"	</description>");
-
-                mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelPolSourceSite.TVItemID, TVTypeEnum.PolSourceSite, MapInfoDrawTypeEnum.Point);
-
-                sb.AppendLine(@"		<Point>");
-                sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
-                sb.AppendLine(@"		</Point>");
-                sb.AppendLine(@"	</Placemark>");
-
-            }
-            sb.AppendLine(@" </Folder>");
-
-            List<TVItemModel> tvItemModelMWQMSiteList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.MWQMSite);
-
-            // Doing MWQM Site
-            sb.AppendLine(@" <Folder>");
-            sb.AppendLine(@"	<name>MWQM Sites</name>");
-
-            foreach (TVItemModel tvItemModelMWQMSite in tvItemModelMWQMSiteList.Where(c => c.IsActive))
-            {
-                // Doing point
-                sb.AppendLine(@"	<Placemark>");
-                sb.AppendLine(@"	<name>" + tvItemModelMWQMSite.TVText + "</name>");
-                sb.AppendLine(@"    <styleUrl>#monitoringsite</styleUrl>");
-                //sb.AppendLine(@"	<description>");
-                //sb.AppendLine(@"<![CDATA[");
-                //sb.AppendLine(@"                                <p><a href=""" + _TaskRunnerBaseService.GetUrlFromTVItem(tvItemModelMWQMSite) + @""">" + tvItemModelMWQMSite.TVText + "</a></p>");
-                //sb.AppendLine(@"]]>");
-                //sb.AppendLine(@"	</description>");
-
-                mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelMWQMSite.TVItemID, TVTypeEnum.MWQMSite, MapInfoDrawTypeEnum.Point);
-
-                sb.AppendLine(@"		<Point>");
-                if (mapInfoPointModelList.Count == 0)
-                {
-                    sb.AppendLine(@"			<coordinates>0,0,0</coordinates>");
-                }
-                else
-                {
-                    sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
-                }
-                sb.AppendLine(@"		</Point>");
-                sb.AppendLine(@"	</Placemark>");
-
-            }
-            sb.AppendLine(@" </Folder>");
+            _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 80);
+            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("SavingDocument");
+            _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService._BWObj.TextLanguageList);
 
             sb.AppendLine(@"	</Folder>");
 
-            if (!WriteKMLBottom(this.sb))
+            if (!WriteKMLBottom(sb))
             {
                 ErrorInDoc = true;
             }
@@ -667,6 +1004,8 @@ namespace CSSPWebToolsTaskRunner.Services
                 _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("ErrorOccuredWhileCreating_Document_", "KMZ", fi.FullName);
                 return false;
             }
+
+            _TaskRunnerBaseService._BWObj.TextLanguageList = new List<TextLanguage>();
 
             return true;
         }
@@ -706,5 +1045,11 @@ namespace CSSPWebToolsTaskRunner.Services
 
 
 
+    }
+
+    public struct GeoLocation
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

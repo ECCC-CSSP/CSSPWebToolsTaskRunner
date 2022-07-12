@@ -1636,11 +1636,47 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Doing classification.
+        /// </summary>
+        public static string DoingClassification {
+            get {
+                return ResourceManager.GetString("DoingClassification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Doing decay.
         /// </summary>
         public static string DoingDecay {
             get {
                 return ResourceManager.GetString("DoingDecay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing monitoring sites.
+        /// </summary>
+        public static string DoingMonitoringSites {
+            get {
+                return ResourceManager.GetString("DoingMonitoringSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing municipalities.
+        /// </summary>
+        public static string DoingMunicipalities {
+            get {
+                return ResourceManager.GetString("DoingMunicipalities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing pollution source sites.
+        /// </summary>
+        public static string DoingPollutionSourceSites {
+            get {
+                return ResourceManager.GetString("DoingPollutionSourceSites", resourceCulture);
             }
         }
         
@@ -1668,6 +1704,24 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string DoingSources {
             get {
                 return ResourceManager.GetString("DoingSources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing style.
+        /// </summary>
+        public static string DoingStyle {
+            get {
+                return ResourceManager.GetString("DoingStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing subsector polygon.
+        /// </summary>
+        public static string DoingSubsectorPolygon {
+            get {
+                return ResourceManager.GetString("DoingSubsectorPolygon", resourceCulture);
             }
         }
         
@@ -4719,6 +4773,15 @@ namespace CSSPWebToolsTaskRunner.Services.Resources {
         public static string SamplingPlanID {
             get {
                 return ResourceManager.GetString("SamplingPlanID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving document.
+        /// </summary>
+        public static string SavingDocument {
+            get {
+                return ResourceManager.GetString("SavingDocument", resourceCulture);
             }
         }
         

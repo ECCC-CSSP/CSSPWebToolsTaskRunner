@@ -2193,4 +2193,25 @@
   <data name="Doing_" xml:space="preserve">
     <value>Doing {0}</value>
   </data>
+  <data name="DoingClassification" xml:space="preserve">
+    <value>Doing classification</value>
+  </data>
+  <data name="DoingMonitoringSites" xml:space="preserve">
+    <value>Doing monitoring sites</value>
+  </data>
+  <data name="DoingMunicipalities" xml:space="preserve">
+    <value>Doing municipalities</value>
+  </data>
+  <data name="DoingPollutionSourceSites" xml:space="preserve">
+    <value>Doing pollution source sites</value>
+  </data>
+  <data name="DoingStyle" xml:space="preserve">
+    <value>Doing style</value>
+  </data>
+  <data name="DoingSubsectorPolygon" xml:space="preserve">
+    <value>Doing subsector polygon</value>
+  </data>
+  <data name="SavingDocument" xml:space="preserve">
+    <value>Saving document</value>
+  </data>
 </root>
