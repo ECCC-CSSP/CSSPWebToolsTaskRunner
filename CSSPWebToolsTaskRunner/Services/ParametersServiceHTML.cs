@@ -583,6 +583,9 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"    float: left;");
             sb.AppendLine(@"    display: block;");
             sb.AppendLine(@"}");
+            sb.AppendLine(@".smalltext {");
+            sb.AppendLine(@"    font: normal 8px arial, helvetica, sans-serif;");
+            sb.AppendLine(@"}");
             sb.AppendLine(@"    </style>");
             sb.AppendLine(@"</head>");
             sb.AppendLine(@"<body>");

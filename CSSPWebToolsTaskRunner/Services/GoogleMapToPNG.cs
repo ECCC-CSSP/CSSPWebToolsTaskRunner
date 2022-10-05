@@ -916,10 +916,16 @@ namespace CSSPWebToolsTaskRunner.Services
                 List<PolSourceObservationModel> polSourceObservationModelList = _PolSourceObservationService.GetPolSourceObservationModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
                 List<PolSourceObservationIssueModel> polSourceObservationIssueModelList = _PolSourceObservationIssueService.GetPolSourceObservationIssueModelListWithSubsectorTVItemIDDB(tvItemModelPolSourceSiteList[0].ParentID);
 
-                int count = 0;
+                //int count = 0;
                 foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelPolSourceSiteList)
                 {
                     TVItemModel tvItemModel = tvItemModelPolSourceSiteList.Where(c => c.TVItemID == mapInfoPointModel.TVItemID).FirstOrDefault();
+
+                    string tvText = tvItemModel.TVText;
+                    if (tvText.Contains(" "))
+                    {
+                        tvText = tvText.Substring(0, tvText.IndexOf(" "));
+                    }
 
                     if (tvItemModel != null && tvItemModel.IsActive == true)
                     {
@@ -935,7 +941,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
                             if (polSourceObservationModelLastest != null)
                             {
-                                count += 1;
+                                //count += 1;
                                 double LngX = ((mapInfoPointModel.Lng - coordMap.SouthWest.Lng) / TotalWidthLng) * GoogleImageWidth * 2.0D;
                                 double LatY = ((GoogleImageHeight * 2) - GoogleLogoHeight) - ((TotalHeightLat - (coordMap.NorthEast.Lat - mapInfoPointModel.Lat)) / TotalHeightLat) * ((GoogleImageHeight * 2) - GoogleLogoHeight);
                                 //double LngXLabel = ((labelPosition.LabelPoint.Lng - coordMap.SouthWest.Lng) / TotalWidthLng) * GoogleImageWidth * 2.0D;
@@ -1221,7 +1227,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                         DrawOtherIcon(g, new Pen(Color.Black, 1.0f), new SolidBrush(Color.Black), IconSize, (int)LatY, (int)LngX);
                                     }
                                 }
-                                g.DrawString(count.ToString(), font, brush, new Point((int)(LngX + 2), (int)(LatY + 5)));
+                                g.DrawString(tvText.ToString(), font, brush, new Point((int)(LngX + 2), (int)(LatY + 5)));
                             }
                         }
                     }

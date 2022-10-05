@@ -136,16 +136,24 @@ namespace CSSPWebToolsTaskRunner.Services
             //sbTemp.AppendLine("");
             //sbTemp.AppendLine($@"<h1 style=""text-align: center"">{ tvItemModelSubsector.TVText }</h1>");
             //sbTemp.AppendLine($@"<h2 style=""text-align: center"">{ TaskRunnerServiceRes.ActivePollutionSourceSites }</h2>");
+            //int PSSNumber = 0;
             foreach (TVItemModel tvItemModelPSSActive in tvItemModelListPolSourceSite.Where(c => c.IsActive == true))
             {
+                //PSSNumber += 1;
 
                 PolSourceSiteModel polSourceSiteModel = polSourceSiteModelList.Where(c => c.PolSourceSiteTVItemID == tvItemModelPSSActive.TVItemID).FirstOrDefault();
 
                 if (polSourceSiteModel != null)
                 {
-                    sbTemp.AppendLine($@"<div>");
+                    string tvText = polSourceSiteModel.PolSourceSiteTVText;
+                    if (tvText.Contains(" "))
+                    {
+                        tvText = tvText.Substring(0, tvText.IndexOf(" "));
+                    }
+
+                    sbTemp.AppendLine($@"<div class=""smalltext"">");
                     sbTemp.AppendLine($@"<p>");
-                    sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.Site }</strong>: { polSourceSiteModel.Site }&nbsp;&nbsp;&nbsp;&nbsp;");
+                    sbTemp.AppendLine($@"<strong>{TaskRunnerServiceRes.Site} #</strong>: {tvText}&nbsp;&nbsp;&nbsp;&nbsp;");
 
                     MapInfo mapInfo = mapInfoActiveList.Where(c => c.TVItemID == tvItemModelPSSActive.TVItemID).FirstOrDefault();
                     if (mapInfo != null)
@@ -153,157 +161,172 @@ namespace CSSPWebToolsTaskRunner.Services
                         List<MapInfoPoint> mapInfoPointListCurrent = mapInfoPointActiveList.Where(c => c.MapInfoID == mapInfo.MapInfoID).ToList();
                         if (mapInfoPointListCurrent.Count > 0)
                         {
-                            sbTemp.AppendLine($@"<span><strong>{ TaskRunnerServiceRes.Lat } { TaskRunnerServiceRes.Long }</strong>: { mapInfoPointListCurrent[0].Lat.ToString("F5") } { mapInfoPointListCurrent[0].Lng.ToString("F5") }</span>");
+                            sbTemp.AppendLine($@"<span><strong>{TaskRunnerServiceRes.Lat} {TaskRunnerServiceRes.Long}</strong>: {mapInfoPointListCurrent[0].Lat.ToString("F5")} {mapInfoPointListCurrent[0].Lng.ToString("F5")}</span>");
                         }
                     }
                     else
                     {
-                        sbTemp.AppendLine($@"<span><strong>{ TaskRunnerServiceRes.Lat } { TaskRunnerServiceRes.Long }</strong>: --- ---</span>");
+                        sbTemp.AppendLine($@"<span><strong>{TaskRunnerServiceRes.Lat} {TaskRunnerServiceRes.Long}</strong>: --- ---</span>");
                     }
-                    sbTemp.AppendLine($@"</p>");
+                    sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;&nbsp;");
+
+                    //sbTemp.AppendLine($@"</p>");
 
 
-                    if (polSourceSiteModel.CivicAddressTVItemID != null)
-                    {
-                        if (polSourceSiteModel.CivicAddressTVItemID != 0)
-                        {
-                            Address address = addressList.Where(c => c.AddressTVItemID == ((int)polSourceSiteModel.CivicAddressTVItemID)).FirstOrDefault();
-                            if (address != null)
-                            {
-                                sbTemp.AppendLine($@"<p>");
-                                if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
-                                {
-                                    string CountryText = countryList.Where(c => c.TVItemID == address.CountryTVItemID).Select(c => c.TVText).FirstOrDefault();
-                                    string ProvinceText = provinceList.Where(c => c.TVItemID == address.ProvinceTVItemID).Select(c => c.TVText).FirstOrDefault();
-                                    string MunicipalityText = municipalityList.Where(c => c.TVItemID == address.MunicipalityTVItemID).Select(c => c.TVText).FirstOrDefault();
-                                    string StreetTypeText = _BaseEnumService.GetEnumText_StreetTypeEnum((StreetTypeEnum)address.StreetType);
-                                    string AddressText = $" { address.StreetNumber} { address.StreetName } { StreetTypeText }, { MunicipalityText }, { ProvinceText }, { CountryText }";
-                                    sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.CivicAddress }</strong>: { AddressText }");
-                                }
-                                else
-                                {
-                                    string CountryText = countryList.Where(c => c.TVItemID == address.CountryTVItemID).Select(c => c.TVText).FirstOrDefault();
-                                    string ProvinceText = provinceList.Where(c => c.TVItemID == address.ProvinceTVItemID).Select(c => c.TVText).FirstOrDefault();
-                                    string MunicipalityText = municipalityList.Where(c => c.TVItemID == address.MunicipalityTVItemID).Select(c => c.TVText).FirstOrDefault();
-                                    string StreetTypeText = _BaseEnumService.GetEnumText_StreetTypeEnum((StreetTypeEnum)address.StreetType);
-                                    string AddressText = $" { address.StreetNumber}, { StreetTypeText } { address.StreetName }, { MunicipalityText }, { ProvinceText }, { CountryText }";
-                                    sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.CivicAddress }</strong>: { AddressText }");
-                                }
-                                sbTemp.AppendLine($@"</p>");
-                            }
-                        }
-                    }
+                    //if (polSourceSiteModel.CivicAddressTVItemID != null)
+                    //{
+                    //    if (polSourceSiteModel.CivicAddressTVItemID != 0)
+                    //    {
+                    //        Address address = addressList.Where(c => c.AddressTVItemID == ((int)polSourceSiteModel.CivicAddressTVItemID)).FirstOrDefault();
+                    //        if (address != null)
+                    //        {
+                    //            sbTemp.AppendLine($@"<p>");
+                    //            if (_TaskRunnerBaseService._BWObj.appTaskModel.Language == LanguageEnum.fr)
+                    //            {
+                    //                string CountryText = countryList.Where(c => c.TVItemID == address.CountryTVItemID).Select(c => c.TVText).FirstOrDefault();
+                    //                string ProvinceText = provinceList.Where(c => c.TVItemID == address.ProvinceTVItemID).Select(c => c.TVText).FirstOrDefault();
+                    //                string MunicipalityText = municipalityList.Where(c => c.TVItemID == address.MunicipalityTVItemID).Select(c => c.TVText).FirstOrDefault();
+                    //                string StreetTypeText = _BaseEnumService.GetEnumText_StreetTypeEnum((StreetTypeEnum)address.StreetType);
+                    //                string AddressText = $" { address.StreetNumber} { address.StreetName } { StreetTypeText }, { MunicipalityText }, { ProvinceText }, { CountryText }";
+                    //                sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.CivicAddress }</strong>: { AddressText }");
+                    //            }
+                    //            else
+                    //            {
+                    //                string CountryText = countryList.Where(c => c.TVItemID == address.CountryTVItemID).Select(c => c.TVText).FirstOrDefault();
+                    //                string ProvinceText = provinceList.Where(c => c.TVItemID == address.ProvinceTVItemID).Select(c => c.TVText).FirstOrDefault();
+                    //                string MunicipalityText = municipalityList.Where(c => c.TVItemID == address.MunicipalityTVItemID).Select(c => c.TVText).FirstOrDefault();
+                    //                string StreetTypeText = _BaseEnumService.GetEnumText_StreetTypeEnum((StreetTypeEnum)address.StreetType);
+                    //                string AddressText = $" { address.StreetNumber}, { StreetTypeText } { address.StreetName }, { MunicipalityText }, { ProvinceText }, { CountryText }";
+                    //                sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.CivicAddress }</strong>: { AddressText }");
+                    //            }
+                    //            sbTemp.AppendLine($@"</p>");
+                    //        }
+                    //    }
+                    //}
 
                     PolSourceObservationModel polSourceObservationModel = polSourceObservationModelList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local).FirstOrDefault();
 
                     if (polSourceObservationModel != null)
                     {
-                        sbTemp.AppendLine($@"<p>");
+                        //sbTemp.AppendLine($@"<p>");
                         string ContactObsText = contactList.Where(c => c.TVItemID == polSourceObservationModel.ContactTVItemID).Select(c => c.TVText).FirstOrDefault();
-                        sbTemp.AppendLine($@"<strong>{ TaskRunnerServiceRes.LastObservationDate }</strong>: { polSourceObservationModel.ObservationDate_Local.ToString("yyyy MMMM dd") } <strong>{ TaskRunnerServiceRes.by }</strong>: { ContactObsText }");
-                        sbTemp.AppendLine($@"</p>");
+                        sbTemp.AppendLine($@"<strong>{TaskRunnerServiceRes.LastObservationDate}</strong>: {polSourceObservationModel.ObservationDate_Local.ToString("yyyy MMMM dd")}");
+                        //sbTemp.AppendLine($@"<strong>{TaskRunnerServiceRes.LastObservationDate}</strong>: {polSourceObservationModel.ObservationDate_Local.ToString("yyyy MMMM dd")} <strong>{TaskRunnerServiceRes.by}</strong>: {ContactObsText}");
 
                         int IssueNumber = 0;
                         foreach (PolSourceObservationIssueModel polSourceObservationIssueModel in polSourceObservationIssueModelList.Where(c => c.PolSourceObservationID == polSourceObservationModel.PolSourceObservationID).OrderBy(c => c.Ordinal).ToList())
                         {
                             IssueNumber += 1;
+
+                            if (IssueNumber > 1) continue;
+
                             string TVText = "";
-                            sbTemp.AppendLine($@"<p><strong>{ TaskRunnerServiceRes.Issue }</strong>: { IssueNumber }</p>");
-                            sbTemp.AppendLine($@"<blockquote>");
+                            //sbTemp.AppendLine($@"<p><strong>{ TaskRunnerServiceRes.Issue }</strong>: { IssueNumber }</p>");
+                            //sbTemp.AppendLine($@"<blockquote>");
                             List<string> ObservationInfoList = (string.IsNullOrWhiteSpace(polSourceObservationIssueModel.ObservationInfo) ? new List<string>() : polSourceObservationIssueModel.ObservationInfo.Trim().Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
 
-                            for (int i = 0, countObs = ObservationInfoList.Count; i < countObs; i++)
+                            if (ObservationInfoList.Count > 0)
                             {
-                                string Temp = _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum)int.Parse(ObservationInfoList[i]));
-                                switch (ObservationInfoList[i].Substring(0, 3))
+                                for (int i = 0, countObs = ObservationInfoList.Count; i < countObs; i++)
                                 {
-                                    case "101":
-                                        {
-                                            Temp = Temp.Replace("Source", "<br /><strong>Source</strong>");
-                                        }
-                                        break;
-                                    //case "153":
-                                    //    {
-                                    //        Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
-                                    //    }
-                                    //    break;
-                                    case "250":
-                                        {
-                                            Temp = Temp.Replace("Pathway", "<br /><strong>Pathway</strong>");
-                                        }
-                                        break;
-                                    case "900":
-                                        {
-                                            Temp = Temp.Replace("Status", "<br /><strong>Status</strong>");
-                                        }
-                                        break;
-                                    case "910":
-                                        {
-                                            Temp = Temp.Replace("Risk", "<br /><strong>Risk</strong>");
-                                        }
-                                        break;
-                                    case "110":
-                                    case "120":
-                                    case "122":
-                                    case "151":
-                                    case "152":
-                                    case "153":
-                                    case "155":
-                                    case "156":
-                                    case "157":
-                                    case "163":
-                                    case "166":
-                                    case "167":
-                                    case "170":
-                                    case "171":
-                                    case "172":
-                                    case "173":
-                                    case "176":
-                                    case "178":
-                                    case "181":
-                                    case "182":
-                                    case "183":
-                                    case "185":
-                                    case "186":
-                                    case "187":
-                                    case "190":
-                                    case "191":
-                                    case "192":
-                                    case "193":
-                                    case "194":
-                                    case "196":
-                                    case "198":
-                                    case "199":
-                                    case "220":
-                                    case "930":
-                                        {
-                                            //Temp = @"<span class=""hidden"">" + Temp + "</span>";
-                                        }
-                                        break;
-                                    default:
-                                        break;
+                                    string Temp = _BaseEnumService.GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum)int.Parse(ObservationInfoList[i]));
+                                    switch (ObservationInfoList[i].Substring(0, 3))
+                                    {
+                                        case "101":
+                                            {
+                                                Temp = Temp.Replace("Source", "<br /><strong>Source</strong>");
+                                            }
+                                            break;
+                                        //case "153":
+                                        //    {
+                                        //        Temp = Temp.Replace("Dilution Analyses", "     Dilution Analyses");
+                                        //    }
+                                        //    break;
+                                        case "250":
+                                            {
+                                                Temp = Temp.Replace("Pathway", "<br /><strong>Pathway</strong>");
+                                            }
+                                            break;
+                                        case "900":
+                                            {
+                                                Temp = Temp.Replace("Status", "<br /><strong>Status</strong>");
+                                            }
+                                            break;
+                                        case "910":
+                                            {
+                                                Temp = Temp.Replace("Risk", "<br /><strong>Risk</strong>");
+                                            }
+                                            break;
+                                        case "110":
+                                        case "120":
+                                        case "122":
+                                        case "151":
+                                        case "152":
+                                        case "153":
+                                        case "155":
+                                        case "156":
+                                        case "157":
+                                        case "163":
+                                        case "166":
+                                        case "167":
+                                        case "170":
+                                        case "171":
+                                        case "172":
+                                        case "173":
+                                        case "176":
+                                        case "178":
+                                        case "181":
+                                        case "182":
+                                        case "183":
+                                        case "185":
+                                        case "186":
+                                        case "187":
+                                        case "190":
+                                        case "191":
+                                        case "192":
+                                        case "193":
+                                        case "194":
+                                        case "196":
+                                        case "198":
+                                        case "199":
+                                        case "220":
+                                        case "930":
+                                            {
+                                                //Temp = @"<span class=""hidden"">" + Temp + "</span>";
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    TVText = TVText + Temp;
                                 }
-                                TVText = TVText + Temp;
-                            }
 
-                            sbTemp.AppendLine($@"{ TVText }");
-                            if (polSourceObservationIssueModel.ExtraComment != null)
-                            {
-                                if (polSourceObservationIssueModel.ExtraComment.Length > 0)
-                                {
-                                    sbTemp.AppendLine($@"<p><strong>{ TaskRunnerServiceRes.ExtraComment }</strong></p>");
-                                    sbTemp.AppendLine($@"<p>");
-                                    sbTemp.AppendLine($@"{ polSourceObservationIssueModel.ExtraComment }");
-                                    sbTemp.AppendLine($@"</p>");
-                                }
+                                sbTemp.AppendLine($@"{TVText}");
+                                sbTemp.AppendLine($@"</p>");
+
+                                //if (polSourceObservationIssueModel.ExtraComment != null)
+                                //{
+                                //    if (polSourceObservationIssueModel.ExtraComment.Length > 0)
+                                //    {
+                                //        sbTemp.AppendLine($@"<p><strong>{TaskRunnerServiceRes.ExtraComment}</strong></p>");
+                                //        sbTemp.AppendLine($@"<p>");
+                                //        sbTemp.AppendLine($@"{polSourceObservationIssueModel.ExtraComment}");
+                                //        sbTemp.AppendLine($@"</p>");
+                                //    }
+                                //}
+
                             }
-                            sbTemp.AppendLine($@"</blockquote>");
+                            //sbTemp.AppendLine($@"</blockquote>");
                         }
 
                     }
+                    else
+                    {
+                        sbTemp.AppendLine($@"</p>");
+                    }
 
                     sbTemp.AppendLine($@"</div>");
-                    sbTemp.AppendLine($@"<hr />");
+                    //sbTemp.AppendLine($@"<hr />");
                 }
             }
 
