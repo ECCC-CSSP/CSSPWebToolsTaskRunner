@@ -151,9 +151,9 @@ namespace CSSPWebToolsTaskRunner.Services
                         tvText = tvText.Substring(0, tvText.IndexOf(" "));
                     }
 
-                    sbTemp.AppendLine($@"<div class=""smalltext"">");
-                    sbTemp.AppendLine($@"<p>");
-                    sbTemp.AppendLine($@"<strong>{TaskRunnerServiceRes.Site} #</strong>: {tvText}&nbsp;&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"<p class=""smalltext"">");
+                    //sbTemp.AppendLine($@"<p>");
+                    sbTemp.Append($@"<strong>{TaskRunnerServiceRes.Site} #</strong>: {tvText}&nbsp;&nbsp;&nbsp;&nbsp;");
 
                     MapInfo mapInfo = mapInfoActiveList.Where(c => c.TVItemID == tvItemModelPSSActive.TVItemID).FirstOrDefault();
                     if (mapInfo != null)
@@ -161,14 +161,14 @@ namespace CSSPWebToolsTaskRunner.Services
                         List<MapInfoPoint> mapInfoPointListCurrent = mapInfoPointActiveList.Where(c => c.MapInfoID == mapInfo.MapInfoID).ToList();
                         if (mapInfoPointListCurrent.Count > 0)
                         {
-                            sbTemp.AppendLine($@"<span><strong>{TaskRunnerServiceRes.Lat} {TaskRunnerServiceRes.Long}</strong>: {mapInfoPointListCurrent[0].Lat.ToString("F5")} {mapInfoPointListCurrent[0].Lng.ToString("F5")}</span>");
+                            sbTemp.Append($@"<span><strong>{TaskRunnerServiceRes.Lat} {TaskRunnerServiceRes.Long}</strong>: {mapInfoPointListCurrent[0].Lat.ToString("F5")} {mapInfoPointListCurrent[0].Lng.ToString("F5")}</span>");
                         }
                     }
                     else
                     {
-                        sbTemp.AppendLine($@"<span><strong>{TaskRunnerServiceRes.Lat} {TaskRunnerServiceRes.Long}</strong>: --- ---</span>");
+                        sbTemp.Append($@"<span><strong>{TaskRunnerServiceRes.Lat} {TaskRunnerServiceRes.Long}</strong>: --- ---</span>");
                     }
-                    sbTemp.AppendLine($@"&nbsp;&nbsp;&nbsp;&nbsp;");
+                    sbTemp.Append($@"&nbsp;&nbsp;&nbsp;&nbsp;");
 
                     //sbTemp.AppendLine($@"</p>");
 
@@ -210,7 +210,7 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         //sbTemp.AppendLine($@"<p>");
                         string ContactObsText = contactList.Where(c => c.TVItemID == polSourceObservationModel.ContactTVItemID).Select(c => c.TVText).FirstOrDefault();
-                        sbTemp.AppendLine($@"<strong>{TaskRunnerServiceRes.LastObservationDate}</strong>: {polSourceObservationModel.ObservationDate_Local.ToString("yyyy MMMM dd")}");
+                        sbTemp.Append($@"<strong>{TaskRunnerServiceRes.LastObservationDate}</strong>: {polSourceObservationModel.ObservationDate_Local.ToString("yyyy MMMM dd")}");
                         //sbTemp.AppendLine($@"<strong>{TaskRunnerServiceRes.LastObservationDate}</strong>: {polSourceObservationModel.ObservationDate_Local.ToString("yyyy MMMM dd")} <strong>{TaskRunnerServiceRes.by}</strong>: {ContactObsText}");
 
                         int IssueNumber = 0;
@@ -302,7 +302,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 }
 
                                 sbTemp.AppendLine($@"{TVText}");
-                                sbTemp.AppendLine($@"</p>");
+                                //sbTemp.AppendLine($@"</p>");
 
                                 //if (polSourceObservationIssueModel.ExtraComment != null)
                                 //{
@@ -322,10 +322,10 @@ namespace CSSPWebToolsTaskRunner.Services
                     }
                     else
                     {
-                        sbTemp.AppendLine($@"</p>");
+                        sbTemp.Append($@"</p>");
                     }
 
-                    sbTemp.AppendLine($@"</div>");
+                    sbTemp.Append($@"</p>");
                     //sbTemp.AppendLine($@"<hr />");
                 }
             }
