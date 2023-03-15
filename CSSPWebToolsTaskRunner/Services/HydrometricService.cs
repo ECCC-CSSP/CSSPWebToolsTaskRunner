@@ -778,10 +778,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     StationNumber = StationNumber.Replace(@"\", "").Replace(@"""", "");
                 }
 
-                if (StationNumber == "01AD015")
-                {
-                    int sliefj = 34;
-                }
                 // StationName
                 if (reader.GetValue(1).GetType() == typeof(DBNull) || string.IsNullOrEmpty(reader.GetValue(1).ToString()))
                 {

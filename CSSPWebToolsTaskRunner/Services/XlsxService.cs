@@ -221,7 +221,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 return;
             }
 
-            SetupStatOnSheet1(xlApp, wb, mwqmAnalysisReportParameterModel);
+            SetupStatOnSheet1(xlApp, wb, mwqmAnalysisReportParameterModel, false);
             if (_TaskRunnerBaseService._BWObj.TextLanguageList.Count > 0)
             {
                 return;
@@ -2614,7 +2614,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 7);
         }
-        private void SetupStatOnSheet1(Microsoft.Office.Interop.Excel.Application xlApp, Microsoft.Office.Interop.Excel.Workbook wb, MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel)
+        private void SetupStatOnSheet1(Microsoft.Office.Interop.Excel.Application xlApp, Microsoft.Office.Interop.Excel.Workbook wb, MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel, bool IncludeRainCMPData)
         {
             string NotUsed = "";
             int LatestYear = 0;
@@ -2651,7 +2651,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 Microsoft.Office.Interop.Excel.Range range = ws.get_Range("A1:A1");
                 ws.Activate();
 
-                MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(mwqmAnalysisReportParameterModel.SubsectorTVItemID);
+                MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(mwqmAnalysisReportParameterModel.SubsectorTVItemID, IncludeRainCMPData);
 
                 foreach (MWQMSampleAnalysisModel mwqmSampleAnalysisModel in mwqmSubsectorAnalysisModel.MWQMSampleAnalysisModelList)
                 {

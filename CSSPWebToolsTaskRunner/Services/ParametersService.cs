@@ -554,15 +554,15 @@ namespace CSSPWebToolsTaskRunner.Services
                     {
                         fiToDelete.Delete();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        if (false) // just skipping this for now
-                        {
-                            string inner = ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "";
-                            NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiToDelete.FullName, ex.Message + inner);
-                            _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiToDelete.FullName, ex.Message + inner);
-                            return false;
-                        }
+                        //if (false) // just skipping this for now
+                        //{
+                        //    string inner = ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "";
+                        //    NotUsed = string.Format(TaskRunnerServiceRes.CouldNotDeleteFile_Error_, fiToDelete.FullName, ex.Message + inner);
+                        //    _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageFormat2List("CouldNotDeleteFile_Error_", fiToDelete.FullName, ex.Message + inner);
+                        //    return false;
+                        //}
                     }
                 }
             }

@@ -2373,7 +2373,8 @@ namespace CSSPWebToolsTaskRunner.Services
                     List<MWQMRun> mwqmRunList = (from c in db2.MWQMRuns
                                                  from rid in TVItemMWQMRunList
                                                  where c.MWQMRunTVItemID == rid
-                                                 && c.RunSampleType == (int)SampleTypeEnum.Routine
+                                                 && (c.RunSampleType == (int)SampleTypeEnum.Routine
+                                                 || c.RunSampleType == (int)SampleTypeEnum.RainCMP)
                                                  select c).ToList();
 
                     List<int> TVItemMWQMRunRoutineList = mwqmRunList.Select(c => c.MWQMRunTVItemID).Distinct().ToList();

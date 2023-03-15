@@ -97,7 +97,7 @@ namespace CSSPWebToolsTaskRunner.Services
         private bool GenerateHTMLProvincialSubsectorsReviewXlsx()
         {
             string NotUsed = "";
-            bool ErrorInDoc = false;
+            //bool ErrorInDoc = false;
 
             int ProvinceTVItemID = 7;
             int AfterYear = 1989;
@@ -379,10 +379,12 @@ namespace CSSPWebToolsTaskRunner.Services
                                                       select c.MWQMSiteTVItemID).Distinct().ToList();
 
                     string routine = $"{ (int)SampleTypeEnum.Routine },";
+                    string IncludeRainCMPData = $"{(int)SampleTypeEnum.RainCMP},";
                     List<MWQMSample> mwqmSampleList = (from s in db2.MWQMSamples
                                                        from c in mwqmSiteTVItemIDList
                                                        where s.MWQMSiteTVItemID == c
-                                                       && s.SampleTypesText.Contains(routine)
+                                                       && (s.SampleTypesText.Contains(routine)
+                                                       || s.SampleTypesText.Contains(IncludeRainCMPData))
                                                        && s.SampleDateTime_Local.Year > AfterYear
                                                        select s).ToList();
 
@@ -393,7 +395,8 @@ namespace CSSPWebToolsTaskRunner.Services
                                                  from c in mwqmRunTVItemIDList
                                                  where r.MWQMRunTVItemID == c
                                                  && r.DateTime_Local.Year > AfterYear
-                                                 && r.RunSampleType == (int)SampleTypeEnum.Routine
+                                                 && (r.RunSampleType == (int)SampleTypeEnum.Routine
+                                                 || r.RunSampleType == (int)SampleTypeEnum.RainCMP)
                                                  select r).Distinct().ToList();
 
 

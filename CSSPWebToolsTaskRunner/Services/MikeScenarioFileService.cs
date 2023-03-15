@@ -4980,8 +4980,6 @@ namespace CSSPWebToolsTaskRunner.Services
                     return;
                 }
             }
-
-            int siefj = 34;
         }
 
         private void ReadAllSourceDischargeDFS0(MIKEResult mikeResult, string ServerPath, int MikeScenarioTVItemID)

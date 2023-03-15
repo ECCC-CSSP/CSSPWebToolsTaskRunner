@@ -513,8 +513,6 @@ namespace CSSPWebToolsTaskRunner.Services
         #region Functions private
         private void GetCoordinates(List<PolyObj> polyObsList, XmlNode node)
         {
-            string NotUsed = "";
-
             if (node.Name == "coordinates")
             {
                 PolyObj polyObj = new PolyObj();
@@ -531,8 +529,7 @@ namespace CSSPWebToolsTaskRunner.Services
                         List<string> valListText = pointTxt.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
 
                         if (valListText.Count != 3)
-                        {
-                            NotUsed = "valListText.Count != 3";
+                        {                            
                             _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("valListText.Count != 3");
                             return;
                         }
@@ -567,7 +564,6 @@ namespace CSSPWebToolsTaskRunner.Services
         }
         private void GetTVItemIDAndLatLng(List<TVItemIDAndLatLng> TVItemIDAndLatLngList, XmlNode node)
         {
-            string NotUsed = "";
             if (node.Name == "Placemark")
             {
                 TVItemIDAndLatLng tvItemIDAndLatLng = new TVItemIDAndLatLng();
@@ -598,7 +594,6 @@ namespace CSSPWebToolsTaskRunner.Services
 
                                     if (strList.Count != 3)
                                     {
-                                        NotUsed = "valListText.Count != 3";
                                         _TaskRunnerBaseService._BWObj.TextLanguageList = _TaskRunnerBaseService.GetTextLanguageList("valListText.Count != 3");
                                         return;
                                     }

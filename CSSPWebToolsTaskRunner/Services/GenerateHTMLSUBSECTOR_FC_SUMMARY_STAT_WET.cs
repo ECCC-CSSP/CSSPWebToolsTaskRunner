@@ -30,6 +30,7 @@ namespace CSSPWebToolsTaskRunner.Services
             string HideAnalysisColorAndLetterColumn = "";
             string HideNumberOfRunsUsedByYearGraph = "";
             string HideQueryText = "";
+            string IncludeRainCMPData = "";
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, Percent);
             _TaskRunnerBaseService.SendStatusTextToDB(_TaskRunnerBaseService.GetTextLanguageFormat1List("Creating_", ReportGenerateObjectsKeywordEnum.SUBSECTOR_FC_SUMMARY_STAT_WET.ToString()));
@@ -45,6 +46,7 @@ namespace CSSPWebToolsTaskRunner.Services
             HideAnalysisColorAndLetterColumn = GetParameters("HideAnalysisColorAndLetterColumn", ParamValueList);
             HideNumberOfRunsUsedByYearGraph = GetParameters("HideNumberOfRunsUsedByYearGraph", ParamValueList);
             HideQueryText = GetParameters("HideQueryText", ParamValueList);
+            IncludeRainCMPData = GetParameters("IncludeRainCMPData", ParamValueList);
 
             bool MissingRainData = _MWQMRunService.IsRainDataMissingWithSubsectorTVItemID(TVItemID);
 
@@ -90,7 +92,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             string SubsectorTVText = _MWQMSubsectorService.GetMWQMSubsectorModelWithMWQMSubsectorTVItemIDDB(TVItemID).MWQMSubsectorTVText;
 
-            MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID);
+            MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID, !string.IsNullOrEmpty(IncludeRainCMPData));
 
             if (mwqmSubsectorAnalysisModel.MWQMSampleAnalysisModelList.Count == 0)
             {
@@ -101,7 +103,7 @@ namespace CSSPWebToolsTaskRunner.Services
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
-            MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModelFirst = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID);
+            MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModelFirst = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(TVItemID, !string.IsNullOrEmpty(IncludeRainCMPData));
             List<MWQMSiteAnalysisModel> mwqmSiteAnalysisModelListFirst = mwqmSubsectorAnalysisModelFirst.MWQMSiteAnalysisModelList.Where(c => c.IsActive == true).OrderBy(c => c.MWQMSiteTVText).ToList();
 
             int CountAllSiteTotal = mwqmSiteAnalysisModelListFirst.Count() * mwqmAnalysisReportParameterModelList.Count();

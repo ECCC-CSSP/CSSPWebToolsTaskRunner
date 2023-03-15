@@ -1180,7 +1180,7 @@ namespace CSSPWebToolsTaskRunner
 
             SetupParametersAndBasicTextOnSheet2(xlApp, wb, mwqmAnalysisReportParameterModel);
             SetupParametersAndBasicTextOnSheet1(xlApp, wb, mwqmAnalysisReportParameterModel);
-            SetupStatOnSheet1(xlApp, wb, mwqmAnalysisReportParameterModel);
+            SetupStatOnSheet1(xlApp, wb, mwqmAnalysisReportParameterModel, false);
 
 
             FileInfo fi = new FileInfo(@"C:\Users\leblancc\Desktop\ExportToExcelTest.xlsx");
@@ -1623,7 +1623,7 @@ namespace CSSPWebToolsTaskRunner
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 5);
 
         }
-        private void SetupStatOnSheet1(Microsoft.Office.Interop.Excel.Application xlApp, Microsoft.Office.Interop.Excel.Workbook wb, MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel)
+        private void SetupStatOnSheet1(Microsoft.Office.Interop.Excel.Application xlApp, Microsoft.Office.Interop.Excel.Workbook wb, MWQMAnalysisReportParameterModel mwqmAnalysisReportParameterModel, bool IncludeRainCMPData)
         {
             int LatestYear = 0;
             List<int> RunUsedColNumberList = new List<int>();
@@ -1657,7 +1657,7 @@ namespace CSSPWebToolsTaskRunner
             ws.Activate();
 
             MWQMSubsectorService _MWQMSubsectorService = new MWQMSubsectorService(LanguageEnum.en, _User);
-            MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(mwqmAnalysisReportParameterModel.SubsectorTVItemID);
+            MWQMSubsectorAnalysisModel mwqmSubsectorAnalysisModel = _MWQMSubsectorService.GetMWQMSubsectorAnalysisModel(mwqmAnalysisReportParameterModel.SubsectorTVItemID, IncludeRainCMPData);
 
             foreach (MWQMSampleAnalysisModel mwqmSampleAnalysisModel in mwqmSubsectorAnalysisModel.MWQMSampleAnalysisModelList)
             {

@@ -103,7 +103,8 @@ namespace CSSPWebToolsTaskRunner.Services
                                                         from sa in mwqmSampleModelList
                                                         where sa.MWQMRunTVItemID == r.MWQMRunTVItemID
                                                         && sa.MWQMSiteTVItemID == s.MWQMSiteTVItemID
-                                                        && r.RunSampleType == SampleTypeEnum.Routine
+                                                        && (r.RunSampleType == SampleTypeEnum.Routine
+                                                        || r.RunSampleType == SampleTypeEnum.RainCMP)
                                                         && r.DateTime_Local.Year <= Year
                                                         orderby r.DateTime_Local descending
                                                         select r).Distinct().Skip(skip).Take(take).ToList();

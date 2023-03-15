@@ -95,7 +95,10 @@ namespace CSSPWebToolsTaskRunner.Services
                         for (int year = MaxYear; year > 1979; year--)
                         {
                             string leftClass = year % 5 == 0 ? "leftBorder" : "";
-                            bool hasSamples = mwqmSampleModelList.Where(c => c.MWQMSiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID && c.SampleDateTime_Local.Year == year && c.SampleTypesText.Contains(((int)SampleTypeEnum.Routine).ToString())).Any();
+                            bool hasSamples = mwqmSampleModelList.Where(c => c.MWQMSiteTVItemID == mwqmSiteModel.MWQMSiteTVItemID 
+                            && c.SampleDateTime_Local.Year == year 
+                            && (c.SampleTypesText.Contains(((int)SampleTypeEnum.Routine).ToString()) 
+                            || c.SampleTypesText.Contains(((int)SampleTypeEnum.RainCMP).ToString()))).Any();
                             if (hasSamples)
                             {
                                 if (leftClass != "")

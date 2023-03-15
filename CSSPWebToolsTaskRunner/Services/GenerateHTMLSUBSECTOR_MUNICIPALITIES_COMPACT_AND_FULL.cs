@@ -136,7 +136,7 @@ namespace CSSPWebToolsTaskRunner.Services
                                 InfrastructureItem(sbTemp, tvItemModelInfrastructureTypeTVItemLinkModel, tvItemModelInfrastructureTypeTVItemLinkModelListFloating, false, 0, IsCompact);
                             }
 
-                            if (tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType == InfrastructureTypeEnum.SeeOtherMunicipality).ToList().Count > 0) ;
+                            if (tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType == InfrastructureTypeEnum.SeeOtherMunicipality).ToList().Count > 0)
                             {
 
                                 foreach (TVItemModelInfrastructureTypeTVItemLinkModel tvItemModelInfrastructureTypeTVItemLinkModel in tvItemModelInfrastructureTypeTVItemLinkModelList.Where(c => c.InfrastructureType == InfrastructureTypeEnum.SeeOtherMunicipality))
