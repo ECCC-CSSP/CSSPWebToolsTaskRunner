@@ -322,7 +322,8 @@ namespace CSSPWebToolsTaskRunner.Services
 
             TVItemModel tvItemModelSubsector = _TVItemService.GetTVItemModelWithTVItemIDDB(TVItemID);
             List<MapInfoPointModel> mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Subsector, MapInfoDrawTypeEnum.Point);
-
+            double latSSCenter = 0;
+            double lngSSCenter = 0;
             sb.AppendLine(@"	<name>" + tvItemModelSubsector.TVText + "</name>");
 
             int pos = tvItemModelSubsector.TVText.IndexOf(" ");
@@ -342,10 +343,13 @@ namespace CSSPWebToolsTaskRunner.Services
             sb.AppendLine(@"					<coordinates>");
 
             mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelSubsector.TVItemID, TVTypeEnum.Subsector, MapInfoDrawTypeEnum.Polygon);
+            latSSCenter = (from c in mapInfoPointModelList
+                           select c.Lat).Average();
+            lngSSCenter = (from c in mapInfoPointModelList
+                           select c.Lng).Average();
             foreach (MapInfoPointModel mapInfoPointModel in mapInfoPointModelList)
             {
                 sb.AppendLine(mapInfoPointModel.Lng + "," + mapInfoPointModel.Lat + ",0 ");
-
             }
 
             sb.AppendLine(@"					</coordinates>");
@@ -669,6 +673,7 @@ namespace CSSPWebToolsTaskRunner.Services
                 }
             }
 
+            int notFoundCount = 0;
             foreach (TVItemModel tvItemModelMunicipality in tvItemModelMunicipalityList.OrderBy(c => c.TVText))
             {
                 sb.AppendLine(@" <Folder>");
@@ -680,10 +685,22 @@ namespace CSSPWebToolsTaskRunner.Services
 
                 mapInfoPointModelList = _MapInfoService._MapInfoPointService.GetMapInfoPointModelListWithTVItemIDAndTVTypeAndMapInfoDrawTypeDB(tvItemModelMunicipality.TVItemID, TVTypeEnum.Municipality, MapInfoDrawTypeEnum.Point);
 
-                sb.AppendLine(@"		<Point>");
-                sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
-                sb.AppendLine(@"		</Point>");
-                sb.AppendLine(@"	</Placemark>");
+                if (mapInfoPointModelList.Count == 0)
+                {
+                    notFoundCount += 1;
+                    sb.AppendLine(@"		<Point>");
+                    sb.AppendLine(@"			<coordinates>" + (lngSSCenter + (notFoundCount*0.001)) + "," + (latSSCenter + (notFoundCount * 0.001)) + ",0</coordinates>");
+                    sb.AppendLine(@"		</Point>");
+                    sb.AppendLine(@"	</Placemark>");
+
+                }
+                else
+                {
+                    sb.AppendLine(@"		<Point>");
+                    sb.AppendLine(@"			<coordinates>" + mapInfoPointModelList[0].Lng + "," + mapInfoPointModelList[0].Lat + ",0</coordinates>");
+                    sb.AppendLine(@"		</Point>");
+                    sb.AppendLine(@"	</Placemark>");
+                }
 
                 List<TVItemModel> tvItemModelInfrastructureList = _TVItemService.GetChildrenTVItemModelListWithTVItemIDAndTVTypeDB(tvItemModelMunicipality.TVItemID, TVTypeEnum.Infrastructure);
 
