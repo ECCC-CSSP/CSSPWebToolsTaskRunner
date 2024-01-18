@@ -115,10 +115,17 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (mapInfoPointModelPolSourceSiteList.Count > 0)
             {
-                MaxLat = mapInfoPointModelPolSourceSiteList.Select(c => c.Lat).Max();
-                MinLat = mapInfoPointModelPolSourceSiteList.Select(c => c.Lat).Min();
-                MaxLng = mapInfoPointModelPolSourceSiteList.Select(c => c.Lng).Max();
-                MinLng = mapInfoPointModelPolSourceSiteList.Select(c => c.Lng).Min();
+                if (mapInfoPointModelPolSourceSiteList.Select(c => c.Lat).Max() != mapInfoPointModelPolSourceSiteList.Select(c => c.Lat).Min())
+                {
+                    MaxLat = mapInfoPointModelPolSourceSiteList.Select(c => c.Lat).Max();
+                    MinLat = mapInfoPointModelPolSourceSiteList.Select(c => c.Lat).Min();
+                }
+
+                if (mapInfoPointModelPolSourceSiteList.Select(c => c.Lng).Max() != mapInfoPointModelPolSourceSiteList.Select(c => c.Lng).Min())
+                {
+                    MaxLng = mapInfoPointModelPolSourceSiteList.Select(c => c.Lng).Max();
+                    MinLng = mapInfoPointModelPolSourceSiteList.Select(c => c.Lng).Min();
+                }
             }
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 15);
@@ -173,10 +180,17 @@ namespace CSSPWebToolsTaskRunner.Services
 
             if (mapInfoPointModelMWQMSiteList.Count > 0)
             {
-                MaxLat = mapInfoPointModelMWQMSiteList.Select(c => c.Lat).Max();
-                MinLat = mapInfoPointModelMWQMSiteList.Select(c => c.Lat).Min();
-                MaxLng = mapInfoPointModelMWQMSiteList.Select(c => c.Lng).Max();
-                MinLng = mapInfoPointModelMWQMSiteList.Select(c => c.Lng).Min();
+                if (mapInfoPointModelMWQMSiteList.Select(c => c.Lat).Max() != mapInfoPointModelMWQMSiteList.Select(c => c.Lat).Min())
+                {
+                    MaxLat = mapInfoPointModelMWQMSiteList.Select(c => c.Lat).Max();
+                    MinLat = mapInfoPointModelMWQMSiteList.Select(c => c.Lat).Min();
+                }
+
+                if (mapInfoPointModelMWQMSiteList.Select(c => c.Lng).Max() != mapInfoPointModelMWQMSiteList.Select(c => c.Lng).Min())
+                {
+                    MaxLng = mapInfoPointModelMWQMSiteList.Select(c => c.Lng).Max();
+                    MinLng = mapInfoPointModelMWQMSiteList.Select(c => c.Lng).Min();
+                }
             }
 
             _TaskRunnerBaseService.SendPercentToDB(_TaskRunnerBaseService._BWObj.appTaskModel.AppTaskID, 15);
@@ -429,6 +443,12 @@ namespace CSSPWebToolsTaskRunner.Services
                     int MaxLngX = (int)(GoogleImageWidth * 2 * 4 / 5);
 
                     g.DrawLine(new Pen(Color.LightBlue, 2), MinLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40, MaxLngX, GoogleImageHeight * 2 - GoogleLogoHeight - 40);
+
+                    if (coordMap.NorthEast.Lng == coordMap.SouthWest.Lng)
+                    {
+                        coordMap.NorthEast.Lng = coordMap.NorthEast.Lng + 0.01f;
+                        coordMap.SouthWest.Lng = coordMap.SouthWest.Lng - 0.01f;
+                    }
 
                     double MinLng = coordMap.NorthEast.Lng - (coordMap.NorthEast.Lng - coordMap.SouthWest.Lng) / 5;
                     double distLng = _MapInfoService.CalculateDistance(coordMap.NorthEast.Lat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, coordMap.NorthEast.Lat * _MapInfoService.d2r, MinLng * _MapInfoService.d2r, _MapInfoService.R) / 1000;
@@ -1546,6 +1566,12 @@ namespace CSSPWebToolsTaskRunner.Services
                     int MaxLatY = ((GoogleImageHeight * 2 - GoogleLogoHeight) * 4 / 5) - 60;
 
                     g.DrawLine(new Pen(Color.LightBlue, 2), 40, MinLatY, 40, MaxLatY);
+
+                    if (coordMap.NorthEast.Lat == coordMap.SouthWest.Lat)
+                    {
+                        coordMap.NorthEast.Lat = coordMap.NorthEast.Lat + 0.01f;
+                        coordMap.SouthWest.Lat = coordMap.SouthWest.Lat - 0.01f;
+                    }
 
                     double MinLat = coordMap.NorthEast.Lat - (coordMap.NorthEast.Lat - coordMap.SouthWest.Lat) / 5;
                     double distLat = _MapInfoService.CalculateDistance(MinLat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, coordMap.NorthEast.Lat * _MapInfoService.d2r, coordMap.NorthEast.Lng * _MapInfoService.d2r, _MapInfoService.R) / 1000;
